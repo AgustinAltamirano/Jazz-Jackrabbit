@@ -5,17 +5,18 @@
 #include <unordered_map>
 #include <yaml-cpp/yaml.h>
 
-class Config {
+class ConfigAdmin {
 private:
     std::unordered_map<std::string, int> configuracion;
+
 public:
+    ConfigAdmin(const ConfigAdmin &) = delete;
 
-    Config(const Config&) = delete;
-    Config& operator=(const Config&) = delete;
-    // pasaje por copia destruido
+    ConfigAdmin &operator=(const ConfigAdmin &) = delete;
 
-    Config();
-    int get(const std::string& clave) const; // busca una clave en el map
+    ConfigAdmin();
+
+    int get(const std::string &clave_config) const; // busca una clave en el map
 };
 
 #endif
