@@ -1,15 +1,20 @@
 cmake_minimum_required(VERSION 3.22)
 project(Jazz_Jackrabbit)
 
+# Flags de compilación
 set(CMAKE_CXX_STANDARD 17)
+add_definitions(-DASSETS_PATH="client/assets")
 
 # Agrega los archivos fuente del juego
 add_executable(Jazz_Jackrabbit main.cpp
         common/constantes.h
         common/config.h
-        common/config.cpp)
+        common/config.cpp
+        client/vista_juego/objeto_animado.h
+        client/vista_juego/objeto_animado.cpp
+)
 
-#Busca e incluye los yaml-cpp para la configuración
+# Busca e incluye los yaml-cpp para la configuración
 find_package(yaml-cpp REQUIRED)
 target_link_libraries(Jazz_Jackrabbit PRIVATE yaml-cpp)
 
