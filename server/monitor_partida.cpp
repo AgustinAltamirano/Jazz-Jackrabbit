@@ -9,6 +9,10 @@ void MonitorPartida::unir_jugador(Queue<std::string> &queue) {
     jugadores_partida.push_back(queue);
 }
 
+int MonitorPartida::obtener_cantidad_jugadores() {
+    return jugadores_partida.size();
+}
+
 void MonitorPartida::enviar_mensaje(const std::string &mensaje) {
     std::lock_guard<std::mutex> lck(mutex_partida);
     auto cola_it = jugadores_partida.begin();

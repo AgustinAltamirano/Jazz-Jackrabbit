@@ -18,6 +18,8 @@ public:
 
     void enviar_mensaje(const std::string &mensaje);
 
+    int obtener_cantidad_jugadores();
+
     MonitorPartida(const MonitorPartida &) = delete;
 
     MonitorPartida &operator=(const MonitorPartida &) = delete;

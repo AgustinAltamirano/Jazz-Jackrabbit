@@ -14,6 +14,11 @@ Juego::iniciar_partida(Queue<std::string> &cola_jugador) {
     monitor_partida =
             monitor_partidas.iniciar_partida(cola_jugador,
                                              codigo_partida);
+    if (!monitor_partida) {
+        std::cout << "Cantidad maxima de partidas alcanzada. \n";
+        return -1;
+    }
+
     std::string mensaje = "Partida creada: ";
     imprimir(mensaje, codigo_partida);
     return codigo_partida;
@@ -24,7 +29,7 @@ bool Juego::unir_a_partida(Queue<std::string> &cola_jugador,
     monitor_partida = monitor_partidas.unirse_a_partida(cola_jugador,
                                                         codigo_partida_join);
     if (!monitor_partida) {
-        std::string mensaje = "Partida inexistente: ";
+        std::string mensaje = "Partida inexistente o capacidad maxima alcanzada: ";
         imprimir(mensaje, codigo_partida_join);
         return false;
     } else {
