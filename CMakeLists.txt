@@ -3,7 +3,7 @@ project(Jazz_Jackrabbit)
 
 # Flags de compilación
 set(CMAKE_CXX_STANDARD 17)
-add_definitions(-DASSETS_PATH="client/assets")
+add_definitions(-DASSETS_PATH="assets")
 
 # Agrega los archivos fuente del juego
 add_executable(Jazz_Jackrabbit main.cpp
@@ -12,6 +12,9 @@ add_executable(Jazz_Jackrabbit main.cpp
         common/config.cpp
         client/vista_juego/objeto_animado.h
         client/vista_juego/objeto_animado.cpp
+        client/vista_juego/lector_texturas.h
+        client/vista_juego/animaciones_posibles.h
+        client/vista_juego/lector_texturas.cpp
 )
 
 # Busca e incluye los yaml-cpp para la configuración

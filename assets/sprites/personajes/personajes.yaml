@@ -1,0 +1,114 @@
+personajes:
+  - nombre: jazz
+  - imagen: jazz_jackrabbit.png
+    animaciones:
+      - nombre: stand
+        sprites:
+          - x: 1
+            y: 12
+            ancho: 35
+            alto: 49
+          - x: 41
+            y: 12
+            ancho: 35
+            alto: 49
+          - x: 80
+            y: 12
+            ancho: 36
+            alto: 49
+          - x: 122
+            y: 12
+            ancho: 35
+            alto: 49
+          - x: 163
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 205
+            y: 12
+            ancho: 41
+            alto: 49
+          - x: 252
+            y: 12
+            ancho: 47
+            alto: 49
+          - x: 302
+            y: 12
+            ancho: 46
+            alto: 49
+          - x: 353
+            y: 12
+            ancho: 44
+            alto: 49
+          - x: 403
+            y: 12
+            ancho: 39
+            alto: 49
+          - x: 449
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 492
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 535
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 581
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 625
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 671
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 1
+            y: 63
+            ancho: 44
+            alto: 49
+          - x: 49
+            y: 63
+            ancho: 46
+            alto: 49
+          - x: 99
+            y: 63
+            ancho: 47
+            alto: 49
+          - x: 150
+            y: 63
+            ancho: 41
+            alto: 49
+          - x: 193
+            y: 63
+            ancho: 38
+            alto: 49
+          - x: 233
+            y: 63
+            ancho: 35
+            alto: 49
+          - x: 274
+            y: 63
+            ancho: 36
+            alto: 49
+          - x: 313
+            y: 63
+            ancho: 35
+            alto: 49
+          - x: 354
+            y: 63
+            ancho: 35
+            alto: 49
+          - x: 394
+            y: 63
+            ancho: 35
+            alto: 49
+          - x: 434
+            y: 63
+            ancho: 35
+            alto: 49
