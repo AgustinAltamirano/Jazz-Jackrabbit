@@ -1,30 +1,26 @@
 #ifndef THREAD_H_
 #define THREAD_H_
 
-#include <thread>
 #include <iostream>
+#include <thread>
 
 class Thread {
- private:
+private:
     std::thread thread;
 
- public:
+public:
     Thread() {}
 
-    void start() {
-        thread = std::thread(&Thread::main, this);
-    }
+    void start() { thread = std::thread(&Thread::main, this); }
 
-    void join() {
-        thread.join();
-    }
+    void join() { thread.join(); }
 
     void main() {
         try {
             this->run();
-        } catch(const std::exception &err) {
+        } catch (const std::exception& err) {
             std::cerr << "Unexpected exception: " << err.what() << "\n";
-        } catch(...) {
+        } catch (...) {
             std::cerr << "Unexpected exception: <unknown>\n";
         }
     }

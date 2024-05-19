@@ -1,14 +1,14 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
-#include <mutex>
-#include <condition_variable>
-#include <queue>
-#include <deque>
 #include <climits>
+#include <condition_variable>
+#include <deque>
+#include <mutex>
+#include <queue>
 
-struct ClosedQueue : public std::runtime_error {
-    ClosedQueue() : std::runtime_error("The queue is closed") {}
+struct ClosedQueue: public std::runtime_error {
+    ClosedQueue(): std::runtime_error("The queue is closed") {}
 };
 
 /*
@@ -23,9 +23,9 @@ struct ClosedQueue : public std::runtime_error {
  * On a closed queue, any method will raise ClosedQueue.
  *
  * */
-template<typename T, class C = std::deque<T> >
+template <typename T, class C = std::deque<T> >
 class Queue {
- private:
+private:
     std::queue<T, C> q;
     const unsigned int max_size;
 
@@ -35,10 +35,9 @@ class Queue {
     std::condition_variable is_not_full;
     std::condition_variable is_not_empty;
 
- public:
-    Queue() : max_size(UINT_MAX-1), closed(false) {}
-    explicit Queue(const unsigned int max_size)
-    : max_size(max_size), closed(false) {}
+public:
+    Queue(): max_size(UINT_MAX - 1), closed(false) {}
+    explicit Queue(const unsigned int max_size): max_size(max_size), closed(false) {}
 
 
     bool try_push(T const& val) {
@@ -129,14 +128,14 @@ class Queue {
         is_not_empty.notify_all();
     }
 
- private:
+private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
 };
 
-template<>
+template <>
 class Queue<void*> {
- private:
+private:
     std::queue<void*> q;
     const unsigned int max_size;
 
@@ -146,12 +145,11 @@ class Queue<void*> {
     std::condition_variable is_not_full;
     std::condition_variable is_not_empty;
 
- public:
-    explicit Queue(const unsigned int max_size)
-    : max_size(max_size), closed(false) {}
+public:
+    explicit Queue(const unsigned int max_size): max_size(max_size), closed(false) {}
 
 
-    bool try_push(void* const & val) {
+    bool try_push(void* const& val) {
         std::unique_lock<std::mutex> lck(mtx);
 
         if (closed) {
@@ -239,39 +237,29 @@ class Queue<void*> {
         is_not_empty.notify_all();
     }
 
- private:
+private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
 };
 
 
-template<typename T>
-class Queue<T*> : private Queue<void*> {
- public:
-    explicit Queue(const unsigned int max_size) : Queue<void*>(max_size) {}
+template <typename T>
+class Queue<T*>: private Queue<void*> {
+public:
+    explicit Queue(const unsigned int max_size): Queue<void*>(max_size) {}
 
-    bool try_push(T* const& val) {
-        return Queue<void*>::try_push(val);
-    }
+    bool try_push(T* const& val) { return Queue<void*>::try_push(val); }
 
-    bool try_pop(T*& val) {
-        return Queue<void*>::try_pop((void*&)val);
-    }
+    bool try_pop(T*& val) { return Queue<void*>::try_pop(reinterpret_cast<void*&>(val)); }
 
-    void push(T* const& val) {
-        return Queue<void*>::push(val);
-    }
+    void push(T* const& val) { return Queue<void*>::push(val); }
 
 
-    T* pop() {
-        return (T*) Queue<void*>::pop();
-    }
+    T* pop() { return (T*)Queue<void*>::pop(); }
 
-    void close() {
-        return Queue<void*>::close();
-    }
+    void close() { return Queue<void*>::close(); }
 
- private:
+private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
 };

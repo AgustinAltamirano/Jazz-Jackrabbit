@@ -1,25 +1,23 @@
-#include <stdio.h>
-#include <assert.h>
-#include <string.h>
-#include <errno.h>
+#include "socket.h"
 
+#include <arpa/inet.h>
+#include <assert.h>
+#include <errno.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <arpa/inet.h>
-#include <netdb.h>
 #include <unistd.h>
 
-#include "socket.h"
-#include "resolver.h"
 #include "liberror.h"
+#include "resolver.h"
 
-Socket::Socket(
-        const char *hostname,
-        const char *servname) {
+Socket::Socket(const char* hostname, const char* servname) {
     Resolver resolver(hostname, servname, false);
 
     int s = -1;
-    int skt = -1;
+    int _skt = -1;
     this->closed = true;
 
     /*
@@ -32,19 +30,19 @@ Socket::Socket(
      * una que funcione.
      * */
     while (resolver.has_next()) {
-        struct addrinfo *addr = resolver.next();
+        struct addrinfo* addr = resolver.next();
 
         /* Cerramos el socket si nos quedo abierto de la iteración
          * anterior
          * */
-        if (skt != -1)
-            ::close(skt);
+        if (_skt != -1)
+            ::close(_skt);
 
         /*
          * Con esta llamada creamos/obtenemos un socket.
          * */
-        skt = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
-        if (skt == -1) {
+        _skt = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
+        if (_skt == -1) {
             continue;
         }
 
@@ -55,7 +53,7 @@ Socket::Socket(
          * va a detenerse unos momentos hasta poder conectarse al server
          * o detectar y notificar de un error.
          * */
-        s = connect(skt, addr->ai_addr, addr->ai_addrlen);
+        s = connect(_skt, addr->ai_addr, addr->ai_addrlen);
         if (s == -1) {
             continue;
         }
@@ -64,7 +62,7 @@ Socket::Socket(
          * Conexión exitosa!
          * */
         this->closed = false;
-        this->skt = skt;
+        this->skt = _skt;
         return;
     }
 
@@ -82,30 +80,27 @@ Socket::Socket(
      * Si en cambio `skt` es distinto de -1 significa q tenemos
      * un socket abierto.
      * */
-    if (skt != -1)
-        ::close(skt);
+    if (_skt != -1)
+        ::close(_skt);
 
-    throw LibError(
-            saved_errno,
-            "socket construction failed (connect to %s:%s)",
-            (hostname ? hostname : ""),
-            (servname ? servname : ""));
+    throw LibError(saved_errno, "socket construction failed (connect to %s:%s)",
+                   (hostname ? hostname : ""), (servname ? servname : ""));
 }
 
-Socket::Socket(const char *servname) {
+Socket::Socket(const char* servname) {
     Resolver resolver(nullptr, servname, true);
 
     int s = -1;
-    int skt = -1;
+    int _skt = -1;
     this->closed = true;
     while (resolver.has_next()) {
-        struct addrinfo *addr = resolver.next();
+        struct addrinfo* addr = resolver.next();
 
-        if (skt != -1)
-            ::close(skt);
+        if (_skt != -1)
+            ::close(_skt);
 
-        skt = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
-        if (skt == -1) {
+        _skt = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
+        if (_skt == -1) {
             continue;
         }
 
@@ -119,7 +114,7 @@ Socket::Socket(const char *servname) {
          * Con `bind` asociaremos el socket a dicha dirección local
          * y con `listen` pondremos el socket a escuchar conexiones entrantes.
          * */
-        s = bind(skt, addr->ai_addr, addr->ai_addrlen);
+        s = bind(_skt, addr->ai_addr, addr->ai_addrlen);
         if (s == -1) {
             continue;
         }
@@ -130,7 +125,7 @@ Socket::Socket(const char *servname) {
          *
          * No tiene nada q ver con cuantas conexiones totales el server tendrá.
          * */
-        s = listen(skt, 20);
+        s = listen(_skt, 20);
         if (s == -1) {
             continue;
         }
@@ -139,22 +134,20 @@ Socket::Socket(const char *servname) {
          * Setup exitoso!
          * */
         this->closed = false;
-        this->skt = skt;
+        this->skt = _skt;
         return;
     }
 
     int saved_errno = errno;
 
-    if (skt != -1)
-        ::close(skt);
+    if (_skt != -1)
+        ::close(_skt);
 
-    throw LibError(
-            saved_errno,
-            "socket construction failed (listen on %s)",
-            (servname ? servname : ""));
+    throw LibError(saved_errno, "socket construction failed (listen on %s)",
+                   (servname ? servname : ""));
 }
 
-Socket::Socket(Socket &&other) {
+Socket::Socket(Socket&& other) {
     /* Nos copiamos del otro socket... */
     this->skt = other.skt;
     this->closed = other.closed;
@@ -174,7 +167,7 @@ Socket::Socket(Socket &&other) {
     other.closed = true;
 }
 
-Socket &Socket::operator=(Socket &&other) {
+Socket& Socket::operator=(Socket&& other) {
     /* Si el usuario hace algo como tratar de moverse
      * a si mismo (`skt = skt;`) simplemente no hacemos
      * nada.
@@ -201,12 +194,9 @@ Socket &Socket::operator=(Socket &&other) {
     return *this;
 }
 
-int Socket::recvsome(
-        void *data,
-        unsigned int sz,
-        bool *was_closed) {
+int Socket::recvsome(void* data, unsigned int sz, bool* was_closed) {
     *was_closed = false;
-    int s = recv(this->skt, (char *) data, sz, 0);
+    int s = recv(this->skt, static_cast<char*>(data), sz, 0);
     if (s == 0) {
         /*
          * Puede ser o no un error, dependerá del protocolo.
@@ -226,10 +216,7 @@ int Socket::recvsome(
     }
 }
 
-int Socket::sendsome(
-        const void *data,
-        unsigned int sz,
-        bool *was_closed) {
+int Socket::sendsome(const void* data, unsigned int sz, bool* was_closed) {
     *was_closed = false;
     /*
      * Cuando se hace un send, el sistema operativo puede aceptar
@@ -248,7 +235,7 @@ int Socket::sendsome(
      * Esta en nosotros luego hace el chequeo correspondiente
      * (ver más abajo).
      * */
-    int s = send(this->skt, (char *) data, sz, MSG_NOSIGNAL);
+    int s = send(this->skt, reinterpret_cast<char*>(const_cast<void*>(data)), sz, MSG_NOSIGNAL);
     if (s == -1) {
         /*
          * Este es un caso especial: cuando enviamos algo pero en el medio
@@ -280,18 +267,12 @@ int Socket::sendsome(
     }
 }
 
-int Socket::recvall(
-        void *data,
-        unsigned int sz,
-        bool *was_closed) {
+int Socket::recvall(void* data, unsigned int sz, bool* was_closed) {
     unsigned int received = 0;
     *was_closed = false;
 
     while (received < sz) {
-        int s = recvsome(
-                (char *) data + received,
-                sz - received,
-                was_closed);
+        int s = recvsome(static_cast<char*>(data) + received, sz - received, was_closed);
 
         if (s <= 0) {
             /*
@@ -306,11 +287,7 @@ int Socket::recvall(
              * */
             assert(s == 0);
             if (received)
-                throw LibError(
-                        EPIPE,
-                        "socket received only %d of %d bytes",
-                        received,
-                        sz);
+                throw LibError(EPIPE, "socket received only %d of %d bytes", received, sz);
             else
                 return 0;
         } else {
@@ -326,28 +303,19 @@ int Socket::recvall(
 }
 
 
-int Socket::sendall(
-        const void *data,
-        unsigned int sz,
-        bool *was_closed) {
+int Socket::sendall(const void* data, unsigned int sz, bool* was_closed) {
     unsigned int sent = 0;
     *was_closed = false;
 
     while (sent < sz) {
-        int s = sendsome(
-                (char *) data + sent,
-                sz - sent,
-                was_closed);
+        int s = sendsome(reinterpret_cast<char*>(const_cast<void*>(data)) + sent, sz - sent,
+                         was_closed);
 
         /* Véase los comentarios de `Socket::recvall` */
         if (s <= 0) {
             assert(s == 0);
             if (sent)
-                throw LibError(
-                        EPIPE,
-                        "socket sent only %d of %d bytes",
-                        sent,
-                        sz);
+                throw LibError(EPIPE, "socket sent only %d of %d bytes", sent, sz);
             else
                 return 0;
         } else {

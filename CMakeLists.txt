@@ -13,6 +13,6 @@ add_executable(Server server/servidor_main.cpp server/servidor.h server/servidor
         server/servidor_protocolo.h server/servidor_protocolo.cpp common/liberror.h common/liberror.cpp common/resolver.cpp common/resolver.h common/resolvererror.h common/resolvererror.cpp
         common/socket.h common/socket.cpp common/thread.h common/queue.h common/constantes.h common/config.h common/config.cpp)
 
-#Busca e incluye los yaml-cpp para la configuracion
+#Busca e incluye los yaml-cpp para la configuración
 find_package(yaml-cpp REQUIRED)
 target_link_libraries(Server PRIVATE yaml-cpp)
