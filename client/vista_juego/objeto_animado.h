@@ -19,7 +19,7 @@ enum pos_dimension : uint8_t {
     RENDER_ANGULO,
 };
 
-/** La clase modela un objeto visual genérico con animación. */
+/** La clase ObjetoAnimado modela un objeto visual genérico con animación. */
 class ObjetoAnimado {
 private:
     /** ID del objeto visual en el juego. */
