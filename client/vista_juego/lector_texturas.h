@@ -58,6 +58,79 @@ public:
                                                               const std::string& animacion) const;
 
     ~LectorTexturas();
+
+    /**
+     * Iterador externo genérico de @code LectorTexturas@endcode. Recorre simultáneamente un mapa de
+     * texturas y su correspondiente mapa de coordenadas de animaciones. Estos mapas se pueden pasar
+     * como parámetro al crear una instancia de @code IteradorTexturas@endcode, pero se recomienda
+     * fuertemente no construirlos de forma directa. Esta clase fue diseñada para ser instanciada
+     * mediante los métodos comenzados en @code begin@endcode y @code end@endcode de
+     * @code LectorTexturas@endcode.
+     *
+     * El orden de iteración es el siguiente: Se comienza en la primera textura y en su primera
+     * animación correspondiente. Al avanzar el iterador, se pasa a la siguiente animación de la
+     * misma textura. Al llegar a la última animación de tal textura, se pasa a la siguiente textura
+     * y a su primera animación. La iteración continúa de esta forma hasta haber recorrido todas las
+     * texturas.
+     */
+    class IteradorTexturas {
+    private:
+        /** Referencia al mapa de texturas sobre el cual se desea iterar. */
+        std::unordered_map<std::string, SDL2pp::Texture>& texturas;
+
+        /** Referencia al mapa de animaciones sobre el cual se desea iterar. */
+        std::unordered_map<std::string, std::unordered_map<std::string, std::vector<SDL2pp::Rect>>>&
+                coords;
+
+        /** Iterador del mapa de texturas. */
+        std::unordered_map<std::string, SDL2pp::Texture>::const_iterator iterador_texturas;
+
+        /** Iterador del mapa de animaciones. */
+        std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
+                iterador_animaciones;
+
+    public:
+        IteradorTexturas(
+                std::unordered_map<std::string, SDL2pp::Texture>& texturas,
+                std::unordered_map<std::string,
+                                   std::unordered_map<std::string, std::vector<SDL2pp::Rect>>>&
+                        coords,
+                std::unordered_map<std::string, SDL2pp::Texture>::const_iterator iterador_texturas,
+                std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
+                        iterador_animaciones);
+
+        /** Avanza a la siguiente iteración. */
+        IteradorTexturas& operator++();
+
+        bool operator==(const IteradorTexturas& otro) const;
+
+        bool operator!=(const IteradorTexturas& otro) const;
+
+        /** Obtiene el nombre del objeto (la clave) actual de la iteración. */
+        [[nodiscard]] const std::string& obtener_nombre_objeto_actual() const;
+
+        /** Obtiene la textura actual de la iteración. */
+        [[nodiscard]] const SDL2pp::Texture& obtener_textura_actual() const;
+
+        /** Obtiene el nombre de la animación (la clave) actual de la iteración. */
+        [[nodiscard]] const std::string& obtener_nombre_animacion_actual() const;
+
+        /** Obtiene las coordenadas de la animación actual de la iteración. */
+        [[nodiscard]] const std::vector<SDL2pp::Rect>& obtener_coordenadas_actuales() const;
+    };
+
+    /** Crea un @code IteradorTexturas@endcode al inicio de todas las texturas y animaciones de
+     * personajes, según el orden de iteración descrito (véase la documentación de
+     * @code IteradorTexturas@endcode).
+     */
+    IteradorTexturas beginPersonajes();
+
+    /** Crea un @code IteradorTexturas@endcode al final de todas las texturas y animaciones de
+     * personajes, según el orden de iteración descrito (véase la documentación de
+     * @code IteradorTexturas@endcode).
+     */
+    IteradorTexturas endPersonajes();
 };
+
 
 #endif  // LECTOR_TEXTURAS_H
