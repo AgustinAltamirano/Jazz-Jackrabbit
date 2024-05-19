@@ -22,3 +22,5 @@ add_executable(Jazz_Jackrabbit main.cpp
 #Busca e incluye los yaml-cpp para la configuración
 find_package(yaml-cpp REQUIRED)
 target_link_libraries(Jazz_Jackrabbit PRIVATE yaml-cpp)
+
+add_subdirectory(lobby)
