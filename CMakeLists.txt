@@ -10,6 +10,16 @@ add_executable(Jazz_Jackrabbit main.cpp
         common/constantes.h
         common/config.h
         common/config.cpp
+        common/queue.h
+        common/liberror.h
+        common/liberror.cpp
+        common/resolver.cpp
+        common/resolver.h
+        common/resolvererror.cpp
+        common/resolvererror.h
+        common/socket.cpp
+        common/socket.h
+        common/thread.h
         client/vista_juego/objeto_animado.h
         client/vista_juego/objeto_animado.cpp
         client/vista_juego/lector_texturas.h
