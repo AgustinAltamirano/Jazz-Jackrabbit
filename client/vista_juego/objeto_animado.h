@@ -29,15 +29,15 @@ private:
     SDL2pp::Renderer& renderer;
 
     /** Textura ya cargada con todos los sprites utilizados por el objeto. */
-    SDL2pp::Texture& sprites;
+    SDL2pp::Texture& textura;
 
     /**
      * Vector con los rectángulos de cada uno de los sprites usados en la animación.
      * Cada rectángulo indica las medidas (posición x e y, ancho y alto) que se debe recortar de
-     * @code sprites@endcode para formar cada uno de los sprites. La longitud de este vector indica
+     * @code textura@endcode para formar cada uno de los sprites. La longitud de este vector indica
      * la cantidad de sprites que utiliza el objeto.
      */
-    const std::vector<SDL2pp::Rect>& sprite_states;
+    const std::vector<SDL2pp::Rect>& sprite_coords;
 
     /**
      * Dimensiones y coordenadas donde debe ser renderizado el objeto.
@@ -55,7 +55,7 @@ private:
     bool invertido;
 
     /**
-     * Índice del sprite actual en @code sprites@endcode.
+     * Índice del sprite actual en @code sprite_coords@endcode.
      */
     uint16_t sprite_actual;
 
@@ -70,14 +70,18 @@ private:
     unsigned int frame_ticks_anteriores;
 
 public:
-    ObjetoAnimado(uint32_t id, SDL2pp::Renderer& renderer, SDL2pp::Texture& sprites,
-                  const std::vector<SDL2pp::Rect>& sprite_states,
+    ObjetoAnimado(uint32_t id, SDL2pp::Renderer& renderer, SDL2pp::Texture& textura,
+                  const std::vector<SDL2pp::Rect>& sprite_coords,
                   const std::vector<int>& dimensiones_iniciales, unsigned int frames_por_sprite,
                   unsigned int frame_ticks_actuales);
 
     ObjetoAnimado(const ObjetoAnimado&) = delete;
 
     ObjetoAnimado& operator=(const ObjetoAnimado&) = delete;
+
+    ObjetoAnimado(ObjetoAnimado&& otro) noexcept;
+
+    ObjetoAnimado& operator=(ObjetoAnimado&& otro) = delete;
 
     /**
      * Resetea el estado actual de la animación.
@@ -86,10 +90,11 @@ public:
 
     /**
      * Actualiza el sprite actual, así como su posición y dimensiones.
-     * @param frame_ticks_actuales Cantidad de frames transcurridos desde la última actualización
+     * @param frame_ticks_transcurridos Cantidad de frames transcurridos desde la última
+     * actualización
      * @param dimensiones Nuevas dimensiones y posición del objeto
      */
-    void actualizar_animacion(unsigned int frame_ticks_actuales,
+    void actualizar_animacion(unsigned int frame_ticks_transcurridos,
                               const std::vector<int>& dimensiones);
 
     /**
