@@ -83,7 +83,7 @@ public:
                 coords;
 
         /** Iterador del mapa de texturas. */
-        std::unordered_map<std::string, SDL2pp::Texture>::const_iterator iterador_texturas;
+        std::unordered_map<std::string, SDL2pp::Texture>::iterator iterador_texturas;
 
         /** Iterador del mapa de animaciones. */
         std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
@@ -95,7 +95,7 @@ public:
                 std::unordered_map<std::string,
                                    std::unordered_map<std::string, std::vector<SDL2pp::Rect>>>&
                         coords,
-                std::unordered_map<std::string, SDL2pp::Texture>::const_iterator iterador_texturas,
+                std::unordered_map<std::string, SDL2pp::Texture>::iterator iterador_texturas,
                 std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
                         iterador_animaciones);
 
@@ -110,7 +110,7 @@ public:
         [[nodiscard]] const std::string& obtener_nombre_objeto_actual() const;
 
         /** Obtiene la textura actual de la iteración. */
-        [[nodiscard]] const SDL2pp::Texture& obtener_textura_actual() const;
+        [[nodiscard]] SDL2pp::Texture& obtener_textura_actual() const;
 
         /** Obtiene el nombre de la animación (la clave) actual de la iteración. */
         [[nodiscard]] const std::string& obtener_nombre_animacion_actual() const;

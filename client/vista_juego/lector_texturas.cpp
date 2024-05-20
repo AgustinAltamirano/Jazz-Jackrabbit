@@ -67,8 +67,8 @@ LectorTexturas::IteradorTexturas::IteradorTexturas(
         std::unordered_map<std::string, SDL2pp::Texture>& texturas,
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<SDL2pp::Rect>>>&
                 coords,
-        std::unordered_map<std::string, SDL2pp::Texture>::const_iterator iterador_texturas,
-        std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
+        const std::unordered_map<std::string, SDL2pp::Texture>::iterator iterador_texturas,
+        const std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
                 iterador_animaciones):
         texturas(texturas),
         coords(coords),
@@ -117,7 +117,7 @@ const std::string& LectorTexturas::IteradorTexturas::obtener_nombre_objeto_actua
     return iterador_texturas->first;
 }
 
-const SDL2pp::Texture& LectorTexturas::IteradorTexturas::obtener_textura_actual() const {
+SDL2pp::Texture& LectorTexturas::IteradorTexturas::obtener_textura_actual() const {
     return iterador_texturas->second;
 }
 
