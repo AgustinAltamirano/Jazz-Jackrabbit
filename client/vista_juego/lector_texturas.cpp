@@ -16,9 +16,12 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
     for (const auto& personaje: personajes["personajes"]) {
         auto nombre_personaje = personaje["nombre"].as<std::string>();
         auto imagen_personaje = ruta_personajes + personaje["imagen"].as<std::string>();
-        SDL2pp::Texture textura(renderer, SDL2pp::Surface(imagen_personaje).SetColorKey(true, 0));
+
+        SDL2pp::Texture textura(
+                renderer, SDL2pp::Surface(imagen_personaje).SetColorKey(true, COLOR_KEY_FORMATO));
         textura.SetBlendMode(SDL_BLENDMODE_BLEND);
         std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_personaje;
+
         texturas_personajes.emplace(nombre_personaje, std::move(textura));
         coords_personajes.emplace(nombre_personaje, std::move(coords_personaje));
 
@@ -31,7 +34,7 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
                 SDL2pp::Rect sprite(sprite_coords["x"].as<int>(), sprite_coords["y"].as<int>(),
                                     sprite_coords["ancho"].as<int>(),
                                     sprite_coords["alto"].as<int>());
-                coords_personajes.at(nombre_personaje).at(nombre_personaje).emplace_back(sprite);
+                coords_personajes.at(nombre_personaje).at(nombre_animacion).emplace_back(sprite);
             }
         }
     }

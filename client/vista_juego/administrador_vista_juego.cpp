@@ -17,8 +17,9 @@ AdministradorVistaJuego::AdministradorVistaJuego(const std::string& titulo_venta
          ++iter) {
         SDL2pp::Texture& textura = iter.obtener_textura_actual();
         const std::vector<SDL2pp::Rect>& sprite_coords = iter.obtener_coordenadas_actuales();
-        const std::vector<int> dimensiones_iniciales = {
-                X_INICIAL, Y_INICIAL, sprite_coords.at(0).GetW(), sprite_coords.at(0).GetH(), 0};
+        const std::vector<int> dimensiones_iniciales = {X_INICIAL, Y_INICIAL,
+                                                        sprite_coords.at(0).GetW() * 2,
+                                                        sprite_coords.at(0).GetH() * 2, 0};
         ObjetoAnimado personaje(proximo_id, renderer, textura, sprite_coords, dimensiones_iniciales,
                                 FRAMES_POR_SPRITE, SDL_GetTicks());
         personajes.emplace(proximo_id, std::move(personaje));
@@ -34,7 +35,7 @@ void AdministradorVistaJuego::run() {
     // Como primera prueba, se renderiza únicamente un objeto visual con animación
     // que no cambia su posición.
     bool close = false;
-    const std::vector<int> dimensiones = {X_INICIAL, Y_INICIAL, -1, -1, 0};
+    const std::vector<int> dimensiones = {X_INICIAL, Y_INICIAL, 4, 4, 0};
     uint32_t ticks_anteriores = SDL_GetTicks();
     while (!close) {
         const uint32_t frame_ticks = SDL_GetTicks();
@@ -46,7 +47,7 @@ void AdministradorVistaJuego::run() {
         personajes.at(0).dibujar();
         renderer.Present();
 
-        if (frame_ticks > 1000000) {
+        if (frame_ticks > 100000000) {
             close = true;
         }
     }

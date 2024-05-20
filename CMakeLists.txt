@@ -3,7 +3,7 @@ project(Jazz_Jackrabbit)
 
 # Flags de compilación
 set(CMAKE_CXX_STANDARD 17)
-add_definitions(-DASSETS_PATH="assets")
+add_definitions(-DASSETS_PATH="${PROJECT_SOURCE_DIR}/assets")
 # add_definitions(-lSDL2main -lSDL2)
 
 # Agrega los archivos fuente del juego
@@ -29,14 +29,17 @@ add_executable(Jazz_Jackrabbit main.cpp
         client/vista_juego/administrador_vista_juego.h
 )
 
-# Busca e incluye los yaml-cpp para la configuración
+# Busca e incluye las dependencias del proyecto
 find_package(yaml-cpp REQUIRED)
-target_link_libraries(Jazz_Jackrabbit PRIVATE yaml-cpp)
 find_package(SDL2 REQUIRED)
+find_package(SDL2pp REQUIRED)
+target_link_libraries(Jazz_Jackrabbit PRIVATE yaml-cpp SDL2pp::SDL2pp)
 include_directories(${SDL2_INCLUDE_DIR})
+add_subdirectory(extlib/libSDL2pp)
 
 # Configuración de la librería externa libSDL2pp
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
 set(SDL2PP_WITH_TTF ON) # if you need SDL_ttf support
-add_subdirectory(extlib/libSDL2pp)
+
+
