@@ -11,8 +11,15 @@
  * Rutas usadas para cargar los sprites y las coordenadas de cada uno en sus respectivas imágenes.
  */
 #define RUTA_SPRITES "/sprites"
-#define DIR_PERSONAJES "/personajes"
+#define DIR_PERSONAJES "/personajes/"
 #define PERSONAJES_CONFIG "/personajes.yaml"
+
+#define COLOR_KEY_RED 44
+#define COLOR_KEY_GREEN 102
+#define COLOR_KEY_BLUE 150
+
+#define COLOR_KEY_FORMATO \
+    ((COLOR_KEY_RED << 24) + (COLOR_KEY_BLUE << 16) + (COLOR_KEY_GREEN << 8) + COLOR_KEY_RED)
 
 /**
  * La clase LectorTexturas se encarga de cargar las texturas y las coordenadas de los sprites.

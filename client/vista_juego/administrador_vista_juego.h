@@ -18,7 +18,7 @@
 /** Constantes definidas únicamente para realizar tests preliminares. */
 #define X_INICIAL 200
 #define Y_INICIAL 200
-#define FRAMES_POR_SPRITE 15
+#define FRAMES_POR_SPRITE 80
 
 /**
  * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones

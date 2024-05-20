@@ -48,22 +48,18 @@ void ObjetoAnimado::resetear_animacion() { sprite_actual = 0; }
 
 void ObjetoAnimado::actualizar_animacion(const unsigned int frame_ticks_transcurridos,
                                          const std::vector<int>& dimensiones) {
+    sprite_actual = ((frame_ticks_transcurridos + frame_ticks_anteriores) / frames_por_sprite) %
+                    sprite_coords.size();
+    frame_ticks_anteriores += frame_ticks_transcurridos;
+
     invertido = dimensiones.at(RENDER_X) - render_x < 0;
     render_x = dimensiones.at(RENDER_X);
     render_y = dimensiones.at(RENDER_Y);
 
-    if (const int nuevo_ancho = dimensiones.at(RENDER_ANCHO) >= 0) {
-        render_ancho = nuevo_ancho;
-    }
-
-    if (const int nuevo_alto = dimensiones.at(RENDER_ANCHO) >= 0) {
-        render_ancho = nuevo_alto;
-    }
+    render_ancho = sprite_coords.at(sprite_actual).GetW() * dimensiones.at(RENDER_ANCHO);
+    render_alto = sprite_coords.at(sprite_actual).GetH() * dimensiones.at(RENDER_ALTO);
 
     render_angulo = dimensiones.at(RENDER_ANGULO);
-    sprite_actual = ((frame_ticks_transcurridos - frame_ticks_anteriores) / frames_por_sprite) %
-                    sprite_coords.size();
-    frame_ticks_anteriores = frame_ticks_transcurridos;
 }
 
 void ObjetoAnimado::dibujar() const {

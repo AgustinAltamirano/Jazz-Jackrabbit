@@ -1,6 +1,6 @@
 personajes:
   - nombre: jazz
-  - imagen: jazz_jackrabbit.png
+    imagen: jazz_jackrabbit.png
     animaciones:
       - nombre: stand
         sprites:
@@ -44,7 +44,7 @@ personajes:
             y: 12
             ancho: 39
             alto: 49
-          - x: 449
+          - x: 448
             y: 12
             ancho: 38
             alto: 49
@@ -52,7 +52,7 @@ personajes:
             y: 12
             ancho: 38
             alto: 49
-          - x: 535
+          - x: 536
             y: 12
             ancho: 38
             alto: 49
@@ -60,7 +60,7 @@ personajes:
             y: 12
             ancho: 38
             alto: 49
-          - x: 625
+          - x: 626
             y: 12
             ancho: 38
             alto: 49
@@ -109,6 +109,6 @@ personajes:
             ancho: 35
             alto: 49
           - x: 434
-            y: 63
+            y: 62
             ancho: 35
             alto: 49
