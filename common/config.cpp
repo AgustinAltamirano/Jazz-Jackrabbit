@@ -1,6 +1,11 @@
 #include "config.h"
 #include "constantes.h"
 
+ConfigAdmin& ConfigAdmin::getInstance() {
+    static ConfigAdmin singleton;
+    return singleton;
+}
+
 ConfigAdmin::ConfigAdmin() {
     YAML::Node config = YAML::LoadFile(ARCHIVO_CONFIG);
 
