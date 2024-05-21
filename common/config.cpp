@@ -13,12 +13,13 @@ ConfigAdmin::ConfigAdmin() {
     configuracion[MAX_PARTIDAS] = config[MAX_PARTIDAS].as<int>();
 }
 
-int ConfigAdmin::get(const std::string &clave_config) const {
+int ConfigAdmin::get(const std::string& clave_config) const {
     auto iterador = configuracion.find(clave_config);
     if (iterador != configuracion.end()) {
         return iterador->second;
     } else {
         throw std::invalid_argument(
-            "No se encontro la clave para el diccionario de configuracion. Tengo: " + clave_config);
+                "No se encontro la clave para el diccionario de configuracion. Tengo: " +
+                clave_config);
     }
 }
