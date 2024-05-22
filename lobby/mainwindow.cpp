@@ -25,3 +25,8 @@ void MainWindow::on_joinGameButton_clicked()
 
 }
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->menu);
+}

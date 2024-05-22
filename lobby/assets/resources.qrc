@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/new/prefix1">
+        <file>bgd_menuinicial.png</file>
         <file>bgd_mainmenu.png</file>
     </qresource>
 </RCC>

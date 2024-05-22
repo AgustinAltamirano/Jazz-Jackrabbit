@@ -20,6 +20,8 @@ private slots:
 
     void on_joinGameButton_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -1,1 +1,3 @@
 cmake-build-debug
+/extlib/libSDL2pp/
+/build-lobby-Desktop-Debug/
