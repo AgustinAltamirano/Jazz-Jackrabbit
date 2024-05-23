@@ -1,7 +1,9 @@
 #include "config.h"
+
 #include "constantes.h"
 
 ConfigAdmin& ConfigAdmin::getInstance() {
+    std::lock_guard<std::mutex> lock(mutex);
     static ConfigAdmin singleton;
     return singleton;
 }
