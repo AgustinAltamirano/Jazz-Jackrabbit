@@ -44,6 +44,8 @@ else()
     else()
         add_executable(lobby
             ${PROJECT_SOURCES}
+                menu_crear_partida.cpp
+                menu_crear_partida.h
         )
     endif()
 endif()

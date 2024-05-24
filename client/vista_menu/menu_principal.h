@@ -1,10 +1,12 @@
 #ifndef MENUPRINCIPAL_H
 #define MENUPRINCIPAL_H
 
-#include <QPushButton>
-#include <QMainWindow>
 #include <QButtonGroup>
+#include <QMainWindow>
+#include <QPushButton>
+
 #include "boton_menu.h"
+#include "menu_crear_partida.h"
 
 enum PosicionBoton {
     POS_NEWGAME_BTN,
@@ -23,6 +25,8 @@ private:
     BotonMenu new_game_btn;
 
     BotonMenu join_game_btn;
+
+    MenuCrearPartida menu_crear_partida;
 
     void conectar_botones();
 

@@ -6,7 +6,8 @@
 MenuPrincipal::MenuPrincipal(QFont &fuente) :
         QMainWindow(),
         new_game_btn(this, POS_NEWGAME_BTN, WIDTH_NEWGAME_BTN, TEXT_NEWGAME_BTN, fuente),
-        join_game_btn(this, POS_JOINGAME_BTN, WIDTH_JOINGAME_BTN, TEXT_JOINGAME_BTN, fuente)
+        join_game_btn(this, POS_JOINGAME_BTN, WIDTH_JOINGAME_BTN, TEXT_JOINGAME_BTN, fuente),
+        menu_crear_partida(this, fuente)
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     setStyleSheet("QMainWindow {background-image: url(:/img/img/bgd_mainmenu.jpg);}");
@@ -22,8 +23,9 @@ void MenuPrincipal::conectar_botones() {
 
 
 void MenuPrincipal::mostrar_menu_crear_partida() {
-    // menu_crear_partida = new MenuCrearPartida(this, fuente_juego);
-    // menu_crear_partida->show();
+//    auto fuente = QFont();
+//    menu_crear_partida = new MenuCrearPartida(this, fuente);
+    menu_crear_partida.show();
     hide();
 }
 
