@@ -1,6 +1,7 @@
 <RCC>
-    <qresource prefix="/new/prefix1">
-        <file>bgd_menuinicial.png</file>
-        <file>bgd_mainmenu.png</file>
+    <qresource prefix="/img">
+        <file>img/bgd_menuinicial.png</file>
+        <file>img/Jazz-Jackrabbit-2.ttf</file>
+        <file>img/bgd_mainmenu.jpg</file>
     </qresource>
 </RCC>
