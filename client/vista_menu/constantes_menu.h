@@ -11,6 +11,7 @@
 
 #define ANCHO_PANTALLA 640
 #define ALTO_PANTALLA 480
+#define CANT_EFECTOS_SONIDO 6
 
 
 #define ALTURA_BTN 51

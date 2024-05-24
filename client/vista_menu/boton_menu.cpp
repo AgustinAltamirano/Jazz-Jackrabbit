@@ -25,13 +25,9 @@ BotonMenu::BotonMenu(QWidget *parent, int posicion_en_widget, int ancho, const c
 
 
 void BotonMenu::definir_efectos_de_sonido() {
-    efectos_de_sonido.addMedia(QUrl("qrc:/sfx/sfx/select0.wav"));
-    efectos_de_sonido.addMedia(QUrl("qrc:/sfx/sfx/select1.wav"));
-    efectos_de_sonido.addMedia(QUrl("qrc:/sfx/sfx/select2.wav"));
-    efectos_de_sonido.addMedia(QUrl("qrc:/sfx/sfx/select3.wav"));
-    efectos_de_sonido.addMedia(QUrl("qrc:/sfx/sfx/select4.wav"));
-    efectos_de_sonido.addMedia(QUrl("qrc:/sfx/sfx/select5.wav"));
-    efectos_de_sonido.addMedia(QUrl("qrc:/sfx/sfx/select6.wav"));
+    for (int i = 0; i <= CANT_EFECTOS_SONIDO; ++i) {
+        efectos_de_sonido.addMedia(QUrl("qrc:/sfx/sfx/select" + QString::number(i) + ".wav"));
+    }
     efectos_de_sonido.setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
     reproductor_efectos.setPlaylist(&efectos_de_sonido);
     reproductor_efectos.setVolume(20);
