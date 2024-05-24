@@ -16,9 +16,6 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Multimedia REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
         ventana_inicial.cpp
         ventana_inicial.h
         menu_principal.cpp
