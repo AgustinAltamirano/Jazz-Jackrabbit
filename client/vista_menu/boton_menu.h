@@ -2,7 +2,11 @@
 #define BOTONMENU_H
 
 #include <QKeyEvent>
-#include "constantes_menu.h"
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+#include <QPushButton>
+
+#define CANT_EFECTOS_SONIDO 6
 
 class BotonMenu : public QPushButton {
 private:
@@ -15,7 +19,7 @@ private:
     void reproducir_efecto_sonido();
 
 public:
-    BotonMenu(QWidget *parent, int posicion_en_widget, int ancho, const char *text);
+    BotonMenu(QWidget* parent, int offset_x, int offset_y, int ancho, int alto, const char* text);
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

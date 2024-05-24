@@ -1,4 +1,5 @@
 #include "ventana_inicial.h"
+#include <QFontDatabase>
 
 
 VentanaInicial::VentanaInicial():

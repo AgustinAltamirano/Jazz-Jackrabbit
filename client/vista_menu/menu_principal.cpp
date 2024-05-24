@@ -3,8 +3,22 @@
 
 MenuPrincipal::MenuPrincipal() :
         QMainWindow(),
-        new_game_btn(this, POS_NEWGAME_BTN, WIDTH_NEWGAME_BTN, TEXT_NEWGAME_BTN),
-        join_game_btn(this, POS_JOINGAME_BTN, WIDTH_JOINGAME_BTN, TEXT_JOINGAME_BTN),
+        new_game_btn(this,
+                     OFFSET_X_NEWGAME_BTN,
+                     OFFSET_Y_NEWGAME_BTN,
+                     ANCHO_NEWGAME_BTN,
+                     ALTO_NEWGAME_BTN,
+                     TEXTO_NEWGAME_BTN
+                     ),
+
+        join_game_btn(this,
+                      OFFSET_X_JOINGAME_BTN,
+                      OFFSET_Y_JOINGAME_BTN,
+                      ANCHO_JOINGAME_BTN,
+                      ALTO_JOINGAME_BTN,
+                      TEXTO_JOINGAME_BTN
+                      ),
+
         menu_crear_partida(this)
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);

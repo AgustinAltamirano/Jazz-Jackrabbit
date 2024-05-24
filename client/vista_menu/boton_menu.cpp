@@ -3,16 +3,13 @@
 #include "ventana_inicial.h"
 
 
-BotonMenu::BotonMenu(QWidget *parent, int posicion_en_widget, int ancho, const char *text) :
+BotonMenu::BotonMenu(QWidget* parent, int offset_x, int offset_y, int ancho, int alto,
+                     const char* text):
         QPushButton(parent),
         reproductor_efectos(),
         efectos_de_sonido()
 {
-    setGeometry(QRect((ANCHO_PANTALLA - ancho) / 2,
-                      LEFT_MARGIN_BTN + OFFSET_BTN * posicion_en_widget,
-                      ancho,
-                      ALTURA_BTN));
-
+    setGeometry(QRect(offset_x, offset_y, ancho, alto));
     QFont fuente = obtener_fuente();
     fuente.setPointSize(40);
     setFont(fuente);
