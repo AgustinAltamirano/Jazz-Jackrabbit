@@ -3,7 +3,7 @@
 #include "ventana_inicial.h"
 
 
-BotonMenu::BotonMenu(QWidget *parent, int posicion_en_widget, int ancho, const char *text, QFont &fuente) :
+BotonMenu::BotonMenu(QWidget *parent, int posicion_en_widget, int ancho, const char *text) :
         QPushButton(parent),
         reproductor_efectos(),
         efectos_de_sonido()
@@ -13,6 +13,7 @@ BotonMenu::BotonMenu(QWidget *parent, int posicion_en_widget, int ancho, const c
                       ancho,
                       ALTURA_BTN));
 
+    QFont fuente = obtener_fuente();
     fuente.setPointSize(40);
     setFont(fuente);
     setStyleSheet("QPushButton { border: none; background: none; color : rgb(255, 250, 11);}"

@@ -1,24 +1,7 @@
 #ifndef MENUPRINCIPAL_H
 #define MENUPRINCIPAL_H
 
-#include <QButtonGroup>
-#include <QMainWindow>
-#include <QPushButton>
-
-#include "boton_menu.h"
 #include "menu_crear_partida.h"
-
-enum PosicionBoton {
-    POS_NEWGAME_BTN,
-    POS_JOINGAME_BTN,
-};
-
-#define WIDTH_NEWGAME_BTN 290
-#define TEXT_NEWGAME_BTN "NEW GAME"
-#define WIDTH_JOINGAME_BTN 321
-#define TEXT_JOINGAME_BTN "JOIN GAME"
-
-class VentanaInicial;  // Declaración adelantada
 
 class MenuPrincipal : public QMainWindow {
 private:
@@ -35,7 +18,7 @@ private:
     void mostrar_menu_unirse_partida();
 
 public:
-    explicit MenuPrincipal(QFont &fuente);
+    explicit MenuPrincipal();
 };
 
 

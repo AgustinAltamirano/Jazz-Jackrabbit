@@ -46,6 +46,7 @@ else()
             ${PROJECT_SOURCES}
                 menu_crear_partida.cpp
                 menu_crear_partida.h
+                constantes_menu.h
         )
     endif()
 endif()

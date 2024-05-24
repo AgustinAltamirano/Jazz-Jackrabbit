@@ -1,13 +1,10 @@
 #include "menu_crear_partida.h"
-
 #include <QBitmap>
 
-#include "ventana_inicial.h"
 
-
-MenuCrearPartida::MenuCrearPartida(QMainWindow* parent, QFont& fuente) :
+MenuCrearPartida::MenuCrearPartida(QMainWindow* parent) :
         QMainWindow(parent),
-        multiplayer_btn(this, POS_MULTIPLAYER_BTN, WIDTH_MULTIPLAYER_BTN, TEXT_MULTIPLAYER_BTN, fuente),
+        multiplayer_btn(this, POS_MULTIPLAYER_BTN, WIDTH_MULTIPLAYER_BTN, TEXT_MULTIPLAYER_BTN),
         label(this)
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
