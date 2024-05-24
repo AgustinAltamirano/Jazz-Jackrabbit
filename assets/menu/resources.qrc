@@ -4,4 +4,7 @@
         <file>img/Jazz-Jackrabbit-2.ttf</file>
         <file>img/bgd_mainmenu.jpg</file>
     </qresource>
+    <qresource prefix="/sfx">
+        <file>sfx/Jazz Jackrabbit 2 Music - Menu.mp3</file>
+    </qresource>
 </RCC>
