@@ -6,5 +6,12 @@
     </qresource>
     <qresource prefix="/sfx">
         <file>sfx/Jazz Jackrabbit 2 Music - Menu.mp3</file>
+        <file>sfx/select0.wav</file>
+        <file>sfx/select1.wav</file>
+        <file>sfx/select2.wav</file>
+        <file>sfx/select3.wav</file>
+        <file>sfx/select4.wav</file>
+        <file>sfx/select5.wav</file>
+        <file>sfx/select6.wav</file>
     </qresource>
 </RCC>

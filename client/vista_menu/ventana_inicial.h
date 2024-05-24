@@ -6,6 +6,7 @@
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <QPushButton>
+#include "menu_principal.h"
 
 #define ANCHO_PANTALLA 640
 #define ALTO_PANTALLA 480
@@ -21,7 +22,11 @@ private:
 
     QMediaPlaylist playlist;
 
+    MenuPrincipal *menu_principal;
+
     void definir_fuentes();
+
+    void mostrar_menu_principal();
 
     void reproducir_musica();
 
@@ -29,6 +34,8 @@ private:
 
 public:
     explicit VentanaInicial();
+
+    ~VentanaInicial() override;
 };
 
 #endif // VENTANAPRINCIPAL_H

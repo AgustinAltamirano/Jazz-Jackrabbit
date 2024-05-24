@@ -1,6 +1,7 @@
 #include <QFontDatabase>
 #include <QCoreApplication>
 #include "ventana_inicial.h"
+#include "menu_principal.h"
 
 
 VentanaInicial::VentanaInicial():
@@ -8,7 +9,8 @@ VentanaInicial::VentanaInicial():
         press_click_btn(this),
         fuente_juego(),
         reproductor_musica(),
-        playlist()
+        playlist(),
+        menu_principal(nullptr)
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     definir_fuentes();
@@ -47,4 +49,22 @@ void VentanaInicial::inicializar_boton() {
     press_click_btn.setFont(fuente_juego);
     press_click_btn.setStyleSheet("QPushButton {border: none; text-align: bottom; color: white; background: none;}");
     press_click_btn.setText("Press click");
+
+    connect(&press_click_btn,
+            &QPushButton::clicked,
+            this,
+            &VentanaInicial::mostrar_menu_principal);
+}
+
+
+void VentanaInicial::mostrar_menu_principal()
+{
+    menu_principal = new MenuPrincipal(fuente_juego);
+    menu_principal->show();
+    hide();
+}
+
+
+VentanaInicial::~VentanaInicial() {
+    delete menu_principal;
 }

@@ -21,6 +21,10 @@ set(PROJECT_SOURCES
         mainwindow.ui
         ventana_inicial.cpp
         ventana_inicial.h
+        menu_principal.cpp
+        menu_principal.h
+        boton_menu.cpp
+        boton_menu.h
         ../../assets/menu/resources.qrc
 )
 
