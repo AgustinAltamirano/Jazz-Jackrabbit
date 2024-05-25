@@ -5,13 +5,15 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
-AdministradorVistaJuego::AdministradorVistaJuego(const std::string& titulo_ventana):
+AdministradorVistaJuego::AdministradorVistaJuego(const std::string& titulo_ventana,
+                                                 Queue<int>& cola_acciones):
         proximo_id(0),
         sdl(SDL_INIT_VIDEO),
         ventana(titulo_ventana, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA,
                 ALTO_VENTANA, 0),
         renderer(ventana, -1, SDL_RENDERER_ACCELERATED),
-        lector_texturas(renderer) {
+        lector_texturas(renderer),
+        entrada_juego(cola_acciones) {
     lector_texturas.cargar_texturas_y_coordenadas();
     for (auto iter = lector_texturas.beginPersonajes(); iter != lector_texturas.endPersonajes();
          ++iter) {
@@ -46,6 +48,8 @@ void AdministradorVistaJuego::run() {
         personajes.at(0).actualizar_animacion(frame_ticks_transcurridos, dimensiones);
         personajes.at(0).dibujar();
         renderer.Present();
+
+        entrada_juego.procesar_entrada();
 
         if (frame_ticks > 100000000) {
             close = true;

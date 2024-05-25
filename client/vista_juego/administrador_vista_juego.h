@@ -7,8 +7,10 @@
 
 #include <SDL2/SDL.h>
 
+#include "../../common/queue.h"
 #include "../../common/thread.h"
 
+#include "entrada_juego.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 
@@ -25,7 +27,7 @@
  * cargadas por una instancia de @code LectorTexturas@endcode a todos los objetos visuales dentro
  * del juego, además de decidir cuáles de ellos se deben renderizar en cada momento y cuáles no.
  */
-class AdministradorVistaJuego: public Thread {
+class AdministradorVistaJuego final: public Thread {
 private:
     uint32_t proximo_id;
 
@@ -35,12 +37,13 @@ private:
     SDL2pp::Window ventana;
     SDL2pp::Renderer renderer;
     LectorTexturas lector_texturas;
+    EntradaJuego entrada_juego;
 
     /** Mapa con todos los objetos asociados a personajes jugables. */
     std::unordered_map<uint32_t, ObjetoAnimado> personajes;
 
 public:
-    explicit AdministradorVistaJuego(const std::string& titulo_ventana);
+    AdministradorVistaJuego(const std::string& titulo_ventana, Queue<int>& cola_acciones);
 
     AdministradorVistaJuego(AdministradorVistaJuego&) = delete;
     AdministradorVistaJuego& operator=(AdministradorVistaJuego&) = delete;

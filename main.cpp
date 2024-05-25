@@ -3,6 +3,10 @@
 #include "client/vista_juego/administrador_vista_juego.h"
 #include "common/config.h"
 #include "common/constantes.h"
+#include "common/queue.h"
+
+// Provisorio, para testear SDL por separado
+#define TAMANO_MAX_COLA 30
 
 int main() {
     // Ejemplo de uso del config
@@ -12,7 +16,8 @@ int main() {
     std::cout << "maxima cantidad de jugadores: " << cant_jugadores_pp << std::endl;
 
     // Ejemplo de uso de SDL
-    AdministradorVistaJuego admin("Test");
+    Queue<int> cola_ejemplo(TAMANO_MAX_COLA);
+    AdministradorVistaJuego admin("Test", cola_ejemplo);
     admin.run();
     return 0;
 }
