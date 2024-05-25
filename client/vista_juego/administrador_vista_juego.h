@@ -27,19 +27,13 @@
  */
 class AdministradorVistaJuego: public Thread {
 private:
-    /** Próximo ID a asignar a un objeto visual. */
     uint32_t proximo_id;
 
     /** Inicializador de la librería SDL. */
     SDL2pp::SDL sdl;
 
-    /** Ventana del juego. */
     SDL2pp::Window ventana;
-
-    /** Renderizador utilizado para el dibujado de todos los objetos visuales. */
     SDL2pp::Renderer renderer;
-
-    /** Lector de texturas y animaciones (léase documentación de la clase) */
     LectorTexturas lector_texturas;
 
     /** Mapa con todos los objetos asociados a personajes jugables. */

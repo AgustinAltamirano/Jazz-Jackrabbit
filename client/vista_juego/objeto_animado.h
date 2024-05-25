@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <vector>
 
-#include <SDL2/SDL_render.h>
 #include <SDL2pp/SDL2pp.hh>
 
 /** Los vectores de dimensiones deben contener
@@ -22,13 +21,8 @@ enum pos_dimension : uint8_t {
 /** La clase ObjetoAnimado modela un objeto visual genérico con animación. */
 class ObjetoAnimado {
 private:
-    /** ID del objeto visual en el juego. */
     const uint32_t id;
-
-    /** Renderer utilizado por el juego para mostrar la interfaz gráfica. */
     SDL2pp::Renderer& renderer;
-
-    /** Textura ya cargada con todos los sprites utilizados por el objeto. */
     SDL2pp::Texture& textura;
 
     /**
@@ -49,24 +43,13 @@ private:
      */
     int render_x, render_y, render_ancho, render_alto, render_angulo;
 
-    /**
-     * Determina si el objeto se debe renderizar invertido horizontalmente o no
-     */
+    /** Determina si el objeto se debe renderizar invertido horizontalmente o no */
     bool invertido;
 
-    /**
-     * Índice del sprite actual en @code sprite_coords@endcode.
-     */
+    /** Índice del sprite actual en @code sprite_coords@endcode. */
     uint16_t sprite_actual;
 
-    /**
-     * Cantidad de frames que deben transcurrir por sprite.
-     */
     const unsigned int frames_por_sprite;
-
-    /**
-     * Frame ticks correspondientes a la última actualización de la animación.
-     */
     unsigned int frame_ticks_anteriores;
 
 public:
@@ -83,9 +66,6 @@ public:
 
     ObjetoAnimado& operator=(ObjetoAnimado&& otro) = delete;
 
-    /**
-     * Resetea el estado actual de la animación.
-     */
     void resetear_animacion();
 
     /**

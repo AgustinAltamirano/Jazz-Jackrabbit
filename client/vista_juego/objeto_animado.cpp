@@ -1,5 +1,7 @@
 #include "objeto_animado.h"
 
+#include <SDL2/SDL_render.h>
+
 ObjetoAnimado::ObjetoAnimado(const uint32_t id, SDL2pp::Renderer& renderer,
                              SDL2pp::Texture& textura,
                              const std::vector<SDL2pp::Rect>& sprite_coords,
