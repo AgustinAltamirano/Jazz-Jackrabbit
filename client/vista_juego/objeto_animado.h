@@ -46,6 +46,8 @@ private:
     /** Determina si el objeto se debe renderizar invertido horizontalmente o no */
     bool invertido;
 
+    bool reseteado;
+
     /** Índice del sprite actual en @code sprite_coords@endcode. */
     uint16_t sprite_actual;
 
@@ -73,9 +75,10 @@ public:
      * @param frame_ticks_transcurridos Cantidad de frames transcurridos desde la última
      * actualización
      * @param dimensiones Nuevas dimensiones y posición del objeto
+     * @param invertido Determina si el sprite debe dibujarse invertido horizontalmente o no
      */
     void actualizar_animacion(unsigned int frame_ticks_transcurridos,
-                              const std::vector<int>& dimensiones);
+                              const std::vector<int>& dimensiones, bool invertido);
 
     /**
      * Incluye al objeto actual en el renderer para su posterior renderización.

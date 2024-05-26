@@ -18,6 +18,7 @@ ObjetoAnimado::ObjetoAnimado(const uint32_t id, SDL2pp::Renderer& renderer,
         render_alto(dimensiones_iniciales.at(RENDER_ALTO)),
         render_angulo(dimensiones_iniciales.at(RENDER_ANGULO)),
         invertido(false),
+        reseteado(true),
         sprite_actual(0),
         frames_por_sprite(frames_por_sprite),
         frame_ticks_anteriores(frame_ticks_actuales) {}
@@ -33,6 +34,7 @@ ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
         render_alto(otro.render_alto),
         render_angulo(otro.render_angulo),
         invertido(otro.invertido),
+        reseteado(otro.reseteado),
         sprite_actual(otro.sprite_actual),
         frames_por_sprite(otro.frames_por_sprite),
         frame_ticks_anteriores(otro.frame_ticks_anteriores) {
@@ -43,18 +45,23 @@ ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
     otro.render_alto = 0;
     otro.render_angulo = 0;
     otro.invertido = false;
+    otro.reseteado = true;
     otro.sprite_actual = 0;
 }
 
-void ObjetoAnimado::resetear_animacion() { sprite_actual = 0; }
+void ObjetoAnimado::resetear_animacion() { reseteado = true; }
 
 void ObjetoAnimado::actualizar_animacion(const unsigned int frame_ticks_transcurridos,
-                                         const std::vector<int>& dimensiones) {
-    sprite_actual = ((frame_ticks_transcurridos + frame_ticks_anteriores) / frames_por_sprite) %
-                    sprite_coords.size();
+                                         const std::vector<int>& dimensiones,
+                                         const bool invertido) {
+    sprite_actual =
+            !reseteado ?
+                    ((frame_ticks_transcurridos + frame_ticks_anteriores) / frames_por_sprite) %
+                            sprite_coords.size() :
+                    0;
     frame_ticks_anteriores += frame_ticks_transcurridos;
 
-    invertido = dimensiones.at(RENDER_X) - render_x < 0;
+    this->invertido = invertido;
     render_x = dimensiones.at(RENDER_X);
     render_y = dimensiones.at(RENDER_Y);
 

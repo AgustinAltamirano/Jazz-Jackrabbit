@@ -1,0 +1,72 @@
+#ifndef PERSONAJE_H
+#define PERSONAJE_H
+
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "lector_texturas.h"
+#include "objeto_animado.h"
+
+typedef enum {
+    STAND = 0,
+    CORRER,
+    CARGAR_DASH,
+    DASH,
+    PARAR_DASH,
+    DISPARAR,
+    PARAR_DISPARAR,
+    CARGAR_SALTAR_ARRIBA,
+    SALTAR_ARRIBA,
+    SALTAR_COSTADO,
+    CAER,
+} EstadoPersonaje;
+
+
+/** Clase que representa un personaje visual dentro del juego. */
+class Personaje {
+private:
+    static const std::unordered_map<EstadoPersonaje, const std::string> MAPA_ESTADOS_PERSONAJE;
+
+    const uint32_t id;
+
+    const std::string nombre_personaje;
+
+    std::unordered_map<EstadoPersonaje, ObjetoAnimado> animaciones;
+
+    EstadoPersonaje estado_actual;
+
+    int render_x, render_y, render_angulo;
+    bool invertido;
+
+    const unsigned int frames_por_sprite;
+    unsigned int frame_ticks_anteriores;
+
+public:
+    Personaje(uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,
+              LectorTexturas& lector_texturas, const std::vector<int>& dimensiones_iniciales,
+              unsigned int frames_por_sprite, unsigned int frame_ticks_actuales);
+
+    Personaje(const Personaje&) = delete;
+
+    Personaje& operator=(const Personaje&) = delete;
+
+
+    /**
+     * Actualiza la animación del personaje, así como su posición y dimensiones.
+     * @param estado estado actual del personaje
+     * @param frame_ticks_transcurridos Cantidad de frames transcurridos desde la última
+     * actualización
+     * @param dimensiones Nuevas dimensiones y posición del objeto
+     */
+    void actualizar_animacion(EstadoPersonaje estado, unsigned int frame_ticks_transcurridos,
+                              const std::vector<int>& dimensiones);
+
+    /**
+     * Incluye al personaje en el renderer para su posterior renderización.
+     */
+    void dibujar() const;
+};
+
+
+#endif  // PERSONAJE_H

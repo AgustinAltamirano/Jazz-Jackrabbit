@@ -49,7 +49,7 @@ public:
      * @param personaje nombre del personaje
      * @return referencia a la textura del personaje
      */
-    const SDL2pp::Texture& obtener_textura_personaje(const std::string& personaje);
+    SDL2pp::Texture& obtener_textura_personaje(const std::string& personaje);
 
     /**
      * Obtiene las coordenadas de todos los sprites de una animación de un personaje jugable.

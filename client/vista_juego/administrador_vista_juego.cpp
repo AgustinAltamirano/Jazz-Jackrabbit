@@ -45,7 +45,7 @@ void AdministradorVistaJuego::run() {
         ticks_anteriores = frame_ticks;
 
         renderer.Clear();
-        personajes.at(0).actualizar_animacion(frame_ticks_transcurridos, dimensiones);
+        personajes.at(0).actualizar_animacion(frame_ticks_transcurridos, dimensiones, false);
         personajes.at(0).dibujar();
         renderer.Present();
 

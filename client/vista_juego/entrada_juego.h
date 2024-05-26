@@ -31,6 +31,10 @@ private:
 public:
     explicit EntradaJuego(Queue<int>& cola_acciones);
 
+    EntradaJuego(const EntradaJuego&) = delete;
+
+    EntradaJuego& operator=(const EntradaJuego&) = delete;
+
     /** Lee todos los eventos producidos por el jugador y envía la acción correspondiente. */
     void procesar_entrada() const;
 };

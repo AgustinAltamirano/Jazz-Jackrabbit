@@ -41,7 +41,7 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         }
     }
 }
-const SDL2pp::Texture& LectorTexturas::obtener_textura_personaje(const std::string& personaje) {
+SDL2pp::Texture& LectorTexturas::obtener_textura_personaje(const std::string& personaje) {
     return texturas_personajes.at(personaje);
 }
 
