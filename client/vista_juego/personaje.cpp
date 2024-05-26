@@ -2,7 +2,7 @@
 
 #include <utility>
 
-const std::unordered_map<EstadoPersonaje, const std::string> Personaje::MAPA_ESTADOS_PERSONAJE{
+std::unordered_map<EstadoPersonaje, const std::string> Personaje::mapa_estados_personaje{
         {STAND, "stand"},
         {CORRER, "correr"},
         {CARGAR_DASH, "cargar_dash"},
@@ -27,7 +27,7 @@ Personaje::Personaje(const uint32_t id, std::string nombre_personaje, SDL2pp::Re
         invertido(false),
         frames_por_sprite(frames_por_sprite),
         frame_ticks_anteriores(frame_ticks_actuales) {
-    for (const auto& [first, second]: MAPA_ESTADOS_PERSONAJE) {
+    for (const auto& [first, second]: mapa_estados_personaje) {
         ObjetoAnimado objeto_animacion(
                 first, renderer, lector_texturas.obtener_textura_personaje(this->nombre_personaje),
                 lector_texturas.obtener_coords_personaje(this->nombre_personaje, second),
@@ -56,3 +56,5 @@ void Personaje::actualizar_animacion(const EstadoPersonaje estado,
 }
 
 void Personaje::dibujar() const { animaciones.at(estado_actual).dibujar(); }
+
+Personaje::~Personaje() = default;

@@ -9,7 +9,8 @@
 #include "objeto_animado.h"
 
 typedef enum {
-    STAND = 0,
+    INDEFINIDO = 0,
+    STAND,
     CORRER,
     CARGAR_DASH,
     DASH,
@@ -20,27 +21,28 @@ typedef enum {
     SALTAR_ARRIBA,
     SALTAR_COSTADO,
     CAER,
+
+    // Estados exclusivos de Jazz
+    CARGAR_UPPERCUT,
+    UPPERCUT,
+    PARAR_UPPERCUT,
 } EstadoPersonaje;
 
 
 /** Clase que representa un personaje visual dentro del juego. */
 class Personaje {
 private:
-    static const std::unordered_map<EstadoPersonaje, const std::string> MAPA_ESTADOS_PERSONAJE;
-
     const uint32_t id;
-
     const std::string nombre_personaje;
-
-    std::unordered_map<EstadoPersonaje, ObjetoAnimado> animaciones;
-
     EstadoPersonaje estado_actual;
-
     int render_x, render_y, render_angulo;
     bool invertido;
-
     const unsigned int frames_por_sprite;
     unsigned int frame_ticks_anteriores;
+
+protected:
+    static std::unordered_map<EstadoPersonaje, const std::string> mapa_estados_personaje;
+    std::unordered_map<EstadoPersonaje, ObjetoAnimado> animaciones;
 
 public:
     Personaje(uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,
@@ -50,7 +52,6 @@ public:
     Personaje(const Personaje&) = delete;
 
     Personaje& operator=(const Personaje&) = delete;
-
 
     /**
      * Actualiza la animación del personaje, así como su posición y dimensiones.
@@ -66,6 +67,8 @@ public:
      * Incluye al personaje en el renderer para su posterior renderización.
      */
     void dibujar() const;
+
+    virtual ~Personaje();
 };
 
 
