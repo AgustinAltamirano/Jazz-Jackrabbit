@@ -32,8 +32,12 @@ add_executable(Jazz_Jackrabbit main.cpp
         client/vista_juego/vista_juego_exception.h
         client/vista_juego/personaje.cpp
         client/vista_juego/personaje.h
-        client/vista_juego/PersonajeJazz.cpp
-        client/vista_juego/PersonajeJazz.h
+        client/vista_juego/personaje_jazz.cpp
+        client/vista_juego/personaje_jazz.h
+        client/vista_juego/personaje_spaz.cpp
+        client/vista_juego/personaje_spaz.h
+        client/vista_juego/personaje_lori.cpp
+        client/vista_juego/personaje_lori.h
 )
 
 # Busca e incluye las dependencias del proyecto

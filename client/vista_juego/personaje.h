@@ -26,6 +26,16 @@ typedef enum {
     CARGAR_UPPERCUT,
     UPPERCUT,
     PARAR_UPPERCUT,
+
+    // Estados exclusivos de Spaz
+    CARGAR_SIDEKICK,
+    SIDEKICK,
+    PARAR_SIDEKICK,
+
+    // Estados exclusivos de Lori
+    CARGAR_HIGHKICK,
+    HIGHKICK,
+    PARAR_HIGHKICK,
 } EstadoPersonaje;
 
 
