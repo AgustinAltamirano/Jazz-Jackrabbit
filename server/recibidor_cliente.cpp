@@ -1,28 +1,52 @@
 #include "recibidor_cliente.h"
 
-RecibidorCliente::RecibidorCliente(ProtocoloServidor &protocolo) :
-        protocolo(protocolo) {}
+#include <iostream>
+#include <vector>
 
-
-void RecibidorCliente::run() {
-    try {
-        while (sigo_vivo) {
-            protocolo.recibir_mensaje();
-            sigo_vivo = protocolo.sigue_vivo();
-        }
-    } catch (const std::exception &err) {
-        if (sigo_vivo) {
-            std::cerr << "Excepcion capturada: " << err.what() << "\n";
-        }
-    }
+RecibidorCliente::RecibidorCliente(Socket *socket, std::atomic<bool> &sigo_en_partida,
+                                   std::atomic<bool> &sigo_jugando, int32_t &id_cliente,
+                                   Queue<SnapshotDTO> &cola_enviador) : cola_enviador(cola_enviador),
+                                                                        id_cliente(id_cliente),
+                                                                        sigo_en_partida(sigo_en_partida),
+                                                                        sigo_jugando(sigo_jugando),
+                                                                        servidor_deserializador(socket) {
+    cola_recibidor = nullptr;
 }
 
+void RecibidorCliente::run() {
+    bool cerrado = false;
+    while (sigo_en_partida && !cerrado) {
+        try {
+            ComandoDTO *nuevo_comando = servidor_deserializador.obtener_comando(&cerrado, id_cliente);
+            try {
+                cola_recibidor->push(nuevo_comando);
+            } catch (const ClosedQueue &e) {
+                delete nuevo_comando;
+                std::cout << "Juego finalizado" << std::endl;
+                break;
+            }
+        } catch (const std::runtime_error &e) {
+            sigo_jugando = false;
+            std::cout << "Se desconecto el cliente" << std::endl;
+            break;
+        }
+    }
+    sigo_jugando = false;
+    sigo_en_partida = false;
+    cola_recibidor->close();
+}
 
-bool RecibidorCliente::sigue_vivo() {
-    return sigo_vivo;
+void RecibidorCliente::establecer_cola_recibidor(Queue<ComandoDTO *> *cola_recibidor) {
+    this->cola_recibidor = cola_recibidor;
 }
 
 void RecibidorCliente::kill() {
-    sigo_vivo = false;
+    sigo_jugando = false;
+    sigo_en_partida = false;
+    cola_recibidor->close();
+}
+
+bool RecibidorCliente::still_alive() {
+    return sigo_en_partida;
 }
 

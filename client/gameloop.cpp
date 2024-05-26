@@ -9,9 +9,8 @@
 #include <cmath>
 #include <thread>
 
-Gameloop::Gameloop(const std::string &hostname, const std::string &servname) :
-        cliente(hostname, servname),
-        frecuencia(0.04) {
+Gameloop::Gameloop(int id_cliente, Socket &socket) : id_cliente(id_cliente), cliente(std::move(socket)),
+                                                     frecuencia(0.04) {
 }
 
 Gameloop::~Gameloop() {

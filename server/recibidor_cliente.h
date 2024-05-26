@@ -2,27 +2,45 @@
 #define RECIBIDOR_CLIENTE_H_
 
 
-#include <atomic>
 #include "../common/thread.h"
-#include "servidor_protocolo.h"
+#include "../common/socket.h"
+#include "../common/queue.h"
+#include "servidor_deserializador.h"
+#include "gestor_partidas.h"
+
+class Cliente;
+
+#include <atomic>
+#include <vector>
+#include <list>
 
 class RecibidorCliente : public Thread {
 private:
-    ProtocoloServidor &protocolo;
-    std::atomic<bool> sigo_vivo{true};
+
+    Queue<ComandoDTO *> *cola_recibidor;
+
+    std::atomic<bool> &sigo_en_partida;
+
+    std::atomic<bool> &sigo_jugando;
+
+    ServidorDeserializador servidor_deserializador;
+
+    Queue<SnapshotDTO> &cola_enviador;
+
+    int32_t id_cliente;
 
 public:
-    explicit RecibidorCliente(ProtocoloServidor &protocolo);
+    RecibidorCliente(Socket *socket, std::atomic<bool> &sigo_en_partida,
+                     std::atomic<bool> &sigo_jugando, int32_t &id_cliente,
+                     Queue<SnapshotDTO> &cola_enviador);
 
     void run() override;
 
-    bool sigue_vivo() override;
-
     void kill() override;
 
-    RecibidorCliente(const RecibidorCliente &) = delete;
+    bool still_alive() override;
 
-    RecibidorCliente &operator=(const RecibidorCliente &) = delete;
+    void establecer_cola_recibidor(Queue<ComandoDTO *> *cola_recibidor);
 };
 
 

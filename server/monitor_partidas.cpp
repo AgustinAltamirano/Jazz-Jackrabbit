@@ -1,37 +1,59 @@
-#include "monitor_partidas.h"
-#include "../common/constantes.h"
+#include "./monitor_partidas.h"
 
-
-MonitorPartidas::MonitorPartidas() {}
-
-MonitorPartida *
-MonitorPartidas::iniciar_partida(Queue<std::string> &cola_jugador,
-                                 std::uint32_t &codigo_partida) {
-    int cant_max_partidas = config.get(MAX_PARTIDAS);
-    if (codigo_unico >= cant_max_partidas) return NULL;
-    MonitorPartida *sala = new MonitorPartida(cola_jugador);
-    std::lock_guard<std::mutex> lck(mutex_map);
-    codigo_partida = codigo_unico++;
-    partidas[codigo_partida] = sala;
-    return sala;
+void MonitorPartidas::agregar_nueva_partida(Partida *partida) {
+    std::lock_guard<std::mutex> lock(m);
+    lista_partidas.push_back(partida);
 }
 
-MonitorPartida *
-MonitorPartidas::unirse_a_partida(Queue<std::string> &cola_jugador,
-                                  std::uint32_t codigo_partida) {
-    std::lock_guard<std::mutex> lck(mutex_map);
-    int existe = partidas.count(codigo_partida);
-    if (existe == 0) return NULL;
-    int cant_max_jugadores_pp = config.get(MAX_JUG_POR_PARTIDA);
-    if (partidas[codigo_partida]->obtener_cantidad_jugadores() >= cant_max_jugadores_pp) return NULL;
-    partidas[codigo_partida]->unir_jugador(cola_jugador);
-    return partidas[codigo_partida];
+int MonitorPartidas::obtener_cantidad_partidas() {
+    std::lock_guard<std::mutex> lock(m);
+    return lista_partidas.size();
 }
 
-MonitorPartidas::~MonitorPartidas() {
-    std::lock_guard<std::mutex> lck(mutex_map);
-    for (auto it = partidas.begin(); it != partidas.end(); ++it) {
-        delete it->second;
+Partida *MonitorPartidas::obtener_partidas_por_codigo(const int32_t &codigo_partida) {
+    Partida *partida_encontrada = nullptr;
+    std::lock_guard<std::mutex> lock(m);
+    for (Partida *partida: lista_partidas) {
+        if (partida->comparar_partida(codigo_partida))
+            partida_encontrada = partida;
     }
-    partidas.clear();
+    return partida_encontrada;
+}
+
+void MonitorPartidas::join_partidas() {
+    std::lock_guard<std::mutex> lock(m);
+    for (Partida *partida: lista_partidas) {
+        partida->detener_partida();
+        partida->join();
+        delete partida;
+    }
+    lista_partidas.clear();
+}
+
+bool MonitorPartidas::borrar_cliente(int32_t &id_cliente) {
+    std::lock_guard<std::mutex> lock(m);
+    for (Partida *partida: lista_partidas) {
+        if (partida->borrar_cliente(id_cliente)) {
+            if (partida->esta_vacia()) {
+                partida->join();
+                delete partida;
+                lista_partidas.remove(partida);
+                return true;
+            }
+            break;
+        }
+    }
+    return false;
+}
+
+void MonitorPartidas::eliminar_partidas_finalizadas() {
+    std::lock_guard<std::mutex> lock(m);
+    lista_partidas.remove_if([](Partida *p) {
+        if (!p->esta_jugando()) {
+            p->join();
+            delete p;
+            return true;
+        }
+        return false;
+    });
 }

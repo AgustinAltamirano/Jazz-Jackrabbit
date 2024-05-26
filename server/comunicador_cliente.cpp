@@ -1,41 +1,36 @@
-#include <utility>
 #include "comunicador_cliente.h"
-#include "recibidor_cliente.h"
 
-ComunicadorCliente::ComunicadorCliente(Socket skt_jugador,
-                                       MonitorPartidas &monitor_partidas) :
-        cola_jugador(1000),
-        juego(monitor_partidas),
-        protocolo(std::move(skt_jugador),
-                  juego,
-                  cola_jugador) {}
+#include <sys/socket.h>
+#include <iostream>
+#include <utility>
 
-void ComunicadorCliente::run() {
-    RecibidorCliente thread_recibidor(protocolo);
-    thread_recibidor.start();
-    enviar_mensaje();
-    thread_recibidor.join();
+ComunicadorCliente::ComunicadorCliente(Socket socket, GestorPartidas *gestor_partidas, int32_t id_cliente)
+        : id_cliente(id_cliente),
+          enviador_cliente(&skt_cliente, std::ref(sigo_en_partida), std::ref(sigo_jugando), gestor_partidas,
+                           id_cliente) {
+    this->skt_cliente = std::move(socket);
+    enviador_cliente.start();
+    sigo_en_partida = false;
+    sigo_jugando = true;
 }
 
-void ComunicadorCliente::enviar_mensaje() {
-    try {
-        while (sigo_vivo) {
-            protocolo.enviar_mensaje();
-            sigo_vivo = protocolo.sigue_vivo();
-        }
-    } catch (const std::exception &err) {
-        if (sigo_vivo) {
-            std::cerr << "Excepcion capturada: " << err.what() << "\n";
-        }
-    }
-}
-
-bool ComunicadorCliente::sigue_vivo() {
-    return protocolo.sigue_vivo();
+bool ComunicadorCliente::still_alive() {
+    return sigo_jugando;
 }
 
 void ComunicadorCliente::kill() {
-    cola_jugador.close();
-    sigo_vivo = false;
-    protocolo.cerrar_todo();
+    sigo_en_partida = false;
+    sigo_jugando = false;
+    skt_cliente.shutdown(SHUT_RDWR);
+    skt_cliente.close();
+    enviador_cliente.cerrar_cola();
+}
+
+void ComunicadorCliente::join() {
+    enviador_cliente.join();
+    enviador_cliente.join_recibidor_cliente();
+}
+
+void ComunicadorCliente::run() {
+
 }

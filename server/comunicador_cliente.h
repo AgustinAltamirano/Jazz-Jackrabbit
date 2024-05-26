@@ -1,37 +1,39 @@
-#ifndef COMUNICADOR_CLIENTE_H_
-#define COMUNICADOR_CLIENTE_H_
+#ifndef PALYER_H
+#define PALYER_H
+
+#include "../common/thread.h"
+#include "../common/queue.h"
+#include "enviador_cliente.h"
+#include "recibidor_cliente.h"
+#include "../common/socket.h"
+#include "gestor_partidas.h"
 
 #include <atomic>
+#include <list>
 #include <vector>
-#include <string>
-#include "../common/thread.h"
-#include "../common/socket.h"
-#include "monitor_partidas.h"
-#include "servidor_protocolo.h"
-#include "recibidor_cliente.h"
 
 class ComunicadorCliente : public Thread {
 private:
-    std::atomic<bool> sigo_vivo{true};
-    Queue<std::string> cola_jugador;
-    Juego juego;
-    ProtocoloServidor protocolo;
+    int32_t id_cliente;
 
-    void enviar_mensaje();
+    Socket skt_cliente;
+
+    EnviadorCliente enviador_cliente;
+
+    std::atomic<bool> sigo_en_partida;
+
+    std::atomic<bool> sigo_jugando;
 
 public:
-    ComunicadorCliente(Socket skt_jugador,
-                       MonitorPartidas &monitor_partidas);
+    ComunicadorCliente(Socket socket, GestorPartidas *gestor_partidas, int32_t id_cliente);
 
-    void run() override;
-
-    bool sigue_vivo() override;
+    bool still_alive() override;
 
     void kill() override;
 
-    ComunicadorCliente(const ComunicadorCliente &) = delete;
+    void join();
 
-    ComunicadorCliente &operator=(const ComunicadorCliente &) = delete;
+    void run() override;
 };
 
-#endif  // COMUNICADOR_CLIENTE_H_
+#endif

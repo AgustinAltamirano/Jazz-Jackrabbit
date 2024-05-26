@@ -1,36 +1,28 @@
-#ifndef MONITOR_PARTIDAS_H_
-#define MONITOR_PARTIDAS_H_
+#ifndef MONITOR_JUEGOS_H
+#define MONITOR_JUEGOS_H
 
+#include "../server/partida.h"
 
-#include <map>
-#include <vector>
-#include <atomic>
-#include <string>
-#include "../common/queue.h"
-#include "monitor_partida.h"
-#include "../common/config.h"
+#include <list>
 
 class MonitorPartidas {
 private:
-    std::map<std::uint32_t, MonitorPartida *> partidas;
-    std::mutex mutex_map;
-    std::atomic<std::uint32_t> codigo_unico{0};
-    ConfigAdmin config;
+    std::mutex m;
+    std::list<Partida *> lista_partidas;
 
 public:
-    MonitorPartidas();
 
-    MonitorPartida *iniciar_partida(Queue<std::string> &cola_jugador,
-                                    std::uint32_t &codigo_partida);
+    void agregar_nueva_partida(Partida *partida);
 
-    MonitorPartida *unirse_a_partida(Queue<std::string> &cola_jugador,
-                                     std::uint32_t codigo_partida);
+    int obtener_cantidad_partidas();
 
-    ~MonitorPartidas();
+    Partida *obtener_partidas_por_codigo(const int32_t &codigo_partida);
 
-    MonitorPartidas(const MonitorPartidas &) = delete;
+    void join_partidas();
 
-    MonitorPartidas &operator=(const MonitorPartidas &) = delete;
+    bool borrar_cliente(int32_t &id_cliente);
+
+    void eliminar_partidas_finalizadas();
 };
 
-#endif  //  MONITOR_PARTIDAS_H_
+#endif

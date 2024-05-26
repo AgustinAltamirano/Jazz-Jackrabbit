@@ -9,8 +9,7 @@ int main(int argc, char *argv[]) {
             std::cerr << "Esperaba ./server <port>\n";
             return 1;
         }
-        std::string servname = std::string(argv[1]);
-        Servidor servidor(servname);
+        Servidor servidor(argv[1]);
         servidor.run();
         return 0;
     } catch (const std::exception &err) {

@@ -3,12 +3,16 @@
 
 
 #include <string>
+#include "../common/socket.h"
+#include "aceptador.h"
 
 class Servidor {
 private:
-    std::string &servname;
+    Socket skt_servidor;
+    Aceptador aceptador;
+
 public:
-    explicit Servidor(std::string &servname);
+    explicit Servidor(char* servname);
 
     void run();
 

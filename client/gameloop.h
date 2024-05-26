@@ -8,11 +8,12 @@
 #include <memory>
 
 class Gameloop {
+    int id_cliente;
     Cliente cliente;
     double frecuencia;
 
 public:
-    Gameloop(const std::string &hostname, const std::string &servname);
+    Gameloop(int id_cliente, Socket &socket);
 
     ~Gameloop();
 

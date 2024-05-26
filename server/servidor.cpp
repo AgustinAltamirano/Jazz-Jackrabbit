@@ -1,13 +1,15 @@
+#include <sys/socket.h>
 #include "servidor.h"
-#include "aceptador_cliente.h"
+#include "aceptador.h"
 
-Servidor::Servidor(std::string &servname) :
-        servname(servname) {}
+Servidor::Servidor(char *servname) :
+        skt_servidor(servname), aceptador(&skt_servidor) {
+    aceptador.start();
+}
 
 void Servidor::run() {
-    AceptadorCliente aceptador_cliente(servname);
-    aceptador_cliente.start();
     while (std::cin.get() != 'q') {}
-    aceptador_cliente.kill();
-    aceptador_cliente.join();
+    skt_servidor.shutdown(SHUT_RDWR);
+    skt_servidor.close();
+    aceptador.join();
 }

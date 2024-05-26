@@ -23,6 +23,10 @@ public:
     ClienteRecibidor(Socket *socket, std::atomic<bool> &hablando, Queue<SnapshotDTO> *cola_recibidor);
 
     void run() override;
+
+    void kill() override;
+
+    bool still_alive() override;
 };
 
 #endif

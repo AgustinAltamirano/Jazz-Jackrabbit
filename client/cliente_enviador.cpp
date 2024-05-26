@@ -20,3 +20,11 @@ void ClienteEnviador::run() {
     }
     hablando = false;
 }
+
+void ClienteEnviador::kill() {
+    hablando = false;
+}
+
+bool ClienteEnviador::still_alive() {
+    return hablando;
+}

@@ -12,7 +12,7 @@
 class Cliente {
 private:
 
-    Socket socket;
+    Socket skt_cliente;
 
     std::atomic<bool> hablando;
 
@@ -27,7 +27,7 @@ private:
     Queue<SnapshotDTO> cola_recibidor;
 
 public:
-    Cliente(const std::string &hostname, const std::string &servname);
+    Cliente(Socket&& socket);
 
     void join();
 
