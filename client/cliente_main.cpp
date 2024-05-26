@@ -3,6 +3,7 @@
 #include <vector>
 #include <sstream>
 #include "cliente.h"
+#include "gameloop.h"
 
 int main(int argc, char *argv[]) {
     try {
@@ -12,8 +13,8 @@ int main(int argc, char *argv[]) {
         }
         const std::string hostname = std::string(argv[1]);
         const std::string servname = std::string(argv[2]);
-        Cliente cliente(hostname, servname);
-        cliente.run();
+        Gameloop juego(hostname, servname);
+        juego.start();
         return 0;
 
     } catch (const std::exception &err) {

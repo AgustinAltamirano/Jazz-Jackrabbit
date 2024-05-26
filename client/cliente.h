@@ -3,22 +3,37 @@
 
 #include <vector>
 #include <string>
-#include "cliente_protocolo.h"
-#include "stdin_handler.h"
+#include <optional>
+#include "cliente_enviador.h"
+#include "cliente_recibidor.h"
+#include "cliente_serializador.h"
+#include "../common/snapshot_dto.h"
 
 class Cliente {
 private:
-    ProtocoloCliente protocolo_cliente;
-    StdinHandler stdin_handler;
 
-    void enviar_mensaje(std::vector<std::string> &mensaje);
+    Socket socket;
 
-    void leer_mensajes(int cantidad);
+    std::atomic<bool> hablando;
+
+    ClienteEnviador cliente_enviador;
+
+    ClienteRecibidor cliente_recibidor;
+
+    ClienteSerializador client_serializador;
+
+    Queue<std::vector<char>> cola_enviador;
+
+    Queue<SnapshotDTO> cola_recibidor;
 
 public:
     Cliente(const std::string &hostname, const std::string &servname);
 
-    void run();
+    void join();
+
+    void comenzar_jugar();
+
+    std::optional<SnapshotDTO> obtener_snapshot();
 
     Cliente(const Cliente &) = delete;
 
