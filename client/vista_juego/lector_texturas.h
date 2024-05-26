@@ -108,16 +108,59 @@ public:
         [[nodiscard]] const std::vector<SDL2pp::Rect>& obtener_coordenadas_actuales() const;
     };
 
-    /** Crea un @code IteradorTexturas@endcode al inicio de todas las texturas y animaciones de
-     * personajes.
+    /**
+     * Iterador externo genérico de todas las animaciones de una textura determinada de
+     * @code LectorTexturas@endcode.
      */
-    IteradorTexturas beginPersonajes();
+    class IteradorAnimaciones {
+    private:
+        /** Referencia al mapa de animaciones sobre el cual se desea iterar. */
+        std::unordered_map<std::string, std::vector<SDL2pp::Rect>>& coords;
 
-    /** Crea un @code IteradorTexturas@endcode al final de todas las texturas y animaciones de
+        std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
+                iterador_animaciones;
+
+    public:
+        IteradorAnimaciones(
+                std::unordered_map<std::string, std::vector<SDL2pp::Rect>>& animaciones,
+                std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
+                        iterador_animaciones);
+
+        /** Avanza a la siguiente iteración. */
+        IteradorAnimaciones& operator++();
+
+        bool operator==(const IteradorAnimaciones& otro) const;
+
+        bool operator!=(const IteradorAnimaciones& otro) const;
+
+        [[nodiscard]] const std::string& obtener_nombre_animacion_actual() const;
+
+        [[nodiscard]] const std::vector<SDL2pp::Rect>& obtener_coordenadas_actuales() const;
+    };
+
+    /**
+     * Crea un @code IteradorTexturas@endcode al inicio de todas las texturas y animaciones de
      * personajes.
      */
-    IteradorTexturas endPersonajes();
+    IteradorTexturas begin_personajes();
+
+    /**
+     * Crea un @code IteradorTexturas@endcode al final de todas las texturas y animaciones de
+     * personajes.
+     */
+    IteradorTexturas end_personajes();
+
+    /**
+     * Crea un @code IteradorAnimaciones@endcode al inicio de todas las animaciones de un personaje
+     * determinado, identificado por su @code nombre_personaje@endcode.
+     */
+    IteradorAnimaciones begin_animaciones_personaje(const std::string& nombre_personaje);
+
+    /**
+     * Crea un @code IteradorAnimaciones@endcode al final de todas las animaciones de un personaje
+     * determinado, identificado por su @code nombre_personaje@endcode.
+     */
+    IteradorAnimaciones end_animaciones_personaje(const std::string& nombre_personaje);
 };
-
 
 #endif  // LECTOR_TEXTURAS_H

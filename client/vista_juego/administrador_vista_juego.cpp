@@ -15,7 +15,7 @@ AdministradorVistaJuego::AdministradorVistaJuego(const std::string& titulo_venta
         lector_texturas(renderer),
         entrada_juego(cola_acciones) {
     lector_texturas.cargar_texturas_y_coordenadas();
-    for (auto iter = lector_texturas.beginPersonajes(); iter != lector_texturas.endPersonajes();
+    for (auto iter = lector_texturas.begin_personajes(); iter != lector_texturas.end_personajes();
          ++iter) {
         SDL2pp::Texture& textura = iter.obtener_textura_actual();
         const std::vector<SDL2pp::Rect>& sprite_coords = iter.obtener_coordenadas_actuales();

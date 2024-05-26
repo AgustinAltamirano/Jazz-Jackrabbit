@@ -5,6 +5,8 @@
 #include <SDL2/SDL_blendmode.h>
 #include <yaml-cpp/yaml.h>
 
+#include "vista_juego_exception.h"
+
 LectorTexturas::LectorTexturas(SDL2pp::Renderer& renderer): renderer(renderer) {}
 
 void LectorTexturas::cargar_texturas_y_coordenadas() {
@@ -48,17 +50,37 @@ const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_personaje(
     return coords_personajes.at(personaje).at(animacion);
 }
 
-LectorTexturas::IteradorTexturas LectorTexturas::beginPersonajes() {
+LectorTexturas::IteradorTexturas LectorTexturas::begin_personajes() {
     const auto iterador_texturas = texturas_personajes.begin();
     return {texturas_personajes, coords_personajes, iterador_texturas,
             coords_personajes.at(iterador_texturas->first).begin()};
 }
 
-LectorTexturas::IteradorTexturas LectorTexturas::endPersonajes() {
+LectorTexturas::IteradorTexturas LectorTexturas::end_personajes() {
     // Se considera que IteradorTexturas se encuentra al final si su atributo iterador_texturas
     // se encuentra al final, sin importar el estado de iterador_animaciones.
     return {texturas_personajes, coords_personajes, texturas_personajes.end(),
             coords_personajes.at(texturas_personajes.begin()->first).begin()};
+}
+
+LectorTexturas::IteradorAnimaciones LectorTexturas::begin_animaciones_personaje(
+        const std::string& nombre_personaje) {
+    if (!coords_personajes.count(nombre_personaje)) {
+        throw VistaJuegoException("Personaje no encontrado");
+    }
+    std::unordered_map<std::string, std::vector<SDL2pp::Rect>>& coords_per =
+            coords_personajes.at(nombre_personaje);
+    return {coords_per, coords_per.begin()};
+}
+
+LectorTexturas::IteradorAnimaciones LectorTexturas::end_animaciones_personaje(
+        const std::string& nombre_personaje) {
+    if (!coords_personajes.count(nombre_personaje)) {
+        throw VistaJuegoException("Personaje no encontrado");
+    }
+    std::unordered_map<std::string, std::vector<SDL2pp::Rect>>& coords_per =
+            coords_personajes.at(nombre_personaje);
+    return {coords_per, coords_per.end()};
 }
 
 LectorTexturas::~LectorTexturas() = default;
@@ -129,6 +151,36 @@ const std::string& LectorTexturas::IteradorTexturas::obtener_nombre_animacion_ac
 }
 
 const std::vector<SDL2pp::Rect>& LectorTexturas::IteradorTexturas::obtener_coordenadas_actuales()
+        const {
+    return iterador_animaciones->second;
+}
+
+
+/** Iterador de animaciones de un solo objeto */
+
+LectorTexturas::IteradorAnimaciones::IteradorAnimaciones(
+        std::unordered_map<std::string, std::vector<SDL2pp::Rect>>& animaciones,
+        std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
+                iterador_animaciones):
+        coords(animaciones), iterador_animaciones(iterador_animaciones) {}
+
+LectorTexturas::IteradorAnimaciones& LectorTexturas::IteradorAnimaciones::operator++() {
+    ++iterador_animaciones;
+    return *this;
+}
+
+bool LectorTexturas::IteradorAnimaciones::operator==(const IteradorAnimaciones& otro) const {
+    return this->iterador_animaciones == otro.iterador_animaciones;
+}
+
+bool LectorTexturas::IteradorAnimaciones::operator!=(const IteradorAnimaciones& otro) const {
+    return !(*this == otro);
+}
+
+const std::string& LectorTexturas::IteradorAnimaciones::obtener_nombre_animacion_actual() const {
+    return iterador_animaciones->first;
+}
+const std::vector<SDL2pp::Rect>& LectorTexturas::IteradorAnimaciones::obtener_coordenadas_actuales()
         const {
     return iterador_animaciones->second;
 }
