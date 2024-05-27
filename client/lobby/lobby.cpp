@@ -1,7 +1,7 @@
 #include "lobby.h"
 #include <cstring>
-#include "../common/comando_crear_dto.h"
-#include "../common/comando_unir_dto.h"
+#include "../../common/comando_crear_dto.h"
+#include "../../common/comando_unir_dto.h"
 #include <sys/socket.h>
 #include <utility>
 #include <string>

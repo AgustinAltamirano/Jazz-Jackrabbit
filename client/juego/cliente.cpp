@@ -24,8 +24,7 @@ std::optional<SnapshotDTO> Cliente::obtener_snapshot() {
 }
 
 void Cliente::join() {
-    int SHUT_RDWR;
-    skt_cliente.shutdown(SHUT_RDWR);
+    skt_cliente.shutdown(2);
     skt_cliente.close();
     cola_enviador.close();
     cliente_enviador.join();

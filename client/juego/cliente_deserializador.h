@@ -1,9 +1,9 @@
 #ifndef CLIENTE_DESERIALIZADOR_H
 #define CLIENTE_DESERIALIZADOR_H
 
-#include "../common/tipo_comando.h"
-#include "../common/snapshot_dto.h"
-#include "../common/socket.h"
+#include "../../common/tipo_comando.h"
+#include "../../common/snapshot_dto.h"
+#include "../../common/socket.h"
 
 #include <vector>
 #include <string>

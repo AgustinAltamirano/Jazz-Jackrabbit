@@ -1,10 +1,10 @@
 #ifndef CLIENTE_RECIBIDOR_H
 #define CLIENTE_RECIBIDOR_H
 
-#include "../common/thread.h"
-#include "../common/socket.h"
-#include "../common/queue.h"
-#include "../common/snapshot_dto.h"
+#include "../../common/thread.h"
+#include "../../common/socket.h"
+#include "../../common/queue.h"
+#include "../../common/snapshot_dto.h"
 #include "cliente_deserializador.h"
 
 #include <atomic>

@@ -1,4 +1,4 @@
-#include "gameloop.h"
+#include "juego.h"
 
 #include <utility>
 #include <optional>
@@ -9,15 +9,15 @@
 #include <cmath>
 #include <thread>
 
-Gameloop::Gameloop(int id_cliente, Socket &socket) : id_cliente(id_cliente), cliente(std::move(socket)),
-                                                     frecuencia(0.04) {
+Juego::Juego(int id_cliente, Socket &socket) : id_cliente(id_cliente), cliente(std::move(socket)),
+                                               frecuencia(0.04) {
 }
 
-Gameloop::~Gameloop() {
+Juego::~Juego() {
     this->cliente.join();
 }
 
-void Gameloop::start() {
+void Juego::start() {
     bool jugando = true;
     SnapshotDTO snapshot_dto;
 
@@ -27,8 +27,8 @@ void Gameloop::start() {
         if (snapshot_optional.has_value())
             snapshot_dto = snapshot_optional.value();
 
-        if (not snapshot_dto.es_fin_juego()) {
-            this->ejecutarCicloPrincipalJuego(snapshot_dto);
+        if (snapshot_optional.has_value() && not snapshot_dto.es_fin_juego()) {
+            this->ejecutar_ciclo_principal_juego(snapshot_dto);
         }
 
         jugando = !snapshot_dto.es_fin_juego();
@@ -47,7 +47,7 @@ void Gameloop::start() {
     }
 }
 
-void Gameloop::ejecutarCicloPrincipalJuego(SnapshotDTO &snapshot_dto) {
+void Juego::ejecutar_ciclo_principal_juego(SnapshotDTO &snapshot_dto) {
     std::vector<ClienteDTO> clientes = snapshot_dto.obtener_clientes();
     for (auto &cliente: clientes) {
         std::cout << "Cliente ID: " << cliente.id_cliente << "\n";

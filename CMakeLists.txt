@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_FLAGS -pthread)
 
 # Agrega los archivos fuente del juego
-add_executable(Client client/cliente_main.cpp client/cliente.h client/cliente.cpp client/gameloop.h client/gameloop.cpp client/cliente_enviador.h client/cliente_enviador.cpp client/cliente_recibidor.h client/cliente_recibidor.cpp client/cliente_serializador.h client/cliente_serializador.cpp client/cliente_deserializador.h client/cliente_deserializador.cpp
-        client/lobby.h client/lobby.cpp client/lobby_serializador.h client/lobby_serializador.cpp client/lobby_enviador.h client/lobby_enviador.cpp client/lobby_deserializador.h client/lobby_deserializador.cpp client/lobby_recibidor.h client/lobby_recibidor.cpp
+add_executable(Client client/cliente_main.cpp client/juego/cliente.h client/juego/cliente.cpp client/juego/juego.h client/juego/juego.cpp client/juego/cliente_enviador.h client/juego/cliente_enviador.cpp client/juego/cliente_recibidor.h client/juego/cliente_recibidor.cpp client/juego/cliente_serializador.h client/juego/cliente_serializador.cpp client/juego/cliente_deserializador.h client/juego/cliente_deserializador.cpp
+        client/lobby/lobby.h client/lobby/lobby.cpp client/lobby/lobby_serializador.h client/lobby/lobby_serializador.cpp client/lobby/lobby_enviador.h client/lobby/lobby_enviador.cpp client/lobby/lobby_deserializador.h client/lobby/lobby_deserializador.cpp client/lobby/lobby_recibidor.h client/lobby/lobby_recibidor.cpp
         common/comando_dto.h common/comando_dto.cpp common/comando_crear_dto.h common/comando_crear_dto.cpp common/comando_unir_dto.h common/comando_unir_dto.cpp common/snapshot_dto.h common/snapshot_dto.cpp common/tipo_comando.h common/comando_comenzar_dto.h common/comando_comenzar_dto.cpp
         common/config.h common/constantes.h common/liberror.h common/liberror.cpp common/queue.h common/resolver.h common/resolver.cpp common/resolvererror.h common/resolvererror.cpp common/socket.h common/socket.cpp common/thread.h)
 

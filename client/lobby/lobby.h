@@ -1,7 +1,7 @@
 #ifndef LOBBY_H
 #define LOBBY_H
 
-#include "../common/socket.h"
+#include "../../common/socket.h"
 #include "lobby_enviador.h"
 #include "lobby_recibidor.h"
 #include "lobby_serializador.h"

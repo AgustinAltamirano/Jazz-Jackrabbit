@@ -1,10 +1,10 @@
 #ifndef LOBBY_RECIBIDOR_H
 #define LOBBY_RECIBIDOR_H
 
-#include "../common/thread.h"
-#include "../common/socket.h"
-#include "../common/queue.h"
-#include "../common/comando_dto.h"
+#include "../../common/thread.h"
+#include "../../common/socket.h"
+#include "../../common/queue.h"
+#include "../../common/comando_dto.h"
 #include "lobby_deserializador.h"
 
 #include <atomic>

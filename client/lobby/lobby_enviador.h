@@ -1,9 +1,9 @@
 #ifndef LOBBY_ENVIADOR_H
 #define LOBBY_ENVIADOR_H
 
-#include "../common/thread.h"
-#include "../common/socket.h"
-#include "../common/queue.h"
+#include "../../common/thread.h"
+#include "../../common/socket.h"
+#include "../../common/queue.h"
 
 #include <atomic>
 #include <vector>

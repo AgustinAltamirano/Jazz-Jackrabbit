@@ -1,5 +1,5 @@
 #include "lobby_serializador.h"
-#include "../common/tipo_comando.h"
+#include "../../common/tipo_comando.h"
 #include <iostream>
 #include <arpa/inet.h>
 

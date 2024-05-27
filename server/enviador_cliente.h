@@ -10,7 +10,7 @@
 #include "servidor_serializador.h"
 #include "../common/tipo_comando.h"
 #include "../common/snapshot_dto.h"
-#include "../client/cliente_recibidor.h"
+#include "../client/juego/cliente_recibidor.h"
 #include "../common/comando_dto.h"
 #include "gestor_partidas.h"
 

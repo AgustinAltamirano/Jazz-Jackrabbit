@@ -7,7 +7,7 @@
 #include "cliente_enviador.h"
 #include "cliente_recibidor.h"
 #include "cliente_serializador.h"
-#include "../common/snapshot_dto.h"
+#include "../../common/snapshot_dto.h"
 
 class Cliente {
 private:
