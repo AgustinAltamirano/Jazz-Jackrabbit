@@ -41,6 +41,7 @@ void VentanaInicial::inicializar_boton() {
 
 void VentanaInicial::mostrar_menu_principal()
 {
+    menu_principal.move(this->pos());
     menu_principal.show();
     hide();
 }

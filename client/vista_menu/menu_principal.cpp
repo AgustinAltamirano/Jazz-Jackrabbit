@@ -18,7 +18,6 @@ MenuPrincipal::MenuPrincipal() :
                       ALTO_JOINGAME_BTN,
                       TEXTO_JOINGAME_BTN
                       ),
-
         menu_crear_partida(this)
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
@@ -36,6 +35,7 @@ void MenuPrincipal::conectar_botones() {
 
 
 void MenuPrincipal::mostrar_menu_crear_partida() {
+    menu_crear_partida.move(this->pos());
     menu_crear_partida.show();
     hide();
 }
