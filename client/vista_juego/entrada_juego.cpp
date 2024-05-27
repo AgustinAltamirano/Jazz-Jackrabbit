@@ -1,8 +1,8 @@
 #include "entrada_juego.h"
 
 const std::unordered_map<SDL_Keycode, const AccionJuego> EntradaJuego::MAPA_ACCIONES{
-        {SDLK_w, SALTAR},        {SDLK_a, MOVER_IZQ},    {SDLK_d, MOVER_DER},
-        {SDLK_x, ACTIVAR_DASH},  {SDLK_SPACE, DISPARAR}, {SDLK_q, ARMA_ANTERIOR},
+        {SDLK_w, SALTAR},        {SDLK_a, MOVER_IZQ},           {SDLK_d, MOVER_DER},
+        {SDLK_x, ACTIVAR_DASH},  {SDLK_SPACE, DISPARAR_ACCION}, {SDLK_q, ARMA_ANTERIOR},
         {SDLK_e, ARMA_SIGUIENTE}};
 
 EntradaJuego::EntradaJuego(Queue<int>& cola_acciones): cola_acciones(cola_acciones) {}

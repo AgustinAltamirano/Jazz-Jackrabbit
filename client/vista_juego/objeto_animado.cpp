@@ -59,6 +59,7 @@ void ObjetoAnimado::actualizar_animacion(const unsigned int frame_ticks_transcur
                     ((frame_ticks_transcurridos + frame_ticks_anteriores) / frames_por_sprite) %
                             sprite_coords.size() :
                     0;
+    reseteado = false;
     frame_ticks_anteriores += frame_ticks_transcurridos;
 
     this->invertido = invertido;

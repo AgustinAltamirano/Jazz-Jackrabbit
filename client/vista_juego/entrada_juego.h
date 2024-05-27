@@ -13,7 +13,7 @@ typedef enum {
     MOVER_IZQ,
     MOVER_DER,
     ACTIVAR_DASH,
-    DISPARAR,
+    DISPARAR_ACCION,
     ARMA_ANTERIOR,
     ARMA_SIGUIENTE,
 } AccionJuego;

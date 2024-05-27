@@ -12,15 +12,15 @@ typedef enum {
     INDEFINIDO = 0,
     STAND,
     CORRER,
-    CARGAR_DASH,
     DASH,
-    PARAR_DASH,
     DISPARAR,
     PARAR_DISPARAR,
     CARGAR_SALTAR_ARRIBA,
     SALTAR_ARRIBA,
-    SALTAR_COSTADO,
-    CAER,
+    PARAR_SALTAR_ARRIBA,
+    CAER_ABAJO,
+    SALTAR_ADELANTE,
+    CAER_ADELANTE,
 
     // Estados exclusivos de Jazz
     CARGAR_UPPERCUT,
@@ -33,9 +33,7 @@ typedef enum {
     PARAR_SIDEKICK,
 
     // Estados exclusivos de Lori
-    CARGAR_HIGHKICK,
     HIGHKICK,
-    PARAR_HIGHKICK,
 } EstadoPersonaje;
 
 
@@ -62,6 +60,10 @@ public:
     Personaje(const Personaje&) = delete;
 
     Personaje& operator=(const Personaje&) = delete;
+
+    Personaje(Personaje&& otro) noexcept;
+
+    Personaje& operator=(Personaje&& otro) = delete;
 
     /**
      * Actualiza la animación del personaje, así como su posición y dimensiones.
