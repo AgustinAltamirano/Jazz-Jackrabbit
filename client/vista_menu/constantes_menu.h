@@ -32,4 +32,30 @@ enum PosicionBoton {
 #define OFFSET_Y_MULTIPLAYER_BTN 215
 #define TEXTO_MULTIPLAYER_BTN "MULTIPLAYER"
 
+#define RUTA_EFECTOS_SONIDO "qrc:/sfx/sfx/select"
+#define EXTENSION_EFECTOS_SONIDO ".wav"
+#define VOLUMEN_EFECTOS_SONIDO 20
+#define RUTA_MUSICA_FONDO "qrc:/sfx/sfx/Jazz Jackrabbit 2 Music - Menu.mp3"
+
+#define RUTA_FUENTE ":/img/img/Jazz-Jackrabbit-2.ttf"
+#define TAMANIO_FUENTE 24
+#define TAMANIO_FUENTE_BTN 40
+
+#define RUTA_IMG_INICIAL ":/img/img/bgd_mainmenu.jpg"
+#define RUTA_IMG_MENU ":/img/img/bgd_menuinicial.png"
+#define RUTA_IMG_MENU_MULTIPLAYER ":/img/img/multiplayer.png"
+
+#define TEXTO_INICIO_BTN "Press click"
+
+#define OFFSET_X_IMG_MULTIPLAYER_BTN 30
+#define OFFSET_Y_IMG_MULTIPLAYER_BTN 150
+#define TAM_IMG_MULTIPLAYER 180
+
+// Defino los colores en RGB
+#define R_MULTIPLAYER 0
+#define G_MULTIPLAYER 128
+#define B_MULTIPLAYER 255
+#define RGB_BTN "rgb(255, 250, 11)"
+#define RGB_HOVER_BTN "rgb(32, 182, 57)"
+
 #endif  // CONSTANTES_MENU_H

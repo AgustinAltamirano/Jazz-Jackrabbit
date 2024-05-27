@@ -11,10 +11,13 @@ BotonMenu::BotonMenu(QWidget* parent, int offset_x, int offset_y, int ancho, int
 {
     setGeometry(QRect(offset_x, offset_y, ancho, alto));
     QFont fuente = obtener_fuente();
-    fuente.setPointSize(40);
+    fuente.setPointSize(TAMANIO_FUENTE_BTN);
     setFont(fuente);
-    setStyleSheet("QPushButton { border: none; background: none; color : rgb(255, 250, 11);}"
-                  "QPushButton:focus { color: rgb(32, 182, 57); outline: none; }");
+
+    QString estilo = QString("QPushButton { border: none; background: none; color : %1;}"
+                             "QPushButton:focus { color: %2; outline: none; }")
+                             .arg(RGB_BTN, RGB_HOVER_BTN);
+    setStyleSheet(estilo);
     setText(text);
     setMouseTracking(true);
     definir_efectos_de_sonido();
@@ -23,11 +26,11 @@ BotonMenu::BotonMenu(QWidget* parent, int offset_x, int offset_y, int ancho, int
 
 void BotonMenu::definir_efectos_de_sonido() {
     for (int i = 0; i <= CANT_EFECTOS_SONIDO; ++i) {
-        efectos_de_sonido.addMedia(QUrl("qrc:/sfx/sfx/select" + QString::number(i) + ".wav"));
+        efectos_de_sonido.addMedia(QUrl(RUTA_EFECTOS_SONIDO + QString::number(i) + EXTENSION_EFECTOS_SONIDO));
     }
     efectos_de_sonido.setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
     reproductor_efectos.setPlaylist(&efectos_de_sonido);
-    reproductor_efectos.setVolume(20);
+    reproductor_efectos.setVolume(VOLUMEN_EFECTOS_SONIDO);
 }
 
 

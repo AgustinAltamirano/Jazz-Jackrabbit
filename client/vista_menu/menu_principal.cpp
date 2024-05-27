@@ -22,7 +22,8 @@ MenuPrincipal::MenuPrincipal() :
         menu_crear_partida(this)
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
-    setStyleSheet("QMainWindow {background-image: url(:/img/img/bgd_mainmenu.jpg);}");
+    QString estilo = QString("QMainWindow {background-image: url(%1);}").arg(RUTA_IMG_INICIAL);
+    setStyleSheet(estilo);
     conectar_botones();
 }
 

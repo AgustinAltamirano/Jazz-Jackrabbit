@@ -11,13 +11,14 @@ VentanaInicial::VentanaInicial():
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     reproducir_musica();
-    setStyleSheet("QMainWindow {background-image: url(:/img/img/bgd_menuinicial.png);}");
+    QString estilo = QString("QMainWindow {background-image: url(%1);}").arg(RUTA_IMG_MENU);
+    setStyleSheet(estilo);
     inicializar_boton();
 }
 
 
 void VentanaInicial::reproducir_musica() {
-    playlist.addMedia(QUrl("qrc:/sfx/sfx/Jazz Jackrabbit 2 Music - Menu.mp3"));
+    playlist.addMedia(QUrl(RUTA_MUSICA_FONDO));
     playlist.setPlaybackMode(QMediaPlaylist::Loop);
     reproductor_musica.setPlaylist(&playlist);
     reproductor_musica.play();
@@ -29,7 +30,7 @@ void VentanaInicial::inicializar_boton() {
     press_click_btn.setGeometry(QRect(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA));
     press_click_btn.setFont(fuente_juego);
     press_click_btn.setStyleSheet("QPushButton {border: none; text-align: bottom; color: white; background: none;}");
-    press_click_btn.setText("Press click");
+    press_click_btn.setText(TEXTO_INICIO_BTN);
 
     connect(&press_click_btn,
             &QPushButton::clicked,
@@ -50,7 +51,7 @@ QFont obtener_fuente() {
     static bool fuente_cargada = false;
 
     if (!fuente_cargada) {
-        int id = QFontDatabase::addApplicationFont(":/img/img/Jazz-Jackrabbit-2.ttf");
+        int id = QFontDatabase::addApplicationFont(RUTA_FUENTE);
 
         if (id != -1) {
             QStringList fontFamilies = QFontDatabase::applicationFontFamilies(id);
@@ -58,7 +59,7 @@ QFont obtener_fuente() {
             if (!fontFamilies.isEmpty()) {
                 fuente_cargada = true;
                 const QString& fontFamily = fontFamilies.at(0);
-                fuente_juego = QFont(fontFamily, 24);
+                fuente_juego = QFont(fontFamily, TAMANIO_FUENTE);
             }
         }
     }
