@@ -11,6 +11,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(yaml-cpp REQUIRED)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Multimedia REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Multimedia REQUIRED)
 
@@ -22,6 +23,8 @@ set(PROJECT_SOURCES
         menu_principal.h
         boton_menu.cpp
         boton_menu.h
+        boton_animado.cpp
+        boton_animado.cpp
         ../../assets/menu/resources.qrc
 )
 
@@ -47,11 +50,13 @@ else()
                 menu_crear_partida.cpp
                 menu_crear_partida.h
                 constantes_menu.h
+                menu_selec_jugador.cpp
+                menu_selec_jugador.h
         )
     endif()
 endif()
 
-target_link_libraries(lobby PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia)
+target_link_libraries(lobby PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia yaml-cpp)
 
 set_target_properties(lobby PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

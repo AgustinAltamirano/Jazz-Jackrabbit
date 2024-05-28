@@ -1,5 +1,8 @@
 #include "menu_crear_partida.h"
+
 #include <QBitmap>
+
+#include "boton_animado.h"
 
 
 MenuCrearPartida::MenuCrearPartida(QMainWindow* parent) :
@@ -11,7 +14,8 @@ MenuCrearPartida::MenuCrearPartida(QMainWindow* parent) :
                         ALTO_MULTIPLAYER_BTN,
                         TEXTO_MULTIPLAYER_BTN
                         ),
-        label(this)
+        label(this),
+        menu_seleccion_jug(this)
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
 
@@ -26,4 +30,13 @@ MenuCrearPartida::MenuCrearPartida(QMainWindow* parent) :
                             OFFSET_Y_IMG_MULTIPLAYER_BTN,
                             TAM_IMG_MULTIPLAYER,
                             TAM_IMG_MULTIPLAYER));
+
+    connect(&multiplayer_btn, &QPushButton::clicked,this,&MenuCrearPartida::mostrar_menu_crear_partida);
+}
+
+
+void MenuCrearPartida::mostrar_menu_crear_partida() {
+    menu_seleccion_jug.move(this->pos());
+    menu_seleccion_jug.show();
+    hide();
 }

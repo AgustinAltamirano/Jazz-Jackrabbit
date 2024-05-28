@@ -58,4 +58,9 @@ enum PosicionBoton {
 #define RGB_BTN "rgb(255, 250, 11)"
 #define RGB_HOVER_BTN "rgb(32, 182, 57)"
 
+#define ANCHO_SEL_PLAYER 180
+#define ALTO_SEL_PLAYER 180
+#define ANCHO_SEL_NAME 140
+#define ALTO_SEL_NAME 50
+
 #endif  // CONSTANTES_MENU_H

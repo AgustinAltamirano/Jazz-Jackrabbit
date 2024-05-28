@@ -17,8 +17,7 @@ MenuPrincipal::MenuPrincipal() :
                       ANCHO_JOINGAME_BTN,
                       ALTO_JOINGAME_BTN,
                       TEXTO_JOINGAME_BTN
-                      ),
-        menu_crear_partida(this)
+                      )
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     QString estilo = QString("QMainWindow {background-image: url(%1);}").arg(RUTA_IMG_INICIAL);
@@ -35,14 +34,16 @@ void MenuPrincipal::conectar_botones() {
 
 
 void MenuPrincipal::mostrar_menu_crear_partida() {
-    menu_crear_partida.move(this->pos());
-    menu_crear_partida.show();
+    auto menu_crear_partida = new MenuCrearPartida(this);
+    menu_crear_partida->move(this->pos());
+    menu_crear_partida->show();
     hide();
 }
 
 
 void MenuPrincipal::mostrar_menu_unirse_partida() {
-    // menu_unirse_partida = new MenuUnirsePartida(this, fuente_juego);
-    // menu_unirse_partida->show();
+    auto menu_seleccion_jug = new MenuSeleccionJugador(this);
+    menu_seleccion_jug->move(this->pos());
+    menu_seleccion_jug->show();
     hide();
 }

@@ -9,8 +9,6 @@ private:
 
     BotonMenu join_game_btn;
 
-    MenuCrearPartida menu_crear_partida;
-
     void conectar_botones();
 
     void mostrar_menu_crear_partida();
