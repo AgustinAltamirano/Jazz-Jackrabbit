@@ -18,15 +18,15 @@ add_executable(Jazz_Jackrabbit main.cpp
         common/socket.cpp
         common/socket.h
         common/thread.h
-        juego/personaje.cpp
-        juego/personaje.h
-        juego/gameloop.cpp
-        juego/gameloop.h
-        juego/manejadorEscenario.cpp
-        juego/manejadorEscenario.h
-        juego/assets/bloqueEscenario.cpp
-        juego/assets/bloqueEscenario.h
-        juego/assets/spawnpoint.h)
+        logica_juego/personaje.cpp
+        logica_juego/personaje.h
+        logica_juego/gameloop.cpp
+        logica_juego/gameloop.h
+        logica_juego/manejadorEscenario.cpp
+        logica_juego/manejadorEscenario.h
+        logica_juego/assets/bloqueEscenario.cpp
+        logica_juego/assets/bloqueEscenario.h
+        logica_juego/assets/spawnpoint.h)
 
 #Busca e incluye los yaml-cpp para la configuración
 find_package(yaml-cpp REQUIRED)
