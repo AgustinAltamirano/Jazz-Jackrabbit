@@ -8,13 +8,14 @@
 #include <QPushButton>
 #include <QTimer>
 #include <QPropertyAnimation>
+#include <QKeyEvent>
 #include <yaml-cpp/yaml.h>
 
 
 #define RUTA_SPRITES "/menu/img/"
 #define PERSONAJES_CONFIG "personajes.yaml"
 #define RUTA_IMG_MENU_MULTIPLAYER2 ":/img/img/Character Select.png"
-#define FRAME_DURATION 70        // en ms
+#define DURACION_FRAME 50        // en ms
 #define SEP_NOMBRE_Y_JUG 200
 
 
@@ -26,10 +27,16 @@ public:
 
 protected:
     void focusInEvent(QFocusEvent* event) override;
+
     void focusOutEvent(QFocusEvent* event) override;
+
+    void keyPressEvent(QKeyEvent *event) override;
+
+    void mouseMoveEvent(QMouseEvent *event) override;
 
 private slots:
     void siguiente_frame();
+
     void anterior_frame();
 
 private:

@@ -34,6 +34,8 @@ BotonAnimado::BotonAnimado(int num_personaje, int ancho, int alto) :
     label_jugador.setGeometry(QRect(0, 0, ancho, alto));
 
     label_nombre.setGeometry(QRect(0, SEP_NOMBRE_Y_JUG, ANCHO_SEL_NAME, ALTO_SEL_NAME));
+
+    setMouseTracking(true);
 }
 
 
@@ -58,14 +60,14 @@ void BotonAnimado::inicializar_texturas(YAML::Node personajes,
 void BotonAnimado::animacion_hacia_adelante() {
     timer_frames.disconnect();
     connect(&timer_frames, &QTimer::timeout, this, &BotonAnimado::siguiente_frame);
-    timer_frames.start(FRAME_DURATION);
+    timer_frames.start(DURACION_FRAME);
 }
 
 
 void BotonAnimado::animacion_en_reversa() {
     timer_frames.disconnect();
     connect(&timer_frames, &QTimer::timeout, this, &BotonAnimado::anterior_frame);
-    timer_frames.start(FRAME_DURATION);
+    timer_frames.start(DURACION_FRAME);
 }
 
 
@@ -106,6 +108,7 @@ void BotonAnimado::pintar_frame(std::vector<QPixmap>& frames,
 
 void BotonAnimado::focusInEvent(QFocusEvent* event) {
     animacion_hacia_adelante();
+    clicked();
     QPushButton::focusInEvent(event); // Llama a la implementación base para mantener el comportamiento normal
 }
 
@@ -113,4 +116,19 @@ void BotonAnimado::focusInEvent(QFocusEvent* event) {
 void BotonAnimado::focusOutEvent(QFocusEvent* event) {
     animacion_en_reversa();
     QPushButton::focusOutEvent(event); // Llama a la implementación base para mantener el comportamiento normal
+}
+
+
+void BotonAnimado::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        clicked();
+    } else {
+        QPushButton::keyPressEvent(event);  // Propaga el evento al manejador por defecto
+    }
+}
+
+
+void BotonAnimado::mouseMoveEvent(QMouseEvent *event) {
+    setFocus();                 // Pone el foco en el botón cuando el mouse se mueve sobre él
+    QPushButton::mouseMoveEvent(event);  // Llama al método original para que el botón funcione normalmente
 }

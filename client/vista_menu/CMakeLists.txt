@@ -52,6 +52,8 @@ else()
                 constantes_menu.h
                 menu_selec_jugador.cpp
                 menu_selec_jugador.h
+                menu_selec_mapa.cpp
+                menu_selec_mapa.h
         )
     endif()
 endif()

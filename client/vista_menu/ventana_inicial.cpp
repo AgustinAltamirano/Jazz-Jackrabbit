@@ -21,6 +21,7 @@ void VentanaInicial::reproducir_musica() {
     playlist.addMedia(QUrl(RUTA_MUSICA_FONDO));
     playlist.setPlaybackMode(QMediaPlaylist::Loop);
     reproductor_musica.setPlaylist(&playlist);
+    reproductor_musica.setVolume(VOLUMEN_MUSICA);
     reproductor_musica.play();
 }
 

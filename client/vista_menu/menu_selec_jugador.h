@@ -6,6 +6,7 @@
 
 #include "boton_animado.h"
 #include "boton_menu.h"
+#include "menu_selec_mapa.h"
 
 #define NUM_JAZZ_PLAYER 0
 #define NUM_SPAZ_PLAYER 1
@@ -34,6 +35,14 @@ private:
     BotonAnimado spaz_player;
 
     BotonAnimado lori_player;
+
+    MenuSeleccionMapa selector_mapa;
+
+    QPushButton* boton_enfocado = nullptr;
+
+    void conectar_botones();
+
+    void mostrar_selector_mapa();
 
 public:
     explicit MenuSeleccionJugador(QMainWindow* parent);

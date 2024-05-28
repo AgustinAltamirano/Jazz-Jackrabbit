@@ -34,7 +34,8 @@ enum PosicionBoton {
 
 #define RUTA_EFECTOS_SONIDO "qrc:/sfx/sfx/select"
 #define EXTENSION_EFECTOS_SONIDO ".wav"
-#define VOLUMEN_EFECTOS_SONIDO 20
+#define VOLUMEN_EFECTOS_SONIDO 10
+#define VOLUMEN_MUSICA 40
 #define RUTA_MUSICA_FONDO "qrc:/sfx/sfx/Jazz Jackrabbit 2 Music - Menu.mp3"
 
 #define RUTA_FUENTE ":/img/img/Jazz-Jackrabbit-2.ttf"
