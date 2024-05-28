@@ -7,13 +7,8 @@
 
 #include "../common/constantes.h"
 
-bool comparar_por_pos_x(const bloqueEscenario a&, const bloqueEscenario b&) {
-    return a.pos_x < b.pos_x;
-}
-
 manejadorEscenario::manejadorEscenario(std::string path): path(std::move(path)) {
     cargar_escenario_basico(620, 480);
-    std::sort(bloques_rectos.begin(), bloques_rectos.end(), comparar_por_pos_x);
 }
 
 void manejadorEscenario::cargar_escenario_basico(int ancho, int alto) {
@@ -50,9 +45,8 @@ int definir_punto_medio(const int pos_org_jug, const int jug_largo, const int po
                         const int bloque_largo) {
     if (pos_org_jug < pos_bloque) {  // si este es el caso ajusto por arriba o por izquierda
         return (pos_bloque - jug_largo);
-    } else {
-        return (pos_bloque + bloque_largo);
     }
+    return (pos_bloque + bloque_largo);
 }
 
 bool colision_horizontal(const int jug_x, const int jug_ancho, const bloqueEscenario& bloque) {
@@ -67,15 +61,15 @@ bool colision_vertical(const int jug_y, const int jug_alto, const bloqueEscenari
 }
 
 void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jugadores) const {
-    for (auto& jugadore: jugadores) {
-        personaje& jugador = jugadore.second;
+    for (auto& entidad: jugadores) {
+        personaje& jugador = entidad.second;
         std::vector<bloqueEscenario> colisiones = chequeo_recto_individual(jugador, bloques_rectos);
+
         std::vector<int> posicion_act = jugador.get_pos_actual();
         std::vector<int> posicion_prox = jugador.get_pos_a_ir();
         int pos_x_jug_act = posicion_act[0], pos_y_jug_act = posicion_act[1];
         int pos_x_jug_prox = posicion_prox[0], pos_y_jug_prox = posicion_prox[1];
-        int nueva_pos_x = pos_x_jug_prox,
-            nueva_pos_y = pos_y_jug_prox;  // nuevas posiciones que tendra el jugador
+        int nueva_pos_x = pos_x_jug_prox, nueva_pos_y = pos_y_jug_prox;
         for (const auto& bloque: colisiones) {
             bool col_vert = colision_vertical(pos_y_jug_prox, jugador.get_alto(), bloque);
             bool col_hor = colision_horizontal(pos_x_jug_prox, jugador.get_ancho(), bloque);

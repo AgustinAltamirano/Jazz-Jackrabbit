@@ -6,6 +6,7 @@
 #define MAX_JUG_POR_PARTIDA "max_jugadores_por_partida"
 #define MAX_PARTIDAS "max_partidas"
 #define VIDA_INICIAL "vida_inicial"
+#define GRAVEDAD "aceleracion_gravedad"
 
 // CONFIGURACION PERSONAJE
 #define ANCHO_INICIAL 39
