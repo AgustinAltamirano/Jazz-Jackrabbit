@@ -17,6 +17,7 @@ ConfigAdmin::ConfigAdmin() {
     configuracion[MAX_PARTIDAS] = config[MAX_PARTIDAS].as<int>();
 
     configuracion[VIDA_INICIAL] = config[VIDA_INICIAL].as<int>();
+    configuracion[GRAVEDAD] = config[GRAVEDAD].as<int>();
 }
 
 int ConfigAdmin::get(const std::string& clave_config) const {
