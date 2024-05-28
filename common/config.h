@@ -5,8 +5,6 @@
 #include <string>
 #include <unordered_map>
 
-#include <yaml-cpp/yaml.h>
-
 class ConfigAdmin {
 private:
     ConfigAdmin();

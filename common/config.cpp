@@ -1,5 +1,7 @@
 #include "config.h"
 
+#include <yaml-cpp/yaml.h>
+
 #include "constantes.h"
 
 ConfigAdmin& ConfigAdmin::getInstance() {
@@ -13,6 +15,8 @@ ConfigAdmin::ConfigAdmin() {
 
     configuracion[MAX_JUG_POR_PARTIDA] = config[MAX_JUG_POR_PARTIDA].as<int>();
     configuracion[MAX_PARTIDAS] = config[MAX_PARTIDAS].as<int>();
+
+    configuracion[VIDA_INICIAL] = config[VIDA_INICIAL].as<int>();
 }
 
 int ConfigAdmin::get(const std::string& clave_config) const {

@@ -2,3 +2,5 @@
 
 max_jugadores_por_partida: 4
 max_partidas: 5
+
+vida_inicial: 100
