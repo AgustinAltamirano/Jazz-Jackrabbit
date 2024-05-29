@@ -1,7 +1,7 @@
 #ifndef MONITOR_JUEGOS_H
 #define MONITOR_JUEGOS_H
 
-#include "../server/partida.h"
+#include "partida.h"
 
 #include <list>
 
