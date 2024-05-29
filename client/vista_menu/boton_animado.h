@@ -23,7 +23,7 @@ class BotonAnimado: public QPushButton {
     Q_OBJECT
 
 public:
-    BotonAnimado(int num_personaje, int ancho, int alto);
+    BotonAnimado(QMainWindow* parent, int num_personaje, int ancho, int alto);
 
 protected:
     void focusInEvent(QFocusEvent* event) override;
@@ -33,6 +33,8 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
 
     void mouseMoveEvent(QMouseEvent *event) override;
+
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private slots:
     void siguiente_frame();

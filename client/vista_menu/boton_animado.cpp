@@ -6,13 +6,15 @@
 #include "constantes_menu.h"
 
 
-BotonAnimado::BotonAnimado(int num_personaje, int ancho, int alto) :
-        QPushButton(),
+BotonAnimado::BotonAnimado(QMainWindow* parent, int num_personaje, int ancho, int alto) :
+        QPushButton(parent),
         label_jugador(this),
         label_nombre(this),
         timer_frames(this),
         frame_act_jug(0),
-        frame_act_nombre(0)
+        frame_act_nombre(0),
+        cant_frames_jugador(0),
+        cant_frames_nombre(0)
 {
     const std::string ruta_personajes = std::string(ASSETS_PATH) + std::string(RUTA_SPRITES);
     const std::string ruta_personajes_config = ruta_personajes + std::string(PERSONAJES_CONFIG);
@@ -32,10 +34,12 @@ BotonAnimado::BotonAnimado(int num_personaje, int ancho, int alto) :
 
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     label_jugador.setGeometry(QRect(0, 0, ancho, alto));
+    label_jugador.installEventFilter(this);
+    label_jugador.setMouseTracking(true);
 
     label_nombre.setGeometry(QRect(0, SEP_NOMBRE_Y_JUG, ANCHO_SEL_NAME, ALTO_SEL_NAME));
-
-    setMouseTracking(true);
+    label_nombre.installEventFilter(this);
+    label_nombre.setMouseTracking(true);
 }
 
 
@@ -131,4 +135,14 @@ void BotonAnimado::keyPressEvent(QKeyEvent *event) {
 void BotonAnimado::mouseMoveEvent(QMouseEvent *event) {
     setFocus();                 // Pone el foco en el botón cuando el mouse se mueve sobre él
     QPushButton::mouseMoveEvent(event);  // Llama al método original para que el botón funcione normalmente
+}
+
+
+bool BotonAnimado::eventFilter(QObject* watched, QEvent* event) {
+    if (watched == &label_jugador && event->type() == QEvent::MouseMove) {
+        mouseMoveEvent(static_cast<QMouseEvent*>(event));
+        return true;
+    }
+    // Delega el manejo del evento a la implementación base para otros casos
+    return QPushButton::eventFilter(watched, event);
 }

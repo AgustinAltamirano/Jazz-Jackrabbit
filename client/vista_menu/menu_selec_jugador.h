@@ -18,7 +18,7 @@
 #define ESPACIADO_ENTRE_JUGADORES 50
 #define M_LEFT 50
 #define M_TOP 150
-#define M_RIGHT 0
+#define M_RIGHT 50
 #define M_BOTTOM 0
 
 

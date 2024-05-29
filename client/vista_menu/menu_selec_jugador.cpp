@@ -11,9 +11,9 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent) :
         central_widget(this),
         horizontal_layout_widget(&central_widget),
         horizontalLayout(&horizontal_layout_widget),
-        jazz_player(NUM_JAZZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
-        spaz_player(NUM_SPAZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
-        lori_player(NUM_LORI_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
+        jazz_player(this, NUM_JAZZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
+        spaz_player(this, NUM_SPAZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
+        lori_player(this, NUM_LORI_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
         selector_mapa(this)
 {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
