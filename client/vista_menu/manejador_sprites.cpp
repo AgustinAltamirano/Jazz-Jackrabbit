@@ -10,6 +10,8 @@ ManejadorSprites::ManejadorSprites(QLabel& label_boton, QLabel& label_nombre, in
         label_boton(label_boton),
         label_nombre(label_nombre),
         timer_frames(this),
+        ancho_img(ancho),
+        alto_img(alto),
         frame_act_boton(0),
         frame_act_nombre(0),
         cant_frames_boton(0),
@@ -84,7 +86,7 @@ void ManejadorSprites::anterior_frame() {
 
 
 void ManejadorSprites::pintar_frame_boton() {
-    pintar_frame(frames_boton, label_boton, frame_act_boton, ANCHO_IMG_MAPA, ALTO_IMG_MAPA);
+    pintar_frame(frames_boton, label_boton, frame_act_boton, ancho_img, alto_img);
 }
 
 

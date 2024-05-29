@@ -48,6 +48,10 @@ private:
 
     QLabel& label_nombre;
 
+    int ancho_img;
+
+    int alto_img;
+
     uint16_t cant_frames_boton;
 
     uint16_t cant_frames_nombre;
