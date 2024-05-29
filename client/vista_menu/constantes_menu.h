@@ -61,8 +61,8 @@ enum PosicionBoton {
 
 #define ANCHO_SEL_PLAYER 180
 #define ALTO_SEL_PLAYER 180
-#define ANCHO_IMG_MAPA 180
-#define ALTO_IMG_MAPA 180
+#define ANCHO_IMG_MAPA 150
+#define ALTO_IMG_MAPA 80
 #define ANCHO_SEL_NAME 140
 #define ALTO_SEL_NAME 50
 

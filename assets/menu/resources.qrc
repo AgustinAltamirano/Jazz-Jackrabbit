@@ -5,6 +5,7 @@
         <file>img/bgd_mainmenu.jpg</file>
         <file>img/multiplayer.png</file>
         <file>img/Character Select.png</file>
+        <file>img/Episode Select.png</file>
     </qresource>
     <qresource prefix="/sfx">
         <file>sfx/Jazz Jackrabbit 2 Music - Menu.mp3</file>
