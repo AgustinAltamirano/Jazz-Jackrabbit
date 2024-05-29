@@ -5,7 +5,6 @@
 #include <QHBoxLayout>
 
 #include "boton_animado.h"
-#include "boton_menu.h"
 #include "menu_selec_mapa.h"
 
 #define NUM_JAZZ_PLAYER 0

@@ -54,6 +54,8 @@ else()
                 menu_selec_jugador.h
                 menu_selec_mapa.cpp
                 menu_selec_mapa.h
+                manejador_sprites.cpp
+                manejador_sprites.h
         )
     endif()
 endif()
