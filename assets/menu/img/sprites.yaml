@@ -1,5 +1,6 @@
-personajes:
+botones:
   - nombre: jazz
+    imagen: Character Select.png
     sprites:
       - x: 1212
         y: 250
@@ -63,6 +64,7 @@ personajes:
         ancho: 128
         alto: 48
   - nombre: spaz
+    imagen: Character Select.png
     sprites:
       - x: 17
         y: 484
@@ -126,6 +128,7 @@ personajes:
         ancho: 134
         alto: 48
   - nombre: lori
+    imagen: Character Select.png
     sprites:
       - x: 19
         y: 707
@@ -188,3 +191,10 @@ personajes:
         y: 168
         ancho: 117
         alto: 47
+  - nombre: mapa_castillo
+    imagen: Episode Select.png
+    sprites:
+      - x: 0
+        y: 0
+        ancho: 0
+        alto: 0

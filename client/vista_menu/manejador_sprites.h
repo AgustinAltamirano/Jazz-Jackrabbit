@@ -10,17 +10,17 @@
 #include "constantes_menu.h"
 
 #define RUTA_SPRITES "/menu/img/"
-#define PERSONAJES_CONFIG "personajes.yaml"
-#define RUTA_IMG_MENU_MULTIPLAYER2 ":/img/img/Character Select.png"
+#define PERSONAJES_CONFIG "sprites.yaml"
+#define RUTA_IMG ":/img/img/"
 #define DURACION_FRAME 50        // en ms
-#define SEP_NOMBRE_Y_JUG 200
+#define SEP_NOMBRE_Y_BTN 200
 
 
 class ManejadorSprites: public QObject {
 public:
-    ManejadorSprites(QLabel& label_jugador, QLabel& label_nombre, int personaje, int ancho, int alto);
+    ManejadorSprites(QLabel& label_boton, QLabel& label_nombre, int num_boton, int ancho, int alto);
 
-    void pintar_frame_jugador();
+    void pintar_frame_boton();
 
     void pintar_frame_nombre();
 
@@ -34,26 +34,26 @@ private slots:
     void anterior_frame();
 
 private:
-    std::vector<QPixmap> frames_jugador;
+    std::vector<QPixmap> frames_boton;
 
     std::vector<QPixmap> frames_nombre;
 
-    int frame_act_jug;
+    int frame_act_boton;
 
     int frame_act_nombre;
 
     QTimer timer_frames;
 
-    QLabel& label_jugador;
+    QLabel& label_boton;
 
     QLabel& label_nombre;
 
-    uint16_t cant_frames_jugador;
+    uint16_t cant_frames_boton;
 
     uint16_t cant_frames_nombre;
 
-    void inicializar_texturas(YAML::Node personajes, int num_personaje,
-                              const std::string& tipo_de_textura, QPixmap& imagen,
+    void inicializar_texturas(YAML::Node sprites, int num_boton,
+                              const std::string& tipo_de_sprite, QPixmap& imagen,
                               std::vector<QPixmap>& coleccion_frames);
 
     void pintar_frame(std::vector<QPixmap>& frames,

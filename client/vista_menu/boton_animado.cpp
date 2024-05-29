@@ -2,11 +2,11 @@
 #include "constantes_menu.h"
 
 
-BotonAnimado::BotonAnimado(QMainWindow* parent, int num_personaje, int ancho, int alto) :
+BotonAnimado::BotonAnimado(QMainWindow* parent, int num_sprite, int ancho, int alto) :
         QPushButton(parent),
         label_jugador(this),
         label_nombre(this),
-        manejador_texturas(label_jugador, label_nombre, num_personaje, ancho, alto) {
+        manejador_texturas(label_jugador, label_nombre, num_sprite, ancho, alto) {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     label_jugador.installEventFilter(this);
     label_nombre.installEventFilter(this);
@@ -14,7 +14,7 @@ BotonAnimado::BotonAnimado(QMainWindow* parent, int num_personaje, int ancho, in
 
 
 void BotonAnimado::paintEvent(QPaintEvent* event) {
-    manejador_texturas.pintar_frame_jugador();
+    manejador_texturas.pintar_frame_boton();
     manejador_texturas.pintar_frame_nombre();
 }
 

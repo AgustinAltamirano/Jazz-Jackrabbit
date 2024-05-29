@@ -14,7 +14,7 @@ class BotonAnimado: public QPushButton {
     Q_OBJECT
 
 public:
-    BotonAnimado(QMainWindow* parent, int num_personaje, int ancho, int alto);
+    BotonAnimado(QMainWindow* parent, int num_sprite, int ancho, int alto);
 
 protected:
     void focusInEvent(QFocusEvent* event) override;
