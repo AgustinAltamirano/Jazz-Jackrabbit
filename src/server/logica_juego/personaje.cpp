@@ -1,9 +1,9 @@
 #include "personaje.h"
 
-#include "../common/config.h"
-#include "../common/constantes.h"
+#include "../../common/config.h"
+#include "../../common/constantes.h"
 
-personaje::personaje(const int id, const int tipo, const int pos_x_inicial,
+personaje::personaje(const int id, const TipoPersonaje tipo, const int pos_x_inicial,
                      const int pos_y_inicial):
         id(id),
         tipo_de_personaje(tipo),
@@ -14,12 +14,14 @@ personaje::personaje(const int id, const int tipo, const int pos_x_inicial,
         aceleracion_x(0),
         pos_y(pos_y_inicial),
         vel_y(0),
-        angulo(0),
         sobre_rampa(false),
         de_espaldas(false),
         en_aire(false),
         ataque_especial(false),
-        puntos(0) {
+        estado(IDLE),
+        tiempo_estado(0),
+        puntos(0),
+        arma_actual(INFINITA) {
     const ConfigAdmin& configurador = ConfigAdmin::getInstance();
     aceleracion_y = configurador.get(GRAVEDAD);
     vida = configurador.get(VIDA_INICIAL);

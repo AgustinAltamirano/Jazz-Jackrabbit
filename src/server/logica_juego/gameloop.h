@@ -2,28 +2,31 @@
 #define GAMELOOP_H
 
 #include <atomic>
+#include <chrono>
 #include <cstdint>
 #include <list>
 #include <map>
 #include <string>
 #include <vector>
 
-#include "../common/queue.h"
-#include "../common/thread.h"
+#include "../../common/queue.h"
+#include "../../common/snapshot_dto.h"
+#include "../../common/thread.h"
 
+#include "manejadorEscenario.h"
 #include "personaje.h"
 
 class gameloop: public Thread {
 private:
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_alive;
-    std::map<int, personaje> personajes;
-    // Queue<DOT>& cola_entrada;
+
+    Queue<SnapshotDTO>& cola_entrada;
     // Monitor de salida de datos
 
     // aca todos los controladores
-    // controlador jugadores
-    // controlador escenario
+    std::map<int, personaje> personajes;
+    manejadorEscenario escenario;
     // controlador enemigos, etc
 
 public:
@@ -34,7 +37,8 @@ public:
      *nombre del archivo que contiene el escenario
      *un mapa con los ids de personajes que se crearan apuntando al tipo de personaje
      */
-    explicit gameloop(std::string archivo_escenario, std::map<int, int>);
+    explicit gameloop(std::string archivo_escenario, std::map<int, TipoDePersonaje>,
+                      Queue<SnapshotDTO>& cola_entrada);
     void kill() override;
 };
 
