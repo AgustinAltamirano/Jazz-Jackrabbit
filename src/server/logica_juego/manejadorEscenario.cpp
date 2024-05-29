@@ -13,10 +13,10 @@ manejadorEscenario::manejadorEscenario(std::string path): path(std::move(path)) 
 
 void manejadorEscenario::cargar_escenario_basico(int ancho, int alto) {
     // esto crea un generico de 620 x 480 para pruebas de colision
-    bloques_rectos.emplace_back(0, alto, ancho, 10, 0);
-    bloques_rectos.emplace_back(0, 0, ancho, 10, 0);
-    bloques_rectos.emplace_back(0, 0, 10, alto, 0);
-    bloques_rectos.emplace_back(ancho, 0, 10, alto, 0);
+    bloques_rectos.emplace_back(0, alto, ancho, 10, 0, PISO);
+    bloques_rectos.emplace_back(0, 0, ancho, 10, 0, TECHO);
+    bloques_rectos.emplace_back(0, 0, 10, alto, 0, PARED);
+    bloques_rectos.emplace_back(ancho - 10, 0, 10, alto, 0, PISO);
     spawnpoints.emplace_back(ANCHO_INICIAL + 10, alto - ALTO_INICIAL);
 }
 
