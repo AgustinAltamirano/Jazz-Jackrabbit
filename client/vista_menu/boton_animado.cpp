@@ -140,7 +140,7 @@ void BotonAnimado::mouseMoveEvent(QMouseEvent *event) {
 
 bool BotonAnimado::eventFilter(QObject* watched, QEvent* event) {
     if (watched == &label_jugador && event->type() == QEvent::MouseMove) {
-        mouseMoveEvent(static_cast<QMouseEvent*>(event));
+        mouseMoveEvent(dynamic_cast<QMouseEvent*>(event));
         return true;
     }
     // Delega el manejo del evento a la implementación base para otros casos
