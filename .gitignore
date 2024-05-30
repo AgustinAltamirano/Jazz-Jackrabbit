@@ -1,1 +1,3 @@
 cmake-build-debug
+/extlib/libSDL2pp/
+/client/build-vista_menu-Desktop-Debug/

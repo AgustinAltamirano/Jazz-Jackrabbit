@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/bgd_menuinicial.png</file>
+        <file>img/Jazz-Jackrabbit-2.ttf</file>
+        <file>img/bgd_mainmenu.jpg</file>
+        <file>img/multiplayer.png</file>
+        <file>img/Character Select.png</file>
+        <file>img/Episode Select.png</file>
+    </qresource>
+    <qresource prefix="/sfx">
+        <file>sfx/Jazz Jackrabbit 2 Music - Menu.mp3</file>
+        <file>sfx/select0.wav</file>
+        <file>sfx/select1.wav</file>
+        <file>sfx/select2.wav</file>
+        <file>sfx/select3.wav</file>
+        <file>sfx/select4.wav</file>
+        <file>sfx/select5.wav</file>
+        <file>sfx/select6.wav</file>
+    </qresource>
+</RCC>

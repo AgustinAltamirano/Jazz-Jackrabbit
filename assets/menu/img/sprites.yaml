@@ -1,0 +1,226 @@
+botones:
+  - nombre: jazz
+    imagen: Character Select.png
+    sprites:
+      - x: 1212
+        y: 250
+        ancho: 123
+        alto: 179
+      - x: 1079
+        y: 250
+        ancho: 124
+        alto: 179
+      - x: 946
+        y: 250
+        ancho: 119
+        alto: 179
+      - x: 816
+        y: 250
+        ancho: 120
+        alto: 179
+      - x: 689
+        y: 250
+        ancho: 118
+        alto: 179
+      - x: 549
+        y: 250
+        ancho: 120
+        alto: 179
+      - x: 421
+        y: 250
+        ancho: 119
+        alto: 179
+      - x: 292
+        y: 250
+        ancho: 118
+        alto: 179
+      - x: 157
+        y: 250
+        ancho: 127
+        alto: 179
+      - x: 27
+        y: 250
+        ancho: 120
+        alto: 179
+    sprites_nombre:
+      - x: 658
+        y: 18
+        ancho: 128
+        alto: 48
+      - x: 526
+        y: 18
+        ancho: 128
+        alto: 48
+      - x: 391
+        y: 18
+        ancho: 128
+        alto: 48
+      - x: 260
+        y: 18
+        ancho: 128
+        alto: 48
+      - x: 128
+        y: 18
+        ancho: 128
+        alto: 48
+  - nombre: spaz
+    imagen: Character Select.png
+    sprites:
+      - x: 17
+        y: 484
+        ancho: 119
+        alto: 178
+      - x: 145
+        y: 484
+        ancho: 119
+        alto: 178
+      - x: 273
+        y: 484
+        ancho: 119
+        alto: 178
+      - x: 399
+        y: 484
+        ancho: 119
+        alto: 178
+      - x: 526
+        y: 484
+        ancho: 119
+        alto: 178
+      - x: 652
+        y: 484
+        ancho: 119
+        alto: 178
+      - x: 781
+        y: 484
+        ancho: 119
+        alto: 178
+      - x: 912
+        y: 484
+        ancho: 119
+        alto: 178
+      - x: 1044
+        y: 484
+        ancho: 119
+        alto: 178
+      - x: 1177
+        y: 484
+        ancho: 119
+        alto: 178
+    sprites_nombre:
+      - x: 128
+        y: 94
+        ancho: 134
+        alto: 48
+      - x: 268
+        y: 94
+        ancho: 134
+        alto: 48
+      - x: 408
+        y: 94
+        ancho: 134
+        alto: 48
+      - x: 547
+        y: 94
+        ancho: 134
+        alto: 48
+      - x: 685
+        y: 94
+        ancho: 134
+        alto: 48
+  - nombre: lori
+    imagen: Character Select.png
+    sprites:
+      - x: 19
+        y: 707
+        ancho: 102
+        alto: 182
+      - x: 128
+        y: 707
+        ancho: 97
+        alto: 182
+      - x: 235
+        y: 707
+        ancho: 100
+        alto: 182
+      - x: 336
+        y: 707
+        ancho: 104
+        alto: 182
+      - x: 446
+        y: 707
+        ancho: 109
+        alto: 182
+      - x: 561
+        y: 707
+        ancho: 112
+        alto: 182
+      - x: 680
+        y: 707
+        ancho: 112
+        alto: 182
+      - x: 801
+        y: 707
+        ancho: 115
+        alto: 182
+      - x: 922
+        y: 707
+        ancho: 115
+        alto: 182
+      - x: 1037
+        y: 707
+        ancho: 117
+        alto: 182
+    sprites_nombre:
+      - x: 630
+        y: 168
+        ancho: 117
+        alto: 47
+      - x: 496
+        y: 168
+        ancho: 117
+        alto: 47
+      - x: 374
+        y: 168
+        ancho: 117
+        alto: 47
+      - x: 250
+        y: 168
+        ancho: 117
+        alto: 47
+      - x: 127
+        y: 168
+        ancho: 117
+        alto: 47
+  - nombre: mapa_castillo
+    imagen: Episode Select.png
+    sprites:
+      - x: 1312
+        y: 182
+        ancho: 220
+        alto: 66
+      - x: 1312
+        y: 112
+        ancho: 220
+        alto: 66
+  - nombre: mapa_playa
+    imagen: Episode Select.png
+    sprites:
+      - x: 812
+        y: 182
+        ancho: 187
+        alto: 78
+      - x: 812
+        y: 100
+        ancho: 187
+        alto: 78
+  - nombre: mapa_custom
+    imagen: Episode Select.png
+    sprites:
+      - x: 1804
+        y: 519
+        ancho: 191
+        alto: 55
+      - x: 1804
+        y: 460
+        ancho: 191
+        alto: 55
