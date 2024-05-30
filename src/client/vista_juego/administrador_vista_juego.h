@@ -7,60 +7,57 @@
 
 #include <SDL2/SDL.h>
 
-#include "../../common/thread.h"
+#include "../../common/queue.h"
 
+#include "entrada_juego.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
+#include "personaje.h"
 
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
 /** Constantes definidas únicamente para realizar tests preliminares. */
-#define X_INICIAL 200
-#define Y_INICIAL 200
-#define FRAMES_POR_SPRITE 80
+#define X_INICIAL 100
+#define Y_INICIAL 50
+#define X_INICIAL2 300
+#define Y_INICIAL2 50
+#define X_INICIAL3 100
+#define Y_INICIAL3 250
+#define X_INICIAL4 300
+#define Y_INICIAL4 250
+#define FRAMES_POR_SPRITE 100
 
 /**
  * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones
  * cargadas por una instancia de @code LectorTexturas@endcode a todos los objetos visuales dentro
  * del juego, además de decidir cuáles de ellos se deben renderizar en cada momento y cuáles no.
  */
-class AdministradorVistaJuego: public Thread {
+class AdministradorVistaJuego {
 private:
-    /** Próximo ID a asignar a un objeto visual. */
     uint32_t proximo_id;
 
     /** Inicializador de la librería SDL. */
     SDL2pp::SDL sdl;
 
-    /** Ventana del juego. */
     SDL2pp::Window ventana;
-
-    /** Renderizador utilizado para el dibujado de todos los objetos visuales. */
     SDL2pp::Renderer renderer;
-
-    /** Lector de texturas y animaciones (léase documentación de la clase) */
     LectorTexturas lector_texturas;
+    EntradaJuego entrada_juego;
 
     /** Mapa con todos los objetos asociados a personajes jugables. */
-    std::unordered_map<uint32_t, ObjetoAnimado> personajes;
+    std::unordered_map<uint32_t, Personaje> personajes;
 
 public:
-    explicit AdministradorVistaJuego(const std::string& titulo_ventana);
+    AdministradorVistaJuego(const std::string& titulo_ventana, Queue<int>& cola_acciones);
 
     AdministradorVistaJuego(AdministradorVistaJuego&) = delete;
     AdministradorVistaJuego& operator=(AdministradorVistaJuego&) = delete;
 
-    /** Sin uso, solo se declara e implementa para poder heredar de Thread. */
-    bool sigue_vivo() override;
-
-    /** Sin uso, solo se declara e implementa para poder heredar de Thread. */
-    void kill() override;
-
     /** Bucle principal del administrador de vista de juego. */
-    void run() override;
+    void run();
 
-    ~AdministradorVistaJuego() override;
+    ~AdministradorVistaJuego();
 };
 
 #endif  // ADMINISTRADOR_VISTA_JUEGO_H
