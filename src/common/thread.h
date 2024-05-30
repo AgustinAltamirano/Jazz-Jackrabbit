@@ -24,7 +24,7 @@ public:
             std::cerr << "Unexpected exception: <unknown>\n";
         }
     }
-    virtual bool sigue_vivo() = 0;
+    virtual bool still_alive() = 0;
     virtual void kill() = 0;
     virtual void run() = 0;
     virtual ~Thread() {}
