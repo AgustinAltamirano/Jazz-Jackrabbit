@@ -7,10 +7,11 @@
 #include <QMainWindow>
 #include <QPushButton>
 
+#include "boton_menu.h"
 #include "manejador_sprites.h"
 
 
-class BotonAnimado: public QPushButton {
+class BotonAnimado: public BotonMenu {
     Q_OBJECT
 
 public:
@@ -20,12 +21,6 @@ protected:
     void focusInEvent(QFocusEvent* event) override;
 
     void focusOutEvent(QFocusEvent* event) override;
-
-    void keyPressEvent(QKeyEvent* event) override;
-
-    void mouseMoveEvent(QMouseEvent* event) override;
-
-    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     QLabel label_jugador;

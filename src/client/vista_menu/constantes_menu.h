@@ -45,6 +45,7 @@ enum PosicionBoton {
 #define RUTA_IMG_INICIAL ":/img/img/bgd_mainmenu.jpg"
 #define RUTA_IMG_MENU ":/img/img/bgd_menuinicial.png"
 #define RUTA_IMG_MENU_MULTIPLAYER ":/img/img/multiplayer.png"
+#define RUTA_SPRITES_MAPA ":/img/img/Episode Select.png"
 
 #define TEXTO_INICIO_BTN "Press click"
 
@@ -61,8 +62,10 @@ enum PosicionBoton {
 
 #define ANCHO_SEL_PLAYER 180
 #define ALTO_SEL_PLAYER 180
-#define ANCHO_IMG_MAPA 150
-#define ALTO_IMG_MAPA 80
+#define ANCHO_BTN_MAPA 150
+#define ALTO_BTN_MAPA 80
+#define ANCHO_IMG_MAPA 306
+#define ALTO_IMG_MAPA 356
 #define ANCHO_SEL_NAME 140
 #define ALTO_SEL_NAME 50
 

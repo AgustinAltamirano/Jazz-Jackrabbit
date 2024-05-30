@@ -13,8 +13,7 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent):
         horizontalLayout(&horizontal_layout_widget),
         jazz_player(this, NUM_JAZZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
         spaz_player(this, NUM_SPAZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
-        lori_player(this, NUM_LORI_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
-        selector_mapa(this) {
+        lori_player(this, NUM_LORI_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER) {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     horizontal_layout_widget.setGeometry(
             QRect(M_LEFT_PLAYER, M_TOP_PLAYER, ANCHO_PANTALLA, ALTO_PANTALLA));
@@ -46,8 +45,9 @@ void MenuSeleccionJugador::conectar_botones() {
 void MenuSeleccionJugador::mostrar_selector_mapa() {
     auto* boton_pj_seleccionado = dynamic_cast<QPushButton*>(sender());
     if (boton_pj_seleccionado == boton_enfocado) {
-        selector_mapa.move(this->pos());
-        selector_mapa.show();
+        auto* selector_mapa = new MenuSeleccionMapa(this);
+        selector_mapa->move(this->pos());
+        selector_mapa->show();
         hide();
     }
     boton_enfocado = dynamic_cast<QPushButton*>(sender());

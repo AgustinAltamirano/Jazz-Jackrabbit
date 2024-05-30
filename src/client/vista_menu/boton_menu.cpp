@@ -57,13 +57,6 @@ void BotonMenu::focusInEvent(QFocusEvent* event) {
 }
 
 
-void BotonMenu::mousePressEvent(QMouseEvent* event) {
-    reproducir_efecto_sonido();
-    QPushButton::mousePressEvent(
-            event);  // Llama al método original para que el botón funcione normalmente
-}
-
-
 void BotonMenu::reproducir_efecto_sonido() {
     // Crea un generador de números aleatorios y elige uno
     std::random_device rd;

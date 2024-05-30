@@ -35,8 +35,6 @@ private:
 
     BotonAnimado lori_player;
 
-    MenuSeleccionMapa selector_mapa;
-
     QPushButton* boton_enfocado = nullptr;
 
     void conectar_botones();
