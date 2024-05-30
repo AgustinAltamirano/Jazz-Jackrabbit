@@ -3,7 +3,7 @@
 
 #include "menu_crear_partida.h"
 
-class MenuPrincipal : public QMainWindow {
+class MenuPrincipal: public QMainWindow {
 private:
     BotonMenu new_game_btn;
 
@@ -16,8 +16,8 @@ private:
     void mostrar_menu_unirse_partida();
 
 public:
-    explicit MenuPrincipal();
+    MenuPrincipal();
 };
 
 
-#endif //MENUPRINCIPAL_H
+#endif  // MENUPRINCIPAL_H

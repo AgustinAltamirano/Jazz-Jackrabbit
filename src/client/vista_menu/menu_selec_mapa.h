@@ -21,7 +21,7 @@
 #define M_BOTTOM_MAPA 150
 
 
-class MenuSeleccionMapa : public QMainWindow {
+class MenuSeleccionMapa: public QMainWindow {
 private:
     QWidget central_widget;
 

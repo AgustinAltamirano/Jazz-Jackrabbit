@@ -1,11 +1,13 @@
+#include "manejador_sprites.h"
+
 #include <QBitmap>
 #include <QtWidgets>
-
-#include "manejador_sprites.h"
+#include <algorithm>
+#include <utility>
 
 
 ManejadorSprites::ManejadorSprites(QLabel& label_boton, QLabel& label_nombre, int num_boton,
-                                     int ancho, int alto):
+                                   int ancho, int alto):
         QObject(),
         label_boton(label_boton),
         label_nombre(label_nombre),
@@ -15,8 +17,7 @@ ManejadorSprites::ManejadorSprites(QLabel& label_boton, QLabel& label_nombre, in
         frame_act_boton(0),
         frame_act_nombre(0),
         cant_frames_boton(0),
-        cant_frames_nombre(0)
-{
+        cant_frames_nombre(0) {
     const std::string ruta_personajes = std::string(ASSETS_PATH) + std::string(RUTA_SPRITES);
     const std::string ruta_personajes_config = ruta_personajes + std::string(PERSONAJES_CONFIG);
     YAML::Node botones = YAML::LoadFile(ruta_personajes_config);
@@ -41,18 +42,13 @@ ManejadorSprites::ManejadorSprites(QLabel& label_boton, QLabel& label_nombre, in
 }
 
 
-void ManejadorSprites::inicializar_texturas(YAML::Node sprites,
-                                            int num_boton,
-                                            const std::string& tipo_de_sprite,
-                                            QPixmap& imagen,
-                                            std::vector<QPixmap>& coleccion_frames)
-{
+void ManejadorSprites::inicializar_texturas(YAML::Node sprites, int num_boton,
+                                            const std::string& tipo_de_sprite, QPixmap& imagen,
+                                            std::vector<QPixmap>& coleccion_frames) {
     auto boton = sprites["botones"][num_boton];
     for (const auto& sprite_actual: boton[tipo_de_sprite]) {
-        QRect rectangulo(sprite_actual["x"].as<int>(),
-                         sprite_actual["y"].as<int>(),
-                         sprite_actual["ancho"].as<int>(),
-                         sprite_actual["alto"].as<int>());
+        QRect rectangulo(sprite_actual["x"].as<int>(), sprite_actual["y"].as<int>(),
+                         sprite_actual["ancho"].as<int>(), sprite_actual["alto"].as<int>());
         QPixmap sprite = imagen.copy(rectangulo);
         coleccion_frames.emplace_back(std::move(sprite));
     }
@@ -91,19 +87,12 @@ void ManejadorSprites::pintar_frame_boton() {
 
 
 void ManejadorSprites::pintar_frame_nombre() {
-    pintar_frame(frames_nombre,
-                 label_nombre,
-                 frame_act_nombre,
-                 ANCHO_SEL_NAME,
-                 ALTO_SEL_NAME);
+    pintar_frame(frames_nombre, label_nombre, frame_act_nombre, ANCHO_SEL_NAME, ALTO_SEL_NAME);
 }
 
 
-void ManejadorSprites::pintar_frame(std::vector<QPixmap>& frames,
-                                    QLabel& label,
-                                    int frame_actual,
-                                    int ancho, int alto)
-{
+void ManejadorSprites::pintar_frame(const std::vector<QPixmap>& frames, QLabel& label,
+                                    int frame_actual, int ancho, int alto) {
     if (not frames.empty()) {
         QPixmap pixmap = frames.at(frame_actual);
         label.setPixmap(pixmap.scaled(ancho, alto, Qt::KeepAspectRatio));

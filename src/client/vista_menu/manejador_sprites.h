@@ -5,14 +5,17 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QTimer>
+#include <string>
+#include <vector>
 
 #include <yaml-cpp/yaml.h>
+
 #include "constantes_menu.h"
 
 #define RUTA_SPRITES "/menu/img/"
 #define PERSONAJES_CONFIG "sprites.yaml"
 #define RUTA_IMG ":/img/img/"
-#define DURACION_FRAME 50        // en ms
+#define DURACION_FRAME 50  // en ms
 #define SEP_NOMBRE_Y_BTN 200
 
 
@@ -56,13 +59,10 @@ private:
 
     uint16_t cant_frames_nombre;
 
-    void inicializar_texturas(YAML::Node sprites, int num_boton,
-                              const std::string& tipo_de_sprite, QPixmap& imagen,
-                              std::vector<QPixmap>& coleccion_frames);
+    void inicializar_texturas(YAML::Node sprites, int num_boton, const std::string& tipo_de_sprite,
+                              QPixmap& imagen, std::vector<QPixmap>& coleccion_frames);
 
-    void pintar_frame(std::vector<QPixmap>& frames,
-                      QLabel& label,
-                      int frame_actual,
+    void pintar_frame(const std::vector<QPixmap>& frames, QLabel& label, int frame_actual,
                       int ancho, int alto);
 };
 

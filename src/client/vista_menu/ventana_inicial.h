@@ -5,7 +5,7 @@
 
 QFont obtener_fuente();
 
-class VentanaInicial : public QMainWindow {
+class VentanaInicial: public QMainWindow {
 private:
     QPushButton press_click_btn;
 
@@ -22,7 +22,7 @@ private:
     void inicializar_boton();
 
 public:
-    explicit VentanaInicial();
+    VentanaInicial();
 };
 
-#endif // VENTANAPRINCIPAL_H
+#endif  // VENTANAPRINCIPAL_H

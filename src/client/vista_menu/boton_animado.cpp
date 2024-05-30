@@ -1,8 +1,9 @@
 #include "boton_animado.h"
+
 #include "constantes_menu.h"
 
 
-BotonAnimado::BotonAnimado(QMainWindow* parent, int num_sprite, int ancho, int alto) :
+BotonAnimado::BotonAnimado(QMainWindow* parent, int num_sprite, int ancho, int alto):
         QPushButton(parent),
         label_jugador(this),
         label_nombre(this),
@@ -22,17 +23,19 @@ void BotonAnimado::paintEvent(QPaintEvent* event) {
 void BotonAnimado::focusInEvent(QFocusEvent* event) {
     manejador_texturas.animacion_hacia_adelante();
     clicked();
-    QPushButton::focusInEvent(event); // Llama a la implementación base para mantener el comportamiento normal
+    QPushButton::focusInEvent(
+            event);  // Llama a la implementación base para mantener el comportamiento normal
 }
 
 
 void BotonAnimado::focusOutEvent(QFocusEvent* event) {
     manejador_texturas.animacion_en_reversa();
-    QPushButton::focusOutEvent(event); // Llama a la implementación base para mantener el comportamiento normal
+    QPushButton::focusOutEvent(
+            event);  // Llama a la implementación base para mantener el comportamiento normal
 }
 
 
-void BotonAnimado::keyPressEvent(QKeyEvent *event) {
+void BotonAnimado::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
         clicked();
     } else {
@@ -41,9 +44,10 @@ void BotonAnimado::keyPressEvent(QKeyEvent *event) {
 }
 
 
-void BotonAnimado::mouseMoveEvent(QMouseEvent *event) {
-    setFocus();                 // Pone el foco en el botón cuando el mouse se mueve sobre él
-    QPushButton::mouseMoveEvent(event);  // Llama al método original para que el botón funcione normalmente
+void BotonAnimado::mouseMoveEvent(QMouseEvent* event) {
+    setFocus();  // Pone el foco en el botón cuando el mouse se mueve sobre él
+    QPushButton::mouseMoveEvent(
+            event);  // Llama al método original para que el botón funcione normalmente
 }
 
 

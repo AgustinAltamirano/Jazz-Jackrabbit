@@ -8,7 +8,7 @@
 
 #define CANT_EFECTOS_SONIDO 6
 
-class BotonMenu : public QPushButton {
+class BotonMenu: public QPushButton {
 private:
     QMediaPlayer reproductor_efectos;
 
@@ -22,14 +22,14 @@ public:
     BotonMenu(QWidget* parent, int offset_x, int offset_y, int ancho, int alto, const char* text);
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
-    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
 
-    void focusInEvent(QFocusEvent *event) override;
+    void focusInEvent(QFocusEvent* event) override;
 
-    void mousePressEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent* event) override;
 };
 
 
-#endif //BOTONMENU_H
+#endif  // BOTONMENU_H

@@ -6,7 +6,7 @@
 #include "constantes_menu.h"
 
 
-MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent) :
+MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent):
         QMainWindow(parent),
         central_widget(this),
         horizontal_layout_widget(&central_widget),
@@ -14,13 +14,10 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent) :
         jazz_player(this, NUM_JAZZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
         spaz_player(this, NUM_SPAZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
         lori_player(this, NUM_LORI_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
-        selector_mapa(this)
-{
+        selector_mapa(this) {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
-    horizontal_layout_widget.setGeometry(QRect(M_LEFT_PLAYER,
-                                               M_TOP_PLAYER,
-                                               ANCHO_PANTALLA,
-                                               ALTO_PANTALLA));
+    horizontal_layout_widget.setGeometry(
+            QRect(M_LEFT_PLAYER, M_TOP_PLAYER, ANCHO_PANTALLA, ALTO_PANTALLA));
 
     horizontalLayout.setSpacing(ESPACIADO_ENTRE_JUGADORES);
     horizontalLayout.setContentsMargins(M_LEFT, M_TOP, M_RIGHT, M_BOTTOM);
@@ -37,9 +34,12 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent) :
 
 void MenuSeleccionJugador::conectar_botones() {
     // Defino los handlers de los botones
-    connect(&jazz_player, &QPushButton::clicked, this, &MenuSeleccionJugador::mostrar_selector_mapa);
-    connect(&spaz_player, &QPushButton::clicked, this, &MenuSeleccionJugador::mostrar_selector_mapa);
-    connect(&lori_player, &QPushButton::clicked, this, &MenuSeleccionJugador::mostrar_selector_mapa);
+    connect(&jazz_player, &QPushButton::clicked, this,
+            &MenuSeleccionJugador::mostrar_selector_mapa);
+    connect(&spaz_player, &QPushButton::clicked, this,
+            &MenuSeleccionJugador::mostrar_selector_mapa);
+    connect(&lori_player, &QPushButton::clicked, this,
+            &MenuSeleccionJugador::mostrar_selector_mapa);
 }
 
 

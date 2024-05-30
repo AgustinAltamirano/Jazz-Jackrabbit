@@ -21,7 +21,7 @@
 #define M_BOTTOM 0
 
 
-class MenuSeleccionJugador : public QMainWindow {
+class MenuSeleccionJugador: public QMainWindow {
 private:
     QWidget central_widget;
 

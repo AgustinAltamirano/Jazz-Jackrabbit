@@ -21,9 +21,9 @@ protected:
 
     void focusOutEvent(QFocusEvent* event) override;
 
-    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
-    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
 
     bool eventFilter(QObject* watched, QEvent* event) override;
 
@@ -37,4 +37,4 @@ private:
     void paintEvent(QPaintEvent* event) override;
 };
 
-#endif //SPRITEANIMATION_H
+#endif  // SPRITEANIMATION_H

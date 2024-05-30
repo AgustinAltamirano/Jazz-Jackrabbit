@@ -1,14 +1,13 @@
-#include <random>
 #include "boton_menu.h"
+
+#include <random>
+
 #include "ventana_inicial.h"
 
 
 BotonMenu::BotonMenu(QWidget* parent, int offset_x, int offset_y, int ancho, int alto,
                      const char* text):
-        QPushButton(parent),
-        reproductor_efectos(),
-        efectos_de_sonido()
-{
+        QPushButton(parent), reproductor_efectos(), efectos_de_sonido() {
     setGeometry(QRect(offset_x, offset_y, ancho, alto));
     QFont fuente = obtener_fuente();
     fuente.setPointSize(TAMANIO_FUENTE_BTN);
@@ -26,7 +25,8 @@ BotonMenu::BotonMenu(QWidget* parent, int offset_x, int offset_y, int ancho, int
 
 void BotonMenu::definir_efectos_de_sonido() {
     for (int i = 0; i <= CANT_EFECTOS_SONIDO; ++i) {
-        efectos_de_sonido.addMedia(QUrl(RUTA_EFECTOS_SONIDO + QString::number(i) + EXTENSION_EFECTOS_SONIDO));
+        efectos_de_sonido.addMedia(
+                QUrl(RUTA_EFECTOS_SONIDO + QString::number(i) + EXTENSION_EFECTOS_SONIDO));
     }
     efectos_de_sonido.setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
     reproductor_efectos.setPlaylist(&efectos_de_sonido);
@@ -34,7 +34,7 @@ void BotonMenu::definir_efectos_de_sonido() {
 }
 
 
-void BotonMenu::keyPressEvent(QKeyEvent *event) {
+void BotonMenu::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
         clicked();
     } else {
@@ -43,21 +43,24 @@ void BotonMenu::keyPressEvent(QKeyEvent *event) {
 }
 
 
-void BotonMenu::mouseMoveEvent(QMouseEvent *event) {
-    setFocus();                 // Pone el foco en el botón cuando el mouse se mueve sobre él
-    QPushButton::mouseMoveEvent(event);  // Llama al método original para que el botón funcione normalmente
+void BotonMenu::mouseMoveEvent(QMouseEvent* event) {
+    setFocus();  // Pone el foco en el botón cuando el mouse se mueve sobre él
+    QPushButton::mouseMoveEvent(
+            event);  // Llama al método original para que el botón funcione normalmente
 }
 
 
-void BotonMenu::focusInEvent(QFocusEvent *event) {
+void BotonMenu::focusInEvent(QFocusEvent* event) {
     reproducir_efecto_sonido();
-    QPushButton::focusInEvent(event);       // Llama al método original para que el botón funcione normalmente
+    QPushButton::focusInEvent(
+            event);  // Llama al método original para que el botón funcione normalmente
 }
 
 
-void BotonMenu::mousePressEvent(QMouseEvent *event) {
+void BotonMenu::mousePressEvent(QMouseEvent* event) {
     reproducir_efecto_sonido();
-    QPushButton::mousePressEvent(event);  // Llama al método original para que el botón funcione normalmente
+    QPushButton::mousePressEvent(
+            event);  // Llama al método original para que el botón funcione normalmente
 }
 
 

@@ -25,7 +25,7 @@ set(PROJECT_SOURCES
         boton_menu.h
         boton_animado.cpp
         boton_animado.cpp
-        ../../assets/menu/resources.qrc
+        ../../../assets/menu/resources.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
