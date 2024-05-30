@@ -5,7 +5,7 @@
 #include <iostream>
 #include <utility>
 
-#include "../common/constantes.h"
+#include "../../common/constantes.h"
 
 manejadorEscenario::manejadorEscenario(std::string path): path(std::move(path)) {
     cargar_escenario_basico(620, 480);

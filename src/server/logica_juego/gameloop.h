@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
-#include "../common/queue.h"
-#include "../common/thread.h"
+#include "../../common/queue.h"
+#include "../../common/thread.h"
 
 #include "personaje.h"
 

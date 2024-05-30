@@ -1,7 +1,7 @@
 #include "personaje.h"
 
-#include "../common/config.h"
-#include "../common/constantes.h"
+#include "../../common/config.h"
+#include "../../common/constantes.h"
 
 personaje::personaje(const int id, const int tipo, const int pos_x_inicial,
                      const int pos_y_inicial):
