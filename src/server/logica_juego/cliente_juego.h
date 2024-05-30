@@ -5,7 +5,7 @@
 
 class ClienteJuego {
 public:
-    ClienteJuego(std::int32_t id);
+    explicit ClienteJuego(std::int32_t id);
 
     std::int32_t obtener_id();
 
@@ -13,7 +13,6 @@ public:
 
 private:
     const std::int32_t id;
-
 };
 
 #endif  // CLIENTE_JUEGO_H_

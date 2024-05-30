@@ -1,18 +1,19 @@
 #ifndef PARTIDA_H
 #define PARTIDA_H
 
-#include "../common/queue.h"
-#include "../common/thread.h"
-#include "../common/comando_dto.h"
-#include "../common/snapshot_dto.h"
-#include "./monitor_snapshots.h"
-#include "logica_juego.h"
-
-#include <map>
 #include <atomic>
+#include <map>
 #include <string>
 
-class Partida : public Thread {
+#include "../common/comando_dto.h"
+#include "../common/queue.h"
+#include "../common/snapshot_dto.h"
+#include "../common/thread.h"
+#include "./monitor_snapshots.h"
+
+#include "logica_juego.h"
+
+class Partida: public Thread {
 private:
     LogicaJuego logica_juego;
 
@@ -20,7 +21,7 @@ private:
 
     int32_t codigo_partida;
 
-    Queue<ComandoDTO *> cola_comandos;
+    Queue<ComandoDTO*> cola_comandos;
 
     bool sigo_jugando;
 
@@ -29,7 +30,8 @@ private:
     int8_t capacidad_partida;
 
 public:
-    Partida(Queue<SnapshotDTO> *cola_enviador, int32_t &codigo_partida, int32_t &id_cliente, int8_t &capacidad_partida);
+    Partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo_partida, const int32_t& id_cliente,
+            int8_t& capacidad_partida);
 
     void run() override;
 
@@ -37,15 +39,15 @@ public:
 
     void kill() override;
 
-    Queue<ComandoDTO *> *obtener_comandos();
+    Queue<ComandoDTO*>* obtener_comandos();
 
-    void agregar_cliente(Queue<SnapshotDTO> *cola_enviador, int32_t &id_cliente);
+    void agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente);
 
-    bool comparar_partida(const int32_t &codigo_a_comparar);
+    bool comparar_partida(const int32_t& codigo_a_comparar);
 
     int32_t obtener_codigo_partida();
 
-    bool borrar_cliente(int32_t &id_cliente);
+    bool borrar_cliente(int32_t& id_cliente);
 
     void detener_partida();
 

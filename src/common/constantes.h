@@ -12,8 +12,9 @@
 #define ANCHO_INICIAL 40
 #define ALTO_INICIAL 50
 
-// MOVIMIENTO DE PERSONAJES
-#define TECLA_DERECHA "d"
-#define TECLA_IZQUIERDA "a"
+// GAMELOOP
+#define TIEMPO_FRAME 33
+// 33 milisegundos equivale a 30 fps
+// se se quiere 60 fps cambiar a 17 milisegundos
 
 #endif  // CONSTANTES_H

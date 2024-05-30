@@ -32,18 +32,28 @@ typedef enum {
     MUERTE,
 } EstadoPersonaje;
 
+typedef enum {
+    SALTAR = 0,
+    MOVER_IZQ,
+    MOVER_DER,
+    ACTIVAR_DASH,
+    DISPARAR_ACCION,
+    ARMA_ANTERIOR,
+    ARMA_SIGUIENTE,
+} AccionJuego;
+
 class personaje {
 private:
     int32_t id;
     TipoPersonaje tipo_de_personaje;
-    int alto;
-    int ancho;
+    uint32_t alto;
+    uint32_t ancho;
 
-    int pos_x;
+    int32_t pos_x;
     int vel_x;
     int aceleracion_x;
 
-    int pos_y;
+    int32_t pos_y;
     int vel_y;
     int aceleracion_y;  // gravedad
 
@@ -64,20 +74,20 @@ private:
     std::vector<int32_t> inventario_balas;
 
 public:
-    personaje(int id, TipoPersonaje tipo, int pos_x_inicial, int pos_y_inicial);
+    personaje(int32_t id, TipoPersonaje tipo, int32_t pos_x_inicial, int32_t pos_y_inicial);
 
-    void cambiar_velocidad(
-            const std::vector<std::string>&
-                    teclas);  // chequea el estado y decide si puede moverse, CAMBIA LA VELOCIDAD
-    void cambiar_posicion(int x, int y);  // despues de revisar colisiones se efectua el cambio real
+    void cambiar_velocidad(const std::vector<AccionJuego>& teclas);  // chequea estado y decide si
+                                                                     // moverse, CAMBIA LA VELOCIDAD
+    void cambiar_posicion(uint32_t x,
+                          uint32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(TipoPersonaje tipo);
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.
-    [[nodiscard]] std::vector<int> get_pos_actual() const;
-    [[nodiscard]] std::vector<int> get_pos_a_ir() const;
-    [[nodiscard]] int get_ancho() const;
-    [[nodiscard]] int get_alto() const;
+    [[nodiscard]] std::vector<int32_t> get_pos_actual() const;
+    [[nodiscard]] std::vector<int32_t> get_pos_a_ir() const;
+    [[nodiscard]] uint32_t get_ancho() const;
+    [[nodiscard]] uint32_t get_alto() const;
 
     // bool disparar();
     // bool cambiar_arma();

@@ -1,14 +1,16 @@
 #ifndef LOBBY_H
 #define LOBBY_H
 
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "../../common/socket.h"
+
+#include "lobby_deserializador.h"
 #include "lobby_enviador.h"
 #include "lobby_recibidor.h"
 #include "lobby_serializador.h"
-#include "lobby_deserializador.h"
-#include <optional>
-#include <vector>
-#include <string>
 
 class Lobby {
 private:
@@ -26,15 +28,14 @@ private:
 
     Queue<std::vector<char>> cola_enviador;
 
-    Queue<ComandoDTO *> cola_recibidor;
+    Queue<ComandoDTO*> cola_recibidor;
 
 public:
+    Lobby(const std::string& hostname, const std::string& servname);
 
-    Lobby(const std::string &hostname, const std::string &servname);
+    bool crear_partida(const int8_t& capacidad_partida);
 
-    bool crear_partida(const int8_t &capacidad_partida);
-
-    bool unir_partida(const int32_t &codigo_partida);
+    bool unir_partida(const int32_t& codigo_partida);
 
     void comenzar();
 

@@ -43,7 +43,7 @@ public:
 
     explicit Socket(const char* servname);
 
-    explicit Socket();
+    Socket();
 
     /*
      * Deshabilitamos el constructor por copia y operador asignación por copia

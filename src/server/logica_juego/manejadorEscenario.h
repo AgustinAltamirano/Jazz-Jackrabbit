@@ -19,8 +19,9 @@ private:
 
 public:
     explicit manejadorEscenario(std::string path);
-    void cargar_escenario_basico(int ancho, int alto);
+    void cargar_escenario_basico(uint32_t ancho, uint32_t alto);
     void colisiones_bloques_rectos(std::map<int, personaje>& jugadores) const;
+    std::vector<spawnpoint>& get_spawns();
 };
 
 

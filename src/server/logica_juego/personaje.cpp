@@ -3,8 +3,8 @@
 #include "../../common/config.h"
 #include "../../common/constantes.h"
 
-personaje::personaje(const int id, const TipoPersonaje tipo, const int pos_x_inicial,
-                     const int pos_y_inicial):
+personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t pos_x_inicial,
+                     const int32_t pos_y_inicial):
         id(id),
         tipo_de_personaje(tipo),
         alto(ALTO_INICIAL),
@@ -18,7 +18,7 @@ personaje::personaje(const int id, const TipoPersonaje tipo, const int pos_x_ini
         de_espaldas(false),
         en_aire(false),
         ataque_especial(false),
-        estado(IDLE),
+        estado(EstadoPersonaje::IDLE),
         tiempo_estado(0),
         puntos(0),
         arma_actual(INFINITA) {
@@ -27,18 +27,18 @@ personaje::personaje(const int id, const TipoPersonaje tipo, const int pos_x_ini
     vida = configurador.get(VIDA_INICIAL);
 }
 
-void personaje::cambiar_velocidad(const std::vector<std::string>& teclas) {
+void personaje::cambiar_velocidad(const std::vector<AccionJuego>& teclas) {
     if (ataque_especial) {
         return;
     }
-    for (const std::string tecla&: teclas) {
+    for (const AccionJuego tecla&: teclas) {
         // verificar si el estado permite hacer acciones
         switch (tecla) {
-            case TECLA_DERECHA:
+            case MOVER_DER:
                 this->vel_x = 10;
                 this->de_espaldas = false;
                 break;
-            case TECLA_IZQUIERDA:
+            case MOVER_IZQ:
                 this->vel_y = -10;
                 this->de_espaldas = true;
                 break;
@@ -52,7 +52,7 @@ void personaje::cambiar_velocidad(const std::vector<std::string>& teclas) {
     }
 }
 
-void personaje::cambiar_posicion(const int x, const int y) {
+void personaje::cambiar_posicion(const uint32_t x, const uint32_t y) {
     this->pos_x = x;
     this->pos_y = y;
 }
@@ -71,9 +71,8 @@ std::vector<int> personaje::get_pos_a_ir() const {
         pos_prox.push_back(this->pos_x + this->vel_x * 707 / 1000);
         pos_prox.push_back(this->pos_y + this->vel_x * 707 / 1000);
         return pos_prox;
-    } else {
-        pos_prox.push_back(this->pos_x + this->vel_x);
     }
+    pos_prox.push_back(this->pos_x + this->vel_x);
     if (en_aire) {
         pos_prox.push_back(this->pos_y + this->vel_y);
     } else {
@@ -82,6 +81,6 @@ std::vector<int> personaje::get_pos_a_ir() const {
     return pos_prox;
 }
 
-int personaje::get_alto() const { return alto; }
+uint32_t personaje::get_alto() const { return alto; }
 
-int personaje::get_ancho() const { return ancho; }
+uint32_t personaje::get_ancho() const { return ancho; }

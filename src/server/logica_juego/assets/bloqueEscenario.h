@@ -1,6 +1,8 @@
 #ifndef BLOQUEESCENARIO_H
 #define BLOQUEESCENARIO_H
 
+#include <cstdint>
+
 typedef enum {
     PISO = 0,
     TECHO,
@@ -10,13 +12,13 @@ typedef enum {
 
 class bloqueEscenario {
 public:
-    int pos_x;
-    int pos_y;
-    int ancho;
-    int alto;
-    int angulo;
+    int32_t pos_x;
+    int32_t pos_y;
+    uint32_t ancho;
+    uint32_t alto;
+    uint32_t angulo;
     TipoBloqueEscenario tipo;
-    bloqueEscenario(int pos_x, int pos_y, int ancho, int alto, int angulo,
+    bloqueEscenario(int32_t pos_x, int32_t pos_y, uint32_t ancho, uint32_t alto, int32_t angulo,
                     TipoBloqueEscenario tipo);
 };
 

@@ -13,7 +13,7 @@
 #include "liberror.h"
 #include "resolver.h"
 
-Socket::Socket(const char *hostname, const char *servname) {
+Socket::Socket(const char* hostname, const char* servname) {
     Resolver resolver(hostname, servname, false);
 
     int s = -1;
@@ -30,7 +30,7 @@ Socket::Socket(const char *hostname, const char *servname) {
      * una que funcione.
      * */
     while (resolver.has_next()) {
-        struct addrinfo *addr = resolver.next();
+        struct addrinfo* addr = resolver.next();
 
         /* Cerramos el socket si nos quedo abierto de la iteración
          * anterior
@@ -87,14 +87,14 @@ Socket::Socket(const char *hostname, const char *servname) {
                    (hostname ? hostname : ""), (servname ? servname : ""));
 }
 
-Socket::Socket(const char *servname) {
+Socket::Socket(const char* servname) {
     Resolver resolver(nullptr, servname, true);
 
     int s = -1;
     int _skt = -1;
     this->closed = true;
     while (resolver.has_next()) {
-        struct addrinfo *addr = resolver.next();
+        struct addrinfo* addr = resolver.next();
 
         if (_skt != -1)
             ::close(_skt);
@@ -147,7 +147,7 @@ Socket::Socket(const char *servname) {
                    (servname ? servname : ""));
 }
 
-Socket::Socket(Socket &&other) {
+Socket::Socket(Socket&& other) {
     /* Nos copiamos del otro socket... */
     this->skt = other.skt;
     this->closed = other.closed;
@@ -172,7 +172,7 @@ Socket::Socket() {
     this->skt = -1;
 }
 
-Socket &Socket::operator=(Socket &&other) {
+Socket& Socket::operator=(Socket&& other) {
     /* Si el usuario hace algo como tratar de moverse
      * a si mismo (`skt = skt;`) simplemente no hacemos
      * nada.
@@ -199,9 +199,9 @@ Socket &Socket::operator=(Socket &&other) {
     return *this;
 }
 
-int Socket::recvsome(void *data, unsigned int sz, bool *was_closed) {
+int Socket::recvsome(void* data, unsigned int sz, bool* was_closed) {
     *was_closed = false;
-    int s = recv(this->skt, static_cast<char *>(data), sz, 0);
+    int s = recv(this->skt, static_cast<char*>(data), sz, 0);
     if (s == 0) {
         /*
          * Puede ser o no un error, dependerá del protocolo.
@@ -221,7 +221,7 @@ int Socket::recvsome(void *data, unsigned int sz, bool *was_closed) {
     }
 }
 
-int Socket::sendsome(const void *data, unsigned int sz, bool *was_closed) {
+int Socket::sendsome(const void* data, unsigned int sz, bool* was_closed) {
     *was_closed = false;
     /*
      * Cuando se hace un send, el sistema operativo puede aceptar
@@ -240,7 +240,7 @@ int Socket::sendsome(const void *data, unsigned int sz, bool *was_closed) {
      * Esta en nosotros luego hace el chequeo correspondiente
      * (ver más abajo).
      * */
-    int s = send(this->skt, reinterpret_cast<char *>(const_cast<void *>(data)), sz, MSG_NOSIGNAL);
+    int s = send(this->skt, reinterpret_cast<char*>(const_cast<void*>(data)), sz, MSG_NOSIGNAL);
     if (s == -1) {
         /*
          * Este es un caso especial: cuando enviamos algo pero en el medio
@@ -272,12 +272,12 @@ int Socket::sendsome(const void *data, unsigned int sz, bool *was_closed) {
     }
 }
 
-int Socket::recvall(void *data, unsigned int sz, bool *was_closed) {
+int Socket::recvall(void* data, unsigned int sz, bool* was_closed) {
     unsigned int received = 0;
     *was_closed = false;
 
     while (received < sz) {
-        int s = recvsome(static_cast<char *>(data) + received, sz - received, was_closed);
+        int s = recvsome(static_cast<char*>(data) + received, sz - received, was_closed);
 
         if (s <= 0) {
             /*
@@ -308,12 +308,12 @@ int Socket::recvall(void *data, unsigned int sz, bool *was_closed) {
 }
 
 
-int Socket::sendall(const void *data, unsigned int sz, bool *was_closed) {
+int Socket::sendall(const void* data, unsigned int sz, bool* was_closed) {
     unsigned int sent = 0;
     *was_closed = false;
 
     while (sent < sz) {
-        int s = sendsome(reinterpret_cast<char *>(const_cast<void *>(data)) + sent, sz - sent,
+        int s = sendsome(reinterpret_cast<char*>(const_cast<void*>(data)) + sent, sz - sent,
                          was_closed);
 
         /* Véase los comentarios de `Socket::recvall` */
