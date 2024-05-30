@@ -30,7 +30,7 @@
 #define ORIGEN_Z_ESCALA_MAPA 0
 
 
-class MenuSeleccionMapa : public QMainWindow {
+class MenuSeleccionMapa: public QMainWindow {
 private:
     QWidget central_widget;
 

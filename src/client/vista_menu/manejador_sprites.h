@@ -1,5 +1,5 @@
-#ifndef MANEJADOR_TEXTURAS_H
-#define MANEJADOR_TEXTURAS_H
+#ifndef MANEJADOR_SPRITES_H
+#define MANEJADOR_SPRITES_H
 
 
 #include <QLabel>
@@ -21,50 +21,49 @@
 
 class ManejadorSprites: public QObject {
 public:
-    ManejadorSprites(QLabel& label_boton, QLabel& label_nombre, int num_boton, int ancho, int alto);
+    ManejadorSprites(QLabel& label_boton, int num_boton, int ancho, int alto);
 
     void pintar_frame_boton();
-
-    void pintar_frame_nombre();
 
     void animacion_hacia_adelante();
 
     void animacion_en_reversa();
 
 private slots:
-    void siguiente_frame();
+    virtual void siguiente_frame() = 0;
 
-    void anterior_frame();
+    virtual void anterior_frame() = 0;
 
-private:
-    std::vector<QPixmap> frames_boton;
+protected:
+    YAML::Node sprites;
 
-    std::vector<QPixmap> frames_nombre;
+    QPixmap imagen_sprites;
+
+    void inicializar_texturas(int num_boton, const std::string& tipo_de_sprite,
+                              std::vector<QPixmap>& coleccion_frames);
 
     int frame_act_boton;
 
-    int frame_act_nombre;
+    uint16_t cant_frames_boton;
+
+    void pintar_frame(const std::vector<QPixmap>& frames, QLabel& label, int frame_actual,
+                      int ancho, int alto);
+
+private:
+    std::vector<QPixmap> frames_boton;
 
     QTimer timer_frames;
 
     QLabel& label_boton;
 
-    QLabel& label_nombre;
-
     int ancho_img;
 
     int alto_img;
 
-    uint16_t cant_frames_boton;
+    static YAML::Node obtener_yaml();
 
-    uint16_t cant_frames_nombre;
-
-    void inicializar_texturas(YAML::Node sprites, int num_boton, const std::string& tipo_de_sprite,
-                              QPixmap& imagen, std::vector<QPixmap>& coleccion_frames);
-
-    void pintar_frame(const std::vector<QPixmap>& frames, QLabel& label, int frame_actual,
-                      int ancho, int alto);
+    static QPixmap obtener_imagen_sprites(YAML::Node& sprites, int num_boton);
 };
 
 
-#endif  // MANEJADOR_TEXTURAS_H
+#endif  // MANEJADOR_SPRITES_H

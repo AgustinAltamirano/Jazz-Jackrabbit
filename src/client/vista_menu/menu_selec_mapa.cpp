@@ -1,8 +1,9 @@
 #include "menu_selec_mapa.h"
+
 #include "constantes_menu.h"
 
 
-MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent) :
+MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent):
         QMainWindow(parent),
         central_widget(this),
         vertical_layout_widget(&central_widget),
@@ -21,13 +22,10 @@ MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent) :
         animacion_x(&escala_mapa, "xScale"),
         animacion_y(&escala_mapa, "yScale"),
         animacion_x_agrandar(&escala_mapa, "xScale"),
-        animacion_y_agrandar(&escala_mapa, "yScale")
-{
+        animacion_y_agrandar(&escala_mapa, "yScale") {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
-    vertical_layout_widget.setGeometry(QRect(M_LEFT_LAYOUT,
-                                             M_TOP_LAYOUT,
-                                             ANCHO_PANTALLA,
-                                             ALTO_PANTALLA));
+    vertical_layout_widget.setGeometry(
+            QRect(M_LEFT_LAYOUT, M_TOP_LAYOUT, ANCHO_PANTALLA, ALTO_PANTALLA));
 
     vertical_layout.setSpacing(ESPACIADO_ENTRE_MAPAS);
     vertical_layout.setContentsMargins(M_LEFT_MAPA, M_TOP_MAPA, M_RIGHT_MAPA, M_BOTTOM_MAPA);
@@ -54,15 +52,15 @@ void MenuSeleccionMapa::inicializar_mapa() {
     escena.addItem(&mapa);
 
     // Esto es para que la animación se haga desde el centro de la imagen y no desde el (0, 0)
-    escala_mapa.setOrigin(QVector3D(ORIGEN_X_ESCALA_MAPA,
-                                    ORIGEN_Y_ESCALA_MAPA,
-                                    ORIGEN_Z_ESCALA_MAPA));
+    escala_mapa.setOrigin(
+            QVector3D(ORIGEN_X_ESCALA_MAPA, ORIGEN_Y_ESCALA_MAPA, ORIGEN_Z_ESCALA_MAPA));
 
     mapa.setTransformations({&escala_mapa});
 }
 
 
-void MenuSeleccionMapa::animacion_mapa(QPropertyAnimation& anim_x, QPropertyAnimation& anim_y, int escala_final) {
+void MenuSeleccionMapa::animacion_mapa(QPropertyAnimation& anim_x, QPropertyAnimation& anim_y,
+                                       int escala_final) {
     anim_x.setDuration(1500);
     anim_x.setStartValue(escala_mapa.xScale());
     anim_x.setEndValue(escala_final);
@@ -77,9 +75,7 @@ void MenuSeleccionMapa::animacion_mapa(QPropertyAnimation& anim_x, QPropertyAnim
 }
 
 
-void MenuSeleccionMapa::animacion_achicar() {
-    animacion_mapa(animacion_x, animacion_y, 0);
-}
+void MenuSeleccionMapa::animacion_achicar() { animacion_mapa(animacion_x, animacion_y, 0); }
 
 
 void MenuSeleccionMapa::animacion_agrandar() {

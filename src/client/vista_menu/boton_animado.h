@@ -8,7 +8,7 @@
 #include <QPushButton>
 
 #include "boton_menu.h"
-#include "manejador_sprites.h"
+#include "sprites_jugador.h"
 
 
 class BotonAnimado: public BotonMenu {
@@ -27,7 +27,7 @@ private:
 
     QLabel label_nombre;
 
-    ManejadorSprites manejador_texturas;
+    SpritesJugador manejador_sprites;
 
     void paintEvent(QPaintEvent* event) override;
 };
