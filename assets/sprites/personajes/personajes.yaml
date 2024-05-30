@@ -1,0 +1,369 @@
+personajes:
+  - nombre: jazz
+    imagen: jazz_jackrabbit.png
+    animaciones:
+      - nombre: stand
+        sprites:
+          - x: 1
+            y: 12
+            ancho: 35
+            alto: 49
+          - x: 41
+            y: 12
+            ancho: 35
+            alto: 49
+          - x: 80
+            y: 12
+            ancho: 36
+            alto: 49
+          - x: 122
+            y: 12
+            ancho: 35
+            alto: 49
+          - x: 163
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 205
+            y: 12
+            ancho: 41
+            alto: 49
+          - x: 252
+            y: 12
+            ancho: 47
+            alto: 49
+          - x: 302
+            y: 12
+            ancho: 46
+            alto: 49
+          - x: 353
+            y: 12
+            ancho: 44
+            alto: 49
+          - x: 403
+            y: 12
+            ancho: 39
+            alto: 49
+          - x: 448
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 492
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 536
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 581
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 626
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 671
+            y: 12
+            ancho: 38
+            alto: 49
+          - x: 1
+            y: 63
+            ancho: 44
+            alto: 49
+          - x: 49
+            y: 63
+            ancho: 46
+            alto: 49
+          - x: 99
+            y: 63
+            ancho: 47
+            alto: 49
+          - x: 150
+            y: 63
+            ancho: 41
+            alto: 49
+          - x: 193
+            y: 63
+            ancho: 38
+            alto: 49
+          - x: 233
+            y: 63
+            ancho: 35
+            alto: 49
+          - x: 274
+            y: 63
+            ancho: 36
+            alto: 49
+          - x: 313
+            y: 63
+            ancho: 35
+            alto: 49
+          - x: 354
+            y: 63
+            ancho: 35
+            alto: 49
+          - x: 394
+            y: 63
+            ancho: 35
+            alto: 49
+          - x: 434
+            y: 62
+            ancho: 35
+            alto: 49
+
+      - nombre: disparar
+        sprites:
+          - x: 2
+            y: 571
+            ancho: 45
+            alto: 43
+          - x: 52
+            y: 571
+            ancho: 44
+            alto: 43
+
+      - nombre: parar_disparar
+        sprites:
+          - x: 98
+            y: 558
+            ancho: 39
+            alto: 55
+          - x: 144
+            y: 558
+            ancho: 35
+            alto: 55
+          - x: 183
+            y: 558
+            ancho: 37
+            alto: 55
+          - x: 223
+            y: 558
+            ancho: 38
+            alto: 55
+
+      - nombre: cargar_uppercut
+        sprites:
+          - x: 2
+            y: 720
+            ancho: 55
+            alto: 46
+          - x: 59
+            y: 720
+            ancho: 51
+            alto: 46
+          - x: 114
+            y: 720
+            ancho: 42
+            alto: 48
+          - x: 161
+            y: 720
+            ancho: 38
+            alto: 50
+          - x: 204
+            y: 720
+            ancho: 33
+            alto: 52
+          - x: 240
+            y: 720
+            ancho: 29
+            alto: 52
+          - x: 272
+            y: 720
+            ancho: 24
+            alto: 51
+
+      - nombre: uppercut
+        sprites:
+          - x: 303
+            y: 717
+            ancho: 22
+            alto: 55
+          - x: 329
+            y: 717
+            ancho: 23
+            alto: 55
+          - x: 355
+            y: 717
+            ancho: 23
+            alto: 55
+
+      - nombre: parar_uppercut
+        sprites:
+          - x: 388
+            y: 721
+            ancho: 39
+            alto: 51
+          - x: 430
+            y: 71
+            ancho: 50
+            alto: 51
+
+      - nombre: correr
+        sprites:
+          - x: 3
+            y: 856
+            ancho: 61
+            alto: 35
+          - x: 67
+            y: 856
+            ancho: 67
+            alto: 35
+          - x: 139
+            y: 856
+            ancho: 62
+            alto: 35
+          - x: 205
+            y: 856
+            ancho: 63
+            alto: 35
+          - x: 272
+            y: 856
+            ancho: 62
+            alto: 35
+          - x: 337
+            y: 856
+            ancho: 67
+            alto: 35
+          - x: 409
+            y: 856
+            ancho: 58
+            alto: 35
+          - x: 472
+            y: 856
+            ancho: 61
+            alto: 35
+
+      - nombre: dash
+        sprites:
+          - x: 3
+            y: 996
+            ancho: 67
+            alto: 40
+          - x: 73
+            y: 996
+            ancho: 63
+            alto: 40
+          - x: 139
+            y: 996
+            ancho: 67
+            alto: 40
+          - x: 210
+            y: 996
+            ancho: 63
+            alto: 40
+
+      - nombre: cargar_saltar_arriba
+        sprites:
+          - x: 7
+            y: 1123
+            ancho: 38
+            alto: 49
+          - x: 50
+            y: 1128
+            ancho: 47
+            alto: 47
+          - x: 102
+            y: 1130
+            ancho: 47
+            alto: 47
+
+      - nombre: saltar_arriba
+        sprites:
+          - x: 154
+            y: 1130
+            ancho: 40
+            alto: 49
+          - x: 200
+            y: 1130
+            ancho: 49
+            alto: 49
+          - x: 241
+            y: 1130
+            ancho: 37
+            alto: 49
+
+      - nombre: parar_saltar_arriba
+        sprites:
+          - x: 283
+            y: 1129
+            ancho: 45
+            alto: 47
+          - x: 333
+            y: 1129
+            ancho: 51
+            alto: 47
+          - x: 388
+            y: 1129
+            ancho: 54
+            alto: 47
+
+      - nombre: caer_abajo
+        sprites:
+          - x: 445
+            y: 1123
+            ancho: 54
+            alto: 47
+          - x: 502
+            y: 1123
+            ancho: 57
+            alto: 47
+          - x: 563
+            y: 1123
+            ancho: 56
+            alto: 47
+
+      - nombre: saltar_adelante
+        sprites:
+          - x: 4
+            y: 1203
+            ancho: 47
+            alto: 54
+          - x: 54
+            y: 1203
+            ancho: 34
+            alto: 54
+          - x: 92
+            y: 1203
+            ancho: 39
+            alto: 54
+          - x: 134
+            y: 1203
+            ancho: 45
+            alto: 54
+          - x: 183
+            y: 1203
+            ancho: 44
+            alto: 54
+          - x: 230
+            y: 1203
+            ancho: 47
+            alto: 54
+          - x: 282
+            y: 1203
+            ancho: 47
+            alto: 54
+          - x: 332
+            y: 1203
+            ancho: 48
+            alto: 54
+          - x: 384
+            y: 1203
+            ancho: 41
+            alto: 54
+
+      - nombre: caer_adelante
+        sprites:
+          - x: 430
+            y: 1199
+            ancho: 34
+            alto: 47
+          - x: 466
+            y: 1199
+            ancho: 33
+            alto: 47
+          - x: 502
+            y: 1199
+            ancho: 33
+            alto: 47
