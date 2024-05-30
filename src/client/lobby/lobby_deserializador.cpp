@@ -1,10 +1,12 @@
 #include "lobby_deserializador.h"
+
 #include <iostream>
+
 #include <arpa/inet.h>
 
-LobbyDeserializador::LobbyDeserializador(Socket *socket) : socket(socket) {}
+LobbyDeserializador::LobbyDeserializador(Socket* socket): socket(socket) {}
 
-ComandoDTO *LobbyDeserializador::obtener_comando(bool *cerrado) {
+ComandoDTO* LobbyDeserializador::obtener_comando(bool* cerrado) {
     char codigo_comando = 0;
     socket->recvall(&codigo_comando, 1, cerrado);
     if (*cerrado) {
@@ -21,27 +23,29 @@ ComandoDTO *LobbyDeserializador::obtener_comando(bool *cerrado) {
         case COMENZAR:
             return (deserializar_comenzar_juego(cerrado));
             break;
+        default:
+            throw std::invalid_argument("no se encontro el caso en el deserializador del servidor");
     }
 }
 
-ComandoCrearDTO *LobbyDeserializador::deserializar_crear_partida(bool *cerrado) {
+ComandoCrearDTO* LobbyDeserializador::deserializar_crear_partida(bool* cerrado) {
     int32_t codigo_partida;
     socket->recvall(&codigo_partida, 4, cerrado);
     codigo_partida = ntohl(codigo_partida);
-    ComandoCrearDTO *crear_dto = new ComandoCrearDTO(codigo_partida);
+    ComandoCrearDTO* crear_dto = new ComandoCrearDTO(codigo_partida);
     return crear_dto;
 }
 
-ComandoUnirDTO *LobbyDeserializador::deserializar_unir_partida(bool *cerrado) {
+ComandoUnirDTO* LobbyDeserializador::deserializar_unir_partida(bool* cerrado) {
     bool unio;
     socket->recvall(&unio, 1, cerrado);
-    ComandoUnirDTO *unir_dto = new ComandoUnirDTO(unio);
+    ComandoUnirDTO* unir_dto = new ComandoUnirDTO(unio);
     return unir_dto;
 }
 
-ComandoComenzarDTO *LobbyDeserializador::deserializar_comenzar_juego(bool *cerrado) {
+ComandoComenzarDTO* LobbyDeserializador::deserializar_comenzar_juego(bool* cerrado) {
     bool empezo;
     socket->recvall(&empezo, 1, cerrado);
-    ComandoComenzarDTO *empezar_dto = new ComandoComenzarDTO(empezo);
+    ComandoComenzarDTO* empezar_dto = new ComandoComenzarDTO(empezo);
     return empezar_dto;
 }

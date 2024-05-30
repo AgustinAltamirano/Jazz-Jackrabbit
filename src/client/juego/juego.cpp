@@ -1,21 +1,18 @@
 #include "juego.h"
 
-#include <utility>
+#include <chrono>
+#include <cmath>
 #include <optional>
 #include <set>
-#include <vector>
-#include <chrono>
 #include <sstream>
-#include <cmath>
 #include <thread>
+#include <utility>
+#include <vector>
 
-Juego::Juego(int id_cliente, Socket &socket) : id_cliente(id_cliente), cliente(std::move(socket)),
-                                               frecuencia(0.04) {
-}
+Juego::Juego(int id_cliente, Socket& socket):
+        id_cliente(id_cliente), cliente(std::move(socket)), frecuencia(0.04) {}
 
-Juego::~Juego() {
-    this->cliente.join();
-}
+Juego::~Juego() { this->cliente.join(); }
 
 void Juego::start() {
     bool jugando = true;
@@ -47,9 +44,9 @@ void Juego::start() {
     }
 }
 
-void Juego::ejecutar_ciclo_principal_juego(SnapshotDTO &snapshot_dto) {
+void Juego::ejecutar_ciclo_principal_juego(SnapshotDTO& snapshot_dto) {
     std::vector<ClienteDTO> clientes = snapshot_dto.obtener_clientes();
-    for (auto &cliente: clientes) {
+    for (auto& cliente: clientes) {
         std::cout << "Cliente ID: " << cliente.id_cliente << "\n";
     }
 }

@@ -1,11 +1,12 @@
 #ifndef JUEGO_H
 #define JUEGO_H
 
-#include "cliente.h"
-#include "../../common/snapshot_dto.h"
-
 #include <map>
 #include <memory>
+
+#include "../../common/snapshot_dto.h"
+
+#include "cliente.h"
 
 class Juego {
     int id_cliente;
@@ -13,14 +14,14 @@ class Juego {
     double frecuencia;
 
 public:
-    Juego(int id_cliente, Socket &socket);
+    Juego(int id_cliente, Socket& socket);
 
     ~Juego();
 
     void start();
 
 private:
-    void ejecutar_ciclo_principal_juego(SnapshotDTO &snapshot_dto);
+    void ejecutar_ciclo_principal_juego(SnapshotDTO& snapshot_dto);
 };
 
-#endif //JUEGO_H
+#endif  // JUEGO_H

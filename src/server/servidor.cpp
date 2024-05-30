@@ -1,9 +1,10 @@
-#include <sys/socket.h>
 #include "servidor.h"
+
+#include <sys/socket.h>
+
 #include "aceptador.h"
 
-Servidor::Servidor(char *servname) :
-        skt_servidor(servname), aceptador(&skt_servidor) {
+Servidor::Servidor(char* servname): skt_servidor(servname), aceptador(&skt_servidor) {
     aceptador.start();
 }
 

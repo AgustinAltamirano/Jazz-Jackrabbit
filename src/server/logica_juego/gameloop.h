@@ -12,6 +12,7 @@
 #include "../../common/queue.h"
 #include "../../common/snapshot_dto.h"
 #include "../../common/thread.h"
+#include "assets/spawnpoint.h"
 
 #include "manejadorEscenario.h"
 #include "personaje.h"
@@ -37,8 +38,8 @@ public:
      *nombre del archivo que contiene el escenario
      *un mapa con los ids de personajes que se crearan apuntando al tipo de personaje
      */
-    explicit gameloop(std::string archivo_escenario, std::map<int, TipoDePersonaje>,
-                      Queue<SnapshotDTO>& cola_entrada);
+    explicit gameloop(const std::string& archivo_escenario,
+                      const std::map<int, TipoPersonaje>& mapa, Queue<SnapshotDTO>& cola_entrada);
     void kill() override;
 };
 
