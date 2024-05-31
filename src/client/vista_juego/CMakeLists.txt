@@ -15,7 +15,8 @@ add_library(vista_juego
         personaje_lori.h
         personaje_spaz.cpp
         personaje_spaz.h
-        vista_juego_exception.h)
+        vista_juego_exception.h
+        accion_juego_dto.h)
 
 # Configuración de las librerías externas SDL2 y SDL2pp
 include_directories(${SDL2_INCLUDE_DIR})

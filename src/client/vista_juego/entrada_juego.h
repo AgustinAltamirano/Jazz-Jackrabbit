@@ -7,16 +7,7 @@
 
 #include "../../common/queue.h"
 
-// Provisorio (esto tendría que definirse en el protocolo)
-typedef enum {
-    SALTAR = 0,
-    MOVER_IZQ,
-    MOVER_DER,
-    ACTIVAR_DASH,
-    DISPARAR_ACCION,
-    ARMA_ANTERIOR,
-    ARMA_SIGUIENTE,
-} AccionJuego;
+#include "accion_juego_dto.h"
 
 #define SALIR SDLK_ESCAPE
 
@@ -26,10 +17,10 @@ private:
     static const std::unordered_map<SDL_Keycode, const AccionJuego> MAPA_ACCIONES;
 
     // Es una cola de AccionJuego provisoriamente
-    Queue<int>& cola_acciones;
+    Queue<AccionJuegoDTO>& cola_acciones;
 
 public:
-    explicit EntradaJuego(Queue<int>& cola_acciones);
+    explicit EntradaJuego(Queue<AccionJuegoDTO>& cola_acciones);
 
     EntradaJuego(const EntradaJuego&) = delete;
 

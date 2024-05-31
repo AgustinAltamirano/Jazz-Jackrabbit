@@ -9,6 +9,7 @@
 
 #include "../../common/queue.h"
 
+#include "accion_juego_dto.h"
 #include "entrada_juego.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
@@ -16,17 +17,6 @@
 
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
-
-/** Constantes definidas únicamente para realizar tests preliminares. */
-#define X_INICIAL 100
-#define Y_INICIAL 50
-#define X_INICIAL2 300
-#define Y_INICIAL2 50
-#define X_INICIAL3 100
-#define Y_INICIAL3 250
-#define X_INICIAL4 300
-#define Y_INICIAL4 250
-#define FRAMES_POR_SPRITE 100
 
 /**
  * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones
@@ -49,7 +39,8 @@ private:
     std::unordered_map<uint32_t, Personaje> personajes;
 
 public:
-    AdministradorVistaJuego(const std::string& titulo_ventana, Queue<int>& cola_acciones);
+    AdministradorVistaJuego(const std::string& titulo_ventana,
+                            Queue<AccionJuegoDTO>& cola_acciones);
 
     AdministradorVistaJuego(AdministradorVistaJuego&) = delete;
     AdministradorVistaJuego& operator=(AdministradorVistaJuego&) = delete;
