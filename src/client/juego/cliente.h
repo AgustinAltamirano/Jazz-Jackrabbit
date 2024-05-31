@@ -1,17 +1,18 @@
 #ifndef CLIENTE_H_
 #define CLIENTE_H_
 
-#include <vector>
-#include <string>
 #include <optional>
+#include <string>
+#include <vector>
+
+#include "../../common/snapshot_dto.h"
+
 #include "cliente_enviador.h"
 #include "cliente_recibidor.h"
 #include "cliente_serializador.h"
-#include "../../common/snapshot_dto.h"
 
 class Cliente {
 private:
-
     Socket skt_cliente;
 
     std::atomic<bool> hablando;
@@ -27,7 +28,7 @@ private:
     Queue<SnapshotDTO> cola_recibidor;
 
 public:
-    Cliente(Socket&& socket);
+    explicit Cliente(Socket&& socket);
 
     void join();
 
@@ -35,9 +36,9 @@ public:
 
     std::optional<SnapshotDTO> obtener_snapshot();
 
-    Cliente(const Cliente &) = delete;
+    Cliente(const Cliente&) = delete;
 
-    Cliente &operator=(const Cliente &) = delete;
+    Cliente& operator=(const Cliente&) = delete;
 };
 
 #endif  // CLIENTE_H_

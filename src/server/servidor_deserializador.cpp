@@ -1,11 +1,13 @@
 #include "servidor_deserializador.h"
+
 #include <exception>
 #include <iostream>
+
 #include <arpa/inet.h>
 
-ServidorDeserializador::ServidorDeserializador(Socket *socket) : socket(socket) {}
+ServidorDeserializador::ServidorDeserializador(Socket* socket): socket(socket) {}
 
-ComandoDTO *ServidorDeserializador::obtener_comando(bool *cerrado, int32_t &id_cliente) {
+ComandoDTO* ServidorDeserializador::obtener_comando(bool* cerrado, int32_t& id_cliente) {
     char code = 0;
     socket->recvall(&code, 1, cerrado);
     if (*cerrado) {
@@ -22,26 +24,28 @@ ComandoDTO *ServidorDeserializador::obtener_comando(bool *cerrado, int32_t &id_c
         case COMENZAR:
             return (deserializar_comenzar(cerrado, id_cliente));
             break;
+        default:
+            throw std::invalid_argument("no se encontro el caso en el deserializador del servidor");
     }
 }
 
-ComandoCrearDTO *ServidorDeserializador::deserializar_crear(bool *cerrado, int32_t &id_cliente) {
+ComandoCrearDTO* ServidorDeserializador::deserializar_crear(bool* cerrado, int32_t& id_cliente) {
     int8_t capacidad_partida;
     socket->recvall(&capacidad_partida, 1, cerrado);
-    ComandoCrearDTO *crear_dto = new ComandoCrearDTO(id_cliente, capacidad_partida);
+    ComandoCrearDTO* crear_dto = new ComandoCrearDTO(id_cliente, capacidad_partida);
     return crear_dto;
 }
 
-ComandoUnirDTO *ServidorDeserializador::deserializar_unir(bool *cerrado, int32_t &id_cliente) {
+ComandoUnirDTO* ServidorDeserializador::deserializar_unir(bool* cerrado,
+                                                          const int32_t& id_cliente) {
     int32_t codigo_partida;
     socket->recvall(&codigo_partida, sizeof(int32_t), cerrado);
     codigo_partida = ntohl(codigo_partida);
-    ComandoUnirDTO *unir_dto = new ComandoUnirDTO(id_cliente, codigo_partida);
+    ComandoUnirDTO* unir_dto = new ComandoUnirDTO(id_cliente, codigo_partida);
     return unir_dto;
 }
 
-ComandoDTO *ServidorDeserializador::deserializar_comenzar(bool *cerrado, int32_t &id_cliente) {
-    ComandoDTO *comando_dto = new ComandoDTO(id_cliente, COMENZAR);
+ComandoDTO* ServidorDeserializador::deserializar_comenzar(bool* cerrado, int32_t& id_cliente) {
+    ComandoDTO* comando_dto = new ComandoDTO(id_cliente, COMENZAR);
     return comando_dto;
 }
-

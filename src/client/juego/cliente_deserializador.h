@@ -1,22 +1,21 @@
 #ifndef CLIENTE_DESERIALIZADOR_H
 #define CLIENTE_DESERIALIZADOR_H
 
-#include "../../common/tipo_comando.h"
+#include <string>
+#include <vector>
+
 #include "../../common/snapshot_dto.h"
 #include "../../common/socket.h"
-
-#include <vector>
-#include <string>
+#include "../../common/tipo_comando.h"
 
 class ClienteDeserializador {
 private:
-    Socket *socket;
+    Socket* socket;
 
 public:
-    explicit ClienteDeserializador(Socket
-                                   *socket);
+    explicit ClienteDeserializador(Socket* socket);
 
-    SnapshotDTO deserializar_juego_dto(bool *cerrado);
+    SnapshotDTO deserializar_juego_dto(bool* cerrado);
 };
 
 #endif
