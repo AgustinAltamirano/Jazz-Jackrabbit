@@ -23,8 +23,8 @@ set(PROJECT_SOURCES
         menu_principal.h
         boton_menu.cpp
         boton_menu.h
-        boton_animado.cpp
-        boton_animado.cpp
+        boton_animado_jugador.cpp
+        boton_animado_jugador.cpp
         ../../../assets/menu/resources.qrc
 )
 
@@ -54,8 +54,14 @@ else()
                 menu_selec_jugador.h
                 menu_selec_mapa.cpp
                 menu_selec_mapa.h
+                sprites_jugador.cpp
+                sprites_jugador.h
                 manejador_sprites.cpp
                 manejador_sprites.h
+                sprites_mapa.cpp
+                sprites_mapa.h
+                boton_animado_mapa.cpp
+                boton_animado_mapa.h
         )
     endif()
 endif()
