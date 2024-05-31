@@ -23,7 +23,7 @@ class ManejadorSprites: public QObject {
 public:
     ManejadorSprites(QLabel& label_boton, int num_boton, int ancho, int alto);
 
-    void pintar_frame_boton();
+    virtual void pintar_frame_actual() = 0;
 
     void animacion_hacia_adelante();
 
@@ -48,6 +48,8 @@ protected:
 
     void pintar_frame(const std::vector<QPixmap>& frames, QLabel& label, int frame_actual,
                       int ancho, int alto);
+
+    void pintar_frame_boton();
 
 private:
     std::vector<QPixmap> frames_boton;

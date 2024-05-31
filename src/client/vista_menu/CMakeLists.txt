@@ -58,6 +58,8 @@ else()
                 sprites_jugador.h
                 manejador_sprites.cpp
                 manejador_sprites.h
+                sprites_mapa.cpp
+                sprites_mapa.h
         )
     endif()
 endif()

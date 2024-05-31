@@ -11,7 +11,7 @@ class SpritesJugador: public ManejadorSprites {
 public:
     SpritesJugador(QLabel& label_boton, QLabel& label_nombre, int num_boton, int ancho, int alto);
 
-    void pintar_frame_nombre();
+    void pintar_frame_actual() override;
 
 private slots:
     void siguiente_frame() override;
@@ -26,6 +26,8 @@ private:
     QLabel& label_nombre;
 
     uint16_t cant_frames_nombre;
+
+    void pintar_frame_nombre();
 };
 
 

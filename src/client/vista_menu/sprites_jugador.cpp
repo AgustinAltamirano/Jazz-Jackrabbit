@@ -32,3 +32,9 @@ void SpritesJugador::anterior_frame() {
 void SpritesJugador::pintar_frame_nombre() {
     pintar_frame(frames_nombre, label_nombre, frame_act_nombre, ANCHO_SEL_NAME, ALTO_SEL_NAME);
 }
+
+
+void SpritesJugador::pintar_frame_actual() {
+    pintar_frame_boton();
+    pintar_frame_nombre();
+}

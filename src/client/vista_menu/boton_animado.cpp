@@ -13,8 +13,7 @@ BotonAnimado::BotonAnimado(QMainWindow* parent, int num_sprite, int ancho, int a
 
 
 void BotonAnimado::paintEvent(QPaintEvent* event) {
-    manejador_sprites.pintar_frame_boton();
-    manejador_sprites.pintar_frame_nombre();
+    manejador_sprites.pintar_frame_actual();
 }
 
 
