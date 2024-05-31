@@ -6,7 +6,7 @@
 
 #include "../common/snapshot_dto.h"
 #include "../common/socket.h"
-#include "../common/partida.h"
+#include "partida.h"
 
 class ServidorSerializador {
 private:
