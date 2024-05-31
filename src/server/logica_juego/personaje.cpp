@@ -28,21 +28,45 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
 }
 
 void personaje::cambiar_velocidad(const std::vector<AccionJuego>& teclas) {
-    if (ataque_especial) {
+    if (ataque_especial || this->estado == MUERTE || this->estado == IMPACTADO) {
         return;
     }
+    this->estado = IDLE;  // reseteo el estado
     for (const AccionJuego tecla&: teclas) {
         // verificar si el estado permite hacer acciones
         switch (tecla) {
+            case SALTAR:
+                if (!en_aire && (this->estado != INTOXICADO)) {
+                    this->vel_y = 12;
+                    this->en_aire = true;
+                }
             case MOVER_DER:
                 this->vel_x = 10;
                 this->de_espaldas = false;
-                break;
             case MOVER_IZQ:
                 this->vel_y = -10;
                 this->de_espaldas = true;
+            case ACTIVAR_DASH:
+                // por hacer
                 break;
-            default:
+            case DISPARAR_ACCION:
+                if (this->estado != INTOXICADO) {
+                    // disparar();
+                    this->estado = DISPARAR_QUIETO;
+                }
+            case ARMA_ANTERIOR:
+                if (this->arma_actual == INFINITA) {
+                    this->arma_actual = ARMA3;
+                } else {
+                    this->arma_actual = static_cast<ArmaActual>(arma_actual - 1);
+                }
+            case ARMA_SIGUIENTE:
+                if (this->arma_actual == ARMA3) {
+                    this->arma_actual = INFINITA;
+                } else {
+                    this->arma_actual = static_cast<ArmaActual>(arma_actual + 1);
+                }
+            default:  // si no es ningun caso que conozco lo ignoro
                 break;
         }
     }

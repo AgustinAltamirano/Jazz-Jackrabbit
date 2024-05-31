@@ -103,3 +103,9 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
         jugador.cambiar_posicion(nueva_pos_x, nueva_pos_y);
     }
 }
+
+void manejadorEscenario::colisiones_bloques_angulo(
+        const std::map<int, personaje>& jugadores) const {}
+
+
+void manejadorEscenario::chequear_caida(const std::map<int, personaje>& jugadores) const {}
