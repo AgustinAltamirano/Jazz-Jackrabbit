@@ -1,8 +1,13 @@
-#include <sstream>
 #include "cliente.h"
 
-Cliente::Cliente(Socket &&socket) :
-        skt_cliente(std::move(socket)), cola_enviador(1000000), cola_recibidor(1000000), hablando(true),
+#include <sstream>
+#include <utility>
+
+Cliente::Cliente(Socket&& socket):
+        skt_cliente(std::move(socket)),
+        cola_enviador(1000000),
+        cola_recibidor(1000000),
+        hablando(true),
         cliente_enviador(&skt_cliente, std::ref(hablando), &cola_enviador),
         cliente_recibidor(&skt_cliente, std::ref(hablando), &cola_recibidor) {
     cliente_enviador.start();

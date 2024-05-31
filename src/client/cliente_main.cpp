@@ -1,12 +1,13 @@
-#include <iostream>
 #include <fstream>
-#include <vector>
+#include <iostream>
 #include <sstream>
+#include <vector>
+
 #include "juego/cliente.h"
 #include "juego/juego.h"
 #include "lobby/lobby.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     try {
         if (argc < 3) {
             std::cerr << "Esperaba ./client <hostname> <servname>\n";
@@ -24,13 +25,11 @@ int main(int argc, char *argv[]) {
         juego.start();
         return 0;
 
-    } catch (const std::exception &err) {
+    } catch (const std::exception& err) {
         std::cerr << "Excepcion capturada: " << err.what() << "\n";
         return 1;
     } catch (...) {
         std::cerr << "Excepcion desconocida capturada.\n";
         return 1;
     }
-
 }
-

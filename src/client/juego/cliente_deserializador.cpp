@@ -1,11 +1,13 @@
 #include "cliente_deserializador.h"
+
 #include <iostream>
+
 #include <arpa/inet.h>
 
-ClienteDeserializador::ClienteDeserializador(Socket *socket) : socket(socket) {}
+ClienteDeserializador::ClienteDeserializador(Socket* socket): socket(socket) {}
 
 
-SnapshotDTO ClienteDeserializador::deserializar_juego_dto(bool *cerrado) {
+SnapshotDTO ClienteDeserializador::deserializar_juego_dto(bool* cerrado) {
     SnapshotDTO snapshot_dto;
     uint8_t cantidad_clientes;
     int32_t id_cliente;

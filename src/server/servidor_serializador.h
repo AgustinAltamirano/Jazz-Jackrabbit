@@ -1,31 +1,31 @@
 #ifndef SERVIDOR_SERIALIZADOR_H
 #define SERVIDOR_SERIALIZADOR_H
 
+#include <string>
+#include <vector>
+
 #include "../common/snapshot_dto.h"
 #include "../common/socket.h"
-#include "./partida.h"
-
-#include <vector>
-#include <string>
+#include "../common/partida.h"
 
 class ServidorSerializador {
 private:
-    Socket *socket;
+    Socket* socket;
 
 public:
-    ServidorSerializador(); //Solo para testing
+    ServidorSerializador();  // Solo para testing
 
-    explicit ServidorSerializador(Socket *socket);
+    explicit ServidorSerializador(Socket* socket);
 
-    void enviar_iniciar_juego(const bool &iniciar, bool *cerrado);
+    void enviar_iniciar_juego(const bool& iniciar, bool* cerrado);
 
-    void enviar_crear_partida(const int32_t &codigo_partida, bool *cerrado);
+    void enviar_crear_partida(const int32_t& codigo_partida, bool* cerrado);
 
-    void enviar_error_crear_partida(bool *cerrado);
+    void enviar_error_crear_partida(bool* cerrado);
 
-    void enviar_unir_partida(const bool &unir, bool *cerrado);
+    void enviar_unir_partida(const bool& unir, bool* cerrado);
 
-    void enviar_id_cliente(const int32_t &id_cliente, bool *cerrado);
+    void enviar_id_cliente(const int32_t& id_cliente, bool* cerrado);
 
     void enviar_snapshot(SnapshotDTO snapshot_dto, bool *cerrado);
 

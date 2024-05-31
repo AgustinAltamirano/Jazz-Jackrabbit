@@ -1,9 +1,9 @@
 #include "comando_unir_dto.h"
 
-ComandoUnirDTO::ComandoUnirDTO(int32_t id_cliente, int32_t codigo_partida) :
-        ComandoDTO(id_cliente, UNIR), codigo_partida(codigo_partida) {}
+ComandoUnirDTO::ComandoUnirDTO(int32_t id_cliente, int32_t codigo_partida):
+        ComandoDTO(id_cliente, UNIR), codigo_partida(codigo_partida), unio() {}
 
-ComandoUnirDTO::ComandoUnirDTO(bool unio) : ComandoDTO(UNIR), unio(unio) {}
+ComandoUnirDTO::ComandoUnirDTO(bool unio): ComandoDTO(UNIR), unio(unio), codigo_partida() {}
 
 int32_t ComandoUnirDTO::obtener_codigo_partida() { return codigo_partida; }
 

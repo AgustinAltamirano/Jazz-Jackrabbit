@@ -1,10 +1,11 @@
 #ifndef COMANDO_UNIR_DTO_H
 #define COMANDO_UNIR_DTO_H
 
-#include "comando_dto.h"
 #include <stdint.h>
 
-class ComandoUnirDTO : public ComandoDTO {
+#include "comando_dto.h"
+
+class ComandoUnirDTO: public ComandoDTO {
 private:
     int32_t codigo_partida;
 

@@ -3,8 +3,8 @@
 #include <iostream>
 #include <vector>
 
-ClienteEnviador::ClienteEnviador(Socket *socket, std::atomic<bool> &hablando,
-                                 Queue<std::vector<char>> *cola_enviador) :
+ClienteEnviador::ClienteEnviador(Socket* socket, std::atomic<bool>& hablando,
+                                 Queue<std::vector<char>>* cola_enviador):
         socket(socket), hablando(hablando), cola_enviador(cola_enviador) {}
 
 void ClienteEnviador::run() {
@@ -15,16 +15,12 @@ void ClienteEnviador::run() {
             bytes = cola_enviador->pop();
             socket->sendall(bytes.data(), bytes.size(), &cerrado);
         }
-    } catch (const ClosedQueue &e) {
+    } catch (const ClosedQueue& e) {
         std::cout << "Se cerro la cola correctamente" << std::endl;
     }
     hablando = false;
 }
 
-void ClienteEnviador::kill() {
-    hablando = false;
-}
+void ClienteEnviador::kill() { hablando = false; }
 
-bool ClienteEnviador::still_alive() {
-    return hablando;
-}
+bool ClienteEnviador::still_alive() { return hablando; }
