@@ -5,15 +5,17 @@
 
 #include "personaje_jazz.h"
 
-AdministradorVistaJuego::AdministradorVistaJuego(const std::string& titulo_ventana,
-                                                 Queue<AccionJuegoDTO>& cola_acciones):
+AdministradorVistaJuego::AdministradorVistaJuego(
+        const std::string& titulo_ventana, Queue<AccionJuegoDTO>& cola_acciones,
+        Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots):
         proximo_id(0),
         sdl(SDL_INIT_VIDEO),
         ventana(titulo_ventana, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA,
                 ALTO_VENTANA, 0),
         renderer(ventana, -1, SDL_RENDERER_ACCELERATED),
         lector_texturas(renderer),
-        entrada_juego(cola_acciones) {
+        entrada_juego(cola_acciones),
+        cola_snapshots(cola_snapshots) {
     lector_texturas.cargar_texturas_y_coordenadas();
 }
 

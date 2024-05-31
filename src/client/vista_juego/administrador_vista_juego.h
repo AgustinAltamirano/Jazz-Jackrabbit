@@ -1,6 +1,7 @@
 #ifndef ADMINISTRADOR_VISTA_JUEGO_H
 #define ADMINISTRADOR_VISTA_JUEGO_H
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -14,6 +15,7 @@
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 #include "personaje.h"
+#include "snapshot_dto.h"
 
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
@@ -34,13 +36,14 @@ private:
     SDL2pp::Renderer renderer;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
+    Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots;
 
     /** Mapa con todos los objetos asociados a personajes jugables. */
     std::unordered_map<uint32_t, Personaje> personajes;
 
 public:
-    AdministradorVistaJuego(const std::string& titulo_ventana,
-                            Queue<AccionJuegoDTO>& cola_acciones);
+    AdministradorVistaJuego(const std::string& titulo_ventana, Queue<AccionJuegoDTO>& cola_acciones,
+                            Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots);
 
     AdministradorVistaJuego(AdministradorVistaJuego&) = delete;
     AdministradorVistaJuego& operator=(AdministradorVistaJuego&) = delete;
