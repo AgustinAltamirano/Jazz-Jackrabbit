@@ -4,8 +4,7 @@
 
 #include <QHBoxLayout>
 
-#include "boton_animado.h"
-#include "menu_selec_mapa.h"
+#include "boton_animado_jugador.h"
 
 #define NUM_JAZZ_PLAYER 0
 #define NUM_SPAZ_PLAYER 1
@@ -29,17 +28,11 @@ private:
 
     QHBoxLayout horizontalLayout;
 
-    BotonAnimado jazz_player;
+    BotonAnimadoJugador jazz_player;
 
-    BotonAnimado spaz_player;
+    BotonAnimadoJugador spaz_player;
 
-    BotonAnimado lori_player;
-
-    QPushButton* boton_enfocado = nullptr;
-
-    void conectar_botones();
-
-    void mostrar_selector_mapa();
+    BotonAnimadoJugador lori_player;
 
 public:
     explicit MenuSeleccionJugador(QMainWindow* parent);
