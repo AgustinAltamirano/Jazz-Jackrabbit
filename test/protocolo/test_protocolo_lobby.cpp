@@ -1,8 +1,8 @@
 #include "../acutest.h"
 #include <vector>
 
-#include "../../src/client/lobby/lobby_serializador.h"
-#include "../../src/common/tipo_comando.h"
+#include "client/lobby/lobby_serializador.h"
+#include "common/tipo_comando.h"
 
 void test_serializar_crear_partida(void) {
     LobbySerializador lobby_serializador;

@@ -2,10 +2,10 @@
 #include <vector>
 #include <string>
 
-#include "../../src/server/servidor_serializador.h"
+#include "server/servidor_serializador.h"
 
-#include "../../src/common/snapshot_dto.h"
-#include "../../src/common/tipo_comando.h"
+#include "common/snapshot_dto.h"
+#include "common/tipo_comando.h"
 
 void test_serializar_crear_partida(void) {
     ServidorSerializador servidor_serializador;

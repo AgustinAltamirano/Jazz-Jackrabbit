@@ -1,8 +1,8 @@
 #include "../acutest.h"
 #include <vector>
 
-#include "../../src/client/juego/cliente_serializador.h"
-#include "../../src/common/tipo_comando.h"
+#include "client/juego/cliente_serializador.h"
+#include "common/tipo_comando.h"
 
 void test_serializar_comenzar_jugar(void) {
     ClienteSerializador cliente_serializador;
