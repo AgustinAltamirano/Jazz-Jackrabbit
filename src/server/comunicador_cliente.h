@@ -1,18 +1,19 @@
 #ifndef PALYER_H
 #define PALYER_H
 
-#include "../common/thread.h"
-#include "../common/queue.h"
-#include "enviador_cliente.h"
-#include "recibidor_cliente.h"
-#include "../common/socket.h"
-#include "gestor_partidas.h"
-
 #include <atomic>
 #include <list>
 #include <vector>
 
-class ComunicadorCliente : public Thread {
+#include "../common/queue.h"
+#include "../common/socket.h"
+#include "../common/thread.h"
+
+#include "enviador_cliente.h"
+#include "gestor_partidas.h"
+#include "recibidor_cliente.h"
+
+class ComunicadorCliente: public Thread {
 private:
     int32_t id_cliente;
 
@@ -25,7 +26,7 @@ private:
     std::atomic<bool> sigo_jugando;
 
 public:
-    ComunicadorCliente(Socket socket, GestorPartidas *gestor_partidas, int32_t id_cliente);
+    ComunicadorCliente(Socket socket, GestorPartidas* gestor_partidas, int32_t id_cliente);
 
     bool still_alive() override;
 

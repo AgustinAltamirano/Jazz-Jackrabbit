@@ -1,9 +1,10 @@
 #ifndef COMANDO_DTO_H
 #define COMANDO_DTO_H
 
-#include "tipo_comando.h"
-#include <vector>
 #include <cstdint>
+#include <vector>
+
+#include "tipo_comando.h"
 
 class ComandoDTO {
 private:

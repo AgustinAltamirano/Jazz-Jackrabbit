@@ -3,7 +3,9 @@
 
 
 #include <string>
+
 #include "../common/socket.h"
+
 #include "aceptador.h"
 
 class Servidor {
@@ -16,9 +18,9 @@ public:
 
     void run();
 
-    Servidor(const Servidor &) = delete;
+    Servidor(const Servidor&) = delete;
 
-    Servidor &operator=(const Servidor &) = delete;
+    Servidor& operator=(const Servidor&) = delete;
 };
 
 #endif  // SERVIDOR_H_
