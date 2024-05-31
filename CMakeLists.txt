@@ -22,16 +22,8 @@ add_subdirectory(src/client/vista_juego)
 
 # Busca e incluye las dependencias del proyecto
 find_package(yaml-cpp REQUIRED)
-find_package(SDL2 REQUIRED)
-find_package(SDL2pp REQUIRED)
-target_link_libraries(Client PRIVATE yaml-cpp SDL2pp::SDL2pp vista_juego)
+target_link_libraries(Client PRIVATE yaml-cpp vista_juego)
 target_link_libraries(Server PRIVATE yaml-cpp)
-include_directories(${SDL2_INCLUDE_DIR})
+
 add_subdirectory(extlib/libSDL2pp)
-
-# Configuración de la librería externa libSDL2pp
-set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
-set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
-set(SDL2PP_WITH_TTF ON) # if you need SDL_ttf support
-
 add_subdirectory(src/client/vista_menu)
