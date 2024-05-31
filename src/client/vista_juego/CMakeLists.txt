@@ -1,0 +1,18 @@
+add_library(vista_juego
+    administrador_vista_juego.cpp
+    administrador_vista_juego.h
+    entrada_juego.cpp
+    entrada_juego.h
+    lector_texturas.cpp
+    lector_texturas.h
+    objeto_animado.cpp
+    objeto_animado.h
+    personaje.cpp
+    personaje.h
+    personaje_jazz.cpp
+    personaje_jazz.h
+    personaje_lori.cpp
+    personaje_lori.h
+    personaje_spaz.cpp
+    personaje_spaz.h
+    vista_juego_exception.h)
