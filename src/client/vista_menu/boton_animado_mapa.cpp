@@ -12,9 +12,7 @@ BotonAnimadoMapa::BotonAnimadoMapa(QMainWindow* parent, QWidget* widget, int num
 }
 
 
-void BotonAnimadoMapa::paintEvent(QPaintEvent* event) {
-    manejador_sprites.pintar_frame_actual();
-}
+void BotonAnimadoMapa::paintEvent(QPaintEvent* event) { manejador_sprites.pintar_frame_actual(); }
 
 
 void BotonAnimadoMapa::focusInEvent(QFocusEvent* event) {

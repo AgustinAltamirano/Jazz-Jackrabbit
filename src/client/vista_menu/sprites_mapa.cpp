@@ -1,5 +1,7 @@
 #include "sprites_mapa.h"
 
+#include <algorithm>
+
 
 SpritesMapa::SpritesMapa(QWidget* parent, QLabel& label_boton, int num_boton, int ancho, int alto):
         ManejadorSprites(label_boton, num_boton, ancho, alto),
@@ -10,8 +12,7 @@ SpritesMapa::SpritesMapa(QWidget* parent, QLabel& label_boton, int num_boton, in
         animacion_x(&escala_mapa, "xScale"),
         animacion_y(&escala_mapa, "yScale"),
         animacion_x_agrandar(&escala_mapa, "xScale"),
-        animacion_y_agrandar(&escala_mapa, "yScale")
-{
+        animacion_y_agrandar(&escala_mapa, "yScale") {
     vista_escena.setStyleSheet("QGraphicsView { background: transparent; }");
     vista_escena.setGeometry(LEFT_M_ESCENA, TOP_M_ESCENA, ANCHO_IMG_MAPA, ALTO_IMG_MAPA);
 
@@ -36,7 +37,7 @@ void SpritesMapa::inicializar_mapa(int num_boton) {
 
 
 void SpritesMapa::animacion_mapa(QPropertyAnimation& anim_x, QPropertyAnimation& anim_y,
-                                       int escala_final) {
+                                 int escala_final) {
     anim_x.setDuration(DURACION_ANIMACION);
     anim_x.setStartValue(escala_mapa.xScale());
     anim_x.setEndValue(escala_final);
@@ -51,7 +52,9 @@ void SpritesMapa::animacion_mapa(QPropertyAnimation& anim_x, QPropertyAnimation&
 }
 
 
-void SpritesMapa::animacion_achicar() { animacion_mapa(animacion_x, animacion_y, ESCALA_FINAL_ACHICAR); }
+void SpritesMapa::animacion_achicar() {
+    animacion_mapa(animacion_x, animacion_y, ESCALA_FINAL_ACHICAR);
+}
 
 
 void SpritesMapa::animacion_agrandar() {
@@ -75,6 +78,4 @@ void SpritesMapa::anterior_frame() {
 }
 
 
-void SpritesMapa::pintar_frame_actual() {
-    pintar_frame_boton();
-}
+void SpritesMapa::pintar_frame_actual() { pintar_frame_boton(); }
