@@ -1,6 +1,7 @@
 #ifndef ENTRADA_JUEGO_H
 #define ENTRADA_JUEGO_H
 
+#include <memory>
 #include <unordered_map>
 
 #include <SDL2pp/SDL2pp.hh>
@@ -17,10 +18,10 @@ private:
     static const std::unordered_map<SDL_Keycode, const AccionJuego> MAPA_ACCIONES;
 
     // Es una cola de AccionJuego provisoriamente
-    Queue<AccionJuegoDTO>& cola_acciones;
+    Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones;
 
 public:
-    explicit EntradaJuego(Queue<AccionJuegoDTO>& cola_acciones);
+    explicit EntradaJuego(Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones);
 
     EntradaJuego(const EntradaJuego&) = delete;
 

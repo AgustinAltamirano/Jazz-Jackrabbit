@@ -22,6 +22,7 @@ add_library(vista_juego
         fondo_escenario.h)
 
 # Configuración de las librerías externas SDL2 y SDL2pp
+find_package(yaml-cpp REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 find_package(SDL2 REQUIRED)
 find_package(SDL2pp REQUIRED)
@@ -30,4 +31,4 @@ set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
 set(SDL2PP_WITH_TTF ON) # if you need SDL_ttf support
 
-target_link_libraries(vista_juego SDL2pp::SDL2pp)
+target_link_libraries(vista_juego SDL2pp::SDL2pp yaml-cpp)

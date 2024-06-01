@@ -14,12 +14,24 @@
 #define DIR_PERSONAJES "/personajes/"
 #define PERSONAJES_CONFIG "/personajes.yaml"
 
-#define COLOR_KEY_RED 44
-#define COLOR_KEY_GREEN 102
-#define COLOR_KEY_BLUE 150
+#define DIR_ESCENARIOS "/escenarios/"
+#define ESCENARIOS_CONFIG "/escenarios.yaml"
 
-#define COLOR_KEY_FORMATO \
-    ((COLOR_KEY_RED << 24) + (COLOR_KEY_BLUE << 16) + (COLOR_KEY_GREEN << 8) + COLOR_KEY_RED)
+#define COLOR_KEY_PERSONAJES_RED 44
+#define COLOR_KEY_PERSONAJES_GREEN 102
+#define COLOR_KEY_PERSONAJES_BLUE 150
+
+#define COLOR_KEY_PERSONAJES                                                \
+    ((COLOR_KEY_PERSONAJES_RED << 24) + (COLOR_KEY_PERSONAJES_BLUE << 16) + \
+     (COLOR_KEY_PERSONAJES_GREEN << 8) + COLOR_KEY_PERSONAJES_RED)
+
+#define COLOR_KEY_ESCENARIOS_RED 87
+#define COLOR_KEY_ESCENARIOS_GREEN 0
+#define COLOR_KEY_ESCENARIOS_BLUE 203
+
+#define COLOR_KEY_ESCENARIOS                                                \
+    ((COLOR_KEY_ESCENARIOS_RED << 24) + (COLOR_KEY_ESCENARIOS_BLUE << 16) + \
+     (COLOR_KEY_ESCENARIOS_GREEN << 8) + COLOR_KEY_ESCENARIOS_RED)
 
 /**
  * La clase LectorTexturas se encarga de cargar las texturas y las coordenadas de los sprites.
@@ -28,10 +40,12 @@ class LectorTexturas {
 private:
     SDL2pp::Renderer& renderer;
 
-    /** Mapa que contiene las texturas de todos los personajes jugables. */
+    std::unordered_map<std::string, SDL2pp::Texture> texturas_fondos_escenarios;
+
+    std::unordered_map<std::string, SDL2pp::Rect> coords_fondos_escenarios;
+
     std::unordered_map<std::string, SDL2pp::Texture> texturas_personajes;
 
-    /** Mapa que contiene las coordenadas de todos los sprites de personajes jugables. */
     std::unordered_map<std::string, std::unordered_map<std::string, std::vector<SDL2pp::Rect>>>
             coords_personajes;
 
@@ -59,6 +73,10 @@ public:
      */
     const std::vector<SDL2pp::Rect>& obtener_coords_personaje(const std::string& personaje,
                                                               const std::string& animacion) const;
+
+    SDL2pp::Texture& obtener_textura_fondo_escenario(const std::string& tipo_escenario);
+
+    const SDL2pp::Rect& obtener_coords_fondo_escenario(const std::string& tipo_escenario) const;
 
     ~LectorTexturas();
 

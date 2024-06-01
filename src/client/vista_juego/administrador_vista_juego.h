@@ -2,6 +2,7 @@
 #define ADMINISTRADOR_VISTA_JUEGO_H
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -12,6 +13,7 @@
 
 #include "accion_juego_dto.h"
 #include "entrada_juego.h"
+#include "fondo_escenario.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 #include "personaje.h"
@@ -27,6 +29,8 @@
  */
 class AdministradorVistaJuego {
 private:
+    static const std::unordered_map<TipoEscenario, std::string> MAPA_TIPO_ESCENARIO;
+
     uint32_t proximo_id;
 
     /** Inicializador de la librería SDL. */
@@ -38,11 +42,16 @@ private:
     EntradaJuego entrada_juego;
     Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots;
 
+    TipoEscenario tipo_escenario;
+    std::optional<FondoEscenario> fondo_escenario;
     /** Mapa con todos los objetos asociados a personajes jugables. */
     std::unordered_map<uint32_t, Personaje> personajes;
 
+    void actualizar_vista();
+
 public:
-    AdministradorVistaJuego(const std::string& titulo_ventana, Queue<AccionJuegoDTO>& cola_acciones,
+    AdministradorVistaJuego(const std::string& titulo_ventana,
+                            Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones,
                             Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots);
 
     AdministradorVistaJuego(AdministradorVistaJuego&) = delete;

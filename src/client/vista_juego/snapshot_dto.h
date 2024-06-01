@@ -35,7 +35,8 @@ typedef enum {
 } ArmaActual;
 
 typedef enum {
-    ESCENARIO1 = 0,
+    ESCENARIO_INDEFINIDO = 0,
+    ESCENARIO1,
     ESCENARIO2,
 } TipoEscenario;
 
@@ -92,19 +93,19 @@ public:
     explicit SnapshotDTO_provisorio(const TipoEscenario tipo_escenario):
             tipo_escenario(tipo_escenario), fin_juego(false) {}
 
-    TipoEscenario obtener_tipo_escenario();
+    [[nodiscard]] TipoEscenario obtener_tipo_escenario() const { return tipo_escenario; }
 
-    void agregar_cliente(ClienteDTO&& cliente);
+    void agregar_cliente(ClienteDTO&& cliente) {}
 
-    std::vector<ClienteDTO> obtener_clientes();
+    std::vector<ClienteDTO> obtener_clientes() { return {}; }
 
-    void agregar_bloque_escenario(BloqueEscenarioDTO&& bloque_escenario);
+    void agregar_bloque_escenario(BloqueEscenarioDTO&& bloque_escenario) {}
 
-    std::vector<BloqueEscenarioDTO> obtener_bloques_escenario();
+    std::vector<BloqueEscenarioDTO> obtener_bloques_escenario() { return {}; }
 
-    [[nodiscard]] bool es_fin_juego() const;
+    [[nodiscard]] bool es_fin_juego() const { return fin_juego; }
 
-    void establecer_fin_juego(bool fin_juego);
+    void establecer_fin_juego(bool fin_juego) {}
 };
 
 #endif  // SNAPSHOT_DTO_H
