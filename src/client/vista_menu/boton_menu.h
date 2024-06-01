@@ -27,8 +27,6 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
 
     void focusInEvent(QFocusEvent* event) override;
-
-    void mousePressEvent(QMouseEvent* event) override;
 };
 
 

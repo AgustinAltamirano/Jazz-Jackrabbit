@@ -4,7 +4,7 @@
 
 #include <QHBoxLayout>
 
-#include "boton_animado.h"
+#include "boton_animado_mapa.h"
 #include "boton_menu.h"
 
 #define NUM_MAPA_1 3
@@ -15,7 +15,7 @@
 #define M_TOP_LAYOUT 0
 
 #define ESPACIADO_ENTRE_MAPAS 100
-#define M_LEFT_MAPA 150
+#define M_LEFT_MAPA 100
 #define M_TOP_MAPA 150
 #define M_RIGHT_MAPA 0
 #define M_BOTTOM_MAPA 150
@@ -29,11 +29,18 @@ private:
 
     QVBoxLayout vertical_layout;
 
-    BotonAnimado opcion_mapa_1;
+    BotonAnimadoMapa opcion_mapa_1;
 
-    BotonAnimado opcion_mapa_2;
+    BotonAnimadoMapa opcion_mapa_2;
 
-    BotonAnimado opcion_mapa_custom;
+    BotonAnimadoMapa opcion_mapa_custom;
+
+    QPushButton* boton_enfocado = nullptr;
+
+    void conectar_botones();
+
+    void mostrar_selector_jugador();
+
 
 public:
     explicit MenuSeleccionMapa(QMainWindow* parent);

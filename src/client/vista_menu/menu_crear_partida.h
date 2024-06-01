@@ -7,6 +7,7 @@
 #include "boton_menu.h"
 #include "constantes_menu.h"
 #include "menu_selec_jugador.h"
+#include "menu_selec_mapa.h"
 
 class MenuCrearPartida: public QMainWindow {
 private:
@@ -14,7 +15,7 @@ private:
 
     BotonMenu multiplayer_btn;
 
-    MenuSeleccionJugador menu_seleccion_jug;
+    MenuSeleccionMapa menu_seleccion_mapa;
 
     void mostrar_menu_crear_partida();
 
