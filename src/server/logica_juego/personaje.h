@@ -85,6 +85,7 @@ public:
     void cambiar_posicion(uint32_t x,
                           uint32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(bool cae);
+    void pasar_tick();
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.
