@@ -17,7 +17,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Multimedia REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
-        ../../../assets/editor/resources.qrc
+        ../../../assets/editor/img/resources.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -41,6 +41,8 @@ else()
             ${PROJECT_SOURCES}
                 main_window.cpp
                 main_window.h
+                manejador_grafico.cpp
+                manejador_grafico.h
         )
     endif()
 endif()

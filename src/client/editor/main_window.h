@@ -26,6 +26,10 @@ private:
     QGraphicsScene escena;
 
     QGraphicsView graphics_view;
+
+    std::map<std::string, QPixmap> items;
+
+    std::map<std::pair<int, int>, std::string> nivel_actual;
 };
 
 

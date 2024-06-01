@@ -1,9 +1,10 @@
 #include "main_window.h"
 
-#include <QGraphicsPixmapItem>
 #include <QPushButton>
 
 #include <yaml-cpp/yaml.h>
+
+#include "manejador_grafico.h"
 
 
 MainWindow::MainWindow() :
@@ -14,7 +15,9 @@ MainWindow::MainWindow() :
         layout_vertical(&widget_layout_vertical),
         escena(),
         widget_graphics_view(),
-        graphics_view(&escena, &widget_graphics_view)
+        graphics_view(&escena, &widget_graphics_view),
+        items(),
+        nivel_actual()
 {
     const std::string ruta_sprites = std::string(ASSETS_PATH) + std::string("/editor/img/");
     const std::string ruta_yaml = ruta_sprites + std::string("items.yaml");
@@ -27,11 +30,15 @@ MainWindow::MainWindow() :
         boton_item->setIconSize(QSize(34, 34));
         boton_item->setStyleSheet("QPushButton {border: none; background: none;}");
         layout_vertical.addWidget(boton_item.release());
+        items.emplace(item_actual["tipo"].as<std::string>(), imagen_item);
     }
-    setFixedSize(560, 510);
+    setFixedSize(700, 500);
     layout_horizontal.addWidget(&widget_layout_vertical);
-    widget_layout_vertical.setFixedSize(50, 500);
+    widget_layout_vertical.setFixedSize(50, 480);
     layout_horizontal.addWidget(&widget_graphics_view);
-    graphics_view.setFixedSize(500, 500);
+    graphics_view.setFixedSize(640, 480);
     setCentralWidget(&central_widget);
+    setWindowTitle("Editor de mapas");
+
+    auto* manejador_escena = new ManejadorGrafico(escena, items, nivel_actual);
 }

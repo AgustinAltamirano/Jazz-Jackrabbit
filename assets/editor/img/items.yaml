@@ -1,9 +1,21 @@
 items:
   - tipo: gema
-    ruta_imagen: :/img/img/item_gema.png
+    ruta_imagen: :/img/item_gema.png
   - tipo: moneda
-    ruta_imagen: :/img/img/item_moneda.png
+    ruta_imagen: :/img/item_moneda.png
   - tipo: spawn_enemigos
-    ruta_imagen: :/img/img/item_spawn_enemigos.png
+    ruta_imagen: :/img/item_spawn_enemigos.png
   - tipo: spawn_personajes
-    ruta_imagen: :/img/img/item_spawn_pj.png
+    ruta_imagen: :/img/item_spawn_pj.png
+  - tipo: piso
+    ruta_imagen: :/img/mapa_castillo/item_piso.png
+  - tipo: bajopiso
+    ruta_imagen: :/img/mapa_castillo/item_bajopiso.png
+  - tipo: final_rampa_der
+    ruta_imagen: :/img/mapa_castillo/item_final_rampa_der.png
+  - tipo: final_rampa_izq
+    ruta_imagen: :/img/mapa_castillo/item_final_rampa_izq.png
+  - tipo: rampa_der
+    ruta_imagen: :/img/mapa_castillo/item_rampa_der.png
+  - tipo: rampa_izq
+    ruta_imagen: :/img/mapa_castillo/item_rampa_izq.png
