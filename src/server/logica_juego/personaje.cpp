@@ -41,10 +41,10 @@ void personaje::cambiar_velocidad(const std::vector<AccionJuego>& teclas) {
                     this->en_aire = true;
                 }
             case MOVER_DER:
-                this->vel_x = 10;
+                this->vel_x = 2;
                 this->de_espaldas = false;
             case MOVER_IZQ:
-                this->vel_y = -10;
+                this->vel_y = -2;
                 this->de_espaldas = true;
             case ACTIVAR_DASH:
                 // por hacer
@@ -66,6 +66,10 @@ void personaje::cambiar_velocidad(const std::vector<AccionJuego>& teclas) {
                 } else {
                     this->arma_actual = static_cast<ArmaActual>(arma_actual + 1);
                 }
+            case ATAQUEESPECIAL:
+                // por hacer
+                ataque_especial = true;
+                break;
             default:  // si no es ningun caso que conozco lo ignoro
                 break;
         }
@@ -108,3 +112,32 @@ std::vector<int> personaje::get_pos_a_ir() const {
 uint32_t personaje::get_alto() const { return alto; }
 
 uint32_t personaje::get_ancho() const { return ancho; }
+
+void personaje::cambiar_estado(const bool cae) {
+    if (estado == MUERTE || estado == IMPACTADO || estado == DISPARAR_QUIETO ||
+        estado == ESTADO_ATAQUE_ESPECIAL) {
+        return;
+    }
+    this->en_aire = cae;
+    if (cae) {
+        if (this->vel_x != 0) {
+            if (this->vel_y < 0) {
+                this->estado = SALTAR_ADELANTE;
+            } else {
+                this->estado = CAER_ADELANTE;
+            }
+        } else {
+            if (this->vel_y < 0) {
+                this->estado = SALTAR_ARRIBA;
+            } else {
+                this->estado = CAER_ABAJO;
+            }
+        }
+    } else {
+        if (this->vel_x != 0) {
+            this->estado = CORRER;
+        } else {
+            this->estado = IDLE;
+        }
+    }
+}
