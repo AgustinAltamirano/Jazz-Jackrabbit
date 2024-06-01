@@ -26,7 +26,7 @@ private:
     // Monitor de salida de datos
 
     // aca todos los controladores
-    std::map<int, personaje> personajes;
+    std::map<int32_t, personaje> personajes;
     manejadorEscenario escenario;
     // controlador enemigos, etc
 
@@ -39,7 +39,8 @@ public:
      *un mapa con los ids de personajes que se crearan apuntando al tipo de personaje
      */
     explicit gameloop(const std::string& archivo_escenario,
-                      const std::map<int, TipoPersonaje>& mapa, Queue<SnapshotDTO>& cola_entrada);
+                      const std::map<int32_t, TipoPersonaje>& mapa,
+                      Queue<SnapshotDTO>& cola_entrada);
     void kill() override;
 };
 

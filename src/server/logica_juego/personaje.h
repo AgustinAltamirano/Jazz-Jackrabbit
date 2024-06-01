@@ -26,7 +26,7 @@ typedef enum {
     SALTAR_ADELANTE,
     CAER_ABAJO,
     CAER_ADELANTE,
-    ATAQUE_ESPECIAL,
+    ESTADO_ATAQUE_ESPECIAL,
     INTOXICADO,
     IMPACTADO,
     MUERTE,
@@ -40,6 +40,10 @@ typedef enum {
     DISPARAR_ACCION,
     ARMA_ANTERIOR,
     ARMA_SIGUIENTE,
+    ATAQUEESPECIAL,
+    TRUCO1,
+    TRUCO2,
+    TRUCO3
 } AccionJuego;
 
 class personaje {
@@ -80,7 +84,7 @@ public:
                                                                      // moverse, CAMBIA LA VELOCIDAD
     void cambiar_posicion(uint32_t x,
                           uint32_t y);  // despues de revisar colisiones se efectua el cambio real
-    void cambiar_estado(TipoPersonaje tipo);
+    void cambiar_estado(bool cae);
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.
