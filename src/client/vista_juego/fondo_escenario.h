@@ -9,11 +9,11 @@ private:
     const int ancho_ventana, alto_ventana;
     SDL2pp::Renderer& renderer;
     SDL2pp::Texture& textura;
-    SDL2pp::Rect& coords_textura;
+    const SDL2pp::Rect& coords_textura;
 
 public:
     FondoEscenario(int ancho_ventana, int alto_ventana, SDL2pp::Renderer& renderer,
-                   SDL2pp::Texture& textura, SDL2pp::Rect& coords_textura);
+                   SDL2pp::Texture& textura, const SDL2pp::Rect& coords_textura);
 
     FondoEscenario(const FondoEscenario&) = delete;
 
