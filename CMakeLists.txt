@@ -22,7 +22,7 @@ add_subdirectory(src/client/vista_juego)
 
 # Busca e incluye las dependencias del proyecto
 find_package(yaml-cpp REQUIRED)
-target_link_libraries(Client PRIVATE yaml-cpp vista_juego)
+target_link_libraries(Client PRIVATE vista_juego)
 target_link_libraries(Server PRIVATE yaml-cpp)
 
 add_subdirectory(extlib/libSDL2pp)
