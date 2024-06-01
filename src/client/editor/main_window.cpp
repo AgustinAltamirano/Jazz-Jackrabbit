@@ -24,6 +24,12 @@ MainWindow::MainWindow() :
     YAML::Node yaml_items = YAML::LoadFile(ruta_yaml);
 
     for (const auto& item_actual: yaml_items["items"]) {
+        QPixmap imagen_item(item_actual["ruta_imagen"].as<std::string>().c_str());
+        auto boton_item = std::make_unique<QPushButton>();
+        boton_item->setIcon(QIcon(imagen_item));
+        boton_item->setIconSize(QSize(34, 34));
+        boton_item->setStyleSheet("QPushButton {border: none; background: none;}");
+        layout_vertical.addWidget(boton_item.release());
         definir_boton_item(item_actual);
     }
 
@@ -103,4 +109,10 @@ void MainWindow::guardar_mapa() {
     if (ruta_mapa_actual.isEmpty()) {
         guardar_como_mapa();
     }
+    setFixedSize(560, 510);
+    layout_horizontal.addWidget(&widget_layout_vertical);
+    widget_layout_vertical.setFixedSize(50, 500);
+    layout_horizontal.addWidget(&widget_graphics_view);
+    graphics_view.setFixedSize(500, 500);
+    setCentralWidget(&central_widget);
 }

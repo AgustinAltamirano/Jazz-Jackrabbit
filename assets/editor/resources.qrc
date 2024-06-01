@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/item_spawn_pj.png</file>
+        <file>img/item_spawn_enemigos.png</file>
+        <file>img/item_moneda.png</file>
+        <file>img/item_gema.png</file>
+    </qresource>
+</RCC>

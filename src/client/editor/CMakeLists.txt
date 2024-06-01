@@ -41,9 +41,6 @@ else()
             ${PROJECT_SOURCES}
                 main_window.cpp
                 main_window.h
-                manejador_grafico.cpp
-                manejador_grafico.h
-                constantes.h
         )
     endif()
 endif()
