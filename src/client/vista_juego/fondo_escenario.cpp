@@ -18,3 +18,5 @@ void FondoEscenario::dibujar() const {
         }
     }
 }
+
+FondoEscenario::~FondoEscenario() = default;

@@ -40,9 +40,12 @@ class LectorTexturas {
 private:
     SDL2pp::Renderer& renderer;
 
-    std::unordered_map<std::string, SDL2pp::Texture> texturas_fondos_escenarios;
+    std::unordered_map<std::string, SDL2pp::Texture> texturas_escenarios;
 
     std::unordered_map<std::string, SDL2pp::Rect> coords_fondos_escenarios;
+
+    std::unordered_map<std::string, std::unordered_map<std::string, SDL2pp::Rect>>
+            coords_bloques_escenarios;
 
     std::unordered_map<std::string, SDL2pp::Texture> texturas_personajes;
 
@@ -77,6 +80,11 @@ public:
     SDL2pp::Texture& obtener_textura_fondo_escenario(const std::string& tipo_escenario);
 
     const SDL2pp::Rect& obtener_coords_fondo_escenario(const std::string& tipo_escenario) const;
+
+    SDL2pp::Texture& obtener_textura_bloque(const std::string& tipo_escenario);
+
+    const SDL2pp::Rect& obtener_coords_bloque(const std::string& tipo_escenario,
+                                              const std::string& tipo_bloque) const;
 
     ~LectorTexturas();
 

@@ -3,12 +3,17 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
-#include "personaje_jazz.h"
-
 const std::unordered_map<TipoEscenario, std::string> AdministradorVistaJuego::MAPA_TIPO_ESCENARIO{
         {ESCENARIO1, "castle"},
         {ESCENARIO2, "carrotus"},
 };
+
+const std::unordered_map<TipoBloqueEscenario, std::pair<std::string, std::string>>
+        AdministradorVistaJuego::MAPA_TIPO_BLOQUE{
+                {PARED, {"pared_superficie", "pared_relleno"}},
+                {PISO, {"piso_superficie", "piso_relleno"}},
+                {TECHO, {"techo_superficie", "techo_relleno"}},
+        };
 
 void AdministradorVistaJuego::actualizar_vista() {
     std::shared_ptr<SnapshotDTO_provisorio> snapshot;

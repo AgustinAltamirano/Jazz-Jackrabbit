@@ -13,7 +13,15 @@ add_library(vista_juego
         accion_juego_dto.h
         snapshot_dto.h
         fondo_escenario.cpp
-        fondo_escenario.h)
+        fondo_escenario.h
+        bloque_escenario.cpp
+        bloque_escenario.h
+        piso_escenario.cpp
+        piso_escenario.h
+        pared_escenario.cpp
+        pared_escenario.h
+        techo_escenario.cpp
+        techo_escenario.h)
 
 # Configuración de las librerías externas SDL2 y SDL2pp
 find_package(yaml-cpp REQUIRED)

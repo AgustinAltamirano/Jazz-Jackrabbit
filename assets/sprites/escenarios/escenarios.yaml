@@ -6,6 +6,37 @@ escenarios:
         y: 1152
         ancho: 256
         alto: 256
+    bloques:
+      - nombre: piso_superficie
+        x: 128
+        y: 0
+        ancho: 32
+        alto: 32
+      - nombre: piso_relleno
+        x: 128
+        y: 32
+        ancho: 32
+        alto: 32
+      - nombre: pared_superficie
+        x: 128
+        y: 32
+        ancho: 32
+        alto: 32
+      - nombre: pared_relleno
+        x: 128
+        y: 32
+        ancho: 32
+        alto: 32
+      - nombre: techo_superficie
+        x: 128
+        y: 32
+        ancho: 32
+        alto: 32
+      - nombre: techo_relleno
+        x: 128
+        y: 32
+        ancho: 32
+        alto: 32
 
   - nombre: castle
     imagen: castle.png
@@ -14,3 +45,34 @@ escenarios:
         y: 1920
         ancho: 224
         alto: 192
+    bloques:
+      - nombre: piso_superficie
+        x: 32
+        y: 0
+        ancho: 32
+        alto: 32
+      - nombre: piso_relleno
+        x: 32
+        y: 32
+        ancho: 32
+        alto: 32
+      - nombre: pared_superficie
+        x: 32
+        y: 32
+        ancho: 32
+        alto: 32
+      - nombre: pared_relleno
+        x: 32
+        y: 32
+        ancho: 32
+        alto: 32
+      - nombre: techo_superficie
+        x: 96
+        y: 96
+        ancho: 32
+        alto: 32
+      - nombre: techo_relleno
+        x: 32
+        y: 32
+        ancho: 32
+        alto: 32

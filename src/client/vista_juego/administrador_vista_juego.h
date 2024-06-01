@@ -5,6 +5,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <SDL2/SDL.h>
@@ -30,6 +31,8 @@
 class AdministradorVistaJuego {
 private:
     static const std::unordered_map<TipoEscenario, std::string> MAPA_TIPO_ESCENARIO;
+    static const std::unordered_map<TipoBloqueEscenario, std::pair<std::string, std::string>>
+            MAPA_TIPO_BLOQUE;
 
     uint32_t proximo_id;
 
