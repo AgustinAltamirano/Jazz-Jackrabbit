@@ -9,18 +9,16 @@
 #include "objeto_animado.h"
 
 typedef enum {
-    INDEFINIDO = 0,
-    STAND,
-    CORRER,
-    DASH,
-    DISPARAR,
-    PARAR_DISPARAR,
-    CARGAR_SALTAR_ARRIBA,
-    SALTAR_ARRIBA,
-    PARAR_SALTAR_ARRIBA,
-    CAER_ABAJO,
-    SALTAR_ADELANTE,
-    CAER_ADELANTE,
+    ESTADO_INDEFINIDO = 0,
+    ESTADO_STAND,
+    ESTADO_CORRER,
+    ESTADO_DASH,
+    ESTADO_DISPARAR,
+    ESTADO_SALTAR_ARRIBA,
+    ESTADO_CAER_ABAJO,
+    ESTADO_SALTAR_ADELANTE,
+    ESTADO_CAER_ADELANTE,
+    ESTADO_ATAQUE_ESPECIAL,
 
     // Estados exclusivos de Jazz
     CARGAR_UPPERCUT,
@@ -34,7 +32,7 @@ typedef enum {
 
     // Estados exclusivos de Lori
     HIGHKICK,
-} EstadoPersonaje;
+} EstadoVisualPersonaje;
 
 
 /** Clase que representa un personaje visual dentro del juego. */
@@ -42,15 +40,15 @@ class Personaje {
 private:
     const uint32_t id;
     const std::string nombre_personaje;
-    EstadoPersonaje estado_actual;
+    EstadoVisualPersonaje estado_actual;
     int render_x, render_y, render_angulo;
     bool invertido;
     const unsigned int frames_por_sprite;
     unsigned int frame_ticks_anteriores;
 
 protected:
-    static std::unordered_map<EstadoPersonaje, const std::string> mapa_estados_personaje;
-    std::unordered_map<EstadoPersonaje, ObjetoAnimado> animaciones;
+    static std::unordered_map<EstadoVisualPersonaje, const std::string> mapa_estados_personaje;
+    std::unordered_map<EstadoVisualPersonaje, ObjetoAnimado> animaciones;
 
 public:
     Personaje(uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,
@@ -72,7 +70,7 @@ public:
      * actualización
      * @param dimensiones Nuevas dimensiones y posición del objeto
      */
-    void actualizar_animacion(EstadoPersonaje estado, unsigned int frame_ticks_transcurridos,
+    void actualizar_animacion(EstadoVisualPersonaje estado, unsigned int frame_ticks_transcurridos,
                               const std::vector<int>& dimensiones);
 
     /**

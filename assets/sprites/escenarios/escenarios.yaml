@@ -1,0 +1,16 @@
+escenarios:
+  - nombre: carrotus
+    imagen: carrotus.png
+    fondo_coords:
+      - x: 0
+        y: 1152
+        ancho: 256
+        alto: 256
+
+  - nombre: castle
+    imagen: castle.png
+    fondo_coords:
+      - x: 0
+        y: 1920
+        ancho: 224
+        alto: 192

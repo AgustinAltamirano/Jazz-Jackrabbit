@@ -5,7 +5,8 @@ const std::unordered_map<SDL_Keycode, const AccionJuego> EntradaJuego::MAPA_ACCI
         {SDLK_x, ACTIVAR_DASH},  {SDLK_SPACE, DISPARAR_ACCION}, {SDLK_q, ARMA_ANTERIOR},
         {SDLK_e, ARMA_SIGUIENTE}};
 
-EntradaJuego::EntradaJuego(Queue<int>& cola_acciones): cola_acciones(cola_acciones) {}
+EntradaJuego::EntradaJuego(Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones):
+        cola_acciones(cola_acciones) {}
 
 void EntradaJuego::procesar_entrada() const {
     SDL_Event event;
@@ -18,8 +19,7 @@ void EntradaJuego::procesar_entrada() const {
             continue;
         }
         const AccionJuego accion = MAPA_ACCIONES.at(event.key.keysym.sym);
-
-        // Provisorio, cambiar cuando se tenga la clase adecuada
-        cola_acciones.try_push(accion);
+        auto accion_dto = std::make_shared<AccionJuegoDTO>(accion);
+        cola_acciones.try_push(accion_dto);
     }
 }
