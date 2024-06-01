@@ -1,0 +1,9 @@
+items:
+  - tipo: gema
+    ruta_imagen: :/img/img/item_gema.png
+  - tipo: moneda
+    ruta_imagen: :/img/img/item_moneda.png
+  - tipo: spawn_enemigos
+    ruta_imagen: :/img/img/item_spawn_enemigos.png
+  - tipo: spawn_personajes
+    ruta_imagen: :/img/img/item_spawn_pj.png

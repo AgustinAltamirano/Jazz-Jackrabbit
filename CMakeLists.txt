@@ -50,3 +50,4 @@ set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
 set(SDL2PP_WITH_TTF ON) # if you need SDL_ttf support
 
 add_subdirectory(src/client/vista_menu)
+add_subdirectory(src/client/editor)
