@@ -2,15 +2,16 @@
 
 #include <utility>
 
-std::unordered_map<EstadoVisualPersonaje, const std::string> Personaje::mapa_estados_personaje{
-        {ESTADO_STAND, "stand"},
-        {ESTADO_CORRER, "correr"},
-        {ESTADO_DASH, "dash"},
-        {ESTADO_DISPARAR, "disparar"},
-        {ESTADO_SALTAR_ARRIBA, "saltar_arriba"},
-        {ESTADO_CAER_ABAJO, "caer_abajo"},
-        {ESTADO_SALTAR_ADELANTE, "saltar_adelante"},
-        {ESTADO_CAER_ADELANTE, "caer_adelante"}};
+const std::unordered_map<EstadoVisualPersonaje, const std::string>
+        Personaje::mapa_estados_personaje{{ESTADO_STAND, "stand"},
+                                          {ESTADO_CORRER, "correr"},
+                                          {ESTADO_DASH, "dash"},
+                                          {ESTADO_DISPARAR, "disparar"},
+                                          {ESTADO_SALTAR_ARRIBA, "saltar_arriba"},
+                                          {ESTADO_CAER_ABAJO, "caer_abajo"},
+                                          {ESTADO_SALTAR_ADELANTE, "saltar_adelante"},
+                                          {ESTADO_CAER_ADELANTE, "caer_adelante"},
+                                          {ESTADO_ATAQUE_ESPECIAL, "ataque_especial"}};
 
 Personaje::Personaje(const uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,
                      LectorTexturas& lector_texturas, const std::vector<int>& dimensiones_iniciales,

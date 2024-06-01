@@ -19,25 +19,14 @@ typedef enum {
     ESTADO_SALTAR_ADELANTE,
     ESTADO_CAER_ADELANTE,
     ESTADO_ATAQUE_ESPECIAL,
-
-    // Estados exclusivos de Jazz
-    CARGAR_UPPERCUT,
-    UPPERCUT,
-    PARAR_UPPERCUT,
-
-    // Estados exclusivos de Spaz
-    CARGAR_SIDEKICK,
-    SIDEKICK,
-    PARAR_SIDEKICK,
-
-    // Estados exclusivos de Lori
-    HIGHKICK,
 } EstadoVisualPersonaje;
 
 
 /** Clase que representa un personaje visual dentro del juego. */
 class Personaje {
 private:
+    static const std::unordered_map<EstadoVisualPersonaje, const std::string>
+            mapa_estados_personaje;
     const uint32_t id;
     const std::string nombre_personaje;
     EstadoVisualPersonaje estado_actual;
@@ -45,9 +34,6 @@ private:
     bool invertido;
     const unsigned int frames_por_sprite;
     unsigned int frame_ticks_anteriores;
-
-protected:
-    static std::unordered_map<EstadoVisualPersonaje, const std::string> mapa_estados_personaje;
     std::unordered_map<EstadoVisualPersonaje, ObjetoAnimado> animaciones;
 
 public:
@@ -78,7 +64,7 @@ public:
      */
     void dibujar() const;
 
-    virtual ~Personaje();
+    ~Personaje();
 };
 
 

@@ -9,12 +9,6 @@ add_library(vista_juego
         objeto_animado.h
         personaje.cpp
         personaje.h
-        personaje_jazz.cpp
-        personaje_jazz.h
-        personaje_lori.cpp
-        personaje_lori.h
-        personaje_spaz.cpp
-        personaje_spaz.h
         vista_juego_exception.h
         accion_juego_dto.h
         snapshot_dto.h
