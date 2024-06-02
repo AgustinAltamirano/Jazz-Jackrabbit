@@ -27,3 +27,4 @@ target_link_libraries(Server PRIVATE yaml-cpp)
 
 add_subdirectory(extlib/libSDL2pp)
 add_subdirectory(src/client/vista_menu)
+add_subdirectory(src/client/editor)
