@@ -1,26 +1,52 @@
 #include "manejador_grafico.h"
 
-#include <QGraphicsPixmapItem>
-#include <memory>
+#include <QGraphicsSceneMouseEvent>
+#include <cmath>
 
 
-ManejadorGrafico::ManejadorGrafico(QGraphicsScene& escena,
-                                   std::map<std::string, QPixmap>& items,
-                                   std::map<std::pair<int, int>, std::string>& nivel_actual) :
-        escena(escena),
+ManejadorGrafico::ManejadorGrafico(std::string& item_seleccionado, std::map<std::string, QPixmap>& items) :
+        QGraphicsScene(QRectF(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)),
+        tipo_item_seleccionado(item_seleccionado),
         items(items),
-        nivel_actual(nivel_actual)
-{
-    for (int y = 0; y < ALTO_PANTALLA / TAM_ITEM; y++) {
-        for (int x = 0; x < ANCHO_PANTALLA / TAM_ITEM; x++) {
-            if (nivel_actual.find(std::make_pair(x, y)) == nivel_actual.end()) {
-                continue;
-            }
-            auto tipo_item = nivel_actual[std::make_pair(x, y)];
-            auto imagen_item = items[tipo_item];
-            auto item = std::make_unique<QGraphicsPixmapItem>(imagen_item);
-            item->setPos(x * TAM_ITEM, y * TAM_ITEM);
-            escena.addItem(item.release());
-        }
+        nivel_actual() {}
+
+
+void ManejadorGrafico::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        dibujar_bloque_item(event);
+    } else if (event->button() == Qt::RightButton) {
+        borrar_bloque_item(event);
     }
+    QGraphicsScene::mousePressEvent(event);
+}
+
+
+void ManejadorGrafico::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
+    auto imagen_item = items[tipo_item_seleccionado];
+    auto item = std::make_unique<QGraphicsPixmapItem>(imagen_item);
+
+    auto x = obtener_coordennada_bloque(event->scenePos().x());
+    auto y = obtener_coordennada_bloque(event->scenePos().y());
+
+    item->setPos(x, y);
+
+    addItem(item.get());
+    nivel_actual[std::make_pair(x, y)] = std::move(item);
+}
+
+
+void ManejadorGrafico::borrar_bloque_item(QGraphicsSceneMouseEvent* event) {
+    auto x = obtener_coordennada_bloque(event->scenePos().x());
+    auto y = obtener_coordennada_bloque(event->scenePos().y());
+
+    auto item = nivel_actual.find(std::make_pair(x, y));
+    if (item != nivel_actual.end()) {
+        removeItem(item->second.get());
+        nivel_actual.erase(item);
+    }
+}
+
+
+qreal ManejadorGrafico::obtener_coordennada_bloque(qreal coord) {
+    return static_cast<int>(std::floor(coord) / TAM_ITEM) * TAM_ITEM;
 }

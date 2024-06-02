@@ -1,0 +1,13 @@
+#ifndef CONSTANTES_H
+#define CONSTANTES_H
+
+#define ANCHO_PANTALLA 640
+#define ALTO_PANTALLA 480
+#define TAM_ITEM 32
+
+#define MARGEN_ALTO 20
+#define MARGEN_ANCHO 60
+
+#define ALTO_LISTA_ITEMS 50
+
+#endif  // CONSTANTES_H

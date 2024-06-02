@@ -3,23 +3,29 @@
 
 
 #include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
+#include "constantes.h"
 
-#define ANCHO_PANTALLA 640
-#define ALTO_PANTALLA 480
-#define TAM_ITEM 32
 
-class ManejadorGrafico {
+class ManejadorGrafico : public QGraphicsScene {
 public:
-    ManejadorGrafico(QGraphicsScene& escena,
-                     std::map<std::string, QPixmap>& items,
-                     std::map<std::pair<int, int>, std::string>& nivel_actual);
+    ManejadorGrafico(std::string& item_seleccionado, std::map<std::string, QPixmap>& items);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
-    QGraphicsScene& escena;
+    std::string& tipo_item_seleccionado;
 
     std::map<std::string, QPixmap>& items;
 
-    std::map<std::pair<int, int>, std::string>& nivel_actual;
+    std::map<std::pair<int, int>, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
+
+    void dibujar_bloque_item(QGraphicsSceneMouseEvent* event);
+
+    void borrar_bloque_item(QGraphicsSceneMouseEvent* event);
+
+    qreal obtener_coordennada_bloque(qreal coord);
 };
 
 

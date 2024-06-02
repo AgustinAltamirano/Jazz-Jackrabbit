@@ -2,15 +2,20 @@
 #define MAIN_WINDOW_H
 
 
-#include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QMainWindow>
 #include <QVBoxLayout>
+#include <yaml-cpp/yaml.h>
+
+#include "manejador_grafico.h"
 
 
 class MainWindow : public QMainWindow {
 public:
     explicit MainWindow();
+
+private Q_SLOTS:
+    void definir_item();
 
 private:
     QWidget central_widget;
@@ -21,15 +26,17 @@ private:
 
     QVBoxLayout layout_vertical;
 
-    QWidget widget_graphics_view;
+    std::map<std::string, QPixmap> items;
 
-    QGraphicsScene escena;
+    ManejadorGrafico escena;
+
+    QWidget widget_graphics_view;
 
     QGraphicsView graphics_view;
 
-    std::map<std::string, QPixmap> items;
+    void definir_boton_item(const YAML::Node& item_actual);
 
-    std::map<std::pair<int, int>, std::string> nivel_actual;
+    std::string tipo_item_seleccionado;
 };
 
 

@@ -43,6 +43,7 @@ else()
                 main_window.h
                 manejador_grafico.cpp
                 manejador_grafico.h
+                constantes.h
         )
     endif()
 endif()

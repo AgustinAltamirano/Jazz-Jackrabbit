@@ -4,3 +4,4 @@ cmake-build-debug
 /script_valgrind.sh
 /valgrind.log
 /valgrind_suppressions.supp
+.idea/
