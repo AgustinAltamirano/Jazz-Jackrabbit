@@ -1,5 +1,6 @@
 #include "main_window.h"
 
+#include <QFileDialog>
 #include <QGraphicsSceneMouseEvent>
 #include <QPushButton>
 #include <QVariant>
@@ -63,7 +64,28 @@ void MainWindow::definir_item() {
 }
 
 
-void MainWindow::guardar_mapa() {}
+void MainWindow::guardar_mapa() {
+    QFileDialog dialog(this);
+    dialog.setWindowTitle("Guardar mapa");
+    dialog.setDefaultSuffix("yaml");
+    dialog.setNameFilter("Mapas (*.yaml)");
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setGeometry(0, 0, 500, 500);
+
+    if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
+        auto ruta_archivo_guardado = dialog.selectedFiles().first();
+    }
+}
 
 
-void MainWindow::cargar_mapa() {}
+void MainWindow::cargar_mapa() {
+    QFileDialog dialog(this);
+    dialog.setWindowTitle("Cargar mapa");
+    dialog.setNameFilter("Mapas (*.yaml)");
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+    dialog.setGeometry(0, 0, 500, 500);
+
+    if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
+        auto ruta_archivo_carga = dialog.selectedFiles().first();
+    }
+}
