@@ -9,28 +9,29 @@
 #include "escena_editor.h"
 
 
-ListaBotones::ListaBotones(QWidget* parent, QGraphicsView& escena) :
+ListaBotones::ListaBotones(QWidget* parent, QGraphicsView& vista_escena, EscenaEditor& escena) :
         QVBoxLayout(parent),
         items(),
-        items_por_mapa(),
+        botones_por_mapa(),
         tipo_item_seleccionado(),
-        escena(escena) {}
+        escena(escena),
+        vista_escena(vista_escena) {}
 
 
-void ListaBotones::inicializar_boton_item(QPixmap imagen_item,
+void ListaBotones::inicializar_boton_item(QPixmap& imagen_item,
                                           const std::string& tipo_item,
                                           const std::string& mapa_asociado,
                                           int posicion) {
     auto boton_item = crear_boton(imagen_item, tipo_item);
     boton_item->setProperty("posicion", posicion);
-    items.emplace(tipo_item, imagen_item);
 
     connect(boton_item.get(), &QPushButton::clicked, this, &ListaBotones::seleccionar_item);
 
     if (not mapa_asociado.empty()) {
         boton_item->hide();
         addWidget(boton_item.get());
-        items_por_mapa[mapa_asociado].emplace_back(std::move(boton_item));
+        botones_por_mapa[mapa_asociado].emplace_back(std::move(boton_item));
+        items_por_mapa[tipo_item] = mapa_asociado;
     } else {
         addWidget(boton_item.release());
     }
@@ -62,10 +63,9 @@ void ListaBotones::seleccionar_texturas() {
     QPixmap imagen_recortada = items[tipo_textura_mapa];
     QBrush brush(imagen_recortada);
 
-    escena.setBackgroundBrush(brush);
-    tipo_item_seleccionado = tipo_textura_mapa;
+    vista_escena.setBackgroundBrush(brush);
 
-    for (const auto& mapa_actual: items_por_mapa) {
+    for (const auto& mapa_actual: botones_por_mapa) {
         auto tipo_mapa = mapa_actual.first;
 
         for (const auto& boton_actual: mapa_actual.second) {
@@ -77,6 +77,8 @@ void ListaBotones::seleccionar_texturas() {
             }
         }
     }
+
+    escena.actualizar_texturas(tipo_textura_mapa);
 }
 
 
@@ -93,4 +95,14 @@ QPixmap& ListaBotones::obtener_imagen_item_seleccionado() {
 
 std::string ListaBotones::obtener_tipo_item_seleccionado() {
     return tipo_item_seleccionado;
+}
+
+
+QPixmap& ListaBotones::obtener_imagen_item(const std::string& tipo_item) {
+    return items[tipo_item];
+}
+
+
+std::string ListaBotones::obtener_mapa_item(const std::string& tipo_item) {
+    return items_por_mapa[tipo_item];
 }

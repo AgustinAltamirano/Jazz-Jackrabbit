@@ -15,6 +15,8 @@ public:
 
     void dibujar_bloque(int x, int y);
 
+    void actualizar_texturas(const std::string& tipo_texturas);
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
@@ -29,7 +31,9 @@ private:
 
     void borrar_bloque_item(QGraphicsSceneMouseEvent* event);
 
-    qreal obtener_coordennada_bloque(qreal coord);
+    qreal obtener_coordenada_bloque(qreal coord);
+
+    std::string obtener_tipo_item(const std::string& item_actual, const std::string& nuevas_texturas);
 };
 
 

@@ -9,7 +9,7 @@ MainWindow::MainWindow() :
         escena(layout_vertical),
         graphics_view(&escena, &widget_graphics_view),
         widget_layout_vertical(),
-        layout_vertical(&widget_layout_vertical, graphics_view),
+        layout_vertical(&widget_layout_vertical, graphics_view, escena),
         menu_bar()
 {
     inicializar_items();
