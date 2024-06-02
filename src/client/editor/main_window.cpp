@@ -30,6 +30,7 @@ MainWindow::MainWindow() :
     setMenuBar(&menu_bar);
     menu_bar.setFixedSize(ANCHO_PANTALLA, ALTO_MENU_BAR);
     menu_bar.addAction("Guardar", this, &MainWindow::guardar_mapa);
+    menu_bar.addAction("Guardar como", this, &MainWindow::guardar_como_mapa);
     menu_bar.addAction("Cargar", this, &MainWindow::cargar_mapa);
 
     setFixedSize(ANCHO_PANTALLA + MARGEN_ANCHO, ALTO_PANTALLA + MARGEN_ALTO);
@@ -38,7 +39,7 @@ MainWindow::MainWindow() :
     layout_horizontal.addWidget(&widget_graphics_view);
     widget_graphics_view.setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     setCentralWidget(&central_widget);
-    setWindowTitle("Editor de mapas");
+    setWindowTitle(TITULO_VENTANA);
 }
 
 
@@ -64,7 +65,7 @@ void MainWindow::definir_item() {
 }
 
 
-void MainWindow::guardar_mapa() {
+void MainWindow::guardar_como_mapa() {
     QFileDialog dialog(this);
     dialog.setWindowTitle("Guardar mapa");
     dialog.setDefaultSuffix("yaml");
@@ -86,6 +87,20 @@ void MainWindow::cargar_mapa() {
     dialog.setGeometry(0, 0, 500, 500);
 
     if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
-        auto ruta_archivo_carga = dialog.selectedFiles().first();
+        ruta_mapa_actual = dialog.selectedFiles().first();
+
+        std::ostringstream nuevo_titulo;
+
+        nuevo_titulo << TITULO_VENTANA << " - "
+                     << ruta_mapa_actual.split("/").last().toStdString();
+
+        setWindowTitle(nuevo_titulo.str().c_str());
+    }
+}
+
+
+void MainWindow::guardar_mapa() {
+    if (ruta_mapa_actual.isEmpty()) {
+        guardar_como_mapa();
     }
 }

@@ -4,6 +4,7 @@
 #define ANCHO_PANTALLA 640
 #define ALTO_PANTALLA 480
 #define TAM_ITEM 32
+#define TITULO_VENTANA "Editor de mapas"
 
 #define MARGEN_ALTO 60
 #define MARGEN_ANCHO 120

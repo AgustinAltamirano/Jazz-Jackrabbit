@@ -40,9 +40,13 @@ private:
 
     QMenuBar menu_bar;
 
+    QString ruta_mapa_actual;
+
     void definir_boton_item(const YAML::Node& item_actual);
 
     void guardar_mapa();
+
+    void guardar_como_mapa();
 
     void cargar_mapa();
 };
