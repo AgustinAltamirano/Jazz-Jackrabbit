@@ -24,8 +24,9 @@ include_directories(${SDL2PP_INCLUDE_DIRS})
 
 # Busca e incluye las dependencias del proyecto
 find_package(yaml-cpp REQUIRED)
-target_link_libraries(Client PRIVATE yaml-cpp vista_juego)
+target_link_libraries(Client PRIVATE vista_juego)
 target_link_libraries(Server PRIVATE yaml-cpp)
 
 add_subdirectory(extlib/libSDL2pp)
 add_subdirectory(src/client/vista_menu)
+add_subdirectory(src/client/editor)

@@ -1,6 +1,8 @@
 #ifndef ADMINISTRADOR_VISTA_JUEGO_H
 #define ADMINISTRADOR_VISTA_JUEGO_H
 
+#include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -9,24 +11,16 @@
 
 #include "../../common/queue.h"
 
+#include "accion_juego_dto.h"
 #include "entrada_juego.h"
+#include "fondo_escenario.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 #include "personaje.h"
+#include "snapshot_dto.h"
 
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
-
-/** Constantes definidas únicamente para realizar tests preliminares. */
-#define X_INICIAL 100
-#define Y_INICIAL 50
-#define X_INICIAL2 300
-#define Y_INICIAL2 50
-#define X_INICIAL3 100
-#define Y_INICIAL3 250
-#define X_INICIAL4 300
-#define Y_INICIAL4 250
-#define FRAMES_POR_SPRITE 100
 
 /**
  * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones
@@ -35,6 +29,8 @@
  */
 class AdministradorVistaJuego {
 private:
+    static const std::unordered_map<TipoEscenario, std::string> MAPA_TIPO_ESCENARIO;
+
     uint32_t proximo_id;
 
     /** Inicializador de la librería SDL. */
@@ -44,12 +40,19 @@ private:
     SDL2pp::Renderer renderer;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
+    Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots;
 
+    TipoEscenario tipo_escenario;
+    std::optional<FondoEscenario> fondo_escenario;
     /** Mapa con todos los objetos asociados a personajes jugables. */
     std::unordered_map<uint32_t, Personaje> personajes;
 
+    void actualizar_vista();
+
 public:
-    AdministradorVistaJuego(const std::string& titulo_ventana, Queue<int>& cola_acciones);
+    AdministradorVistaJuego(const std::string& titulo_ventana,
+                            Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones,
+                            Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots);
 
     AdministradorVistaJuego(AdministradorVistaJuego&) = delete;
     AdministradorVistaJuego& operator=(AdministradorVistaJuego&) = delete;

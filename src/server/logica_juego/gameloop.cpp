@@ -6,8 +6,8 @@ void hacer_tick() { std::this_thread::sleep_for(std::chrono::milliseconds(TIEMPO
 
 void gameloop::kill() { this->keep_talking = false; }
 
-gameloop::gameloop(const std::string& archivo_escenario, const std::map<int, TipoPersonaje>& mapa,
-                   Queue<SnapshotDTO>& cola_entrada):
+gameloop::gameloop(const std::string& archivo_escenario,
+                   const std::map<int32_t, TipoPersonaje>& mapa, Queue<SnapshotDTO>& cola_entrada):
         keep_talking(true),
         is_alive(true),
         cola_entrada(cola_entrada),
@@ -25,4 +25,32 @@ gameloop::gameloop(const std::string& archivo_escenario, const std::map<int, Tip
     }
 }
 
-void gameloop::run() {}
+void gameloop::run() {
+    // enviar dto escenario
+    while (this->keep_talking) {
+
+        // seccion1 se encarga de leer la cola de entrada y efectuar los movimientos en los
+        // jugadores
+        std::map<int32_t, std::vector<AccionJuego>> acciones;
+        SnapshotDTO comando;
+        while (cola_entrada.try_pop(comando)) {
+            // asumo que el dto ya puede implementar conseguir el id y la accion que trae
+            acciones[comando.id].emplace_back(comando.accion);
+        }
+        for (const auto& accion: acciones) {
+            personajes[accion.first].cambiar_velocidad(accion.second);
+        }
+
+        // seccion2 chequea colisiones con el entorno y los cambios de estado de los personajes
+        escenario.colisiones_bloques_rectos(personajes);
+        escenario.colisiones_bloques_angulo(personajes);
+        escenario.chequear_caida(personajes);
+
+        // seccion3 chequea colisiones con los puntos, municiones y enemigos
+        //  por hacer
+
+        // enviar dto vuelta
+        hacer_tick();  // por ahora es fijo
+    }
+    this->is_alive = false;
+}

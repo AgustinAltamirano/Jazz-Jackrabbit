@@ -10,17 +10,34 @@
 LectorTexturas::LectorTexturas(SDL2pp::Renderer& renderer): renderer(renderer) {}
 
 void LectorTexturas::cargar_texturas_y_coordenadas() {
-    const std::string ruta_personajes =
-            std::string(ASSETS_PATH) + std::string(RUTA_SPRITES) + std::string(DIR_PERSONAJES);
-    const std::string ruta_personajes_config = ruta_personajes + std::string(PERSONAJES_CONFIG);
-    YAML::Node personajes = YAML::LoadFile(ruta_personajes_config);
+    const std::string ruta_escenarios(ASSETS_PATH RUTA_SPRITES DIR_ESCENARIOS);
+    YAML::Node escenarios = YAML::LoadFile(ruta_escenarios + std::string(ESCENARIOS_CONFIG));
+
+    for (const auto& escenario: escenarios["escenarios"]) {
+        auto nombre_escenario = escenario["nombre"].as<std::string>();
+        auto imagen_escenario = ruta_escenarios + escenario["imagen"].as<std::string>();
+
+        SDL2pp::Texture textura(
+                renderer,
+                SDL2pp::Surface(imagen_escenario).SetColorKey(true, COLOR_KEY_ESCENARIOS));
+        textura.SetBlendMode(SDL_BLENDMODE_BLEND);
+        texturas_fondos_escenarios.emplace(nombre_escenario, std::move(textura));
+        auto coords = escenario["fondo_coords"][0];
+        SDL2pp::Rect fondo_coords(coords["x"].as<int>(), coords["y"].as<int>(),
+                                  coords["ancho"].as<int>(), coords["alto"].as<int>());
+        coords_fondos_escenarios.emplace(nombre_escenario, fondo_coords);
+    }
+
+    const std::string ruta_personajes(ASSETS_PATH RUTA_SPRITES DIR_PERSONAJES);
+    YAML::Node personajes = YAML::LoadFile(ruta_personajes + std::string(PERSONAJES_CONFIG));
 
     for (const auto& personaje: personajes["personajes"]) {
         auto nombre_personaje = personaje["nombre"].as<std::string>();
         auto imagen_personaje = ruta_personajes + personaje["imagen"].as<std::string>();
 
         SDL2pp::Texture textura(
-                renderer, SDL2pp::Surface(imagen_personaje).SetColorKey(true, COLOR_KEY_FORMATO));
+                renderer,
+                SDL2pp::Surface(imagen_personaje).SetColorKey(true, COLOR_KEY_PERSONAJES));
         textura.SetBlendMode(SDL_BLENDMODE_BLEND);
         std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_personaje;
 
@@ -49,6 +66,17 @@ const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_personaje(
         const std::string& personaje, const std::string& animacion) const {
     return coords_personajes.at(personaje).at(animacion);
 }
+
+SDL2pp::Texture& LectorTexturas::obtener_textura_fondo_escenario(
+        const std::string& tipo_escenario) {
+    return texturas_fondos_escenarios.at(tipo_escenario);
+}
+
+const SDL2pp::Rect& LectorTexturas::obtener_coords_fondo_escenario(
+        const std::string& tipo_escenario) const {
+    return coords_fondos_escenarios.at(tipo_escenario);
+}
+
 
 LectorTexturas::IteradorTexturas LectorTexturas::begin_personajes() {
     const auto iterador_texturas = texturas_personajes.begin();
