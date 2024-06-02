@@ -48,18 +48,8 @@ std::unique_ptr<QPushButton> ListaBotones::crear_boton(QPixmap& imagen_item, con
 }
 
 
-void ListaBotones::inicializar_boton_texturas(const YAML::Node& item_actual,
-                                        const std::string& ruta_escenarios) {
-
-    auto ruta_imagen = ruta_escenarios + item_actual["imagen"].as<std::string>();
-    auto coord_img = item_actual["fondo_coords"][COORD_FONDO];
-    QRect rectangulo(coord_img["x"].as<int>(), coord_img["y"].as<int>(),
-                     coord_img["ancho"].as<int>(), coord_img["alto"].as<int>());
-
-    QPixmap imagen_fondo(ruta_imagen.c_str());
-    auto imagen_recortada = imagen_fondo.copy(rectangulo);
-
-    auto boton_escenario = crear_boton(imagen_recortada, item_actual["nombre"].as<std::string>());
+void ListaBotones::inicializar_boton_texturas(QPixmap& imagen_fondo, const std::string& nombre_mapa) {
+    auto boton_escenario = crear_boton(imagen_fondo, nombre_mapa);
     connect(boton_escenario.get(), &QPushButton::clicked, this, &ListaBotones::seleccionar_texturas);
     addWidget(boton_escenario.release());
 }

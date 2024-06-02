@@ -8,8 +8,6 @@
 #include <QVBoxLayout>
 #include <string>
 
-#include <yaml-cpp/yaml.h>
-
 
 class ListaBotones: public QVBoxLayout {
 public:
@@ -20,7 +18,7 @@ public:
                                 const std::string& mapa_asociado,
                                 int posicion);
 
-    void inicializar_boton_texturas(const YAML::Node& item_actual, const std::string& ruta_escenarios);
+    void inicializar_boton_texturas(QPixmap& imagen_fondo, const std::string& nombre_mapa);
 
     QPixmap& obtener_imagen_item_seleccionado();
 
