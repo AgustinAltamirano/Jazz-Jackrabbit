@@ -23,7 +23,7 @@ void ListaBotones::inicializar_boton_item(QPixmap& imagen_item,
                                           const std::string& mapa_asociado,
                                           int posicion) {
     auto boton_item = crear_boton(imagen_item, tipo_item);
-    boton_item->setProperty("posicion", posicion);
+    boton_item->setProperty(KEY_POSICION_BTN, posicion);
 
     connect(boton_item.get(), &QPushButton::clicked, this, &ListaBotones::seleccionar_item);
 
@@ -42,7 +42,7 @@ std::unique_ptr<QPushButton> ListaBotones::crear_boton(QPixmap& imagen_item, con
     auto boton_item = std::make_unique<QPushButton>();
     boton_item->setIcon(QIcon(imagen_item));
     boton_item->setIconSize(QSize(TAM_ITEM, TAM_ITEM));
-    boton_item->setProperty("tipo", tipo_item.c_str());
+    boton_item->setProperty(KEY_TIPO_BTN, tipo_item.c_str());
     boton_item->setStyleSheet("QPushButton {border: none; background: none;}");
     items.emplace(tipo_item, imagen_item);
     return boton_item;
@@ -58,7 +58,7 @@ void ListaBotones::inicializar_boton_texturas(QPixmap& imagen_fondo, const std::
 
 void ListaBotones::seleccionar_texturas() {
     auto boton_textura = qobject_cast<QPushButton*>(sender());
-    auto tipo_textura_mapa = boton_textura->property("tipo").toString().toStdString();
+    auto tipo_textura_mapa = boton_textura->property(KEY_TIPO_BTN).toString().toStdString();
 
     QPixmap imagen_recortada = items[tipo_textura_mapa];
     QBrush brush(imagen_recortada);
@@ -72,7 +72,7 @@ void ListaBotones::seleccionar_texturas() {
             if (tipo_mapa != tipo_textura_mapa) {
                 boton_actual->hide();
             } else {
-                int posicion_en_layout = boton_actual->property("posicion").toInt();
+                int posicion_en_layout = boton_actual->property(KEY_POSICION_BTN).toInt();
                 itemAt(posicion_en_layout)->widget()->show();
             }
         }
@@ -84,7 +84,7 @@ void ListaBotones::seleccionar_texturas() {
 
 void ListaBotones::seleccionar_item() {
     auto boton = qobject_cast<QPushButton*>(sender());
-    tipo_item_seleccionado = boton->property("tipo").toString().toStdString();
+    tipo_item_seleccionado = boton->property(KEY_TIPO_BTN).toString().toStdString();
 }
 
 
