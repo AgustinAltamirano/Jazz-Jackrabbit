@@ -12,12 +12,18 @@ ManejadorGrafico::ManejadorGrafico(std::string& item_seleccionado, std::map<std:
 
 
 void ManejadorGrafico::mousePressEvent(QGraphicsSceneMouseEvent* event) {
-    if (event->button() == Qt::LeftButton) {
+    mouseMoveEvent(event);
+    QGraphicsScene::mousePressEvent(event);
+}
+
+
+void ManejadorGrafico::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
+    if (event->buttons() & Qt::LeftButton) {
         dibujar_bloque_item(event);
-    } else if (event->button() == Qt::RightButton) {
+    } else if (event->buttons() & Qt::RightButton) {
         borrar_bloque_item(event);
     }
-    QGraphicsScene::mousePressEvent(event);
+    QGraphicsScene::mouseMoveEvent(event);
 }
 
 

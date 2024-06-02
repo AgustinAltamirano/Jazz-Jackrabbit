@@ -18,6 +18,8 @@ public:
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+
 private:
     std::string& tipo_item_seleccionado;
 
