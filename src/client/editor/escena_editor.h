@@ -1,17 +1,17 @@
-#ifndef MANEJADOR_GRAFICO_H
-#define MANEJADOR_GRAFICO_H
+#ifndef ESCENA_EDITOR_H
+#define ESCENA_EDITOR_H
 
 
-#include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
+
 #include "constantes.h"
+#include "lista_botones.h"
 
 
-class ManejadorGrafico : public QGraphicsScene {
+class EscenaEditor: public QGraphicsScene {
 public:
-    ManejadorGrafico(std::string& item_seleccionado, std::map<std::string, QPixmap>& items);
-
-    std::map<std::pair<int, int>, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
+    explicit EscenaEditor(ListaBotones& lista_botones);
 
     void dibujar_bloque(int x, int y);
 
@@ -21,9 +21,9 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
-    std::string& tipo_item_seleccionado;
+    ListaBotones& lista_botones;
 
-    std::map<std::string, QPixmap>& items;
+    std::map<std::pair<int, int>, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
 
     void dibujar_bloque_item(QGraphicsSceneMouseEvent* event);
 
@@ -33,4 +33,4 @@ private:
 };
 
 
-#endif  // MANEJADOR_GRAFICO_H
+#endif  // ESCENA_EDITOR_H

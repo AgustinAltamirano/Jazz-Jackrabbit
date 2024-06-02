@@ -1,23 +1,22 @@
-#include "manejador_grafico.h"
+#include "escena_editor.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <cmath>
 
 
-ManejadorGrafico::ManejadorGrafico(std::string& item_seleccionado, std::map<std::string, QPixmap>& items) :
+EscenaEditor::EscenaEditor(ListaBotones& lista_botones) :
         QGraphicsScene(QRectF(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)),
-        tipo_item_seleccionado(item_seleccionado),
-        items(items),
+        lista_botones(lista_botones),
         nivel_actual() {}
 
 
-void ManejadorGrafico::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+void EscenaEditor::mousePressEvent(QGraphicsSceneMouseEvent* event) {
     mouseMoveEvent(event);
     QGraphicsScene::mousePressEvent(event);
 }
 
 
-void ManejadorGrafico::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
+void EscenaEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
     if (event->buttons() & Qt::LeftButton) {
         dibujar_bloque_item(event);
     } else if (event->buttons() & Qt::RightButton) {
@@ -27,22 +26,28 @@ void ManejadorGrafico::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
 }
 
 
-void ManejadorGrafico::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
-    auto imagen_item = items[tipo_item_seleccionado];
+void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
+    auto imagen_item = lista_botones.obtener_imagen_item_seleccionado();
     auto item = std::make_unique<QGraphicsPixmapItem>(imagen_item);
 
     auto x = obtener_coordennada_bloque(event->scenePos().x());
     auto y = obtener_coordennada_bloque(event->scenePos().y());
 
     item->setPos(x, y);
-    item->setData(0, QVariant(tipo_item_seleccionado.c_str()));
+
+    auto tipo_mapa = lista_botones.obtener_tipo_item_seleccionado();
+    item->setData(0, QVariant(tipo_mapa.c_str()));
+
+//    if (tipo_mapa == "castle" || tipo_mapa == "carrotus") {
+//        return;
+//    }
 
     addItem(item.get());
     nivel_actual[std::make_pair(x, y)] = std::move(item);
 }
 
 
-void ManejadorGrafico::borrar_bloque_item(QGraphicsSceneMouseEvent* event) {
+void EscenaEditor::borrar_bloque_item(QGraphicsSceneMouseEvent* event) {
     auto x = obtener_coordennada_bloque(event->scenePos().x());
     auto y = obtener_coordennada_bloque(event->scenePos().y());
 
@@ -54,12 +59,13 @@ void ManejadorGrafico::borrar_bloque_item(QGraphicsSceneMouseEvent* event) {
 }
 
 
-qreal ManejadorGrafico::obtener_coordennada_bloque(qreal coord) {
+qreal EscenaEditor::obtener_coordennada_bloque(qreal coord) {
     return static_cast<int>(std::floor(coord) / TAM_ITEM) * TAM_ITEM;
 }
 
 
-void ManejadorGrafico::dibujar_bloque(int x, int y) {
+// Es para usar desde fuera de la clase en la carga del mapa
+void EscenaEditor::dibujar_bloque(int x, int y) {
     QGraphicsSceneMouseEvent event;
     event.setScenePos(QPointF(x, y));
     dibujar_bloque_item(&event);
