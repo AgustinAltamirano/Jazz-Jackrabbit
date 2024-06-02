@@ -7,15 +7,60 @@ items:
     ruta_imagen: :/img/item_spawn_enemigos.png
   - tipo: spawn_personajes
     ruta_imagen: :/img/item_spawn_pj.png
+
   - tipo: piso
+    mapa: castle
     ruta_imagen: :/img/mapa_castillo/item_piso.png
   - tipo: bajopiso
+    mapa: castle
     ruta_imagen: :/img/mapa_castillo/item_bajopiso.png
   - tipo: final_rampa_der
+    mapa: castle
     ruta_imagen: :/img/mapa_castillo/item_final_rampa_der.png
   - tipo: final_rampa_izq
+    mapa: castle
     ruta_imagen: :/img/mapa_castillo/item_final_rampa_izq.png
   - tipo: rampa_der
+    mapa: castle
     ruta_imagen: :/img/mapa_castillo/item_rampa_der.png
   - tipo: rampa_izq
+    mapa: castle
     ruta_imagen: :/img/mapa_castillo/item_rampa_izq.png
+
+  - tipo: piso
+    mapa: carrotus
+    ruta_imagen: :/img/mapa_castillo/item_piso.png
+  - tipo: bajopiso
+    mapa: carrotus
+    ruta_imagen: :/img/mapa_castillo/item_bajopiso.png
+  - tipo: final_rampa_der
+    mapa: carrotus
+    ruta_imagen: :/img/mapa_castillo/item_final_rampa_der.png
+  - tipo: final_rampa_izq
+    mapa: carrotus
+    ruta_imagen: :/img/mapa_castillo/item_final_rampa_izq.png
+  - tipo: rampa_der
+    mapa: carrotus
+    ruta_imagen: :/img/mapa_castillo/item_rampa_der.png
+  - tipo: rampa_izq
+    mapa: carrotus
+    ruta_imagen: :/img/mapa_castillo/item_rampa_izq.png
+
+  #  - tipo: piso
+  #    mapa: carrotus
+  #    ruta_imagen: :/img/mapa_carrotus/item_piso.png
+  #  - tipo: bajopiso
+  #    mapa: carrotus
+  #    ruta_imagen: :/img/mapa_carrotus/item_bajopiso.png
+  #  - tipo: final_rampa_der
+  #    mapa: carrotus
+  #    ruta_imagen: :/img/mapa_carrotus/item_final_rampa_der.png
+  #  - tipo: final_rampa_izq
+  #    mapa: carrotus
+  #    ruta_imagen: :/img/mapa_carrotus/item_final_rampa_izq.png
+  #  - tipo: rampa_der
+  #    mapa: carrotus
+  #    ruta_imagen: :/img/mapa_carrotus/item_rampa_der.png
+  #  - tipo: rampa_izq
+  #    mapa: carrotus
+  #    ruta_imagen: :/img/mapa_carrotus/item_rampa_izq.png

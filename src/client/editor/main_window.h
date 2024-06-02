@@ -4,11 +4,12 @@
 
 #include <QGraphicsView>
 #include <QMainWindow>
-#include <QMenuBar>
+#include <QPushButton>
 #include <QVBoxLayout>
 
 #include <yaml-cpp/yaml.h>
 
+#include "barra_menu.h"
 #include "manejador_grafico.h"
 
 
@@ -17,7 +18,9 @@ public:
     explicit MainWindow();
 
 private Q_SLOTS:
-    void definir_item();
+    void seleccionar_item();
+
+    void seleccionar_texturas();
 
 private:
     QWidget central_widget;
@@ -38,17 +41,19 @@ private:
 
     std::string tipo_item_seleccionado;
 
-    QMenuBar menu_bar;
+    BarraMenu menu_bar;
 
-    QString ruta_mapa_actual;
+    std::map<std::string, std::vector<std::unique_ptr<QPushButton>>> items_por_mapa;
 
-    void definir_boton_item(const YAML::Node& item_actual);
+    void inicializar_items();
 
-    void guardar_mapa();
+    void inicializar_texturas();
 
-    void guardar_como_mapa();
+    void inicializar_boton_item(const YAML::Node& item_actual, int posicion);
 
-    void cargar_mapa();
+    std::unique_ptr<QPushButton> crear_boton(QPixmap& imagen_item, const std::string& tipo_item);
+
+    void definir_boton_texturas(const YAML::Node& item_actual, const std::string& ruta_escenarios);
 };
 
 
