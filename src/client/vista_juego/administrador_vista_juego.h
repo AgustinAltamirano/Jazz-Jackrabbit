@@ -13,15 +13,13 @@
 #include "../../common/queue.h"
 
 #include "accion_juego_dto.h"
+#include "camara.h"
 #include "entrada_juego.h"
 #include "fondo_escenario.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 #include "personaje.h"
 #include "snapshot_dto.h"
-
-#define ANCHO_VENTANA 640
-#define ALTO_VENTANA 480
 
 /**
  * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones
@@ -34,6 +32,7 @@ private:
     static const std::unordered_map<TipoBloqueEscenario, std::pair<std::string, std::string>>
             MAPA_TIPO_BLOQUE;
 
+    uint32_t id_jugador;
     uint32_t proximo_id;
 
     /** Inicializador de la librería SDL. */
@@ -45,6 +44,7 @@ private:
     EntradaJuego entrada_juego;
     Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots;
 
+    Camara camara;
     TipoEscenario tipo_escenario;
     std::optional<FondoEscenario> fondo_escenario;
     /** Mapa con todos los objetos asociados a personajes jugables. */

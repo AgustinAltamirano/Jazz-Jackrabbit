@@ -38,8 +38,9 @@ private:
 
 public:
     Personaje(uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,
-              LectorTexturas& lector_texturas, const std::vector<int>& dimensiones_iniciales,
-              unsigned int frames_por_sprite, unsigned int frame_ticks_actuales);
+              LectorTexturas& lector_texturas, const Camara& camara,
+              const std::vector<int>& dimensiones_iniciales, unsigned int frames_por_sprite,
+              unsigned int frame_ticks_actuales);
 
     Personaje(const Personaje&) = delete;
 

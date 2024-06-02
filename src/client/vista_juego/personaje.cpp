@@ -14,7 +14,8 @@ const std::unordered_map<EstadoVisualPersonaje, const std::string>
                                           {ESTADO_ATAQUE_ESPECIAL, "ataque_especial"}};
 
 Personaje::Personaje(const uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,
-                     LectorTexturas& lector_texturas, const std::vector<int>& dimensiones_iniciales,
+                     LectorTexturas& lector_texturas, const Camara& camara,
+                     const std::vector<int>& dimensiones_iniciales,
                      const unsigned int frames_por_sprite, const unsigned int frame_ticks_actuales):
         id(id),
         nombre_personaje(std::move(nombre_personaje)),
@@ -28,7 +29,7 @@ Personaje::Personaje(const uint32_t id, std::string nombre_personaje, SDL2pp::Re
     for (const auto& [first, second]: mapa_estados_personaje) {
         ObjetoAnimado objeto_animacion(
                 first, renderer, lector_texturas.obtener_textura_personaje(this->nombre_personaje),
-                lector_texturas.obtener_coords_personaje(this->nombre_personaje, second),
+                lector_texturas.obtener_coords_personaje(this->nombre_personaje, second), camara,
                 dimensiones_iniciales, frames_por_sprite, frame_ticks_actuales);
         animaciones.emplace(first, std::move(objeto_animacion));
     }

@@ -5,6 +5,8 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include "camara.h"
+
 /** Los vectores de dimensiones deben contener
  * la posición en x, en y, el ancho, alto y el ángulo.
  */
@@ -24,6 +26,7 @@ private:
     const uint32_t id;
     SDL2pp::Renderer& renderer;
     SDL2pp::Texture& textura;
+    const Camara& camara;
 
     /**
      * Vector con los rectángulos de cada uno de los sprites usados en la animación.
@@ -35,13 +38,10 @@ private:
 
     /**
      * Dimensiones y coordenadas donde debe ser renderizado el objeto.
-     * - @code render_x@endcode: posición horizontal del objeto
-     * - @code render_y@endcode: posición vertical del objeto
-     * - @code render_ancho@endcode: ancho del objeto
-     * - @code render_alto@endcode: alto del objeto
-     * - @code render_angulo@endcode: ángulo de rotación del objeto (respecto a su textura original)
      */
-    int render_x, render_y, render_ancho, render_alto, render_angulo;
+    SDL2pp::Rect render_coords;
+
+    int render_angulo;
 
     /** Determina si el objeto se debe renderizar invertido horizontalmente o no */
     bool invertido;
@@ -56,7 +56,7 @@ private:
 
 public:
     ObjetoAnimado(uint32_t id, SDL2pp::Renderer& renderer, SDL2pp::Texture& textura,
-                  const std::vector<SDL2pp::Rect>& sprite_coords,
+                  const std::vector<SDL2pp::Rect>& sprite_coords, const Camara& camara,
                   const std::vector<int>& dimensiones_iniciales, unsigned int frames_por_sprite,
                   unsigned int frame_ticks_actuales);
 

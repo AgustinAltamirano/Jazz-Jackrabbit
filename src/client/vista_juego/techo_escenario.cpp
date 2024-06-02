@@ -1,13 +1,12 @@
 #include "techo_escenario.h"
 
-TechoEscenario::TechoEscenario(const int render_x, const int render_y, const int render_ancho,
-                               const int render_alto, SDL2pp::Renderer& renderer,
+TechoEscenario::TechoEscenario(const SDL2pp::Rect render_coords, SDL2pp::Renderer& renderer,
                                SDL2pp::Texture& textura_superficie,
                                SDL2pp::Texture& textura_relleno,
                                const SDL2pp::Rect& coords_superficie,
-                               const SDL2pp::Rect& coords_relleno):
-        BloqueEscenario(render_x, render_y, render_ancho, render_alto, renderer, textura_superficie,
-                        textura_relleno, coords_superficie, coords_relleno) {}
+                               const SDL2pp::Rect& coords_relleno, const Camara& camara):
+        BloqueEscenario(render_coords, renderer, textura_superficie, textura_relleno,
+                        coords_superficie, coords_relleno, camara) {}
 
 void TechoEscenario::dibujar() const {
     const int ancho_textura_superficie = coords_superficie.GetW();
@@ -15,17 +14,27 @@ void TechoEscenario::dibujar() const {
     const int ancho_textura_relleno = coords_relleno.GetW();
     const int alto_textura_relleno = coords_relleno.GetH();
 
-    for (int x = render_x; x < render_x + render_ancho; x += ancho_textura_superficie) {
-        renderer.Copy(textura_superficie, coords_superficie,
-                      SDL2pp::Rect(x, render_y + render_alto - alto_textura_superficie,
-                                   ancho_textura_superficie, alto_textura_superficie));
+    for (int x = render_coords.GetX(); x < render_coords.GetX() + render_coords.GetW();
+         x += ancho_textura_superficie) {
+        const SDL2pp::Rect coords_bloque(
+                x, render_coords.GetY() + render_coords.GetH() - alto_textura_superficie,
+                ancho_textura_superficie, alto_textura_superficie);
+        if (!Camara::esta_dentro_de_ventana(coords_bloque)) {
+            continue;
+        }
+        renderer.Copy(textura_superficie, coords_superficie, coords_bloque);
     }
 
-    for (int x = render_x; x < render_x + render_ancho; x += ancho_textura_relleno) {
-        for (int y = render_y + render_alto - alto_textura_superficie - alto_textura_relleno;
-             y >= render_y; y -= alto_textura_relleno) {
-            renderer.Copy(textura_relleno, coords_relleno,
-                          SDL2pp::Rect(x, y, ancho_textura_relleno, alto_textura_relleno));
+    for (int x = render_coords.GetX(); x < render_coords.GetX() + render_coords.GetW();
+         x += ancho_textura_relleno) {
+        for (int y = render_coords.GetY() + render_coords.GetH() - alto_textura_superficie -
+                     alto_textura_relleno;
+             y >= render_coords.GetY(); y -= alto_textura_relleno) {
+            const SDL2pp::Rect coords_bloque(x, y, ancho_textura_relleno, alto_textura_relleno);
+            if (!Camara::esta_dentro_de_ventana(coords_bloque)) {
+                continue;
+            }
+            renderer.Copy(textura_relleno, coords_relleno, coords_bloque);
         }
     }
 }

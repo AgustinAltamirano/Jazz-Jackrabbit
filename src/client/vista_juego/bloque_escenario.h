@@ -3,19 +3,22 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include "camara.h"
+
 class BloqueEscenario {
 protected:
-    const int render_x, render_y, render_ancho, render_alto;
+    SDL2pp::Rect render_coords;
     SDL2pp::Renderer& renderer;
     SDL2pp::Texture &textura_superficie, &textura_relleno;
     const SDL2pp::Rect& coords_superficie;
     const SDL2pp::Rect& coords_relleno;
+    const Camara& camara;
 
 public:
-    BloqueEscenario(int render_x, int render_y, int render_ancho, int render_alto,
-                    SDL2pp::Renderer& renderer, SDL2pp::Texture& textura_superficie,
-                    SDL2pp::Texture& textura_relleno, const SDL2pp::Rect& coords_superficie,
-                    const SDL2pp::Rect& coords_relleno);
+    BloqueEscenario(SDL2pp::Rect coords, SDL2pp::Renderer& renderer,
+                    SDL2pp::Texture& textura_superficie, SDL2pp::Texture& textura_relleno,
+                    const SDL2pp::Rect& coords_superficie, const SDL2pp::Rect& coords_relleno,
+                    const Camara& camara);
 
     BloqueEscenario(const BloqueEscenario&) = delete;
 

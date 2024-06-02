@@ -21,7 +21,10 @@ add_library(vista_juego
         pared_escenario.cpp
         pared_escenario.h
         techo_escenario.cpp
-        techo_escenario.h)
+        techo_escenario.h
+        camara.cpp
+        camara.h
+        vista_juego_defs.h)
 
 # Configuración de las librerías externas SDL2 y SDL2pp
 find_package(yaml-cpp REQUIRED)

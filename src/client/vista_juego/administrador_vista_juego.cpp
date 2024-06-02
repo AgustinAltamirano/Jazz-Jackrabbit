@@ -33,6 +33,7 @@ void AdministradorVistaJuego::actualizar_vista() {
 AdministradorVistaJuego::AdministradorVistaJuego(
         const std::string& titulo_ventana, Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones,
         Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots):
+        id_jugador(0),
         proximo_id(0),
         sdl(SDL_INIT_VIDEO),
         ventana(titulo_ventana, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA,

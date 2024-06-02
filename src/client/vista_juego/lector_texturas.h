@@ -7,31 +7,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-/**
- * Rutas usadas para cargar los sprites y las coordenadas de cada uno en sus respectivas imágenes.
- */
-#define RUTA_SPRITES "/sprites"
-#define DIR_PERSONAJES "/personajes/"
-#define PERSONAJES_CONFIG "/personajes.yaml"
-
-#define DIR_ESCENARIOS "/escenarios/"
-#define ESCENARIOS_CONFIG "/escenarios.yaml"
-
-#define COLOR_KEY_PERSONAJES_RED 44
-#define COLOR_KEY_PERSONAJES_GREEN 102
-#define COLOR_KEY_PERSONAJES_BLUE 150
-
-#define COLOR_KEY_PERSONAJES                                                \
-    ((COLOR_KEY_PERSONAJES_RED << 24) + (COLOR_KEY_PERSONAJES_BLUE << 16) + \
-     (COLOR_KEY_PERSONAJES_GREEN << 8) + COLOR_KEY_PERSONAJES_RED)
-
-#define COLOR_KEY_ESCENARIOS_RED 87
-#define COLOR_KEY_ESCENARIOS_GREEN 0
-#define COLOR_KEY_ESCENARIOS_BLUE 203
-
-#define COLOR_KEY_ESCENARIOS                                                \
-    ((COLOR_KEY_ESCENARIOS_RED << 24) + (COLOR_KEY_ESCENARIOS_BLUE << 16) + \
-     (COLOR_KEY_ESCENARIOS_GREEN << 8) + COLOR_KEY_ESCENARIOS_RED)
+#include "vista_juego_defs.h"
 
 /**
  * La clase LectorTexturas se encarga de cargar las texturas y las coordenadas de los sprites.

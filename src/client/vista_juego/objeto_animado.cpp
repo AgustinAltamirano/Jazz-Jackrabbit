@@ -4,7 +4,7 @@
 
 ObjetoAnimado::ObjetoAnimado(const uint32_t id, SDL2pp::Renderer& renderer,
                              SDL2pp::Texture& textura,
-                             const std::vector<SDL2pp::Rect>& sprite_coords,
+                             const std::vector<SDL2pp::Rect>& sprite_coords, const Camara& camara,
                              const std::vector<int>& dimensiones_iniciales,
                              const unsigned int frames_por_sprite,
                              const unsigned int frame_ticks_actuales):
@@ -12,10 +12,10 @@ ObjetoAnimado::ObjetoAnimado(const uint32_t id, SDL2pp::Renderer& renderer,
         renderer(renderer),
         textura(textura),
         sprite_coords(sprite_coords),
-        render_x(dimensiones_iniciales.at(RENDER_X)),
-        render_y(dimensiones_iniciales.at(RENDER_Y)),
-        render_ancho(dimensiones_iniciales.at(RENDER_ANCHO)),
-        render_alto(dimensiones_iniciales.at(RENDER_ALTO)),
+        camara(camara),
+        render_coords(camara.obtener_coords_ventana(SDL2pp::Rect(
+                dimensiones_iniciales.at(RENDER_X), dimensiones_iniciales.at(RENDER_Y),
+                dimensiones_iniciales.at(RENDER_ANCHO), dimensiones_iniciales.at(RENDER_ALTO)))),
         render_angulo(dimensiones_iniciales.at(RENDER_ANGULO)),
         invertido(false),
         reseteado(true),
@@ -28,10 +28,8 @@ ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
         renderer(otro.renderer),
         textura(otro.textura),
         sprite_coords(otro.sprite_coords),
-        render_x(otro.render_x),
-        render_y(otro.render_y),
-        render_ancho(otro.render_ancho),
-        render_alto(otro.render_alto),
+        camara(otro.camara),
+        render_coords(otro.render_coords),
         render_angulo(otro.render_angulo),
         invertido(otro.invertido),
         reseteado(otro.reseteado),
@@ -39,10 +37,7 @@ ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
         frames_por_sprite(otro.frames_por_sprite),
         frame_ticks_anteriores(otro.frame_ticks_anteriores) {
     // La otra instancia de ObjetoAnimado se deja con valores válidos
-    otro.render_x = 0;
-    otro.render_y = 0;
-    otro.render_ancho = 0;
-    otro.render_alto = 0;
+    otro.render_coords = SDL2pp::Rect(0, 0, 0, 0);
     otro.render_angulo = 0;
     otro.invertido = false;
     otro.reseteado = true;
@@ -63,21 +58,23 @@ void ObjetoAnimado::actualizar_animacion(const unsigned int frame_ticks_transcur
     frame_ticks_anteriores += frame_ticks_transcurridos;
 
     this->invertido = invertido;
-    render_x = dimensiones.at(RENDER_X);
-    render_y = dimensiones.at(RENDER_Y);
 
-    render_ancho = sprite_coords.at(sprite_actual).GetW() * dimensiones.at(RENDER_ANCHO);
-    render_alto = sprite_coords.at(sprite_actual).GetH() * dimensiones.at(RENDER_ALTO);
-
+    const SDL2pp::Rect nuevas_coords_absolutas(
+            dimensiones.at(RENDER_X), dimensiones.at(RENDER_Y),
+            sprite_coords.at(sprite_actual).GetW() * dimensiones.at(RENDER_ANCHO),
+            sprite_coords.at(sprite_actual).GetH() * dimensiones.at(RENDER_ALTO));
+    render_coords = camara.obtener_coords_ventana(nuevas_coords_absolutas);
     render_angulo = dimensiones.at(RENDER_ANGULO);
 }
 
 void ObjetoAnimado::dibujar() const {
+    if (!Camara::esta_dentro_de_ventana(render_coords)) {
+        return;
+    }
     const int flip_flag = invertido ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
     renderer.Copy(textura, sprite_coords.at(sprite_actual),
-                  SDL2pp::Optional<SDL2pp::Rect>(
-                          SDL2pp::Rect(render_x, render_y, render_ancho, render_alto)),
-                  (double)render_angulo, SDL2pp::NullOpt, flip_flag);
+                  SDL2pp::Optional<SDL2pp::Rect>(render_coords), render_angulo, SDL2pp::NullOpt,
+                  flip_flag);
 }
 
 ObjetoAnimado::~ObjetoAnimado() = default;
