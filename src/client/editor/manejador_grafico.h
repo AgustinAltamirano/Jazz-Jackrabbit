@@ -11,6 +11,10 @@ class ManejadorGrafico : public QGraphicsScene {
 public:
     ManejadorGrafico(std::string& item_seleccionado, std::map<std::string, QPixmap>& items);
 
+    std::map<std::pair<int, int>, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
+
+    void dibujar_bloque(int x, int y);
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
@@ -18,8 +22,6 @@ private:
     std::string& tipo_item_seleccionado;
 
     std::map<std::string, QPixmap>& items;
-
-    std::map<std::pair<int, int>, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
 
     void dibujar_bloque_item(QGraphicsSceneMouseEvent* event);
 

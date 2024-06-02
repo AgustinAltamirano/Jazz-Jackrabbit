@@ -4,7 +4,9 @@
 
 #include <QGraphicsView>
 #include <QMainWindow>
+#include <QMenuBar>
 #include <QVBoxLayout>
+
 #include <yaml-cpp/yaml.h>
 
 #include "manejador_grafico.h"
@@ -34,9 +36,15 @@ private:
 
     QGraphicsView graphics_view;
 
+    std::string tipo_item_seleccionado;
+
+    QMenuBar menu_bar;
+
     void definir_boton_item(const YAML::Node& item_actual);
 
-    std::string tipo_item_seleccionado;
+    void guardar_mapa();
+
+    void cargar_mapa();
 };
 
 

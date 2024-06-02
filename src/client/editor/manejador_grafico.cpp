@@ -29,6 +29,7 @@ void ManejadorGrafico::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
     auto y = obtener_coordennada_bloque(event->scenePos().y());
 
     item->setPos(x, y);
+    item->setData(0, QVariant(tipo_item_seleccionado.c_str()));
 
     addItem(item.get());
     nivel_actual[std::make_pair(x, y)] = std::move(item);
@@ -49,4 +50,11 @@ void ManejadorGrafico::borrar_bloque_item(QGraphicsSceneMouseEvent* event) {
 
 qreal ManejadorGrafico::obtener_coordennada_bloque(qreal coord) {
     return static_cast<int>(std::floor(coord) / TAM_ITEM) * TAM_ITEM;
+}
+
+
+void ManejadorGrafico::dibujar_bloque(int x, int y) {
+    QGraphicsSceneMouseEvent event;
+    event.setScenePos(QPointF(x, y));
+    dibujar_bloque_item(&event);
 }
