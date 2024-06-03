@@ -115,7 +115,7 @@ uint32_t personaje::get_ancho() const { return ancho; }
 void personaje::cambiar_estado(const bool cae) {
     this->en_aire = cae;
     if (estado == MUERTE || estado == IMPACTADO || estado == DISPARAR_QUIETO ||
-        estado == ESTADO_ATAQUE_ESPECIAL || estado == INTOXICADO) {
+        estado == ATAQUE_ESPECIAL || estado == INTOXICADO) {
         return;
     }
     if (cae) {
@@ -158,7 +158,7 @@ void personaje::pasar_tick() {
             if (tiempo_estado == FRAMES_POR_SEGUNDO) {
                 this->estado = IDLE;
             }
-        case ESTADO_ATAQUE_ESPECIAL:
+        case ATAQUE_ESPECIAL:
             return;
             // aca tengo que procesar cada caso individual
         default:
