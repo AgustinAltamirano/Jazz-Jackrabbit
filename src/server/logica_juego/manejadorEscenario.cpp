@@ -23,6 +23,7 @@ void manejadorEscenario::cargar_escenario_basico(uint32_t ancho, uint32_t alto) 
 
 std::vector<spawnpoint>& manejadorEscenario::get_spawns() { return spawnpoints; }
 
+TipoEscenario manejadorEscenario::get_escenario() { return clase_escenario; }
 
 bool hay_colision_recta(const int32_t jug_x, const int32_t jug_y, const uint32_t alto,
                         const uint32_t ancho, const bloqueEscenario& bloque) {
@@ -123,4 +124,20 @@ void manejadorEscenario::chequear_caida(std::map<int, personaje>& jugadores) con
                 });
         jugador.cambiar_estado(cae);
     }
+}
+
+// seccion de creacion de snapshots
+auto manejadorEscenario::crear_snapshot() {
+    auto snapshot = std::make_shared<SnapshotDTO_provisorio>(clase_escenario);
+    for (auto& bloque: bloques_rectos) {
+        BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                                bloque.alto, bloque.angulo, bloque.tipo);
+        snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
+    }
+    for (auto& bloque: bloques_angulados) {
+        BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                                bloque.alto, bloque.angulo, bloque.tipo);
+        snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
+    }
+    return snapshot;
 }

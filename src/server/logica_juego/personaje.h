@@ -5,21 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "../../client/vista_juego/accion_juego_dto.h"
 #include "../../client/vista_juego/snapshot_dto.h"
-
-typedef enum {
-    SALTAR = 0,
-    MOVER_IZQ,
-    MOVER_DER,
-    ACTIVAR_DASH,
-    DISPARAR_ACCION,
-    ARMA_ANTERIOR,
-    ARMA_SIGUIENTE,
-    ATAQUEESPECIAL,
-    TRUCO1,
-    TRUCO2,
-    TRUCO3
-} AccionJuego;
 
 class personaje {
 private:
@@ -73,6 +60,9 @@ public:
     // bool cambiar_arma();
     // bool efectuar_dano();
     // bool respawnear();
+
+    // funcion para la construccion del dto
+    ClienteDTO crear_dto() const;
 };
 
 

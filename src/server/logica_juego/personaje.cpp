@@ -65,10 +65,12 @@ void personaje::cambiar_velocidad(const std::vector<AccionJuego>& teclas) {
                 } else {
                     this->arma_actual = static_cast<ArmaActual>(arma_actual + 1);
                 }
+            /*
             case ATAQUEESPECIAL:
                 // por hacer
                 ataque_especial = true;
                 break;
+            */
             default:  // si no es ningun caso que conozco lo ignoro
                 break;
         }
@@ -165,4 +167,11 @@ void personaje::pasar_tick() {
             this->estado = IDLE;
             this->tiempo_estado = 0;
     }
+}
+
+ClienteDTO personaje::crear_dto() const {
+    const int32_t balas_restantes = inventario_balas[arma_actual];
+    const ClienteDTO jugador(id, tipo_de_personaje, pos_x, pos_y, de_espaldas, estado, vida, puntos,
+                             arma_actual, balas_restantes);
+    return jugador;
 }
