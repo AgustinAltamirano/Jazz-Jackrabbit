@@ -1,5 +1,6 @@
 #include "gameloop.h"
 
+#include "../../client/vista_juego/accion_juego_dto.h"
 #include "../../common/constantes.h"
 
 void hacer_tick() { std::this_thread::sleep_for(std::chrono::milliseconds(TIEMPO_FRAME)); }
@@ -32,10 +33,13 @@ void gameloop::run() {
         // seccion1 se encarga de leer la cola de entrada y efectuar los movimientos en los
         // jugadores
         std::map<int32_t, std::vector<AccionJuego>> acciones;
-        SnapshotDTO comando;
+        std::shared_ptr<AccionJuegoDTO> comando;
         while (cola_entrada.try_pop(comando)) {
             // asumo que el dto ya puede implementar conseguir el id y la accion que trae
-            acciones[comando.id].emplace_back(comando.accion);
+            acciones[comando->id].emplace_back(comando->accion);
+        }
+        for (auto& entidad: personajes) {
+            entidad.second.pasar_tick();
         }
         for (const auto& accion: acciones) {
             personajes[accion.first].cambiar_velocidad(accion.second);

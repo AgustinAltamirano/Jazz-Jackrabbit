@@ -16,5 +16,6 @@
 #define TIEMPO_FRAME 33
 // 33 milisegundos equivale a 30 fps
 // se se quiere 60 fps cambiar a 17 milisegundos
+#define FRAMES_POR_SEGUNDO 30
 
 #endif  // CONSTANTES_H
