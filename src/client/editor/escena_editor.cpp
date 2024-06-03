@@ -3,12 +3,14 @@
 #include <QGraphicsSceneMouseEvent>
 #include <cmath>
 #include <sstream>
+#include <QScrollBar>
 
 
-EscenaEditor::EscenaEditor(ListaBotones& lista_botones) :
+EscenaEditor::EscenaEditor(ListaBotones& lista_botones, QGraphicsView& vista_escena) :
         QGraphicsScene(QRectF(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)),
         lista_botones(lista_botones),
-        nivel_actual() {}
+        nivel_actual(),
+        vista_escena(vista_escena) {}
 
 
 void EscenaEditor::mousePressEvent(QGraphicsSceneMouseEvent* event) {
@@ -27,12 +29,39 @@ void EscenaEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
 }
 
 
+void EscenaEditor::wheelEvent(QGraphicsSceneWheelEvent* event) {
+    QRectF rect = sceneRect();
+
+    QScrollBar* vbar = vista_escena.verticalScrollBar();
+    QScrollBar* hbar = vista_escena.horizontalScrollBar();
+
+    if (event->delta() < 0 and event->orientation() == Qt::Vertical) {
+        if (vbar->value() == vbar->maximum()) {
+            rect = rect.united(QRectF(0, rect.height() + TAM_ITEM, TAM_ITEM, TAM_ITEM));
+            setSceneRect(rect);
+        }
+    } else if (event->delta() < 0 and event->orientation() == Qt::Horizontal) {
+        if (hbar->value() == hbar->maximum()) {
+            rect = rect.united(QRectF(rect.width() + TAM_ITEM, 0, TAM_ITEM, TAM_ITEM));
+            setSceneRect(rect);
+        }
+    }
+
+    QGraphicsScene::wheelEvent(event);
+}
+
+
 void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
     auto imagen_item = lista_botones.obtener_imagen_item_seleccionado();
     auto item = std::make_unique<QGraphicsPixmapItem>(imagen_item);
 
     auto x = obtener_coordenada_bloque(event->scenePos().x());
     auto y = obtener_coordenada_bloque(event->scenePos().y());
+
+    QRectF rect_viewport = vista_escena.mapToScene(vista_escena.viewport()->rect()).boundingRect();
+    if (!rect_viewport.contains(x, y)) {
+        return;
+    }
 
     item->setPos(x, y);
 
@@ -53,6 +82,7 @@ void EscenaEditor::borrar_bloque_item(QGraphicsSceneMouseEvent* event) {
     if (item != nivel_actual.end()) {
         removeItem(item->second.get());
         nivel_actual.erase(item);
+        update();
     }
 }
 

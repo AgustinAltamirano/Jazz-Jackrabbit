@@ -6,7 +6,7 @@ MainWindow::MainWindow() :
         central_widget(this),
         layout_horizontal(&central_widget),
         widget_graphics_view(),
-        escena(layout_vertical),
+        escena(layout_vertical, graphics_view),
         graphics_view(&escena, &widget_graphics_view),
         widget_layout_vertical(),
         layout_vertical(&widget_layout_vertical, graphics_view, escena),
@@ -22,6 +22,9 @@ MainWindow::MainWindow() :
     widget_graphics_view.setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     setCentralWidget(&central_widget);
     setWindowTitle(TITULO_VENTANA);
+
+    graphics_view.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    graphics_view.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 
