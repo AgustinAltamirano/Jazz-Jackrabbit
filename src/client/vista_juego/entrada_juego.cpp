@@ -8,7 +8,7 @@ const std::unordered_map<SDL_Keycode, const AccionJuego> EntradaJuego::MAPA_ACCI
 EntradaJuego::EntradaJuego(Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones):
         cola_acciones(cola_acciones) {}
 
-bool EntradaJuego::procesar_entrada() const {
+bool EntradaJuego::procesar_entrada(uint32_t id_cliente) const {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT ||
@@ -18,8 +18,10 @@ bool EntradaJuego::procesar_entrada() const {
         if (event.type != SDL_KEYDOWN || !MAPA_ACCIONES.count(event.key.keysym.sym)) {
             continue;
         }
+
+
         const AccionJuego accion = MAPA_ACCIONES.at(event.key.keysym.sym);
-        auto accion_dto = std::make_shared<AccionJuegoDTO>(accion);
+        auto accion_dto = std::make_shared<AccionJuegoDTO>(id_cliente, accion);
         cola_acciones.try_push(accion_dto);
     }
     return true;

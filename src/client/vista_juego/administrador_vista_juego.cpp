@@ -57,13 +57,14 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
     id_jugador = snapshot->obtener_id_cliente();
     const std::vector<ClienteDTO> clientes_recibidos = snapshot->obtener_clientes();
 
-    /*
-    for (const auto cliente: clientes_recibidos) {
-        if (cliente.id_cliente == id_jugador) {
-            camara.actualizar_pos_camara(cliente.pos_x, cliente.pos_y);
-            break;
-        }
-    }*/
+    // Actualizar posición de la cámara
+
+    if (auto it = std::find_if(
+                clientes_recibidos.begin(), clientes_recibidos.end(),
+                [this](const auto& cliente) { return cliente.id_cliente == this->id_jugador; });
+        it != clientes_recibidos.end()) {
+        camara.actualizar_pos_camara(it->pos_x, it->pos_y);
+    }
 
     const std::vector<BloqueEscenarioDTO> bloques_recibidos = snapshot->obtener_bloques_escenario();
     if (!bloques_recibidos.empty()) {
@@ -117,9 +118,9 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
 }
 
 void AdministradorVistaJuego::sincronizar_vista(const uint32_t ticks_transcurridos) const {
-    int64_t tiempo_restante = MILISEGUNDOS_POR_FRAME - ticks_transcurridos;
-    // Provisorio, debería ser tiempo_restante < 0
-    if (tiempo_restante > 3) {
+    const int64_t ticks_transcurridos_aux = ticks_transcurridos;
+    int64_t tiempo_restante = MILISEGUNDOS_POR_FRAME - ticks_transcurridos_aux;
+    if (tiempo_restante < 0) {
         // Debemos droppear frames de animación, algunas snapshots se pierden
         int64_t tiempo_atrasado = -tiempo_restante;
         std::shared_ptr<SnapshotDTO_provisorio> snapshot;
@@ -166,7 +167,7 @@ void AdministradorVistaJuego::run() {
         }
         renderer.Present();
 
-        close = entrada_juego.procesar_entrada();
+        close = entrada_juego.procesar_entrada(id_jugador);
         ticks_transcurridos = SDL_GetTicks() - ticks_anteriores;
         sincronizar_vista(ticks_transcurridos);
     }

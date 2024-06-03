@@ -91,8 +91,10 @@ private:
     bool fin_juego;
 
 public:
-    explicit SnapshotDTO_provisorio(const uint32_t id_cliente, const TipoEscenario tipo_escenario):
-            id_cliente(id_cliente), tipo_escenario(tipo_escenario), fin_juego(false) {}
+    explicit SnapshotDTO_provisorio(const TipoEscenario tipo_escenario):
+            id_cliente(0), tipo_escenario(tipo_escenario), fin_juego(false) {}
+
+    void agregar_id_cliente(uint32_t) {}
 
     [[nodiscard]] const uint32_t obtener_id_cliente() const;
 

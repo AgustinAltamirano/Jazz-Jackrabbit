@@ -18,8 +18,10 @@ typedef enum {
 
 class AccionJuegoDTO {
 public:
+    uint32_t id_jugador;
     AccionJuego accion;
-    explicit AccionJuegoDTO(const AccionJuego accion): accion(accion) {}
+    explicit AccionJuegoDTO(uint32_t id_jugador, const AccionJuego accion):
+            id_jugador(id_jugador), accion(accion) {}
 };
 
 #endif  // ACCION_JUEGO_DTO_H
