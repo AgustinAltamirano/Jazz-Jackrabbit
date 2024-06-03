@@ -11,7 +11,6 @@ typedef enum {
     DISPARAR_ACCION,
     ARMA_ANTERIOR,
     ARMA_SIGUIENTE,
-    ATAQUE_ESPECIAL,
     TRUCO1,
     TRUCO2,
     TRUCO3,

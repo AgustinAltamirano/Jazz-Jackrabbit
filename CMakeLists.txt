@@ -25,5 +25,7 @@ find_package(yaml-cpp REQUIRED)
 target_link_libraries(Client PRIVATE vista_juego)
 target_link_libraries(Server PRIVATE yaml-cpp)
 
+set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR} "/extlib/libSDL2pp")
+
 add_subdirectory(extlib/libSDL2pp)
 add_subdirectory(src/client/vista_menu)

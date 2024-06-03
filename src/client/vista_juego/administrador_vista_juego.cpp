@@ -1,7 +1,13 @@
 #include "administrador_vista_juego.h"
 
+#include <chrono>
+#include <thread>
+#include <unordered_set>
+
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
+
+#include "piso_escenario.h"
 
 const std::unordered_map<TipoEscenario, std::string> AdministradorVistaJuego::MAPA_TIPO_ESCENARIO{
         {ESCENARIO1, "castle"},
@@ -15,7 +21,26 @@ const std::unordered_map<TipoBloqueEscenario, std::pair<std::string, std::string
                 {TECHO, {"techo_superficie", "techo_relleno"}},
         };
 
-void AdministradorVistaJuego::actualizar_vista() {
+const std::unordered_map<TipoPersonaje, std::string> AdministradorVistaJuego::MAPA_TIPO_PERSONAJE{
+        {JAZZ, "jazz"},
+        {SPAZ, "spaz"},
+        {LORI, "lori"},
+};
+
+const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
+        AdministradorVistaJuego::MAPA_ESTADOS_PERSONAJE{
+                {IDLE, ESTADO_STAND},
+                {CORRER, ESTADO_CORRER},
+                {DASH, ESTADO_DASH},
+                {DISPARAR_QUIETO, ESTADO_DISPARAR},
+                {SALTAR_ARRIBA, ESTADO_SALTAR_ARRIBA},
+                {SALTAR_ADELANTE, ESTADO_SALTAR_ADELANTE},
+                {CAER_ABAJO, ESTADO_CAER_ABAJO},
+                {CAER_ADELANTE, ESTADO_CAER_ADELANTE},
+                {ATAQUE_ESPECIAL, ESTADO_ATAQUE_ESPECIAL},
+        };
+
+void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurridos) {
     std::shared_ptr<SnapshotDTO_provisorio> snapshot;
     if (!cola_snapshots.try_pop(snapshot)) {
         return;
@@ -28,6 +53,82 @@ void AdministradorVistaJuego::actualizar_vista() {
                 MAPA_TIPO_ESCENARIO.at(tipo_escenario));
         fondo_escenario.emplace(ANCHO_VENTANA, ALTO_VENTANA, renderer, textura_fondo, coords_fondo);
     }
+
+    id_jugador = snapshot->obtener_id_cliente();
+    const std::vector<ClienteDTO> clientes_recibidos = snapshot->obtener_clientes();
+
+    /*
+    for (const auto cliente: clientes_recibidos) {
+        if (cliente.id_cliente == id_jugador) {
+            camara.actualizar_pos_camara(cliente.pos_x, cliente.pos_y);
+            break;
+        }
+    }*/
+
+    const std::vector<BloqueEscenarioDTO> bloques_recibidos = snapshot->obtener_bloques_escenario();
+    if (!bloques_recibidos.empty()) {
+        for (auto bloque&: bloques_recibidos) {
+            SDL2pp::Texture& textura_bloque =
+                    lector_texturas.obtener_textura_bloque(MAPA_TIPO_ESCENARIO.at(tipo_escenario));
+            switch (bloque.tipo) {
+                case PISO:
+
+                    PisoEscenario nuevo_piso(
+                            SDL2pp::Rect(bloque.pos_x, bloque.pos_y, bloque.ancho, bloque.alto),
+                            renderer, textura_bloque, textura_bloque,
+                            lector_texturas.obtener_coords_bloque(
+                                    MAPA_TIPO_ESCENARIO.at(tipo_escenario),
+                                    MAPA_TIPO_BLOQUE.at(bloque.tipo).first),
+                            lector_texturas.obtener_coords_bloque(
+                                    MAPA_TIPO_ESCENARIO.at(tipo_escenario),
+                                    MAPA_TIPO_BLOQUE.at(bloque.tipo).second),
+                            camara);
+                case PARED:
+                    std::cout << "Provisorio";
+                case TECHO:
+                    std::cout << "Provisorio";
+                case DIAGONAL:
+                    // Falta implementar
+                    break;
+            }
+        }
+    }
+
+    std::unordered_set<uint32_t> ids_clientes_recibidos;
+    for (auto cliente: clientes_recibidos) {
+        ids_clientes_recibidos.insert(cliente.id_cliente);
+        if (personajes.count(cliente.id_cliente) == 0) {
+            Personaje nuevo_personaje(cliente.id_cliente,
+                                      MAPA_TIPO_PERSONAJE.at(cliente.tipo_personaje), renderer,
+                                      lector_texturas, camara, cliente.pos_x, cliente.pos_y, 0,
+                                      MILISEGUNDOS_POR_SPRITE, 0);
+        }
+        personajes.at(cliente.id_cliente)
+                .actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(cliente.estado),
+                                      ticks_transcurridos, {cliente.pos_x, cliente.pos_y, 1, 1, 0},
+                                      cliente.de_espaldas);
+    }
+
+    for (auto [fst, snd]: personajes) {
+        if (ids_clientes_recibidos.count(fst) == 0) {
+            personajes.erase(fst);
+        }
+    }
+}
+
+void AdministradorVistaJuego::sincronizar_vista(const uint32_t ticks_transcurridos) const {
+    int64_t tiempo_restante = MILISEGUNDOS_POR_FRAME - ticks_transcurridos;
+    // Provisorio, debería ser tiempo_restante < 0
+    if (tiempo_restante > 3) {
+        // Debemos droppear frames de animación, algunas snapshots se pierden
+        int64_t tiempo_atrasado = -tiempo_restante;
+        std::shared_ptr<SnapshotDTO_provisorio> snapshot;
+        while (cola_snapshots.try_pop(snapshot) && tiempo_atrasado >= MILISEGUNDOS_POR_FRAME) {
+            tiempo_atrasado -= MILISEGUNDOS_POR_FRAME;
+        }
+        tiempo_restante = tiempo_atrasado;
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(tiempo_restante));
 }
 
 AdministradorVistaJuego::AdministradorVistaJuego(
@@ -48,25 +149,26 @@ AdministradorVistaJuego::AdministradorVistaJuego(
 
 void AdministradorVistaJuego::run() {
     bool close = false;
-    uint32_t ticks_anteriores = SDL_GetTicks();
+    uint32_t ticks_transcurridos = 0;
     while (!close) {
-        const uint32_t frame_ticks = SDL_GetTicks();
-        // cppcheck-suppress unreadVariable
-        const uint32_t frame_ticks_transcurridos = frame_ticks - ticks_anteriores;
-        ticks_anteriores = frame_ticks;
+        const uint32_t ticks_anteriores = SDL_GetTicks();
 
-        actualizar_vista();
+        actualizar_vista(ticks_transcurridos);
         renderer.Clear();
         if (fondo_escenario) {
             fondo_escenario->dibujar();
         }
+        for (auto [fst, snd]: bloques_escenario) {
+            snd.dibujar();
+        }
+        for (auto [fst, snd]: personajes) {
+            snd.dibujar();
+        }
         renderer.Present();
 
-        entrada_juego.procesar_entrada();
-
-        if (frame_ticks > 100000000) {
-            close = true;
-        }
+        close = entrada_juego.procesar_entrada();
+        ticks_transcurridos = SDL_GetTicks() - ticks_anteriores;
+        sincronizar_vista(ticks_transcurridos);
     }
 }
 

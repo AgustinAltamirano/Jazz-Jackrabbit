@@ -14,23 +14,27 @@ const std::unordered_map<EstadoVisualPersonaje, const std::string>
                                           {ESTADO_ATAQUE_ESPECIAL, "ataque_especial"}};
 
 Personaje::Personaje(const uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,
-                     LectorTexturas& lector_texturas, const Camara& camara,
-                     const std::vector<int>& dimensiones_iniciales,
-                     const unsigned int frames_por_sprite, const unsigned int frame_ticks_actuales):
+                     LectorTexturas& lector_texturas, const Camara& camara, const int pos_x,
+                     const int pos_y, const int angulo, const unsigned int frames_por_sprite,
+                     const unsigned int frame_ticks_actuales):
         id(id),
         nombre_personaje(std::move(nombre_personaje)),
         estado_actual(ESTADO_STAND),
-        render_x(dimensiones_iniciales.at(RENDER_X)),
-        render_y(dimensiones_iniciales.at(RENDER_Y)),
-        render_angulo(dimensiones_iniciales.at(RENDER_ANGULO)),
+        render_x(pos_x),
+        render_y(pos_y),
+        render_angulo(angulo),
         invertido(false),
         frames_por_sprite(frames_por_sprite),
         frame_ticks_anteriores(frame_ticks_actuales) {
     for (const auto& [first, second]: mapa_estados_personaje) {
+        const std::vector<SDL2pp::Rect>& coords_animacion =
+                lector_texturas.obtener_coords_personaje(this->nombre_personaje, second);
+        std::vector<int> dimensiones_iniciales = {pos_x, pos_y, coords_animacion.at(0).GetW(),
+                                                  coords_animacion.at(0).GetH(), angulo};
         ObjetoAnimado objeto_animacion(
                 first, renderer, lector_texturas.obtener_textura_personaje(this->nombre_personaje),
-                lector_texturas.obtener_coords_personaje(this->nombre_personaje, second), camara,
-                dimensiones_iniciales, frames_por_sprite, frame_ticks_actuales);
+                coords_animacion, camara, dimensiones_iniciales, frames_por_sprite,
+                frame_ticks_actuales);
         animaciones.emplace(first, std::move(objeto_animacion));
     }
 }
@@ -55,12 +59,8 @@ Personaje::Personaje(Personaje&& otro) noexcept:
 
 void Personaje::actualizar_animacion(const EstadoVisualPersonaje estado,
                                      const unsigned int frame_ticks_transcurridos,
-                                     const std::vector<int>& dimensiones) {
-    if (dimensiones.at(RENDER_X) - render_x < 0) {
-        invertido = true;
-    } else if (dimensiones.at(RENDER_X) - render_x > 0) {
-        invertido = false;
-    }
+                                     const std::vector<int>& dimensiones, bool invertido) {
+    this->invertido = invertido;
     render_x = dimensiones.at(RENDER_X);
     render_y = dimensiones.at(RENDER_Y);
     render_angulo = dimensiones.at(RENDER_ANGULO);

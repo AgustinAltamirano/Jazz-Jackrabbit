@@ -84,14 +84,17 @@ struct BloqueEscenarioDTO {
 
 class SnapshotDTO_provisorio {
 private:
+    uint32_t id_cliente;
     TipoEscenario tipo_escenario;
     std::vector<BloqueEscenarioDTO> bloques_escenario;
     std::vector<ClienteDTO> clientes;
     bool fin_juego;
 
 public:
-    explicit SnapshotDTO_provisorio(const TipoEscenario tipo_escenario):
-            tipo_escenario(tipo_escenario), fin_juego(false) {}
+    explicit SnapshotDTO_provisorio(const uint32_t id_cliente, const TipoEscenario tipo_escenario):
+            id_cliente(id_cliente), tipo_escenario(tipo_escenario), fin_juego(false) {}
+
+    [[nodiscard]] const uint32_t obtener_id_cliente() const;
 
     [[nodiscard]] TipoEscenario obtener_tipo_escenario() const { return tipo_escenario; }
 
