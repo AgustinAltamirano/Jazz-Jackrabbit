@@ -55,7 +55,7 @@ private:
     std::unordered_map<uint32_t, Personaje> personajes;
 
     /** Mapa con todos los objetos asociados a bloques del escenario. */
-    std::unordered_map<uint32_t, BloqueEscenario> bloques_escenario;
+    std::unordered_map<uint32_t, std::unique_ptr<BloqueEscenario>> bloques_escenario;
 
     void actualizar_vista(uint32_t ticks_transcurridos);
 

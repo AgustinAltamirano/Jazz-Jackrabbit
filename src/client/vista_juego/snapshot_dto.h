@@ -94,9 +94,9 @@ public:
     explicit SnapshotDTO_provisorio(const TipoEscenario tipo_escenario):
             id_cliente(0), tipo_escenario(tipo_escenario), fin_juego(false) {}
 
-    void agregar_id_cliente(uint32_t) {}
+    void agregar_id_cliente(const uint32_t id_cliente) { this->id_cliente = id_cliente; }
 
-    [[nodiscard]] const uint32_t obtener_id_cliente() const;
+    [[nodiscard]] const uint32_t obtener_id_cliente() const { return id_cliente; }
 
     [[nodiscard]] TipoEscenario obtener_tipo_escenario() const { return tipo_escenario; }
 

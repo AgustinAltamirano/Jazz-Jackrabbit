@@ -7,7 +7,9 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
+#include "pared_escenario.h"
 #include "piso_escenario.h"
+#include "techo_escenario.h"
 
 const std::unordered_map<TipoEscenario, std::string> AdministradorVistaJuego::MAPA_TIPO_ESCENARIO{
         {ESCENARIO1, "castle"},
@@ -58,7 +60,6 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
     const std::vector<ClienteDTO> clientes_recibidos = snapshot->obtener_clientes();
 
     // Actualizar posición de la cámara
-
     if (auto it = std::find_if(
                 clientes_recibidos.begin(), clientes_recibidos.end(),
                 [this](const auto& cliente) { return cliente.id_cliente == this->id_jugador; });
@@ -66,28 +67,42 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
         camara.actualizar_pos_camara(it->pos_x, it->pos_y);
     }
 
-    const std::vector<BloqueEscenarioDTO> bloques_recibidos = snapshot->obtener_bloques_escenario();
-    if (!bloques_recibidos.empty()) {
-        for (auto bloque&: bloques_recibidos) {
+    if (const std::vector<BloqueEscenarioDTO> bloques_recibidos =
+                snapshot->obtener_bloques_escenario();
+        !bloques_recibidos.empty()) {
+        for (auto bloque: bloques_recibidos) {
             SDL2pp::Texture& textura_bloque =
                     lector_texturas.obtener_textura_bloque(MAPA_TIPO_ESCENARIO.at(tipo_escenario));
+            const SDL2pp::Rect& coords_superficie = lector_texturas.obtener_coords_bloque(
+                    MAPA_TIPO_ESCENARIO.at(tipo_escenario), MAPA_TIPO_BLOQUE.at(bloque.tipo).first);
+            const SDL2pp::Rect& coords_relleno =
+                    lector_texturas.obtener_coords_bloque(MAPA_TIPO_ESCENARIO.at(tipo_escenario),
+                                                          MAPA_TIPO_BLOQUE.at(bloque.tipo).second);
             switch (bloque.tipo) {
                 case PISO:
-
-                    PisoEscenario nuevo_piso(
-                            SDL2pp::Rect(bloque.pos_x, bloque.pos_y, bloque.ancho, bloque.alto),
-                            renderer, textura_bloque, textura_bloque,
-                            lector_texturas.obtener_coords_bloque(
-                                    MAPA_TIPO_ESCENARIO.at(tipo_escenario),
-                                    MAPA_TIPO_BLOQUE.at(bloque.tipo).first),
-                            lector_texturas.obtener_coords_bloque(
-                                    MAPA_TIPO_ESCENARIO.at(tipo_escenario),
-                                    MAPA_TIPO_BLOQUE.at(bloque.tipo).second),
-                            camara);
+                    bloques_escenario.emplace(proximo_id,
+                                              std::make_unique<PisoEscenario>(
+                                                      SDL2pp::Rect(bloque.pos_x, bloque.pos_y,
+                                                                   static_cast<int>(bloque.ancho),
+                                                                   static_cast<int>(bloque.alto)),
+                                                      renderer, textura_bloque, textura_bloque,
+                                                      coords_superficie, coords_relleno, camara));
                 case PARED:
-                    std::cout << "Provisorio";
+                    bloques_escenario.emplace(proximo_id,
+                                              std::make_unique<ParedEscenario>(
+                                                      SDL2pp::Rect(bloque.pos_x, bloque.pos_y,
+                                                                   static_cast<int>(bloque.ancho),
+                                                                   static_cast<int>(bloque.alto)),
+                                                      renderer, textura_bloque, textura_bloque,
+                                                      coords_superficie, coords_relleno, camara));
                 case TECHO:
-                    std::cout << "Provisorio";
+                    bloques_escenario.emplace(proximo_id,
+                                              std::make_unique<TechoEscenario>(
+                                                      SDL2pp::Rect(bloque.pos_x, bloque.pos_y,
+                                                                   static_cast<int>(bloque.ancho),
+                                                                   static_cast<int>(bloque.alto)),
+                                                      renderer, textura_bloque, textura_bloque,
+                                                      coords_superficie, coords_relleno, camara));
                 case DIAGONAL:
                     // Falta implementar
                     break;
@@ -110,10 +125,15 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
                                       cliente.de_espaldas);
     }
 
-    for (auto [fst, snd]: personajes) {
+    std::unordered_set<uint32_t> ids_clientes_borrar;
+    for (auto& [fst, snd]: personajes) {
         if (ids_clientes_recibidos.count(fst) == 0) {
-            personajes.erase(fst);
+            ids_clientes_borrar.insert(fst);
         }
+    }
+
+    for (auto id: ids_clientes_borrar) {
+        personajes.erase(id);
     }
 }
 
@@ -159,15 +179,15 @@ void AdministradorVistaJuego::run() {
         if (fondo_escenario) {
             fondo_escenario->dibujar();
         }
-        for (auto [fst, snd]: bloques_escenario) {
-            snd.dibujar();
+        for (auto& [fst, snd]: bloques_escenario) {
+            snd->dibujar();
         }
-        for (auto [fst, snd]: personajes) {
+        for (auto& [fst, snd]: personajes) {
             snd.dibujar();
         }
         renderer.Present();
 
-        close = entrada_juego.procesar_entrada(id_jugador);
+        close = !entrada_juego.procesar_entrada(id_jugador);
         ticks_transcurridos = SDL_GetTicks() - ticks_anteriores;
         sincronizar_vista(ticks_transcurridos);
     }
