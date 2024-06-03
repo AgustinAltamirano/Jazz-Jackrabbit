@@ -11,6 +11,6 @@ escenarios:
     imagen: castle.png
     fondo_coords:
       - x: 0
-        y: 1920
+        y: 1732
         ancho: 224
         alto: 192
