@@ -3,11 +3,14 @@
 
 #include "menu_crear_partida.h"
 #include "menu_juego.h"
+#include "ventana_dialogo.h"
 
 
 class MenuPrincipal: public QMainWindow {
 private:
     MenuJuego& juego;
+
+    VentanaDialogo popup_cod_partida;
 
     BotonMenu new_game_btn;
 
@@ -15,13 +18,14 @@ private:
 
     void conectar_botones();
 
-    void mostrar_menu_crear_partida();
+    void desplegar_popup();
 
-    void mostrar_menu_unirse_partida();
+    void crear_partida();
 
 public:
-    MenuPrincipal();
     explicit MenuPrincipal(MenuJuego& juego);
+
+    void unirse_partida();
 };
 
 

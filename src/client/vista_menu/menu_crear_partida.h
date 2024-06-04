@@ -9,10 +9,13 @@
 #include "menu_juego.h"
 #include "menu_selec_jugador.h"
 #include "menu_selec_mapa.h"
+#include "ventana_dialogo.h"
 
 class MenuCrearPartida: public QMainWindow {
 private:
     MenuJuego& juego;
+
+    VentanaDialogo popup_cant_jugadores;
 
     QLabel label;
 
@@ -20,11 +23,12 @@ private:
 
     MenuSeleccionMapa menu_seleccion_mapa;
 
-    void mostrar_menu_crear_partida();
+    void desplegar_popup();
 
 public:
-    explicit MenuCrearPartida(QMainWindow* parent);
     explicit MenuCrearPartida(QMainWindow* parent, MenuJuego& juego);
+
+    void crear_partida();
 };
 
 

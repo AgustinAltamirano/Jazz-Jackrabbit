@@ -6,6 +6,7 @@
 MenuPrincipal::MenuPrincipal(MenuJuego& juego):
         QMainWindow(),
         juego(juego),
+        popup_cod_partida(this),
         new_game_btn(this, OFFSET_X_NEWGAME_BTN, OFFSET_Y_NEWGAME_BTN, ANCHO_NEWGAME_BTN,
                      ALTO_NEWGAME_BTN, TEXTO_NEWGAME_BTN),
 
@@ -20,22 +21,28 @@ MenuPrincipal::MenuPrincipal(MenuJuego& juego):
 
 void MenuPrincipal::conectar_botones() {
     // Defino los handlers de los botones
-    connect(&new_game_btn, &QPushButton::clicked, this, &MenuPrincipal::mostrar_menu_crear_partida);
+    connect(&new_game_btn, &QPushButton::clicked, this, &MenuPrincipal::crear_partida);
     connect(&join_game_btn, &QPushButton::clicked, this,
-            &MenuPrincipal::mostrar_menu_unirse_partida);
+            &MenuPrincipal::desplegar_popup);
 }
 
 
-void MenuPrincipal::mostrar_menu_crear_partida() {
-    auto menu_crear_partida = new MenuCrearPartida(this);
+void MenuPrincipal::crear_partida() {
+    auto menu_crear_partida = new MenuCrearPartida(this, juego);
     menu_crear_partida->move(this->pos());
     menu_crear_partida->show();
     hide();
 }
 
 
-void MenuPrincipal::mostrar_menu_unirse_partida() {
-    auto menu_seleccion_jug = new MenuSeleccionJugador(this);
+void MenuPrincipal::desplegar_popup() {
+    popup_cod_partida.exec();
+}
+
+
+void MenuPrincipal::unirse_partida() {
+    juego.definir_codigo_partida(popup_cod_partida.obtener_seleccion());
+    auto menu_seleccion_jug = new MenuSeleccionJugador(this, juego);
     menu_seleccion_jug->move(this->pos());
     menu_seleccion_jug->show();
     hide();

@@ -68,4 +68,28 @@ enum PosicionBoton {
 #define ANCHO_SEL_NAME 140
 #define ALTO_SEL_NAME 50
 
+#define ANCHO_POPUP 215
+#define ALTO_POPUP 95
+#define LEFT_M_LABEL_POPUP 10
+#define TOP_M_FILA_POPUP 10
+#define ALTO_FILA_POPUP 31
+#define LEFT_M_BTN_POPUP 20
+#define TOP_M_BTN_POPUP 60
+#define ANCHO_BTN_POPUP 166
+#define ALTO_BTN_POPUP 25
+#define ANCHO_SPINBOX_POPUP 61
+#define LEFT_M_SPINBOX_POPUP 150
+#define ANCHO_LABEL_POPUP 121
+#define RUTA_CONFIG_YAML "/configuracion.yml"
+
+#define TITULO_POPUP_PARTIDA "Ingresar código"
+#define CANT_MIN_PARTIDAS 1
+#define TEXTO_LABEL_PARTIDAS "Código de partida:"
+#define MAX_PARTIDAS_YAML "max_partidas"
+
+#define MAX_JUG_YAML "max_jugadores_por_partida"
+#define TITULO_POPUP_JUG "Ingresar cantidad"
+#define CANT_MIN_JUG 2
+#define TEXTO_LABEL_JUG "Jugadores:"
+
 #endif  // CONSTANTES_MENU_H
