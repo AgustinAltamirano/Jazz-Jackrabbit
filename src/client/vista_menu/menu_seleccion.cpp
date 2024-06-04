@@ -26,7 +26,7 @@ void MenuSeleccion::keyPressEvent(QKeyEvent* event) {
 
 
 void MenuSeleccion::realizar_accion_clic() {
-    auto* boton_clickeado = dynamic_cast<QPushButton*>(sender());
+    auto boton_clickeado = qobject_cast<QPushButton*>(sender());
     if (boton_clickeado == boton_enfocado) {
         boton_enfocado = nullptr;
 
