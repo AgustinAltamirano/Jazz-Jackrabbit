@@ -55,7 +55,7 @@ void gameloop::run() {
         // seccion2 chequea colisiones con el entorno y los cambios de estado de los personajes
         escenario.colisiones_bloques_rectos(personajes);
         escenario.colisiones_bloques_angulo(personajes);
-        escenario.chequear_caida(personajes);
+        escenario.chequear_caida_y_objetos(personajes);
 
         // seccion3 chequea colisiones con los puntos, municiones y enemigos
         //  por hacer

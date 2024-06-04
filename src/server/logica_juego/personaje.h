@@ -7,6 +7,7 @@
 
 #include "../../client/vista_juego/accion_juego_dto.h"
 #include "../../client/vista_juego/snapshot_dto.h"
+#include "assets/recogible.h"
 
 class personaje {
 private:
@@ -48,6 +49,7 @@ public:
                           uint32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(bool cae);
     void pasar_tick();
+    void recoger_objeto(uint32_t valor, TipoRecogible tipo);
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.
@@ -62,7 +64,7 @@ public:
     // bool respawnear();
 
     // funcion para la construccion del dto
-    ClienteDTO crear_dto() const;
+    [[nodiscard]] ClienteDTO crear_dto() const;
 };
 
 

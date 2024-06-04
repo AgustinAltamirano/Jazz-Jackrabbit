@@ -110,7 +110,7 @@ void manejadorEscenario::colisiones_bloques_angulo(
         const std::map<int, personaje>& jugadores) const {}
 
 
-void manejadorEscenario::chequear_caida(std::map<int, personaje>& jugadores) const {
+void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& jugadores) {
     for (auto& entidad: jugadores) {
         personaje& jugador = entidad.second;
         const std::vector<int32_t> posicion = jugador.get_pos_actual();
@@ -123,8 +123,17 @@ void manejadorEscenario::chequear_caida(std::map<int, personaje>& jugadores) con
                            colision_horizontal(punto_x, jugador.get_ancho(), bloque);
                 });
         jugador.cambiar_estado(cae);
+        for (auto it = objetos.begin(); it != objetos.end();) {
+            uint32_t valor = (*it).chequear_colision(punto_x, punto_y, jugador.get_ancho(),
+                                                     jugador.get_alto());
+            if (valor != 0) {
+                jugador.recoger_objeto(valor, (*it).get_objeto());
+                it = objetos.erase(it);
+            }
+        }
     }
 }
+
 
 // seccion de creacion de snapshots
 auto manejadorEscenario::crear_snapshot() {
