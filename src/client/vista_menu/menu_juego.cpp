@@ -5,7 +5,8 @@
 #include "ventana_inicial.h"
 
 
-MenuJuego::MenuJuego(int argc, char* argv[], Lobby& lobby) : lobby(lobby) {
+MenuJuego::MenuJuego(int argc, char* argv[], Lobby& lobby) :
+        lobby(lobby), personaje_elegido(0), mapa_elegido(0), cant_jugadores(0), codigo_partida(0) {
     QApplication a(argc, argv);
     VentanaInicial ventana(*this);
     ventana.show();
@@ -13,23 +14,21 @@ MenuJuego::MenuJuego(int argc, char* argv[], Lobby& lobby) : lobby(lobby) {
 }
 
 
-void MenuJuego::definir_personaje(int personaje) {
+void MenuJuego::definir_personaje_elegido(int personaje) {
     personaje_elegido = personaje;
 }
 
 
-void MenuJuego::definir_mapa(int mapa) {
+void MenuJuego::definir_mapa_elegido(int mapa) {
     mapa_elegido = mapa;
 }
 
 
-void MenuJuego::definir_cant_jugadores(int8_t cant_jugadores) {
-    cant_jugadores_elegidos = cant_jugadores;
-}
+void MenuJuego::definir_cant_jugadores(int cant_jug) { cant_jugadores = cant_jug; }
 
 
 void MenuJuego::crear_partida() {
-    lobby.crear_partida(cant_jugadores_elegidos);
+    lobby.crear_partida(cant_jugadores);
 }
 
 

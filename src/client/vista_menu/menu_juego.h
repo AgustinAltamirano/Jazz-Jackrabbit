@@ -9,11 +9,11 @@ class MenuJuego {
 public:
     MenuJuego(int argc, char* argv[], Lobby& lobby);
 
-    void definir_mapa(int mapa);
+    void definir_mapa_elegido(int mapa);
 
-    void definir_personaje(int personaje);
+    void definir_personaje_elegido(int personaje);
 
-    void definir_cant_jugadores(int8_t cant_jugadores);
+    void definir_cant_jugadores(int cant_jug);
 
     void crear_partida();
 
@@ -28,7 +28,7 @@ private:
 
     int mapa_elegido;
 
-    int8_t cant_jugadores_elegidos;
+    int cant_jugadores;
 
     int codigo_partida;
 };
