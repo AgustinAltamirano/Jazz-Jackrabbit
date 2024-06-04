@@ -39,7 +39,7 @@ void MenuCrearPartida::desplegar_popup() {
 
 
 void MenuCrearPartida::crear_partida() {
-    juego.definir_codigo_partida(popup_cant_jugadores.obtener_seleccion());
+    juego.definir_cant_jugadores(popup_cant_jugadores.obtener_seleccion());
     menu_seleccion_mapa.move(this->pos());
     menu_seleccion_mapa.show();
     hide();
