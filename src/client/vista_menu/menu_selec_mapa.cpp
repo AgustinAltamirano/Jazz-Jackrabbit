@@ -14,6 +14,7 @@ MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
         opcion_mapa_1(parent, &central_widget, NUM_MAPA_1, ANCHO_BTN_MAPA, ALTO_BTN_MAPA),
         opcion_mapa_2(parent, &central_widget, NUM_MAPA_2, ANCHO_BTN_MAPA, ALTO_BTN_MAPA),
         opcion_mapa_custom(parent, &central_widget, NUM_MAPA_CUST, ANCHO_BTN_MAPA, ALTO_BTN_MAPA) {
+    setWindowTitle(TITULO_VENTANAS);
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     vertical_layout_widget.setGeometry(
             QRect(M_LEFT_LAYOUT, M_TOP_LAYOUT, ANCHO_PANTALLA, ALTO_PANTALLA));

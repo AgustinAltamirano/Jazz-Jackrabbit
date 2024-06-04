@@ -16,6 +16,7 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego
         jazz_player(this, NUM_JAZZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
         spaz_player(this, NUM_SPAZ_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER),
         lori_player(this, NUM_LORI_PLAYER, ANCHO_SEL_PLAYER, ALTO_SEL_PLAYER) {
+    setWindowTitle(TITULO_VENTANAS);
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     horizontal_layout_widget.setGeometry(
             QRect(M_LEFT_PLAYER, M_TOP_PLAYER, ANCHO_PANTALLA, ALTO_PANTALLA));

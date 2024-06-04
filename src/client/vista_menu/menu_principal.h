@@ -26,7 +26,7 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
 
 public:
-    explicit MenuPrincipal(MenuJuego& juego);
+    explicit MenuPrincipal(QMainWindow* parent, MenuJuego& juego);
 
     void unirse_partida();
 };

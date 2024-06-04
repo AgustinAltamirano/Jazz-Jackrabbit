@@ -3,8 +3,8 @@
 #include "menu_juego.h"
 
 
-MenuPrincipal::MenuPrincipal(MenuJuego& juego):
-        QMainWindow(),
+MenuPrincipal::MenuPrincipal(QMainWindow* parent, MenuJuego& juego):
+        QMainWindow(parent),
         juego(juego),
         popup_cod_partida(this),
         new_game_btn(this, OFFSET_X_NEWGAME_BTN, OFFSET_Y_NEWGAME_BTN, ANCHO_NEWGAME_BTN,
@@ -12,6 +12,7 @@ MenuPrincipal::MenuPrincipal(MenuJuego& juego):
 
         join_game_btn(this, OFFSET_X_JOINGAME_BTN, OFFSET_Y_JOINGAME_BTN, ANCHO_JOINGAME_BTN,
                       ALTO_JOINGAME_BTN, TEXTO_JOINGAME_BTN) {
+    setWindowTitle(TITULO_VENTANAS);
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     QString estilo = QString("QMainWindow {background-image: url(%1);}").arg(QString(ASSETS_PATH) + RUTA_IMG_INICIAL);
     setStyleSheet(estilo);

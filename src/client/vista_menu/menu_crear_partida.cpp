@@ -15,6 +15,7 @@ MenuCrearPartida::MenuCrearPartida(QMainWindow* parent, MenuJuego& juego):
                         ANCHO_MULTIPLAYER_BTN, ALTO_MULTIPLAYER_BTN, TEXTO_MULTIPLAYER_BTN),
         label(this),
         menu_seleccion_mapa(this, juego) {
+    setWindowTitle(TITULO_VENTANAS);
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
 
     // Coloco la imagen con un Color Key para que el fondo sea transparente
