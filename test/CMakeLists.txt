@@ -22,6 +22,8 @@ add_executable(test_protocolo_servidor
         ../src/common/snapshot_dto.cpp
         ../src/common/socket.cpp
         ../src/common/resolver.cpp
+        ../src/common/liberror.cpp
+        ../src/common/resolvererror.cpp
 )
 target_link_libraries(test_protocolo_servidor -lyaml-cpp)
 

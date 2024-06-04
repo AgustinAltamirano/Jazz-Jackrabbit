@@ -27,7 +27,7 @@ public:
 
     void enviar_id_cliente(const int32_t& id_cliente, bool* cerrado);
 
-    void enviar_snapshot(SnapshotDTO snapshot_dto, bool *cerrado);
+    void enviar_snapshot(const SnapshotDTO& snapshot_dto, bool *cerrado);
 
     /** serializadores publicos para testing **/
 

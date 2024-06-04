@@ -6,7 +6,7 @@
 
 #include "../common/comando_dto.h"
 #include "../common/snapshot_dto.h"
-#include "../game_logic/cliente_juego.h"
+#include "../server/logica_juego//cliente_juego.h"
 
 class LogicaJuego {
 private:
