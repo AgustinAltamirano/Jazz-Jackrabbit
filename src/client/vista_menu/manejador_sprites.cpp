@@ -36,7 +36,7 @@ void ManejadorSprites::inicializar_texturas(int num_boton, const std::string& ti
 
 
 YAML::Node ManejadorSprites::obtener_yaml() {
-    const std::string ruta_sprites = std::string(ASSETS_PATH) + std::string(RUTA_SPRITES);
+    const std::string ruta_sprites = std::string(ASSETS_PATH) + std::string(RUTA_SPRITES_PJ);
     const std::string ruta_yaml = ruta_sprites + std::string(PERSONAJES_CONFIG);
     YAML::Node yaml_sprites = YAML::LoadFile(ruta_yaml);
     return yaml_sprites;
@@ -44,7 +44,7 @@ YAML::Node ManejadorSprites::obtener_yaml() {
 
 
 QPixmap ManejadorSprites::obtener_imagen_sprites(YAML::Node& sprites, int num_boton) {
-    auto imagen_sprites = RUTA_IMG + sprites["botones"][num_boton]["imagen"].as<std::string>();
+    auto imagen_sprites = std::string(ASSETS_PATH) + RUTA_SPRITES_PJ + sprites["botones"][num_boton]["imagen"].as<std::string>();
     QPixmap imagen(imagen_sprites.c_str());
     QRgb colorKey = qRgb(R_MULTIPLAYER, G_MULTIPLAYER, B_MULTIPLAYER);
     QBitmap mask = imagen.createMaskFromColor(colorKey, Qt::MaskInColor);

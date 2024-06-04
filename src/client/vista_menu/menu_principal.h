@@ -2,21 +2,33 @@
 #define MENUPRINCIPAL_H
 
 #include "menu_crear_partida.h"
+#include "menu_juego.h"
+#include "ventana_dialogo.h"
+
 
 class MenuPrincipal: public QMainWindow {
 private:
+    MenuJuego& juego;
+
+    VentanaDialogo popup_cod_partida;
+
     BotonMenu new_game_btn;
 
     BotonMenu join_game_btn;
 
     void conectar_botones();
 
-    void mostrar_menu_crear_partida();
+    void desplegar_popup();
 
-    void mostrar_menu_unirse_partida();
+    void crear_partida();
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 public:
-    MenuPrincipal();
+    explicit MenuPrincipal(QMainWindow* parent, MenuJuego& juego);
+
+    void unirse_partida();
 };
 
 

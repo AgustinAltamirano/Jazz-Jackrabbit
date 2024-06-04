@@ -12,8 +12,6 @@
 
 
 class BotonAnimadoJugador: public BotonMenu {
-    Q_OBJECT
-
 public:
     BotonAnimadoJugador(QMainWindow* parent, int num_sprite, int ancho, int alto);
 

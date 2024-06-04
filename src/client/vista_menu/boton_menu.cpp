@@ -25,8 +25,8 @@ BotonMenu::BotonMenu(QWidget* parent, int offset_x, int offset_y, int ancho, int
 
 void BotonMenu::definir_efectos_de_sonido() {
     for (int i = 0; i <= CANT_EFECTOS_SONIDO; ++i) {
-        efectos_de_sonido.addMedia(
-                QUrl(RUTA_EFECTOS_SONIDO + QString::number(i) + EXTENSION_EFECTOS_SONIDO));
+        auto url = QUrl::fromLocalFile(QString(ASSETS_PATH) + RUTA_EFECTOS_SONIDO + QString::number(i) + EXTENSION_EFECTOS_SONIDO);
+        efectos_de_sonido.addMedia(url);
     }
     efectos_de_sonido.setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
     reproductor_efectos.setPlaylist(&efectos_de_sonido);
