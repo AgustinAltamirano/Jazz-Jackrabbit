@@ -8,6 +8,13 @@
 #include "boton_menu.h"
 #include "menu_juego.h"
 
+
+typedef enum {
+    ESCENARIO_INDEFINIDO = 0,
+    ESCENARIO1,
+    ESCENARIO2,
+} TipoEscenario;
+
 #define NUM_MAPA_1 3
 #define NUM_MAPA_2 4
 #define NUM_MAPA_CUST 5

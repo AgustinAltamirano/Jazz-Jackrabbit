@@ -10,6 +10,7 @@
 MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego):
         QMainWindow(parent),
         menu_previo(parent),
+        juego(juego),
         central_widget(this),
         horizontal_layout_widget(&central_widget),
         horizontalLayout(&horizontal_layout_widget),
@@ -29,6 +30,11 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego
     horizontalLayout.addWidget(&lori_player);
 
     setCentralWidget(&central_widget);
+    conectar_botones();
+
+    jazz_player.setProperty(KEY_TIPO_BOTON, NUM_JAZZ_PLAYER);
+    spaz_player.setProperty(KEY_TIPO_BOTON, NUM_SPAZ_PLAYER);
+    lori_player.setProperty(KEY_TIPO_BOTON, NUM_LORI_PLAYER);
 }
 
 
@@ -40,4 +46,19 @@ void MenuSeleccionJugador::keyPressEvent(QKeyEvent* event) {
     } else {
         QMainWindow::keyPressEvent(event);
     }
+}
+
+
+void MenuSeleccionJugador::conectar_botones() {
+    // Defino los handlers de los botones
+    connect(&jazz_player, &QPushButton::clicked, this,
+            &MenuSeleccionJugador::terminar);
+    connect(&spaz_player, &QPushButton::clicked, this,
+            &MenuSeleccionJugador::terminar);
+    connect(&lori_player, &QPushButton::clicked, this,
+            &MenuSeleccionJugador::terminar);
+}
+
+
+void MenuSeleccionJugador::terminar() {
 }

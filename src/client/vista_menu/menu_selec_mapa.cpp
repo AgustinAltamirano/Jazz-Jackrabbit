@@ -29,6 +29,10 @@ MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
     vertical_layout.addWidget(&opcion_mapa_custom);
 
     setCentralWidget(&central_widget);
+
+    opcion_mapa_1.setProperty(KEY_TIPO_BOTON, ESCENARIO1);
+    opcion_mapa_2.setProperty(KEY_TIPO_BOTON, ESCENARIO2);
+    opcion_mapa_custom.setProperty(KEY_TIPO_BOTON, ESCENARIO_INDEFINIDO);
 }
 
 
@@ -47,6 +51,10 @@ void MenuSeleccionMapa::mostrar_selector_jugador() {
     auto* boton_mapa_seleccionado = dynamic_cast<QPushButton*>(sender());
     if (boton_mapa_seleccionado == boton_enfocado) {
         boton_enfocado = nullptr;
+
+        int mapa_seleccionado = boton_mapa_seleccionado->property(KEY_TIPO_BOTON).toInt();
+        juego.definir_mapa_elegido(mapa_seleccionado);
+
         auto* selector_jugador = new MenuSeleccionJugador(this, juego);
         selector_jugador->move(this->pos());
         selector_jugador->show();

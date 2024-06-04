@@ -7,6 +7,7 @@
 #include "boton_animado_jugador.h"
 #include "menu_juego.h"
 
+#define KEY_TIPO_BOTON "tipo_btn"
 #define NUM_JAZZ_PLAYER 0
 #define NUM_SPAZ_PLAYER 1
 #define NUM_LORI_PLAYER 2
@@ -25,6 +26,8 @@ class MenuSeleccionJugador: public QMainWindow {
 private:
     QMainWindow* menu_previo;
 
+    MenuJuego& juego;
+
     QWidget central_widget;
 
     QWidget horizontal_layout_widget;
@@ -36,6 +39,10 @@ private:
     BotonAnimadoJugador spaz_player;
 
     BotonAnimadoJugador lori_player;
+
+    void terminar();
+
+    void conectar_botones();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
