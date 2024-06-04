@@ -40,6 +40,7 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego
 
 void MenuSeleccionJugador::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Escape) {
+        boton_enfocado = nullptr;
         menu_previo->move(this->pos());
         menu_previo->show();
         hide();
@@ -61,4 +62,15 @@ void MenuSeleccionJugador::conectar_botones() {
 
 
 void MenuSeleccionJugador::terminar() {
+    auto* boton_pj_seleccionado = dynamic_cast<QPushButton*>(sender());
+    if (boton_pj_seleccionado == boton_enfocado) {
+        boton_enfocado = nullptr;
+
+        int pj_seleccionado = boton_pj_seleccionado->property(KEY_TIPO_BOTON).toInt();
+
+        juego.definir_personaje_elegido(pj_seleccionado);
+
+        close();
+    }
+    boton_enfocado = boton_pj_seleccionado;
 }

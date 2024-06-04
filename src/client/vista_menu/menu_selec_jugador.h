@@ -40,6 +40,8 @@ private:
 
     BotonAnimadoJugador lori_player;
 
+    QPushButton* boton_enfocado = nullptr;
+
     void terminar();
 
     void conectar_botones();
