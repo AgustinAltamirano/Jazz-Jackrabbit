@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 
 #include "boton_animado_jugador.h"
+#include "menu_juego.h"
 
 #define NUM_JAZZ_PLAYER 0
 #define NUM_SPAZ_PLAYER 1
@@ -35,7 +36,7 @@ private:
     BotonAnimadoJugador lori_player;
 
 public:
-    explicit MenuSeleccionJugador(QMainWindow* parent);
+    explicit MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego);
 };
 
 

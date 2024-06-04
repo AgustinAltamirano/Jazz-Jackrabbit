@@ -4,8 +4,9 @@
 #include "menu_selec_jugador.h"
 
 
-MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent):
+MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
         QMainWindow(parent),
+        juego(juego),
         central_widget(this),
         vertical_layout_widget(&central_widget),
         vertical_layout(&vertical_layout_widget),
@@ -43,7 +44,7 @@ void MenuSeleccionMapa::conectar_botones() {
 void MenuSeleccionMapa::mostrar_selector_jugador() {
     auto* boton_pj_seleccionado = dynamic_cast<QPushButton*>(sender());
     if (boton_pj_seleccionado == boton_enfocado) {
-        auto* selector_jugador = new MenuSeleccionJugador(this);
+        auto* selector_jugador = new MenuSeleccionJugador(this, juego);
         selector_jugador->move(this->pos());
         selector_jugador->show();
         hide();

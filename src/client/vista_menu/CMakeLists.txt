@@ -16,7 +16,6 @@ find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Multimedia REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Multimedia REQUIRED)
 
 set(PROJECT_SOURCES
-        main.cpp
         ventana_inicial.cpp
         ventana_inicial.h
         menu_principal.cpp
@@ -62,6 +61,8 @@ else()
                 sprites_mapa.h
                 boton_animado_mapa.cpp
                 boton_animado_mapa.h
+                menu_juego.cpp
+                menu_juego.h
         )
     endif()
 endif()

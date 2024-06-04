@@ -3,8 +3,8 @@
 #include <QFontDatabase>
 
 
-VentanaInicial::VentanaInicial():
-        QMainWindow(), press_click_btn(this), reproductor_musica(), playlist(), menu_principal() {
+VentanaInicial::VentanaInicial(MenuJuego& juego):
+        QMainWindow(), press_click_btn(this), reproductor_musica(), playlist(), menu_principal(juego) {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     reproducir_musica();
     QString estilo = QString("QMainWindow {background-image: url(%1);}").arg(QString(ASSETS_PATH) + RUTA_IMG_MENU);

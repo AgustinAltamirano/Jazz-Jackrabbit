@@ -1,8 +1,11 @@
 #include "menu_principal.h"
 
+#include "menu_juego.h"
 
-MenuPrincipal::MenuPrincipal():
+
+MenuPrincipal::MenuPrincipal(MenuJuego& juego):
         QMainWindow(),
+        juego(juego),
         new_game_btn(this, OFFSET_X_NEWGAME_BTN, OFFSET_Y_NEWGAME_BTN, ANCHO_NEWGAME_BTN,
                      ALTO_NEWGAME_BTN, TEXTO_NEWGAME_BTN),
 

@@ -2,9 +2,13 @@
 #define MENUPRINCIPAL_H
 
 #include "menu_crear_partida.h"
+#include "menu_juego.h"
+
 
 class MenuPrincipal: public QMainWindow {
 private:
+    MenuJuego& juego;
+
     BotonMenu new_game_btn;
 
     BotonMenu join_game_btn;
@@ -17,6 +21,7 @@ private:
 
 public:
     MenuPrincipal();
+    explicit MenuPrincipal(MenuJuego& juego);
 };
 
 

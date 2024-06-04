@@ -6,11 +6,14 @@
 
 #include "boton_menu.h"
 #include "constantes_menu.h"
+#include "menu_juego.h"
 #include "menu_selec_jugador.h"
 #include "menu_selec_mapa.h"
 
 class MenuCrearPartida: public QMainWindow {
 private:
+    MenuJuego& juego;
+
     QLabel label;
 
     BotonMenu multiplayer_btn;
@@ -21,6 +24,7 @@ private:
 
 public:
     explicit MenuCrearPartida(QMainWindow* parent);
+    explicit MenuCrearPartida(QMainWindow* parent, MenuJuego& juego);
 };
 
 

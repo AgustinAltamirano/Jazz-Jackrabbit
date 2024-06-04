@@ -6,6 +6,7 @@
 
 #include "boton_animado_mapa.h"
 #include "boton_menu.h"
+#include "menu_juego.h"
 
 #define NUM_MAPA_1 3
 #define NUM_MAPA_2 4
@@ -23,6 +24,8 @@
 
 class MenuSeleccionMapa: public QMainWindow {
 private:
+    MenuJuego& juego;
+
     QWidget central_widget;
 
     QWidget vertical_layout_widget;
@@ -43,7 +46,7 @@ private:
 
 
 public:
-    explicit MenuSeleccionMapa(QMainWindow* parent);
+    explicit MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego);
 };
 
 

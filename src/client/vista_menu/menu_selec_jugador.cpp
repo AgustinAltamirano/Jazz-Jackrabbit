@@ -4,9 +4,10 @@
 
 #include "boton_animado_jugador.h"
 #include "constantes_menu.h"
+#include "menu_juego.h"
 
 
-MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent):
+MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego):
         QMainWindow(parent),
         central_widget(this),
         horizontal_layout_widget(&central_widget),

@@ -3,14 +3,16 @@
 #include <QBitmap>
 
 #include "boton_animado_jugador.h"
+#include "menu_juego.h"
 
 
-MenuCrearPartida::MenuCrearPartida(QMainWindow* parent):
+MenuCrearPartida::MenuCrearPartida(QMainWindow* parent, MenuJuego& juego):
         QMainWindow(parent),
+        juego(juego),
         multiplayer_btn(this, OFFSET_X_MULTIPLAYER_BTN, OFFSET_Y_MULTIPLAYER_BTN,
                         ANCHO_MULTIPLAYER_BTN, ALTO_MULTIPLAYER_BTN, TEXTO_MULTIPLAYER_BTN),
         label(this),
-        menu_seleccion_mapa(this) {
+        menu_seleccion_mapa(this, juego) {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
 
     // Coloco la imagen con un Color Key para que el fondo sea transparente
