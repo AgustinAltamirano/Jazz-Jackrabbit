@@ -8,6 +8,7 @@
 
 MenuCrearPartida::MenuCrearPartida(QMainWindow* parent, MenuJuego& juego):
         QMainWindow(parent),
+        menu_principal(parent),
         juego(juego),
         popup_cant_jugadores(this),
         multiplayer_btn(this, OFFSET_X_MULTIPLAYER_BTN, OFFSET_Y_MULTIPLAYER_BTN,
@@ -41,4 +42,15 @@ void MenuCrearPartida::crear_partida() {
     menu_seleccion_mapa.move(this->pos());
     menu_seleccion_mapa.show();
     hide();
+}
+
+
+void MenuCrearPartida::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Escape) {
+        menu_principal->move(this->pos());
+        menu_principal->show();
+        hide();
+    } else {
+        QMainWindow::keyPressEvent(event);
+    }
 }

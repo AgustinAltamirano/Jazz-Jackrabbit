@@ -22,6 +22,9 @@ private:
 
     void crear_partida();
 
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 public:
     explicit MenuPrincipal(MenuJuego& juego);
 

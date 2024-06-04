@@ -13,6 +13,8 @@
 
 class MenuCrearPartida: public QMainWindow {
 private:
+    QMainWindow* menu_principal;
+
     MenuJuego& juego;
 
     VentanaDialogo popup_cant_jugadores;
@@ -24,6 +26,9 @@ private:
     MenuSeleccionMapa menu_seleccion_mapa;
 
     void desplegar_popup();
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 public:
     explicit MenuCrearPartida(QMainWindow* parent, MenuJuego& juego);

@@ -26,6 +26,8 @@ class MenuSeleccionMapa: public QMainWindow {
 private:
     MenuJuego& juego;
 
+    QMainWindow* menu_previo;
+
     QWidget central_widget;
 
     QWidget vertical_layout_widget;
@@ -44,6 +46,8 @@ private:
 
     void mostrar_selector_jugador();
 
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 public:
     explicit MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego);

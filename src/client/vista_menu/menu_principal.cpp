@@ -47,3 +47,12 @@ void MenuPrincipal::unirse_partida() {
     menu_seleccion_jug->show();
     hide();
 }
+
+
+void MenuPrincipal::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Escape) {
+        this->close();
+    } else {
+        QMainWindow::keyPressEvent(event);
+    }
+}

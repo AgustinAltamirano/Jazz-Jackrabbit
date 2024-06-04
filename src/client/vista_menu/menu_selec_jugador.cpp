@@ -9,6 +9,7 @@
 
 MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego):
         QMainWindow(parent),
+        menu_previo(parent),
         central_widget(this),
         horizontal_layout_widget(&central_widget),
         horizontalLayout(&horizontal_layout_widget),
@@ -27,4 +28,15 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego
     horizontalLayout.addWidget(&lori_player);
 
     setCentralWidget(&central_widget);
+}
+
+
+void MenuSeleccionJugador::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Escape) {
+        menu_previo->move(this->pos());
+        menu_previo->show();
+        hide();
+    } else {
+        QMainWindow::keyPressEvent(event);
+    }
 }

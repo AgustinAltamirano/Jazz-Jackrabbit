@@ -6,6 +6,7 @@
 
 MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
         QMainWindow(parent),
+        menu_previo(parent),
         juego(juego),
         central_widget(this),
         vertical_layout_widget(&central_widget),
@@ -44,10 +45,24 @@ void MenuSeleccionMapa::conectar_botones() {
 void MenuSeleccionMapa::mostrar_selector_jugador() {
     auto* boton_mapa_seleccionado = dynamic_cast<QPushButton*>(sender());
     if (boton_mapa_seleccionado == boton_enfocado) {
+        boton_enfocado = nullptr;
         auto* selector_jugador = new MenuSeleccionJugador(this, juego);
         selector_jugador->move(this->pos());
         selector_jugador->show();
         hide();
+        return;
     }
     boton_enfocado = boton_mapa_seleccionado;
+}
+
+
+void MenuSeleccionMapa::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Escape) {
+        boton_enfocado = nullptr;
+        menu_previo->move(this->pos());
+        menu_previo->show();
+        hide();
+    } else {
+        QMainWindow::keyPressEvent(event);
+    }
 }

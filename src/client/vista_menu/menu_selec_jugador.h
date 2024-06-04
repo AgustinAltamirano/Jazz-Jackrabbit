@@ -23,6 +23,8 @@
 
 class MenuSeleccionJugador: public QMainWindow {
 private:
+    QMainWindow* menu_previo;
+
     QWidget central_widget;
 
     QWidget horizontal_layout_widget;
@@ -34,6 +36,9 @@ private:
     BotonAnimadoJugador spaz_player;
 
     BotonAnimadoJugador lori_player;
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 public:
     explicit MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego);
