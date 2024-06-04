@@ -19,6 +19,8 @@ add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/ser
         src/common/config.h src/common/constantes.h src/common/liberror.h src/common/liberror.cpp src/common/queue.h src/common/resolver.h src/common/resolver.cpp src/common/resolvererror.h src/common/resolvererror.cpp src/common/socket.h src/common/socket.cpp src/common/thread.h src/server/logica_juego/personaje.cpp src/server/logica_juego/personaje.h src/server/logica_juego/gameloop.cpp src/server/logica_juego/gameloop.h src/server/logica_juego/manejadorEscenario.cpp src/server/logica_juego/manejadorEscenario.h src/server/logica_juego/assets/bloqueEscenario.cpp src/server/logica_juego/assets/bloqueEscenario.h src/server/logica_juego/assets/spawnpoint.h)
 
 add_subdirectory(src/client/vista_juego)
+add_subdirectory(test)
+include_directories(${SDL2PP_INCLUDE_DIRS})
 
 # Busca e incluye las dependencias del proyecto
 find_package(yaml-cpp REQUIRED)
