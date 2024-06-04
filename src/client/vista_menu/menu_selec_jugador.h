@@ -24,6 +24,8 @@ class MenuSeleccionJugador: public MenuSeleccion {
 private:
     MenuJuego& juego;
 
+    bool es_de_creacion;
+
     QWidget central_widget;
 
     QWidget horizontal_layout_widget;
@@ -40,7 +42,7 @@ protected:
     void realizar_accion_menu(int boton_seleccionado) override;
 
 public:
-    explicit MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego);
+    explicit MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego, bool config);
 };
 
 

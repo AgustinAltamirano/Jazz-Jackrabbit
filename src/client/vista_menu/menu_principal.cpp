@@ -43,7 +43,7 @@ void MenuPrincipal::desplegar_popup() {
 
 void MenuPrincipal::unirse_partida() {
     juego.definir_codigo_partida(popup_cod_partida.obtener_seleccion());
-    auto menu_seleccion_jug = new MenuSeleccionJugador(this, juego);
+    auto menu_seleccion_jug = new MenuSeleccionJugador(this, juego, false);
     menu_seleccion_jug->move(this->pos());
     menu_seleccion_jug->show();
     hide();

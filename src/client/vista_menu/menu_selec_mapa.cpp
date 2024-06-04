@@ -28,7 +28,7 @@ MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
 
 void MenuSeleccionMapa::realizar_accion_menu(int boton_seleccionado) {
     juego.definir_mapa_elegido(boton_seleccionado);
-    auto* selector_jugador = new MenuSeleccionJugador(this, juego);
+    auto* selector_jugador = new MenuSeleccionJugador(this, juego, true);
     selector_jugador->move(this->pos());
     selector_jugador->show();
     hide();

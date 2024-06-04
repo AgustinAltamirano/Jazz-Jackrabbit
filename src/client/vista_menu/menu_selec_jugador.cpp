@@ -2,9 +2,11 @@
 #include "constantes_menu.h"
 
 
-MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego):
+MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego,
+                                           bool config):
         MenuSeleccion(parent),
         juego(juego),
+        es_de_creacion(config),
         central_widget(this),
         horizontal_layout_widget(&central_widget),
         horizontalLayout(&horizontal_layout_widget),
@@ -28,9 +30,11 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego
 void MenuSeleccionJugador::realizar_accion_menu(int boton_seleccionado) {
     juego.definir_personaje_elegido(boton_seleccionado);
 
-    // Tenemos que ver cómo hacer para saber cuál de las dos elegir
-    juego.crear_partida();
-    juego.unir_partida();
+    if (es_de_creacion) {
+        juego.crear_partida();
+    } else {
+        juego.unir_partida();
+    }
 
     close();
 }
