@@ -106,3 +106,8 @@ QPixmap& ListaBotones::obtener_imagen_item(const std::string& tipo_item) {
 std::string ListaBotones::obtener_mapa_item(const std::string& tipo_item) {
     return items_por_mapa[tipo_item];
 }
+
+
+void ListaBotones::actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item) {
+    tipo_item_seleccionado = nuevo_tipo_item;
+}
