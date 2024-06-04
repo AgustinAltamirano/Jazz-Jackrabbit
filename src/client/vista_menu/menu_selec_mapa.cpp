@@ -42,12 +42,12 @@ void MenuSeleccionMapa::conectar_botones() {
 
 
 void MenuSeleccionMapa::mostrar_selector_jugador() {
-    auto* boton_pj_seleccionado = dynamic_cast<QPushButton*>(sender());
-    if (boton_pj_seleccionado == boton_enfocado) {
+    auto* boton_mapa_seleccionado = dynamic_cast<QPushButton*>(sender());
+    if (boton_mapa_seleccionado == boton_enfocado) {
         auto* selector_jugador = new MenuSeleccionJugador(this, juego);
         selector_jugador->move(this->pos());
         selector_jugador->show();
         hide();
     }
-    boton_enfocado = dynamic_cast<QPushButton*>(sender());
+    boton_enfocado = boton_mapa_seleccionado;
 }
