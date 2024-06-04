@@ -16,6 +16,8 @@ add_executable(Client src/client/cliente_main.cpp src/client/juego/cliente.h src
         src/client/vista_menu/menu_juego.cpp src/client/vista_menu/menu_juego.h src/client/vista_menu/menu_crear_partida.cpp src/client/vista_menu/menu_crear_partida.h src/client/vista_menu/constantes_menu.h src/client/vista_menu/menu_selec_jugador.cpp src/client/vista_menu/menu_selec_jugador.h src/client/vista_menu/menu_selec_mapa.cpp src/client/vista_menu/menu_selec_mapa.h src/client/vista_menu/sprites_jugador.cpp src/client/vista_menu/sprites_jugador.h src/client/vista_menu/manejador_sprites.cpp src/client/vista_menu/manejador_sprites.h src/client/vista_menu/sprites_mapa.cpp src/client/vista_menu/sprites_mapa.h
         src/client/vista_menu/boton_menu.cpp src/client/vista_menu/boton_menu.h src/client/vista_menu/boton_animado_jugador.cpp src/client/vista_menu/boton_animado_jugador.h src/client/vista_menu/boton_animado_mapa.cpp src/client/vista_menu/boton_animado_mapa.h src/client/vista_menu/menu_principal.cpp src/client/vista_menu/ventana_inicial.cpp assets/menu/resources.qrc
         src/client/vista_menu/ventana_dialogo.cpp src/client/vista_menu/ventana_dialogo.h
+        src/client/vista_menu/menu_seleccion.cpp
+        src/client/vista_menu/menu_seleccion.h
 )
 
 add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/server/servidor.cpp src/server/aceptador.h src/server/aceptador.cpp src/server/comunicador_cliente.h src/server/comunicador_cliente.cpp src/server/enviador_cliente.h src/server/enviador_cliente.cpp src/server/gestor_partidas.h src/server/gestor_partidas.cpp src/server/logica_juego.h src/server/logica_juego.cpp
