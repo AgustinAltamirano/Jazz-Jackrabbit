@@ -48,6 +48,7 @@ private:
     EntradaJuego entrada_juego;
     Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots;
 
+    uint32_t iteraciones_actuales;
     Camara camara;
     TipoEscenario tipo_escenario;
     std::optional<FondoEscenario> fondo_escenario;
@@ -57,9 +58,9 @@ private:
     /** Mapa con todos los objetos asociados a bloques del escenario. */
     std::unordered_map<uint32_t, std::unique_ptr<BloqueEscenario>> bloques_escenario;
 
-    void actualizar_vista(uint32_t ticks_transcurridos);
+    void actualizar_vista();
 
-    void sincronizar_vista(uint32_t ticks_transcurridos) const;
+    uint32_t sincronizar_vista(uint32_t ticks_transcurridos);
 
 public:
     AdministradorVistaJuego(const std::string& titulo_ventana,

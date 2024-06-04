@@ -42,7 +42,7 @@ const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
                 {ATAQUE_ESPECIAL, ESTADO_ATAQUE_ESPECIAL},
         };
 
-void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurridos) {
+void AdministradorVistaJuego::actualizar_vista() {
     std::shared_ptr<SnapshotDTO_provisorio> snapshot;
     if (!cola_snapshots.try_pop(snapshot)) {
         return;
@@ -60,11 +60,17 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
     const std::vector<ClienteDTO> clientes_recibidos = snapshot->obtener_clientes();
 
     // Actualizar posición de la cámara
-    if (auto it = std::find_if(
+    if (const auto it = std::find_if(
                 clientes_recibidos.begin(), clientes_recibidos.end(),
                 [this](const auto& cliente) { return cliente.id_cliente == this->id_jugador; });
         it != clientes_recibidos.end()) {
-        camara.actualizar_pos_camara(it->pos_x, it->pos_y);
+        if (personajes.count(it->id_cliente) == 0) {
+            Personaje nuevo_personaje(it->id_cliente, MAPA_TIPO_PERSONAJE.at(it->tipo_personaje),
+                                      renderer, lector_texturas, camara, it->pos_x, it->pos_y, 0,
+                                      ITERACIONES_POR_SPRITE);
+            personajes.emplace(it->id_cliente, std::move(nuevo_personaje));
+        }
+        personajes.at(it->id_cliente).actualizar_camara();
     }
 
     if (const std::vector<BloqueEscenarioDTO> bloques_recibidos =
@@ -87,6 +93,8 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
                                                                    static_cast<int>(bloque.alto)),
                                                       renderer, textura_bloque, textura_bloque,
                                                       coords_superficie, coords_relleno, camara));
+                    proximo_id++;
+                    break;
                 case PARED:
                     bloques_escenario.emplace(proximo_id,
                                               std::make_unique<ParedEscenario>(
@@ -95,6 +103,8 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
                                                                    static_cast<int>(bloque.alto)),
                                                       renderer, textura_bloque, textura_bloque,
                                                       coords_superficie, coords_relleno, camara));
+                    proximo_id++;
+                    break;
                 case TECHO:
                     bloques_escenario.emplace(proximo_id,
                                               std::make_unique<TechoEscenario>(
@@ -103,6 +113,8 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
                                                                    static_cast<int>(bloque.alto)),
                                                       renderer, textura_bloque, textura_bloque,
                                                       coords_superficie, coords_relleno, camara));
+                    proximo_id++;
+                    break;
                 case DIAGONAL:
                     // Falta implementar
                     break;
@@ -117,11 +129,13 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
             Personaje nuevo_personaje(cliente.id_cliente,
                                       MAPA_TIPO_PERSONAJE.at(cliente.tipo_personaje), renderer,
                                       lector_texturas, camara, cliente.pos_x, cliente.pos_y, 0,
-                                      MILISEGUNDOS_POR_SPRITE, 0);
+                                      ITERACIONES_POR_SPRITE);
+            personajes.emplace(cliente.id_cliente, std::move(nuevo_personaje));
         }
+
         personajes.at(cliente.id_cliente)
                 .actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(cliente.estado),
-                                      ticks_transcurridos, {cliente.pos_x, cliente.pos_y, 1, 1, 0},
+                                      iteraciones_actuales, {cliente.pos_x, cliente.pos_y, 2, 2, 0},
                                       cliente.de_espaldas);
     }
 
@@ -137,19 +151,29 @@ void AdministradorVistaJuego::actualizar_vista(const uint32_t ticks_transcurrido
     }
 }
 
-void AdministradorVistaJuego::sincronizar_vista(const uint32_t ticks_transcurridos) const {
-    const int64_t ticks_transcurridos_aux = ticks_transcurridos;
-    int64_t tiempo_restante = MILISEGUNDOS_POR_FRAME - ticks_transcurridos_aux;
-    if (tiempo_restante < 0) {
+uint32_t AdministradorVistaJuego::sincronizar_vista(const uint32_t ticks_transcurridos) {
+    uint32_t ajuste_tiempo_anterior = 0;
+    const auto ticks_transcurridos_aux = static_cast<int64_t>(ticks_transcurridos);
+    int64_t tiempo_rest = MILISEGUNDOS_POR_FRAME - ticks_transcurridos_aux;
+    if (tiempo_rest < 0) {
+        const int64_t tiempo_atrasado = -tiempo_rest;
+        tiempo_rest = MILISEGUNDOS_POR_FRAME - tiempo_atrasado % MILISEGUNDOS_POR_FRAME;
+        ajuste_tiempo_anterior += tiempo_rest + tiempo_atrasado;
+        iteraciones_actuales += ajuste_tiempo_anterior / MILISEGUNDOS_POR_FRAME;
+
         // Debemos droppear frames de animación, algunas snapshots se pierden
-        int64_t tiempo_atrasado = -tiempo_restante;
-        std::shared_ptr<SnapshotDTO_provisorio> snapshot;
-        while (cola_snapshots.try_pop(snapshot) && tiempo_atrasado >= MILISEGUNDOS_POR_FRAME) {
-            tiempo_atrasado -= MILISEGUNDOS_POR_FRAME;
+        for (int i = 0; i < tiempo_atrasado / MILISEGUNDOS_POR_FRAME; i++) {
+            if (std::shared_ptr<SnapshotDTO_provisorio> snapshot;
+                !cola_snapshots.try_pop(snapshot)) {
+                break;
+            }
         }
-        tiempo_restante = tiempo_atrasado;
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(tiempo_restante));
+    SDL_Delay(tiempo_rest);
+
+    ajuste_tiempo_anterior += MILISEGUNDOS_POR_FRAME;
+    iteraciones_actuales++;
+    return ajuste_tiempo_anterior;
 }
 
 AdministradorVistaJuego::AdministradorVistaJuego(
@@ -164,17 +188,16 @@ AdministradorVistaJuego::AdministradorVistaJuego(
         lector_texturas(renderer),
         entrada_juego(cola_acciones),
         cola_snapshots(cola_snapshots),
+        iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO) {
     lector_texturas.cargar_texturas_y_coordenadas();
 }
 
 void AdministradorVistaJuego::run() {
     bool close = false;
-    uint32_t ticks_transcurridos = 0;
+    uint32_t ticks_anteriores = 0;
     while (!close) {
-        const uint32_t ticks_anteriores = SDL_GetTicks();
-
-        actualizar_vista(ticks_transcurridos);
+        actualizar_vista();
         renderer.Clear();
         if (fondo_escenario) {
             fondo_escenario->dibujar();
@@ -188,8 +211,9 @@ void AdministradorVistaJuego::run() {
         renderer.Present();
 
         close = !entrada_juego.procesar_entrada(id_jugador);
-        ticks_transcurridos = SDL_GetTicks() - ticks_anteriores;
-        sincronizar_vista(ticks_transcurridos);
+
+        const uint32_t ticks_actuales = SDL_GetTicks();
+        ticks_anteriores += sincronizar_vista(ticks_actuales - ticks_anteriores);
     }
 }
 

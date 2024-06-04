@@ -32,14 +32,14 @@ private:
     EstadoVisualPersonaje estado_actual;
     int render_x, render_y, render_angulo;
     bool invertido;
-    const unsigned int frames_por_sprite;
-    unsigned int frame_ticks_anteriores;
+    const uint32_t iteraciones_por_sprite;
+
     std::unordered_map<EstadoVisualPersonaje, ObjetoAnimado> animaciones;
 
 public:
     Personaje(uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,
-              LectorTexturas& lector_texturas, const Camara& camara, int pos_x, int pos_y,
-              int angulo, unsigned int frames_por_sprite, unsigned int frame_ticks_actuales);
+              LectorTexturas& lector_texturas, Camara& camara, int pos_x, int pos_y, int angulo,
+              uint32_t iteraciones_por_sprite);
 
     Personaje(const Personaje&) = delete;
 
@@ -52,13 +52,14 @@ public:
     /**
      * Actualiza la animación del personaje, así como su posición y dimensiones.
      * @param estado estado actual del personaje
-     * @param frame_ticks_transcurridos Cantidad de frames transcurridos desde la última
-     * actualización
+     * @param iteraciones_actuales Iteraciones actuales del renderizado del juego
      * @param dimensiones Nuevas dimensiones y posición del objeto
      * @param invertido Determina si la textura debe dibujarse invertida o no
      */
-    void actualizar_animacion(EstadoVisualPersonaje estado, unsigned int frame_ticks_transcurridos,
+    void actualizar_animacion(EstadoVisualPersonaje estado, uint32_t iteraciones_actuales,
                               const std::vector<int>& dimensiones, bool invertido);
+
+    void actualizar_camara() const;
 
     /**
      * Incluye al personaje en el renderer para su posterior renderización.

@@ -78,8 +78,9 @@ struct BloqueEscenarioDTO {
     int32_t pos_x, pos_y, angulo;
     uint32_t ancho, alto;
     TipoBloqueEscenario tipo;
-    BloqueEscenarioDTO(int32_t pos_x, int32_t pos_y, uint32_t ancho, uint32_t alto, int32_t angulo,
-                       TipoEscenario tipo);
+    BloqueEscenarioDTO(const int32_t pos_x, const int32_t pos_y, const uint32_t ancho,
+                       const uint32_t alto, const int32_t angulo, const TipoBloqueEscenario tipo):
+            pos_x(pos_x), pos_y(pos_y), angulo(angulo), ancho(ancho), alto(alto), tipo(tipo) {}
 };
 
 class SnapshotDTO_provisorio {
@@ -96,17 +97,19 @@ public:
 
     void agregar_id_cliente(const uint32_t id_cliente) { this->id_cliente = id_cliente; }
 
-    [[nodiscard]] const uint32_t obtener_id_cliente() const { return id_cliente; }
+    [[nodiscard]] uint32_t obtener_id_cliente() const { return id_cliente; }
 
     [[nodiscard]] TipoEscenario obtener_tipo_escenario() const { return tipo_escenario; }
 
-    void agregar_cliente(ClienteDTO&& cliente) {}
+    void agregar_cliente(ClienteDTO&& cliente) { clientes.push_back(cliente); }
 
-    std::vector<ClienteDTO> obtener_clientes() { return {}; }
+    std::vector<ClienteDTO> obtener_clientes() { return clientes; }
 
-    void agregar_bloque_escenario(BloqueEscenarioDTO&& bloque_escenario) {}
+    void agregar_bloque_escenario(BloqueEscenarioDTO&& bloque_escenario) {
+        bloques_escenario.push_back(bloque_escenario);
+    }
 
-    std::vector<BloqueEscenarioDTO> obtener_bloques_escenario() { return {}; }
+    std::vector<BloqueEscenarioDTO> obtener_bloques_escenario() { return bloques_escenario; }
 
     [[nodiscard]] bool es_fin_juego() const { return fin_juego; }
 
