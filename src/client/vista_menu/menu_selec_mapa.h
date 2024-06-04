@@ -2,11 +2,9 @@
 #define MENU_SELEC_MAPA_H
 
 
-#include <QHBoxLayout>
-
 #include "boton_animado_mapa.h"
-#include "boton_menu.h"
 #include "menu_juego.h"
+#include "menu_seleccion.h"
 
 
 typedef enum {
@@ -29,11 +27,9 @@ typedef enum {
 #define M_BOTTOM_MAPA 150
 
 
-class MenuSeleccionMapa: public QMainWindow {
+class MenuSeleccionMapa: public MenuSeleccion {
 private:
     MenuJuego& juego;
-
-    QMainWindow* menu_previo;
 
     QWidget central_widget;
 
@@ -47,14 +43,8 @@ private:
 
     BotonAnimadoMapa opcion_mapa_custom;
 
-    QPushButton* boton_enfocado = nullptr;
-
-    void conectar_botones();
-
-    void mostrar_selector_jugador();
-
 protected:
-    void keyPressEvent(QKeyEvent *event) override;
+    void realizar_accion_menu(int boton_seleccionado) override;
 
 public:
     explicit MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego);

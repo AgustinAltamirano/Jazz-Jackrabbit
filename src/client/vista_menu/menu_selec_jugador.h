@@ -2,12 +2,10 @@
 #define MENU_SELEC_JUGADOR_H
 
 
-#include <QHBoxLayout>
-
 #include "boton_animado_jugador.h"
 #include "menu_juego.h"
+#include "menu_seleccion.h"
 
-#define KEY_TIPO_BOTON "tipo_btn"
 #define NUM_JAZZ_PLAYER 0
 #define NUM_SPAZ_PLAYER 1
 #define NUM_LORI_PLAYER 2
@@ -22,10 +20,8 @@
 #define M_BOTTOM 0
 
 
-class MenuSeleccionJugador: public QMainWindow {
+class MenuSeleccionJugador: public MenuSeleccion {
 private:
-    QMainWindow* menu_previo;
-
     MenuJuego& juego;
 
     QWidget central_widget;
@@ -40,14 +36,8 @@ private:
 
     BotonAnimadoJugador lori_player;
 
-    QPushButton* boton_enfocado = nullptr;
-
-    void terminar();
-
-    void conectar_botones();
-
 protected:
-    void keyPressEvent(QKeyEvent *event) override;
+    void realizar_accion_menu(int boton_seleccionado) override;
 
 public:
     explicit MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego);
