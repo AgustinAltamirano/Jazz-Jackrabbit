@@ -115,6 +115,10 @@ void EscenaEditor::actualizar_texturas(const std::string& tipo_texturas) {
         auto imagen_item = lista_botones.obtener_imagen_item(nuevo_item);
         item->setPixmap(imagen_item);
         item->setData(KEY_TIPO_ITEM, QVariant(nuevo_item.c_str()));
+
+        if (lista_botones.obtener_tipo_item_seleccionado() == tipo_item) {
+            lista_botones.actualizar_tipo_item_seleccionado(nuevo_item);
+        }
     }
 }
 
