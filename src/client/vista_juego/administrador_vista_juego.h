@@ -60,7 +60,7 @@ private:
 
     void actualizar_vista();
 
-    uint32_t sincronizar_vista(uint32_t ticks_transcurridos);
+    int64_t sincronizar_vista(int64_t ticks_transcurridos);
 
 public:
     AdministradorVistaJuego(const std::string& titulo_ventana,

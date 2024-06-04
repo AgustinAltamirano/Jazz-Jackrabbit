@@ -155,12 +155,12 @@ void AdministradorVistaJuego::actualizar_vista() {
     }
 }
 
-uint32_t AdministradorVistaJuego::sincronizar_vista(const uint32_t ticks_transcurridos) {
-    uint32_t ajuste_tiempo_anterior = 0;
-    const auto ticks_transcurridos_aux = static_cast<int64_t>(ticks_transcurridos);
-    int64_t tiempo_rest = MILISEGUNDOS_POR_FRAME - ticks_transcurridos_aux;
+int64_t AdministradorVistaJuego::sincronizar_vista(const int64_t ticks_transcurridos) {
+    int64_t ajuste_tiempo_anterior = 0;
+    int64_t tiempo_rest = MILISEGUNDOS_POR_FRAME - ticks_transcurridos;
     if (tiempo_rest < 0) {
         const int64_t tiempo_atrasado = -tiempo_rest;
+        std::cout << tiempo_atrasado << std::endl;
         tiempo_rest = MILISEGUNDOS_POR_FRAME - tiempo_atrasado % MILISEGUNDOS_POR_FRAME;
         ajuste_tiempo_anterior += tiempo_rest + tiempo_atrasado;
         iteraciones_actuales += ajuste_tiempo_anterior / MILISEGUNDOS_POR_FRAME;
@@ -173,7 +173,8 @@ uint32_t AdministradorVistaJuego::sincronizar_vista(const uint32_t ticks_transcu
             }
         }
     }
-    SDL_Delay(tiempo_rest);
+    const auto tiempo_rest_final = static_cast<uint32_t>(tiempo_rest);
+    SDL_Delay(tiempo_rest_final);
 
     ajuste_tiempo_anterior += MILISEGUNDOS_POR_FRAME;
     iteraciones_actuales++;
@@ -199,7 +200,7 @@ AdministradorVistaJuego::AdministradorVistaJuego(
 
 void AdministradorVistaJuego::run() {
     bool close = false;
-    uint32_t ticks_anteriores = 0;
+    int64_t ticks_anteriores = 0;
     while (!close) {
         actualizar_vista();
         renderer.Clear();
@@ -216,7 +217,7 @@ void AdministradorVistaJuego::run() {
 
         close = !entrada_juego.procesar_entrada(id_jugador);
 
-        const uint32_t ticks_actuales = SDL_GetTicks();
+        const int64_t ticks_actuales = SDL_GetTicks();
         ticks_anteriores += sincronizar_vista(ticks_actuales - ticks_anteriores);
     }
 }
