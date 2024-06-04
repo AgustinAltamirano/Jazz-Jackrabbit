@@ -12,9 +12,8 @@
 
 #include "constantes_menu.h"
 
-#define RUTA_SPRITES "/menu/img/"
+#define RUTA_SPRITES_PJ "/menu/img/"
 #define PERSONAJES_CONFIG "sprites.yaml"
-#define RUTA_IMG ":/img/img/"
 #define DURACION_FRAME 50  // en ms
 #define SEP_NOMBRE_Y_BTN 200
 

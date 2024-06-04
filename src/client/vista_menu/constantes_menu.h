@@ -32,20 +32,19 @@ enum PosicionBoton {
 #define OFFSET_Y_MULTIPLAYER_BTN 215
 #define TEXTO_MULTIPLAYER_BTN "MULTIPLAYER"
 
-#define RUTA_EFECTOS_SONIDO "qrc:/sfx/sfx/select"
+#define RUTA_EFECTOS_SONIDO "/menu/sfx/select"
 #define EXTENSION_EFECTOS_SONIDO ".wav"
 #define VOLUMEN_EFECTOS_SONIDO 10
 #define VOLUMEN_MUSICA 40
-#define RUTA_MUSICA_FONDO "qrc:/sfx/sfx/Jazz Jackrabbit 2 Music - Menu.mp3"
+#define RUTA_MUSICA_FONDO "/menu/sfx/musica_menu.mp3"
 
-#define RUTA_FUENTE ":/img/img/Jazz-Jackrabbit-2.ttf"
+#define RUTA_FUENTE "/menu/img/Jazz-Jackrabbit-2.ttf"
 #define TAMANIO_FUENTE 24
 #define TAMANIO_FUENTE_BTN 40
 
-#define RUTA_IMG_INICIAL ":/img/img/bgd_mainmenu.jpg"
-#define RUTA_IMG_MENU ":/img/img/bgd_menuinicial.png"
-#define RUTA_IMG_MENU_MULTIPLAYER ":/img/img/multiplayer.png"
-#define RUTA_SPRITES_MAPA ":/img/img/Episode Select.png"
+#define RUTA_IMG_INICIAL "/menu/img/bgd_mainmenu.jpg"
+#define RUTA_IMG_MENU "/menu/img/bgd_menuinicial.png"
+#define RUTA_IMG_MENU_MULTIPLAYER "/menu/img/multiplayer.png"
 
 #define TEXTO_INICIO_BTN "Press click"
 

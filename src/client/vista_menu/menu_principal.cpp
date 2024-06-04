@@ -9,7 +9,7 @@ MenuPrincipal::MenuPrincipal():
         join_game_btn(this, OFFSET_X_JOINGAME_BTN, OFFSET_Y_JOINGAME_BTN, ANCHO_JOINGAME_BTN,
                       ALTO_JOINGAME_BTN, TEXTO_JOINGAME_BTN) {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
-    QString estilo = QString("QMainWindow {background-image: url(%1);}").arg(RUTA_IMG_INICIAL);
+    QString estilo = QString("QMainWindow {background-image: url(%1);}").arg(QString(ASSETS_PATH) + RUTA_IMG_INICIAL);
     setStyleSheet(estilo);
     conectar_botones();
 }

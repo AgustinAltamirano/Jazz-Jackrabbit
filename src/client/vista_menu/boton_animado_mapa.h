@@ -12,8 +12,6 @@
 
 
 class BotonAnimadoMapa: public BotonMenu {
-    Q_OBJECT
-
 public:
     BotonAnimadoMapa(QMainWindow* parent, QWidget* widget, int num_sprite, int ancho, int alto);
 

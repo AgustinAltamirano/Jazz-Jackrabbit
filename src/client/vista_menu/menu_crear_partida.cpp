@@ -14,7 +14,7 @@ MenuCrearPartida::MenuCrearPartida(QMainWindow* parent):
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
 
     // Coloco la imagen con un Color Key para que el fondo sea transparente
-    QPixmap pixmap(RUTA_IMG_MENU_MULTIPLAYER);
+    QPixmap pixmap(QString(ASSETS_PATH) + RUTA_IMG_MENU_MULTIPLAYER);
     QRgb colorKey = qRgb(R_MULTIPLAYER, G_MULTIPLAYER, B_MULTIPLAYER);
     QBitmap mask = pixmap.createMaskFromColor(colorKey, Qt::MaskInColor);
     pixmap.setMask(mask);
