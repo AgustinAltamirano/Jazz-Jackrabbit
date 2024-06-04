@@ -6,10 +6,10 @@ MainWindow::MainWindow() :
         central_widget(this),
         layout_horizontal(&central_widget),
         widget_graphics_view(),
-        escena(layout_vertical),
+        escena(layout_vertical, graphics_view),
         graphics_view(&escena, &widget_graphics_view),
         widget_layout_vertical(),
-        layout_vertical(&widget_layout_vertical, graphics_view),
+        layout_vertical(&widget_layout_vertical, graphics_view, escena),
         menu_bar()
 {
     inicializar_items();
@@ -22,6 +22,9 @@ MainWindow::MainWindow() :
     widget_graphics_view.setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     setCentralWidget(&central_widget);
     setWindowTitle(TITULO_VENTANA);
+
+    graphics_view.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    graphics_view.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 
@@ -52,6 +55,15 @@ void MainWindow::inicializar_texturas() {
     YAML::Node yaml_escenarios = YAML::LoadFile(ruta_yaml_escenarios);
 
     for (const auto& escenario_actual: yaml_escenarios["escenarios"]) {
-        layout_vertical.inicializar_boton_texturas(escenario_actual, ruta_escenarios);
+        auto ruta_imagen = ruta_escenarios + escenario_actual["imagen"].as<std::string>();
+        auto coord_img = escenario_actual["fondo_coords"][COORD_FONDO];
+        QRect rectangulo(coord_img["x"].as<int>(), coord_img["y"].as<int>(),
+                         coord_img["ancho"].as<int>(), coord_img["alto"].as<int>());
+
+        QPixmap imagen_fondo(ruta_imagen.c_str());
+        auto imagen_recortada = imagen_fondo.copy(rectangulo);
+        auto nombre_mapa = escenario_actual["nombre"].as<std::string>();
+
+        layout_vertical.inicializar_boton_texturas(imagen_recortada, nombre_mapa);
     }
 }

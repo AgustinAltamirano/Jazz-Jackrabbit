@@ -5,32 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "../../common/snapshot_dto.h"
-
-// los siguientes enum deberian estar en snapshot
-typedef enum { JAZZ = 0, SPAZ, LORI } TipoPersonaje;
-
-typedef enum {
-    INFINITA = 0,
-    ARMA1,
-    ARMA2,
-    ARMA3,
-} ArmaActual;
-
-typedef enum {
-    IDLE = 0,
-    CORRER,
-    DASH,
-    DISPARAR_QUIETO,
-    SALTAR_ARRIBA,
-    SALTAR_ADELANTE,
-    CAER_ABAJO,
-    CAER_ADELANTE,
-    ESTADO_ATAQUE_ESPECIAL,
-    INTOXICADO,
-    IMPACTADO,
-    MUERTE,
-} EstadoPersonaje;
+#include "../../client/vista_juego/snapshot_dto.h"
 
 typedef enum {
     SALTAR = 0,
@@ -85,6 +60,7 @@ public:
     void cambiar_posicion(uint32_t x,
                           uint32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(bool cae);
+    void pasar_tick();
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.

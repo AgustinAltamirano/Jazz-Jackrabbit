@@ -31,7 +31,6 @@ void personaje::cambiar_velocidad(const std::vector<AccionJuego>& teclas) {
     if (ataque_especial || this->estado == MUERTE || this->estado == IMPACTADO) {
         return;
     }
-    this->estado = IDLE;  // reseteo el estado
     for (const AccionJuego tecla&: teclas) {
         // verificar si el estado permite hacer acciones
         switch (tecla) {
@@ -114,11 +113,11 @@ uint32_t personaje::get_alto() const { return alto; }
 uint32_t personaje::get_ancho() const { return ancho; }
 
 void personaje::cambiar_estado(const bool cae) {
+    this->en_aire = cae;
     if (estado == MUERTE || estado == IMPACTADO || estado == DISPARAR_QUIETO ||
-        estado == ESTADO_ATAQUE_ESPECIAL) {
+        estado == ATAQUE_ESPECIAL || estado == INTOXICADO) {
         return;
     }
-    this->en_aire = cae;
     if (cae) {
         if (this->vel_x != 0) {
             if (this->vel_y < 0) {
@@ -139,5 +138,31 @@ void personaje::cambiar_estado(const bool cae) {
         } else {
             this->estado = IDLE;
         }
+    }
+}
+
+void personaje::pasar_tick() {
+    this->tiempo_estado += 1;
+    switch (estado) {
+        case INTOXICADO:
+            if (tiempo_estado == FRAMES_POR_SEGUNDO * 3) {
+                this->estado = IDLE;
+            }
+        case MUERTE:
+            if (tiempo_estado == FRAMES_POR_SEGUNDO * 5) {
+                const ConfigAdmin& configurador = ConfigAdmin::getInstance();
+                this->estado = IDLE;
+                this->vida = configurador.get(VIDA_INICIAL);
+            }
+        case IMPACTADO:
+            if (tiempo_estado == FRAMES_POR_SEGUNDO) {
+                this->estado = IDLE;
+            }
+        case ATAQUE_ESPECIAL:
+            return;
+            // aca tengo que procesar cada caso individual
+        default:
+            this->estado = IDLE;
+            this->tiempo_estado = 0;
     }
 }

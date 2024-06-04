@@ -11,5 +11,12 @@
         <file>mapa_castillo/item_final_rampa_izq.png</file>
         <file>mapa_castillo/item_rampa_der.png</file>
         <file>mapa_castillo/item_rampa_izq.png</file>
+
+        <file>mapa_carrotus/item_piso.png</file>
+        <file>mapa_carrotus/item_bajopiso.png</file>
+        <file>mapa_carrotus/item_final_rampa_der.png</file>
+        <file>mapa_carrotus/item_final_rampa_izq.png</file>
+        <file>mapa_carrotus/item_rampa_der.png</file>
+        <file>mapa_carrotus/item_rampa_izq.png</file>
     </qresource>
 </RCC>
