@@ -122,6 +122,10 @@ void AdministradorVistaJuego::actualizar_vista() {
         }
     }
 
+    for (auto& [fst, snd]: bloques_escenario) {
+        snd->actualizar_vista();
+    }
+
     std::unordered_set<uint32_t> ids_clientes_recibidos;
     for (auto cliente: clientes_recibidos) {
         ids_clientes_recibidos.insert(cliente.id_cliente);

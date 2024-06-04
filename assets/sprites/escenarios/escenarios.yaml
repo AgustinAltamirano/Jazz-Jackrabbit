@@ -52,27 +52,27 @@ escenarios:
         ancho: 32
         alto: 32
       - nombre: piso_relleno
-        x: 128
-        y: 32
+        x: 160
+        y: 160
         ancho: 32
         alto: 32
       - nombre: pared_superficie
-        x: 128
-        y: 32
+        x: 160
+        y: 160
         ancho: 32
         alto: 32
       - nombre: pared_relleno
-        x: 128
-        y: 32
+        x: 160
+        y: 160
         ancho: 32
         alto: 32
       - nombre: techo_superficie
-        x: 128
-        y: 32
+        x: 160
+        y: 160
         ancho: 32
         alto: 32
       - nombre: techo_relleno
-        x: 128
-        y: 32
+        x: 160
+        y: 160
         ancho: 32
         alto: 32

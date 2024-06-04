@@ -7,6 +7,7 @@
 
 class BloqueEscenario {
 protected:
+    SDL2pp::Rect coords;
     SDL2pp::Rect render_coords;
     SDL2pp::Renderer& renderer;
     SDL2pp::Texture &textura_superficie, &textura_relleno;
@@ -23,6 +24,8 @@ public:
     BloqueEscenario(const BloqueEscenario&) = delete;
 
     BloqueEscenario& operator=(const BloqueEscenario&) = delete;
+
+    void actualizar_vista();
 
     virtual void dibujar() const = 0;
 
