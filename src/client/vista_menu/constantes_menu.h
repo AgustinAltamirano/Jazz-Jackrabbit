@@ -82,7 +82,7 @@ enum PosicionBoton {
 #define ANCHO_SPINBOX_POPUP 61
 #define LEFT_M_SPINBOX_POPUP 150
 #define ANCHO_LABEL_POPUP 121
-#define RUTA_CONFIG_YAML "/configuracion.yml"
+#define RUTA_CONFIG_YAML "/configuracion.yaml"
 
 #define TITULO_POPUP_PARTIDA "Ingresar código"
 #define CANT_MIN_PARTIDAS 1

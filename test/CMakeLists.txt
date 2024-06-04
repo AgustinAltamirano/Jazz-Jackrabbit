@@ -31,7 +31,7 @@ set(test_targets
         test_protocolo_servidor)
 
 foreach (target ${test_targets})
-    target_compile_definitions(${target} PUBLIC CONFIG_PATH= "${CMAKE_SOURCE_DIR}/configuracion.yaml")
+    target_compile_definitions(${target} PUBLIC CONFIG_PATH=\"${CMAKE_SOURCE_DIR}/configuracion.yaml\")
     add_test(NAME "${target}" COMMAND "${target}")
     add_dependencies(test "${target}")
 endforeach ()
