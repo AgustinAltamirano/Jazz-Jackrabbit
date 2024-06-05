@@ -30,6 +30,8 @@ public:
 
     std::string obtener_mapa_item(const std::string& tipo_item);
 
+    void actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item);
+
 private Q_SLOTS:
     void seleccionar_item();
 

@@ -1,6 +1,7 @@
 #ifndef VENTANAPRINCIPAL_H
 #define VENTANAPRINCIPAL_H
 
+#include "menu_juego.h"
 #include "menu_principal.h"
 
 QFont obtener_fuente();
@@ -22,7 +23,7 @@ private:
     void inicializar_boton();
 
 public:
-    VentanaInicial();
+    explicit VentanaInicial(MenuJuego& juego);
 };
 
 #endif  // VENTANAPRINCIPAL_H
