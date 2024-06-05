@@ -18,4 +18,12 @@
 // se se quiere 60 fps cambiar a 17 milisegundos
 #define FRAMES_POR_SEGUNDO 30
 
+// objetos recogibles
+#define PUNTOS_GEMA 2500
+#define PUNTOS_MONEDA 500
+#define MUNICIONES_ARMA1 25
+#define MUNICIONES_ARMA2 10
+#define MUNICIONES_ARMA3 5
+#define VIDA_COMIDA 1
+
 #endif  // CONSTANTES_H

@@ -25,6 +25,10 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
     const ConfigAdmin& configurador = ConfigAdmin::getInstance();
     aceleracion_y = configurador.get(GRAVEDAD);
     vida = configurador.get(VIDA_INICIAL);
+    inventario_balas.push_back(-1);
+    inventario_balas.push_back(0);
+    inventario_balas.push_back(0);
+    inventario_balas.push_back(0);
 }
 
 void personaje::cambiar_velocidad(const std::vector<AccionJuego>& teclas) {
@@ -65,10 +69,12 @@ void personaje::cambiar_velocidad(const std::vector<AccionJuego>& teclas) {
                 } else {
                     this->arma_actual = static_cast<ArmaActual>(arma_actual + 1);
                 }
+            /*
             case ATAQUEESPECIAL:
                 // por hacer
                 ataque_especial = true;
                 break;
+            */
             default:  // si no es ningun caso que conozco lo ignoro
                 break;
         }
@@ -165,4 +171,35 @@ void personaje::pasar_tick() {
             this->estado = IDLE;
             this->tiempo_estado = 0;
     }
+}
+
+void personaje::recoger_objeto(const uint32_t valor, const TipoRecogible tipo) {
+    switch (tipo) {
+        case GEMA:
+        case MONEDA:
+            this->puntos += valor;
+        case MUNICION_ARMA_1:
+            this->inventario_balas[1] += valor;
+        case MUNICION_ARMA_2:
+            this->inventario_balas[2] += valor;
+        case MUNICION_ARMA_3:
+            this->inventario_balas[3] += valor;
+        case FRUTA_BUENA:
+            this->vida += valor;
+        case FRUTA_PODRIDA:
+            if (this->vida > valor) {
+                this->vida -= valor;
+            }
+            this->estado = INTOXICADO;
+        default:
+            break;
+    }
+}
+
+
+ClienteDTO personaje::crear_dto() const {
+    const int32_t balas_restantes = inventario_balas[arma_actual];
+    const ClienteDTO jugador(id, tipo_de_personaje, pos_x, pos_y, de_espaldas, estado, vida, puntos,
+                             arma_actual, balas_restantes);
+    return jugador;
 }

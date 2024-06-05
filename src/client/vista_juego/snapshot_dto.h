@@ -45,6 +45,13 @@ typedef enum {
     TECHO,
     PARED,
     DIAGONAL,
+    DIAGONAL_INVERTIDO,
+    SOPORTE_DIAGONAL,
+    SOPORTE_DIAGONAL_INVERTIDO,
+    SPAWNPOINT_JUGADOR,
+    SPAWNPOINT_ENEMIGO,
+    GEMA,
+    MONEDA,
 } TipoBloqueEscenario;
 
 struct ClienteDTO {
@@ -79,7 +86,7 @@ struct BloqueEscenarioDTO {
     uint32_t ancho, alto;
     TipoBloqueEscenario tipo;
     BloqueEscenarioDTO(int32_t pos_x, int32_t pos_y, uint32_t ancho, uint32_t alto, int32_t angulo,
-                       TipoEscenario tipo);
+                       TipoBloqueEscenario tipo);
 };
 
 class SnapshotDTO_provisorio {

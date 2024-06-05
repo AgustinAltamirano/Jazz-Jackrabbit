@@ -5,21 +5,9 @@
 #include <string>
 #include <vector>
 
+#include "../../client/vista_juego/accion_juego_dto.h"
 #include "../../client/vista_juego/snapshot_dto.h"
-
-typedef enum {
-    SALTAR = 0,
-    MOVER_IZQ,
-    MOVER_DER,
-    ACTIVAR_DASH,
-    DISPARAR_ACCION,
-    ARMA_ANTERIOR,
-    ARMA_SIGUIENTE,
-    ATAQUEESPECIAL,
-    TRUCO1,
-    TRUCO2,
-    TRUCO3
-} AccionJuego;
+#include "assets/recogible.h"
 
 class personaje {
 private:
@@ -61,6 +49,7 @@ public:
                           uint32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(bool cae);
     void pasar_tick();
+    void recoger_objeto(uint32_t valor, TipoRecogible tipo);
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.
@@ -73,6 +62,9 @@ public:
     // bool cambiar_arma();
     // bool efectuar_dano();
     // bool respawnear();
+
+    // funcion para la construccion del dto
+    [[nodiscard]] ClienteDTO crear_dto() const;
 };
 
 
