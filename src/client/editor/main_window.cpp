@@ -12,6 +12,7 @@ MainWindow::MainWindow() :
         layout_vertical(&widget_layout_vertical, graphics_view, escena),
         menu_bar()
 {
+    setWindowIcon(QIcon(QString(ASSETS_PATH) + RUTA_ICONO));
     inicializar_items();
     inicializar_texturas();
     setMenuBar(&menu_bar);

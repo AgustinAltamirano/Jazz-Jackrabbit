@@ -5,6 +5,7 @@
 #define ALTO_PANTALLA 480
 #define TAM_ITEM 32
 #define TITULO_VENTANA "Editor de mapas"
+#define RUTA_ICONO "/editor/img/icono_editor.png"
 
 #define RUTA_IMG_ITEMS "/editor/img/"
 #define ITEMS_CONFIG "items.yaml"
