@@ -23,19 +23,18 @@
 class manejadorEscenario {
 private:
     std::string path;
-    uint32_t ancho;
-    uint32_t alto;
     TipoEscenario clase_escenario;
     std::vector<bloqueEscenario> bloques_rectos;
     std::vector<bloqueEscenario> bloques_angulados;
     std::vector<spawnpoint> spawnpoints;
+    std::vector<spawnpoint> spawnpoints_enemigos;
     std::list<recogible> objetos;
     std::list<bala> balas;
 
 public:
     // creacion, cargar escenario y ayudar a gameloop
     explicit manejadorEscenario(std::string path);
-    void cargar_escenario_basico(uint32_t ancho, uint32_t alto);
+    void cargar_escenario();
     std::vector<spawnpoint>& get_spawns();
     TipoEscenario get_escenario();
 

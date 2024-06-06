@@ -5,20 +5,67 @@
 #include <iostream>
 #include <utility>
 
+#include <yaml-cpp/yaml.h>
+
 #include "../../common/constantes.h"
 
 manejadorEscenario::manejadorEscenario(std::string path):
-        path(std::move(path)), clase_escenario(ESCENARIO_INDEFINIDO), alto(480), ancho(620) {
-    cargar_escenario_basico(ancho, alto);
+        path(std::move(path)), clase_escenario(ESCENARIO_INDEFINIDO) {
+    cargar_escenario();
 }
 
-void manejadorEscenario::cargar_escenario_basico(uint32_t ancho, uint32_t alto) {
-    // esto crea un generico de 620 x 480 para pruebas de colision
-    bloques_rectos.emplace_back(0, alto, ancho, 10, 0, PISO);
-    bloques_rectos.emplace_back(0, 0, ancho, 10, 0, TECHO);
-    bloques_rectos.emplace_back(0, 0, 10, alto, 0, PARED);
-    bloques_rectos.emplace_back(ancho - 10, 0, 10, alto, 0, PARED);
-    spawnpoints.emplace_back(ANCHO_INICIAL + 10, alto - ALTO_INICIAL);
+void manejadorEscenario::cargar_escenario() {
+    YAML::Node archivo = YAML::LoadFile(this->path);
+    // para calcular los bordes del mapa
+    int32_t ancho_mapa = 0;
+    int32_t alto_mapa = 0;
+    // cargo el tipo de escenario
+    this->clase_escenario = static_cast<TipoEscenario>(archivo["items"]["escenario"].as<int>());
+    // ahora cargo los bloques
+    const YAML::Node& nodo_bloques = archivo["items"]["bloques"];
+    for (const auto& nodo_bloque: nodo_bloques) {
+        auto tipo = static_cast<TipoBloqueEscenario>(nodo_bloque["tipo"].as<int>());
+        auto pos_x = nodo_bloque["x"].as<int>();
+        auto pos_y = nodo_bloque["y"].as<int>();
+        if (pos_x > ancho_mapa) {
+            ancho_mapa = pos_x;
+        }
+        if (pos_y > alto_mapa) {
+            alto_mapa = pos_x;
+        }
+        switch (tipo) {
+            case PISO:
+            case PARED:
+            case SOPORTE_DIAGONAL:
+            case SOPORTE_DIAGONAL_INVERTIDO:
+                bloques_rectos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, 0, tipo);
+            case DIAGONAL:
+            case DIAGONAL_INVERTIDO:
+                bloques_angulados.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, 0, tipo);
+            case SPAWNPOINT_JUGADOR:
+                spawnpoints.emplace_back(pos_x, pos_y - ALTO_INICIAL + TAMANO_BLOQUE);
+            case SPAWNPOINT_ENEMIGO:
+                spawnpoints_enemigos.emplace_back(pos_x, pos_y - ALTO_INICIAL + TAMANO_BLOQUE);
+            case GEMA:
+                objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, GEMA_AGARRABLE);
+            case MONEDA:
+                objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MONEDA_AGARRABLE);
+            default:
+                continue;
+        }
+    }
+    // creo los bordes del mapa (me ahorro errores)
+    bloques_rectos.emplace_back(-TAMANO_BLOQUE, -TAMANO_BLOQUE, ancho_mapa + TAMANO_BLOQUE,
+                                TAMANO_BLOQUE, 0, PISO);  // techo
+    bloques_rectos.emplace_back(-TAMANO_BLOQUE, alto_mapa + TAMANO_BLOQUE,
+                                ancho_mapa + TAMANO_BLOQUE, TAMANO_BLOQUE, 0, PISO);  // suelo
+    bloques_rectos.emplace_back(-TAMANO_BLOQUE, -TAMANO_BLOQUE, TAMANO_BLOQUE,
+                                alto_mapa + TAMANO_BLOQUE, 0, PARED);  // pared izq
+    bloques_rectos.emplace_back(ancho_mapa + TAMANO_BLOQUE, -TAMANO_BLOQUE, TAMANO_BLOQUE,
+                                alto_mapa + TAMANO_BLOQUE, 0, PARED);  // pared der
+    if (spawnpoints.empty()) {
+        spawnpoints.emplace_back(0, 0);  // si no hay spawnpoints creo uno (para mapas custom)
+    }
 }
 
 std::vector<spawnpoint>& manejadorEscenario::get_spawns() { return spawnpoints; }
