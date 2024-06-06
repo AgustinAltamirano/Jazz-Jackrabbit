@@ -32,6 +32,10 @@ public:
 
     void actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item);
 
+    std::string obtener_escenario();
+
+    bool tiene_mapa_asociado(const std::string& tipo_item);
+
 private Q_SLOTS:
     void seleccionar_item();
 
@@ -45,6 +49,8 @@ private:
     std::map<std::string, std::vector<std::unique_ptr<QPushButton>>> botones_por_mapa;
 
     std::string tipo_item_seleccionado;
+
+    std::string escenario;
 
     EscenaEditor& escena;
 

@@ -17,6 +17,16 @@ public:
 
     void actualizar_texturas(const std::string& tipo_texturas);
 
+    std::string obtener_tipo_bloque(std::pair<int, int> coordenada);
+
+    std::string obtener_tipo_escenario();
+
+    std::vector<std::pair<int, int>> obtener_items_escena();
+
+    void actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item);
+
+    void limpiar_escena();
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
@@ -37,7 +47,7 @@ private:
 
     qreal obtener_coordenada_bloque(qreal coord);
 
-    std::string obtener_tipo_item(const std::string& item_actual, const std::string& nuevas_texturas);
+    std::string obtener_tipo_item(const std::string& item_actual);
 };
 
 

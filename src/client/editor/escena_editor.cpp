@@ -67,7 +67,10 @@ void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
 
     auto tipo_item = lista_botones.obtener_tipo_item_seleccionado();
     item->setData(KEY_TIPO_ITEM, QVariant(tipo_item.c_str()));
-    item->setData(KEY_MAPA_ASOCIADO, lista_botones.obtener_mapa_item(tipo_item).c_str());
+
+    if (lista_botones.tiene_mapa_asociado(tipo_item)) {
+        item->setData(KEY_MAPA_ASOCIADO, lista_botones.obtener_mapa_item(tipo_item).c_str());
+    }
 
     addItem(item.get());
     nivel_actual[std::make_pair(x, y)] = std::move(item);
@@ -111,7 +114,7 @@ void EscenaEditor::actualizar_texturas(const std::string& tipo_texturas) {
 
         auto tipo_item = item->data(KEY_TIPO_ITEM).toString().toStdString();
 
-        auto nuevo_item = obtener_tipo_item(tipo_item, tipo_texturas);
+        auto nuevo_item = obtener_tipo_item(tipo_item) + DELIMITADOR + tipo_texturas;
         auto imagen_item = lista_botones.obtener_imagen_item(nuevo_item);
         item->setPixmap(imagen_item);
         item->setData(KEY_TIPO_ITEM, QVariant(nuevo_item.c_str()));
@@ -123,20 +126,53 @@ void EscenaEditor::actualizar_texturas(const std::string& tipo_texturas) {
 }
 
 
-std::string EscenaEditor::obtener_tipo_item(const std::string& item_actual, const std::string& nuevas_texturas) {
-    std::vector<std::string> tipo_item_abs;
-    std::string stream;
-    std::istringstream tokenStream(item_actual);
-    std::string delimitador = DELIMITADOR;
-
-    while (std::getline(tokenStream, stream, delimitador.c_str()[0]))
-        tipo_item_abs.push_back(stream);
-
-    tipo_item_abs.at(tipo_item_abs.size()-1) = nuevas_texturas;
-
-    std::string resultado = std::accumulate(std::begin(tipo_item_abs), std::end(tipo_item_abs), std::string(),
-                                            [delimitador](const std::string& a, const std::string& b) -> std::string {
-                                                return a + (!a.empty() ? delimitador : "") + b;
-                                            });
+std::string EscenaEditor::obtener_tipo_item(const std::string& item_actual) {
+    std::string resultado = item_actual;
+    size_t pos = item_actual.rfind(DELIMITADOR);
+    if (pos != std::string::npos) {
+        resultado = item_actual.substr(0, pos);
+    }
     return resultado;
+}
+
+
+std::string EscenaEditor::obtener_tipo_bloque(std::pair<int, int> coordenada) {
+    auto &item = nivel_actual.at(coordenada);
+
+    auto tipo_completo = item->data(KEY_TIPO_ITEM).toString();
+
+    auto mapa_asociado = item->data(KEY_MAPA_ASOCIADO);
+    if (not mapa_asociado.isValid()) {
+        return tipo_completo.toStdString();
+    }
+    return obtener_tipo_item(tipo_completo.toStdString());
+}
+
+
+std::string EscenaEditor::obtener_tipo_escenario() {
+    return lista_botones.obtener_escenario();
+}
+
+
+std::vector<std::pair<int, int>> EscenaEditor::obtener_items_escena() {
+    std::vector<std::pair<int, int>> claves;
+
+    for (const auto& item : nivel_actual) {
+        claves.push_back(item.first);
+    }
+    return claves;
+}
+
+
+void EscenaEditor::actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item) {
+    lista_botones.actualizar_tipo_item_seleccionado(nuevo_tipo_item);
+}
+
+
+void EscenaEditor::limpiar_escena() {
+    for (const auto& item : nivel_actual) {
+        removeItem(item.second.get());
+    }
+    nivel_actual.clear();
+    update();
 }

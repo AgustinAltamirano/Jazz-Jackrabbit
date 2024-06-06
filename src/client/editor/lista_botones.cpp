@@ -14,6 +14,7 @@ ListaBotones::ListaBotones(QWidget* parent, QGraphicsView& vista_escena, EscenaE
         items(),
         botones_por_mapa(),
         tipo_item_seleccionado(),
+        escenario(),
         escena(escena),
         vista_escena(vista_escena) {}
 
@@ -24,6 +25,7 @@ void ListaBotones::inicializar_boton_item(QPixmap& imagen_item,
                                           int posicion) {
     auto boton_item = crear_boton(imagen_item, tipo_item);
     boton_item->setProperty(KEY_POSICION_BTN, posicion);
+    escenario = mapa_asociado;
 
     connect(boton_item.get(), &QPushButton::clicked, this, &ListaBotones::seleccionar_item);
 
@@ -79,6 +81,7 @@ void ListaBotones::seleccionar_texturas() {
     }
 
     escena.actualizar_texturas(tipo_textura_mapa);
+    escenario = tipo_textura_mapa;
 }
 
 
@@ -110,4 +113,14 @@ std::string ListaBotones::obtener_mapa_item(const std::string& tipo_item) {
 
 void ListaBotones::actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item) {
     tipo_item_seleccionado = nuevo_tipo_item;
+}
+
+
+std::string ListaBotones::obtener_escenario() {
+    return escenario;
+}
+
+
+bool ListaBotones::tiene_mapa_asociado(const std::string& tipo_item) {
+    return items_por_mapa.find(tipo_item) != items_por_mapa.end();
 }
