@@ -8,6 +8,23 @@
 #define VIDA_INICIAL "vida_inicial"
 #define GRAVEDAD "aceleracion_gravedad"
 
+#define VEL_ARMA_INF "velocidad_arma_infinita"
+#define DANO_ARMA_INF "dano_arma_infinita"
+#define FRAMES_REC_ARMA_INF "frames_recarga_arma_infinita"
+
+#define VEL_ARMA1 "velocidad_arma1"
+#define DANO_ARMA1 "dano_arma1"
+#define FRAMES_REC_ARMA1 "frames_recarga_arma1"
+
+#define VEL_ARMA2 "velocidad_arma2"
+#define CAIDA_ARMA2 "caida_arma2"
+#define DANO_ARMA2 "dano_arma2"
+#define FRAMES_REC_ARMA2 "frames_recarga_arma2"
+
+#define VEL_ARMA3 "velocidad_arma3"
+#define DANO_ARMA3 "dano_arma3"
+#define FRAMES_REC_ARMA3 "frames_recarga_arma3"
+
 // CONFIGURACION PERSONAJE
 #define ANCHO_INICIAL 40
 #define ALTO_INICIAL 50

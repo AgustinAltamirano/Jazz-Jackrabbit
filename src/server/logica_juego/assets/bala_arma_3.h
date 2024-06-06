@@ -1,5 +1,5 @@
-#ifndef BALAINFINITA_H
-#define BALAINFINITA_H
+#ifndef BALA_ARMA_3_H
+#define BALA_ARMA_3_H
 
 #include <vector>
 
@@ -8,7 +8,7 @@
 
 #include "bala.h"
 
-class balaInfinita: public bala {
+class balaArma3: public bala {
 private:
     int32_t id_dueno;
     int32_t pos_x, pos_y;
@@ -17,7 +17,7 @@ private:
     uint32_t dano;
     uint32_t tiempo_recarga;  // frames hasta poder volver a disparar
 public:
-    balaInfinita(int32_t id, int32_t pos_x_in, int32_t pos_y_in, bool invertido);
+    balaArma3(int32_t id, int32_t pos_x_in, int32_t pos_y_in, bool invertido);
     [[nodiscard]] std::vector<int32_t> get_pos() const override;
     void mover() override;
     [[nodiscard]] uint32_t impactar() override;
@@ -25,5 +25,4 @@ public:
     [[nodiscard]] uint32_t disparar() override;
 };
 
-
-#endif  // BALAINFINITA_H
+#endif  // BALA_ARMA_3_H

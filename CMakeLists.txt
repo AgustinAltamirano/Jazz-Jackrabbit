@@ -18,6 +18,7 @@ add_executable(Client src/client/cliente_main.cpp src/client/juego/cliente.h src
         src/client/vista_menu/ventana_dialogo.cpp src/client/vista_menu/ventana_dialogo.h
         src/client/vista_menu/menu_seleccion.cpp
         src/client/vista_menu/menu_seleccion.h
+        src/common/config.cpp
 )
 
 add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/server/servidor.cpp src/server/aceptador.h src/server/aceptador.cpp src/server/comunicador_cliente.h src/server/comunicador_cliente.cpp src/server/enviador_cliente.h src/server/enviador_cliente.cpp src/server/gestor_partidas.h src/server/gestor_partidas.cpp src/server/logica_juego.h src/server/logica_juego.cpp
@@ -28,7 +29,14 @@ add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/ser
         src/server/logica_juego/assets/recogible.h
         src/server/logica_juego/assets/bala.h
         src/server/logica_juego/assets/balaInfinita.cpp
-        src/server/logica_juego/assets/balaInfinita.h)
+        src/server/logica_juego/assets/balaInfinita.h
+        src/common/config.cpp
+        src/server/logica_juego/assets/bala_arma_1.cpp
+        src/server/logica_juego/assets/bala_arma_1.h
+        src/server/logica_juego/assets/bala_arma_2.cpp
+        src/server/logica_juego/assets/bala_arma_2.h
+        src/server/logica_juego/assets/bala_arma_3.cpp
+        src/server/logica_juego/assets/bala_arma_3.h)
 
 add_subdirectory(src/client/vista_juego)
 add_subdirectory(test)
