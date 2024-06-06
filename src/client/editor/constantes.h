@@ -20,6 +20,7 @@
 
 #define KEY_POSICION_BTN "posicion"
 #define KEY_TIPO_BTN "tipo"
+#define KEY_MAPA_BTN "mapa_asociado"
 #define KEY_TIPO_ITEM 0
 #define KEY_MAPA_ASOCIADO 1
 #define DELIMITADOR '_'  // Para separar el tipo de item y el mapa asociado en el YAML

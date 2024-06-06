@@ -14,6 +14,13 @@
 #include "lista_botones.h"
 
 
+struct ItemEscena {
+    std::string tipo;
+    std::string mapa_asociado;
+    QPixmap imagen;
+};
+
+
 class MainWindow : public QMainWindow {
 public:
     explicit MainWindow();

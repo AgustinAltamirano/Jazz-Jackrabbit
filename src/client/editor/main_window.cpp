@@ -31,17 +31,22 @@ void MainWindow::inicializar_items() {
     YAML::Node yaml_items = YAML::LoadFile(ruta_yaml);
 
     for (int posicion = 0; posicion < yaml_items["items"].size(); posicion++) {
-        auto item_actual = yaml_items["items"][posicion];
+        auto nodo_item_actual = yaml_items["items"][posicion];
 
-        QPixmap imagen_item(item_actual["ruta_imagen"].as<std::string>().c_str());
-        auto tipo_item = item_actual["tipo"].as<std::string>();
+        auto ruta_imagen = nodo_item_actual["ruta_imagen"].as<std::string>();
+
+        auto tipo_item = nodo_item_actual["tipo"].as<std::string>();
 
         std::string mapa_asociado;
-        if (item_actual["mapa"].IsDefined()) {
-            mapa_asociado = item_actual["mapa"].as<std::string>();
+        if (nodo_item_actual["mapa"].IsDefined()) {
+            mapa_asociado = nodo_item_actual["mapa"].as<std::string>();
         }
 
-        layout_vertical.inicializar_boton_item(imagen_item, tipo_item, mapa_asociado, posicion);
+        auto item_actual = ItemEscena{tipo_item,
+                                      mapa_asociado,
+                                      QPixmap(ruta_imagen.c_str())};
+
+        layout_vertical.inicializar_boton_item(std::move(item_actual), posicion);
     }
 }
 
@@ -61,6 +66,8 @@ void MainWindow::inicializar_texturas() {
         auto imagen_recortada = imagen_fondo.copy(rectangulo);
         auto nombre_mapa = escenario_actual["nombre"].as<std::string>();
 
-        layout_vertical.inicializar_boton_texturas(imagen_recortada, nombre_mapa);
+        auto item_actual = ItemEscena{nombre_mapa, "", imagen_recortada};
+
+        layout_vertical.inicializar_boton_texturas(std::move(item_actual));
     }
 }

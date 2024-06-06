@@ -56,8 +56,7 @@ void EscenaEditor::wheelEvent(QGraphicsSceneWheelEvent* event) {
 
 
 void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
-    auto imagen_item = lista_botones.obtener_imagen_item_seleccionado();
-    auto item = std::make_unique<QGraphicsPixmapItem>(imagen_item);
+    auto item = lista_botones.obtener_item_seleccionado();
 
     auto x = obtener_coordenada_bloque(event->scenePos().x());
     auto y = obtener_coordenada_bloque(event->scenePos().y());
@@ -68,14 +67,6 @@ void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
     }
 
     item->setPos(x, y);
-
-    auto tipo_item = lista_botones.obtener_tipo_item_seleccionado();
-    item->setData(KEY_TIPO_ITEM, QVariant(tipo_item.c_str()));
-
-    if (lista_botones.tiene_mapa_asociado(tipo_item)) {
-        item->setData(KEY_MAPA_ASOCIADO, lista_botones.obtener_mapa_item(tipo_item).c_str());
-    }
-
     addItem(item.get());
     nivel_actual[std::make_pair(x, y)] = std::move(item);
 }
