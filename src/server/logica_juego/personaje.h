@@ -2,6 +2,7 @@
 #define PERSONAJE_H
 
 #include <cstdint>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -43,7 +44,7 @@ private:
     int puntos;
 
     ArmaActual arma_actual;
-    std::vector<int32_t> inventario_balas;
+    std::map<ArmaActual, int32_t> inventario_balas;
     uint32_t tiempo_recarga;  // frames antes de poder disparar
 
 public:
@@ -67,7 +68,7 @@ public:
     [[nodiscard]] ArmaActual get_arma() const;
     [[nodiscard]] bool get_invertido() const;
     void disparar(uint32_t frames_recarga);
-    // bool efectuar_dano();
+    void efectuar_dano(uint32_t dano);
     // bool respawnear();
 
     // funcion para la construccion del dto

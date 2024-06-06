@@ -50,7 +50,7 @@ void gameloop::run() {
         }
         for (const auto& accion: acciones) {
             if (personajes[accion.first].ejecutar_acciones(accion.second)) {
-                escenario.jugador_dispara(personajes[accion.first]);
+                escenario.jugador_dispara(accion.first, personajes[accion.first]);
             }
         }
 
@@ -60,7 +60,7 @@ void gameloop::run() {
         escenario.chequear_caida_y_objetos(personajes);
 
         // seccion3 chequea colisiones con los puntos, municiones y enemigos
-        //  por hacer
+        escenario.manejar_balas(personajes);
 
         // enviar dto vuelta
         auto snapshot_juego = std::make_shared<SnapshotDTO_provisorio>(escenario.get_escenario());

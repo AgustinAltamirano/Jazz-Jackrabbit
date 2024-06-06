@@ -19,7 +19,10 @@ std::vector<int32_t> balaArma1::get_pos() const {
     return posicion;
 }
 
-void balaArma1::mover() { this->pos_x += this->vel_x; }
+bool balaArma1::mover() {
+    this->pos_x += this->vel_x;
+    return this->choco;
+}
 
 uint32_t balaArma1::impactar() {
     if (rebotes == 3) {

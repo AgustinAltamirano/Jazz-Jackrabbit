@@ -26,10 +26,10 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
     const ConfigAdmin& configurador = ConfigAdmin::getInstance();
     aceleracion_y = configurador.get(GRAVEDAD);
     vida = configurador.get(VIDA_INICIAL);
-    inventario_balas.push_back(-1);
-    inventario_balas.push_back(0);
-    inventario_balas.push_back(0);
-    inventario_balas.push_back(0);
+    inventario_balas[INFINITA] = -1;
+    inventario_balas[ARMA1] = 0;
+    inventario_balas[ARMA2] = 0;
+    inventario_balas[ARMA3] = 0;
 }
 
 bool personaje::ejecutar_acciones(const std::vector<AccionJuego>& teclas) {
@@ -185,11 +185,11 @@ void personaje::recoger_objeto(const uint32_t valor, const TipoRecogible tipo) {
         case MONEDA_AGARRABLE:
             this->puntos += valor;
         case MUNICION_ARMA_1:
-            this->inventario_balas[1] += valor;
+            this->inventario_balas[ARMA1] += valor;
         case MUNICION_ARMA_2:
-            this->inventario_balas[2] += valor;
+            this->inventario_balas[ARMA2] += valor;
         case MUNICION_ARMA_3:
-            this->inventario_balas[3] += valor;
+            this->inventario_balas[ARMA3] += valor;
         case FRUTA_BUENA:
             this->vida += valor;
         case FRUTA_PODRIDA:
@@ -206,10 +206,27 @@ ArmaActual personaje::get_arma() const { return this->arma_actual; }
 
 bool personaje::get_invertido() const { return this->de_espaldas; }
 
-void personaje::disparar(const uint32_t frames_recarga) { this->tiempo_recarga = frames_recarga; }
+void personaje::disparar(const uint32_t frames_recarga) {
+    this->tiempo_recarga = frames_recarga;
+    if (inventario_balas.at(arma_actual) != -1) {
+        inventario_balas[arma_actual] -= 1;
+    }
+}
+
+void personaje::efectuar_dano(uint32_t const dano) {
+    if (this->estado != IMPACTADO && this->estado != MUERTE) {
+        this->vida -= dano;
+        if (vida <= 0) {
+            this->vida = 0;
+            this->estado = MUERTE;
+        } else {
+            this->estado = IMPACTADO;
+        }
+    }
+}
 
 ClienteDTO personaje::crear_dto() const {
-    const int32_t balas_restantes = inventario_balas[arma_actual];
+    const int32_t balas_restantes = inventario_balas.at(arma_actual);
     const ClienteDTO jugador(id, tipo_de_personaje, pos_x, pos_y, de_espaldas, estado, vida, puntos,
                              arma_actual, balas_restantes);
     return jugador;

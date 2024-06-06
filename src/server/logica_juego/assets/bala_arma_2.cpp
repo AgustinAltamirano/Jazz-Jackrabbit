@@ -20,9 +20,10 @@ std::vector<int32_t> balaArma2::get_pos() const {
     return posicion;
 }
 
-void balaArma2::mover() {
+bool balaArma2::mover() {
     this->pos_x += this->vel_x;
     this->pos_y += this->vel_y;
+    return this->choco;
 }
 
 uint32_t balaArma2::impactar() {

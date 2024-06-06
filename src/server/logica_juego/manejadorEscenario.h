@@ -41,11 +41,12 @@ public:
 
     // chequeo colision con bloques
     void colisiones_bloques_rectos(std::map<int, personaje>& jugadores) const;
-    void colisiones_bloques_angulo(const std::map<int, personaje>& jugadores) const;
+    void colisiones_bloques_angulo(std::map<int, personaje>& jugadores) const;
     void chequear_caida_y_objetos(std::map<int, personaje>& jugadores);
 
     // personaje disparo bala
     void jugador_dispara(int32_t id, personaje& jugador);
+    void manejar_balas(std::map<int, personaje>& jugadores);
 
     // crear snapshots
     std::shared_ptr<SnapshotDTO_provisorio> crear_snapshot();

@@ -106,8 +106,7 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
     }
 }
 
-void manejadorEscenario::colisiones_bloques_angulo(
-        const std::map<int, personaje>& jugadores) const {}
+void manejadorEscenario::colisiones_bloques_angulo(std::map<int, personaje>& jugadores) const {}
 
 
 void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& jugadores) {
@@ -178,5 +177,45 @@ void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
             balas.emplace_back(std::move(bala3));
         default:
             return;
+    }
+}
+
+bool hay_colision_bala(int32_t bala_x, int32_t bala_y, int32_t target_x, int32_t target_y,
+                       uint32_t ancho, uint32_t alto) {
+    return (target_x < bala_x < target_x + ancho) && (target_y < bala_y < target_y + alto);
+}
+
+void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
+    for (auto it = balas.begin(); it != balas.end();) {
+        if ((*it).mover()) {
+            it = balas.erase(it);
+            continue;
+        }
+        std::vector<int32_t> posicion_bala = (*it).get_pos();
+        int32_t bala_x = posicion_bala[0];
+        int32_t bala_y = posicion_bala[1];
+        for (auto& jugador: jugadores) {
+            personaje& jug = jugador.second;
+            const std::vector<int32_t> posicion = jug.get_pos_actual();
+            const int32_t jug_x = posicion[0];
+            const int32_t jug_y = posicion[1];
+            if (((*it).get_id() != jugador.first) &&
+                hay_colision_bala(bala_x, bala_y, jug_x, jug_y, jug.get_ancho(), jug.get_alto())) {
+                uint32_t dano = (*it).impactar();
+                jug.efectuar_dano(dano);
+            }
+        }
+        for (const auto& bloque: bloques_rectos) {
+            if (hay_colision_bala(bala_x, bala_y, bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                  bloque.alto)) {
+                (*it).impactar();
+            }
+        }
+        for (const auto& bloque: bloques_angulados) {
+            if (hay_colision_bala(bala_x, bala_y, bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                  bloque.alto)) {
+                (*it).impactar();
+            }
+        }
     }
 }

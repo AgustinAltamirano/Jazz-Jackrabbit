@@ -19,8 +19,8 @@ private:
 public:
     balaArma3(int32_t id, int32_t pos_x_in, int32_t pos_y_in, bool invertido);
     [[nodiscard]] std::vector<int32_t> get_pos() const override;
-    void mover() override;
-    [[nodiscard]] uint32_t impactar() override;
+    bool mover() override;
+    uint32_t impactar() override;
     [[nodiscard]] int32_t get_id() const override;
     [[nodiscard]] uint32_t disparar() override;
 };

@@ -19,7 +19,10 @@ std::vector<int32_t> balaInfinita::get_pos() const {
     return posicion;
 }
 
-void balaInfinita::mover() { this->pos_x += this->vel_x; }
+bool balaInfinita::mover() {
+    this->pos_x += this->vel_x;
+    return this->choco;
+}
 
 uint32_t balaInfinita::impactar() {
     this->choco = true;
