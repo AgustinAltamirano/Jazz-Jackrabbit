@@ -13,7 +13,7 @@ class EscenaEditor;
 
 class ListaBotones: public QVBoxLayout {
 public:
-    explicit ListaBotones(QWidget* parent, QGraphicsView& vista_escena, EscenaEditor& escena);
+    ListaBotones(QWidget* parent, EscenaEditor& escena);
 
     void inicializar_boton_item(QPixmap& imagen_item,
                                 const std::string& tipo_item,
@@ -53,8 +53,6 @@ private:
     std::string escenario;
 
     EscenaEditor& escena;
-
-    QGraphicsView& vista_escena;
 
     std::unique_ptr<QPushButton> crear_boton(QPixmap& imagen_item, const std::string& tipo_item);
 };

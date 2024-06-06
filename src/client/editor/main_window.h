@@ -23,15 +23,13 @@ private:
 
     QHBoxLayout layout_horizontal;
 
-    QWidget widget_layout_vertical;
-
-    ListaBotones layout_vertical;
+    QWidget widget_graphics_view;
 
     EscenaEditor escena;
 
-    QWidget widget_graphics_view;
+    QWidget widget_layout_vertical;
 
-    QGraphicsView graphics_view;
+    ListaBotones layout_vertical;
 
     BarraMenu menu_bar;
 

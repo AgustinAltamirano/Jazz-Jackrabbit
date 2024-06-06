@@ -11,7 +11,7 @@
 
 class EscenaEditor: public QGraphicsScene {
 public:
-    explicit EscenaEditor(ListaBotones& lista_botones, QGraphicsView& vista_escena);
+    explicit EscenaEditor(ListaBotones& lista_botones, QWidget* widget);
 
     void dibujar_bloque(int x, int y);
 
@@ -39,7 +39,7 @@ private:
 
     std::map<std::pair<int, int>, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
 
-    QGraphicsView& vista_escena;
+    QGraphicsView vista_escena;
 
     void dibujar_bloque_item(QGraphicsSceneMouseEvent* event);
 

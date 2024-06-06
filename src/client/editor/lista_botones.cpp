@@ -9,14 +9,13 @@
 #include "escena_editor.h"
 
 
-ListaBotones::ListaBotones(QWidget* parent, QGraphicsView& vista_escena, EscenaEditor& escena) :
+ListaBotones::ListaBotones(QWidget* parent, EscenaEditor& escena) :
         QVBoxLayout(parent),
         items(),
         botones_por_mapa(),
         tipo_item_seleccionado(),
         escenario(),
-        escena(escena),
-        vista_escena(vista_escena) {}
+        escena(escena) {}
 
 
 void ListaBotones::inicializar_boton_item(QPixmap& imagen_item,
@@ -61,11 +60,6 @@ void ListaBotones::inicializar_boton_texturas(QPixmap& imagen_fondo, const std::
 void ListaBotones::seleccionar_texturas() {
     auto boton_textura = qobject_cast<QPushButton*>(sender());
     auto tipo_textura_mapa = boton_textura->property(KEY_TIPO_BTN).toString().toStdString();
-
-    QPixmap imagen_recortada = items[tipo_textura_mapa];
-    QBrush brush(imagen_recortada);
-
-    vista_escena.setBackgroundBrush(brush);
 
     for (const auto& mapa_actual: botones_por_mapa) {
         auto tipo_mapa = mapa_actual.first;

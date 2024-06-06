@@ -6,11 +6,11 @@ MainWindow::MainWindow() :
         central_widget(this),
         layout_horizontal(&central_widget),
         widget_graphics_view(),
-        escena(layout_vertical, graphics_view),
-        graphics_view(&escena, &widget_graphics_view),
+        escena(layout_vertical, &widget_graphics_view),
         widget_layout_vertical(),
-        layout_vertical(&widget_layout_vertical, graphics_view, escena),
-        menu_bar(escena) {
+        layout_vertical(&widget_layout_vertical, escena),
+        menu_bar(escena)
+{
     setWindowIcon(QIcon(QString(ASSETS_PATH) + RUTA_ICONO));
     inicializar_items();
     inicializar_texturas();
@@ -22,9 +22,6 @@ MainWindow::MainWindow() :
     widget_graphics_view.setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     setCentralWidget(&central_widget);
     setWindowTitle(TITULO_VENTANA);
-
-    graphics_view.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    graphics_view.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 

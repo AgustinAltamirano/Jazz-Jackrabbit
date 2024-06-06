@@ -6,11 +6,15 @@
 #include <QScrollBar>
 
 
-EscenaEditor::EscenaEditor(ListaBotones& lista_botones, QGraphicsView& vista_escena) :
+EscenaEditor::EscenaEditor(ListaBotones& lista_botones, QWidget* widget):
         QGraphicsScene(QRectF(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)),
         lista_botones(lista_botones),
         nivel_actual(),
-        vista_escena(vista_escena) {}
+        vista_escena(this, widget)
+{
+    vista_escena.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    vista_escena.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
 
 
 void EscenaEditor::mousePressEvent(QGraphicsSceneMouseEvent* event) {
@@ -104,6 +108,11 @@ void EscenaEditor::dibujar_bloque(int x, int y) {
 
 
 void EscenaEditor::actualizar_texturas(const std::string& tipo_texturas) {
+    QPixmap imagen_recortada = lista_botones.obtener_imagen_item(tipo_texturas);
+    QBrush brush(imagen_recortada);
+
+    vista_escena.setBackgroundBrush(brush);
+
     for (const auto& item_actual: nivel_actual) {
         auto item = item_actual.second.get();
         auto mapa_asociado = item->data(KEY_MAPA_ASOCIADO).toString().toStdString();
