@@ -9,6 +9,11 @@
 #include <vector>
 
 #include "../../client/vista_juego/snapshot_dto.h"
+#include "assets/bala.h"
+#include "assets/balaInfinita.h"
+#include "assets/bala_arma_1.h"
+#include "assets/bala_arma_2.h"
+#include "assets/bala_arma_3.h"
 #include "assets/bloqueEscenario.h"
 #include "assets/recogible.h"
 #include "assets/spawnpoint.h"
@@ -25,6 +30,7 @@ private:
     std::vector<bloqueEscenario> bloques_angulados;
     std::vector<spawnpoint> spawnpoints;
     std::list<recogible> objetos;
+    std::list<bala> balas;
 
 public:
     // creacion, cargar escenario y ayudar a gameloop
@@ -38,8 +44,11 @@ public:
     void colisiones_bloques_angulo(const std::map<int, personaje>& jugadores) const;
     void chequear_caida_y_objetos(std::map<int, personaje>& jugadores);
 
+    // personaje disparo bala
+    void jugador_dispara(int32_t id, personaje& jugador);
+
     // crear snapshots
-    auto crear_snapshot();
+    std::shared_ptr<SnapshotDTO_provisorio> crear_snapshot();
 };
 
 

@@ -136,7 +136,7 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
 
 
 // seccion de creacion de snapshots
-auto manejadorEscenario::crear_snapshot() {
+std::shared_ptr<SnapshotDTO_provisorio> manejadorEscenario::crear_snapshot() {
     auto snapshot = std::make_shared<SnapshotDTO_provisorio>(clase_escenario);
     for (auto& bloque: bloques_rectos) {
         BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
@@ -149,4 +149,34 @@ auto manejadorEscenario::crear_snapshot() {
         snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
     }
     return snapshot;
+}
+
+void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
+    const std::vector<int32_t> posicion = jugador.get_pos_actual();
+    int32_t punto_x = posicion[0];
+    if (!jugador.get_invertido()) {
+        punto_x += jugador.get_ancho();
+    }
+    int32_t punto_y = posicion[1] + jugador.get_alto() / 2;
+
+    switch (jugador.get_arma()) {
+        case INFINITA:
+            auto balaI = balaInfinita(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(balaI.disparar());
+            balas.emplace_back(std::move(balaI));
+        case ARMA1:
+            auto bala1 = balaArma1(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(bala1.disparar());
+            balas.emplace_back(std::move(bala1));
+        case ARMA2:
+            auto bala2 = balaArma2(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(bala2.disparar());
+            balas.emplace_back(std::move(bala2));
+        case ARMA3:
+            auto bala3 = balaArma3(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(bala3.disparar());
+            balas.emplace_back(std::move(bala3));
+        default:
+            return;
+    }
 }

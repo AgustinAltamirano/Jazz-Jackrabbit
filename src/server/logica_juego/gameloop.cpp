@@ -49,7 +49,9 @@ void gameloop::run() {
             entidad.second.pasar_tick();
         }
         for (const auto& accion: acciones) {
-            personajes[accion.first].cambiar_velocidad(accion.second);
+            if (personajes[accion.first].ejecutar_acciones(accion.second)) {
+                escenario.jugador_dispara(personajes[accion.first]);
+            }
         }
 
         // seccion2 chequea colisiones con el entorno y los cambios de estado de los personajes

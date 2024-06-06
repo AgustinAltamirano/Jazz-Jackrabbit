@@ -7,6 +7,11 @@
 
 #include "../../client/vista_juego/accion_juego_dto.h"
 #include "../../client/vista_juego/snapshot_dto.h"
+#include "assets/bala.h"
+#include "assets/balaInfinita.h"
+#include "assets/bala_arma_1.h"
+#include "assets/bala_arma_2.h"
+#include "assets/bala_arma_3.h"
 #include "assets/recogible.h"
 
 class personaje {
@@ -39,12 +44,13 @@ private:
 
     ArmaActual arma_actual;
     std::vector<int32_t> inventario_balas;
+    uint32_t tiempo_recarga;  // frames antes de poder disparar
 
 public:
     personaje(int32_t id, TipoPersonaje tipo, int32_t pos_x_inicial, int32_t pos_y_inicial);
 
-    void cambiar_velocidad(const std::vector<AccionJuego>& teclas);  // chequea estado y decide si
-                                                                     // moverse, CAMBIA LA VELOCIDAD
+    bool ejecutar_acciones(const std::vector<AccionJuego>& teclas);
+
     void cambiar_posicion(uint32_t x,
                           uint32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(bool cae);
@@ -58,8 +64,9 @@ public:
     [[nodiscard]] uint32_t get_ancho() const;
     [[nodiscard]] uint32_t get_alto() const;
 
-    // bool disparar();
-    // bool cambiar_arma();
+    [[nodiscard]] ArmaActual get_arma() const;
+    [[nodiscard]] bool get_invertido() const;
+    void disparar(uint32_t frames_recarga);
     // bool efectuar_dano();
     // bool respawnear();
 
