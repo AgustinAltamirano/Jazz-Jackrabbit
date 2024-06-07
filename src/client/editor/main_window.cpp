@@ -29,8 +29,7 @@ MainWindow::MainWindow() :
         escena(layout_vertical, &widget_graphics_view),
         widget_layout_vertical(),
         layout_vertical(&widget_layout_vertical, escena),
-        menu_bar(escena)
-{
+        menu_bar(this, escena) {
     setWindowIcon(QIcon(QString(ASSETS_PATH) + RUTA_ICONO));
     inicializar_items();
     inicializar_texturas();
@@ -41,7 +40,7 @@ MainWindow::MainWindow() :
     layout_horizontal.addWidget(&widget_graphics_view);
     widget_graphics_view.setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     setCentralWidget(&central_widget);
-    setWindowTitle(TITULO_VENTANA);
+    setWindowTitle(TITULO_VENTANA SEPARADOR_TITULO MAPA_SIN_GUARDAR);
 }
 
 

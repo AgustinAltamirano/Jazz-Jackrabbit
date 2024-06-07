@@ -1,6 +1,7 @@
 #ifndef BARRA_MENU_H
 #define BARRA_MENU_H
 
+#include <QMainWindow>
 #include <QMenuBar>
 #include <set>
 #include "escena_editor.h"
@@ -8,7 +9,7 @@
 
 class BarraMenu : public QMenuBar {
 public:
-    explicit BarraMenu(EscenaEditor& escena);
+    explicit BarraMenu(QMainWindow* parent, EscenaEditor& escena);
 
 private:
     static const std::set<TipoItemEditor> BLOQUES_SIN_ESCENARIO;
