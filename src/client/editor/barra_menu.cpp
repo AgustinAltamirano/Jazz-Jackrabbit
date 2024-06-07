@@ -117,8 +117,8 @@ void BarraMenu::guardar_en_yaml(const QString& ruta_archivo_guardado) {
             yaml_mapa << YAML::BeginMap;
             auto tipo_bloque = escena.obtener_tipo_bloque(coord_item);
             yaml_mapa << YAML::Key << KEY_TIPO << YAML::Value << tipo_bloque;
-            yaml_mapa << YAML::Key << KEY_COORD_X << YAML::Value << coord_item.first;
-            yaml_mapa << YAML::Key << KEY_COORD_Y << YAML::Value << coord_item.second;
+            yaml_mapa << YAML::Key << KEY_COORD_X << YAML::Value << coord_item.x;
+            yaml_mapa << YAML::Key << KEY_COORD_Y << YAML::Value << coord_item.y;
             yaml_mapa << YAML::EndMap;
         }
     }

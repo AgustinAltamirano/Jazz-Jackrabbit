@@ -2,9 +2,11 @@
 #define ESCENA_EDITOR_H
 
 
-#include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
+
 #include "constantes.h"
+#include "coordenada_punto.h"
 #include "lista_botones.h"
 
 
@@ -16,11 +18,11 @@ public:
 
     void actualizar_texturas(TipoEscenarioEditor nuevas_texturas);
 
-    TipoItemEditor obtener_tipo_bloque(std::pair<int, int> coordenada);
+    TipoItemEditor obtener_tipo_bloque(CoordenadaPunto coordenada);
 
     TipoEscenarioEditor obtener_tipo_escenario();
 
-    std::vector<std::pair<int, int>> obtener_items_escena();
+    std::vector<CoordenadaPunto> obtener_items_escena();
 
     void limpiar_escena();
 
@@ -36,7 +38,7 @@ protected:
 private:
     ListaBotones& lista_botones;
 
-    std::map<std::pair<int, int>, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
+    std::map<CoordenadaPunto, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
 
     QGraphicsView vista_escena;
 

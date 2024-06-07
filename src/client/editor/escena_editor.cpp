@@ -67,7 +67,7 @@ void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
 
     item->setPos(x, y);
     addItem(item.get());
-    nivel_actual[std::make_pair(x, y)] = std::move(item);
+    nivel_actual[CoordenadaPunto(x, y)] = std::move(item);
 }
 
 
@@ -75,7 +75,7 @@ void EscenaEditor::borrar_bloque_item(QGraphicsSceneMouseEvent* event) {
     auto x = obtener_coordenada_bloque(event->scenePos().x());
     auto y = obtener_coordenada_bloque(event->scenePos().y());
 
-    auto item = nivel_actual.find(std::make_pair(x, y));
+    auto item = nivel_actual.find(CoordenadaPunto(x, y));
     if (item != nivel_actual.end()) {
         removeItem(item->second.get());
         nivel_actual.erase(item);
@@ -119,7 +119,7 @@ void EscenaEditor::actualizar_texturas(TipoEscenarioEditor nuevas_texturas) {
 }
 
 
-TipoItemEditor EscenaEditor::obtener_tipo_bloque(std::pair<int, int> coordenada) {
+TipoItemEditor EscenaEditor::obtener_tipo_bloque(CoordenadaPunto coordenada) {
     auto &item = nivel_actual.at(coordenada);
     return item->data(KEY_TIPO_ITEM).value<TipoItemEditor>();
 }
@@ -130,8 +130,8 @@ TipoEscenarioEditor EscenaEditor::obtener_tipo_escenario() {
 }
 
 
-std::vector<std::pair<int, int>> EscenaEditor::obtener_items_escena() {
-    std::vector<std::pair<int, int>> claves;
+std::vector<CoordenadaPunto> EscenaEditor::obtener_items_escena() {
+    std::vector<CoordenadaPunto> claves;
 
     for (const auto& item : nivel_actual) {
         claves.push_back(item.first);
