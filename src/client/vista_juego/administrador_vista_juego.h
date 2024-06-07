@@ -9,9 +9,9 @@
 
 #include <SDL2/SDL.h>
 
+#include "../../common/accion_juego_dto.h"
 #include "../../common/queue.h"
 
-#include "accion_juego_dto.h"
 #include "entrada_juego.h"
 #include "fondo_escenario.h"
 #include "lector_texturas.h"

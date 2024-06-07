@@ -8,7 +8,7 @@
 
 class ComandoDTO {
 private:
-    TipoComando tipo_comando;
+    TipoComando comando;
     int32_t id_cliente;
 
 public:

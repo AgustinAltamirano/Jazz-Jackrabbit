@@ -34,7 +34,9 @@ public:
 
     void comenzar_jugar();
 
-    std::optional<SnapshotDTO> obtener_snapshot();
+    bool realizar_accion(const TipoComando& comando);
+
+    bool obtener_snapshot(SnapshotDTO& snapshot);
 
     Cliente(const Cliente&) = delete;
 
