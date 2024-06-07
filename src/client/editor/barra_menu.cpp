@@ -20,6 +20,7 @@ BarraMenu::BarraMenu(QMainWindow* parent, EscenaEditor& escena):
     addAction(TEXTO_BTN_GUARDAR, this, &BarraMenu::guardar_mapa);
     addAction(TEXTO_BTN_GUARDAR_COMO, this, &BarraMenu::guardar_como_mapa);
     addAction(TEXTO_BTN_CARGAR, this, &BarraMenu::cargar_mapa);
+    addAction(TEXTO_BTN_LIMPIAR, this, &BarraMenu::limpiar_mapa);
 }
 
 
@@ -127,4 +128,8 @@ void BarraMenu::guardar_en_yaml(const QString& ruta_archivo_guardado) {
 
     std::ofstream archivo_mapa(ruta_mapa);
     archivo_mapa << yaml_mapa.c_str();
+}
+
+void BarraMenu::limpiar_mapa() {
+    escena.limpiar_escena();
 }

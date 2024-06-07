@@ -79,6 +79,7 @@ struct ItemEscena {
 #define TEXTO_BTN_GUARDAR_COMO "Guardar como"
 #define TEXTO_BTN_CARGAR "Cargar"
 #define TITULO_DIALOG_CARGAR "Cargar mapa"
+#define TEXTO_BTN_LIMPIAR "Limpiar mapa"
 #define CARPETA_MAPAS (PROJECT_DIR "/src/server/mapas")
 
 #endif  // CONSTANTES_H

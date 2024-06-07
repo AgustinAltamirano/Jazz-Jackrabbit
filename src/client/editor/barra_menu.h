@@ -25,6 +25,8 @@ private:
     void cargar_mapa();
 
     void guardar_en_yaml(const QString& ruta_archivo_guardado);
+
+    void limpiar_mapa();
 };
 
 
