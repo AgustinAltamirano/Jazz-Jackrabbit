@@ -90,10 +90,9 @@ qreal EscenaEditor::obtener_coordenada_bloque(qreal coord) {
 
 
 // Es para usar desde fuera de la clase en la carga del mapa
-void EscenaEditor::dibujar_bloque(int x, int y, TipoItemEditor tipo_item,
+void EscenaEditor::dibujar_bloque(int x, int y, TipoItemEditor tipo,
                                   TipoEscenarioEditor texturas) {
-    auto item = lista_botones.obtener_item(tipo_item, texturas);
-    lista_botones.actualizar_item_seleccionado(item);
+    lista_botones.actualizar_item_seleccionado(tipo, texturas);
     QGraphicsSceneMouseEvent event;
     event.setScenePos(QPointF(x, y));
     dibujar_bloque_item(&event);

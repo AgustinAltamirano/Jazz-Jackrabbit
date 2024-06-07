@@ -81,6 +81,7 @@ void ListaBotones::seleccionar_item() {
     item_seleccionado = items.at(std::make_pair(tipo_item, mapa_asociado));
 }
 
+
 std::unique_ptr<QGraphicsPixmapItem> ListaBotones::obtener_item_seleccionado() const {
     auto tipo_item = item_seleccionado.tipo;
     auto mapa_asociado = item_seleccionado.mapa_asociado;
@@ -96,14 +97,8 @@ std::unique_ptr<QGraphicsPixmapItem> ListaBotones::obtener_item_seleccionado() c
 }
 
 
-QPixmap& ListaBotones::obtener_imagen_item(TipoItemEditor tipo,
-                                            TipoEscenarioEditor texturas) {
+QPixmap& ListaBotones::obtener_imagen_item(TipoItemEditor tipo, TipoEscenarioEditor texturas) {
     return items[std::make_pair(tipo, texturas)].imagen;
-}
-
-
-ItemEscena& ListaBotones::obtener_item(TipoItemEditor tipo, TipoEscenarioEditor texturas) {
-    return items[std::make_pair(tipo, texturas)];
 }
 
 
@@ -112,6 +107,6 @@ TipoEscenarioEditor ListaBotones::obtener_escenario() {
 }
 
 
-void ListaBotones::actualizar_item_seleccionado(const ItemEscena& nuevo_item) {
-    item_seleccionado = nuevo_item;
+void ListaBotones::actualizar_item_seleccionado(TipoItemEditor tipo, TipoEscenarioEditor texturas) {
+    item_seleccionado = items[std::make_pair(tipo, texturas)];
 }

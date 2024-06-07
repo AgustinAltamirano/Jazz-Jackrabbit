@@ -24,11 +24,9 @@ public:
 
     QPixmap& obtener_imagen_item(TipoItemEditor tipo, TipoEscenarioEditor texturas);
 
-    void actualizar_item_seleccionado(const ItemEscena& nuevo_item);
+    void actualizar_item_seleccionado(TipoItemEditor tipo, TipoEscenarioEditor texturas);
 
     TipoEscenarioEditor obtener_escenario();
-
-    ItemEscena& obtener_item(TipoItemEditor tipo, TipoEscenarioEditor texturas);
 
 private Q_SLOTS:
     void seleccionar_item();

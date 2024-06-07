@@ -10,9 +10,9 @@
 
 class EscenaEditor: public QGraphicsScene {
 public:
-    explicit EscenaEditor(ListaBotones& lista_botones, QWidget* widget);
+    EscenaEditor(ListaBotones& lista_botones, QWidget* widget);
 
-    void dibujar_bloque(int x, int y, TipoItemEditor tipo_item, TipoEscenarioEditor texturas);
+    void dibujar_bloque(int x, int y, TipoItemEditor tipo, TipoEscenarioEditor texturas);
 
     void actualizar_texturas(TipoEscenarioEditor nuevas_texturas);
 
