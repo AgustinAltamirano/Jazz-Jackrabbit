@@ -6,16 +6,27 @@
 #include <QGraphicsScene>
 
 #include "constantes.h"
+#include "coordenada_punto.h"
 #include "lista_botones.h"
 
 
 class EscenaEditor: public QGraphicsScene {
 public:
-    explicit EscenaEditor(ListaBotones& lista_botones, QGraphicsView& vista_escena);
+    EscenaEditor(ListaBotones& lista_botones, QWidget* widget);
 
-    void dibujar_bloque(int x, int y);
+    void dibujar_bloque(int x, int y, TipoItemEditor tipo, TipoEscenarioEditor texturas);
 
-    void actualizar_texturas(const std::string& tipo_texturas);
+    void actualizar_texturas(TipoEscenarioEditor nuevas_texturas);
+
+    TipoItemEditor obtener_tipo_bloque(CoordenadaPunto coordenada);
+
+    TipoEscenarioEditor obtener_tipo_escenario();
+
+    std::vector<CoordenadaPunto> obtener_items_escena();
+
+    void limpiar_escena();
+
+    void actualizar_fondo(TipoEscenarioEditor texturas);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
@@ -27,17 +38,15 @@ protected:
 private:
     ListaBotones& lista_botones;
 
-    std::map<std::pair<int, int>, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
+    std::map<CoordenadaPunto, std::unique_ptr<QGraphicsPixmapItem>> nivel_actual;
 
-    QGraphicsView& vista_escena;
+    QGraphicsView vista_escena;
 
     void dibujar_bloque_item(QGraphicsSceneMouseEvent* event);
 
     void borrar_bloque_item(QGraphicsSceneMouseEvent* event);
 
     qreal obtener_coordenada_bloque(qreal coord);
-
-    std::string obtener_tipo_item(const std::string& item_actual, const std::string& nuevas_texturas);
 };
 
 

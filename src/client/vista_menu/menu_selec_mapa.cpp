@@ -1,6 +1,7 @@
 #include "menu_selec_mapa.h"
 #include "constantes_menu.h"
 #include "menu_selec_jugador.h"
+#include "../vista_juego/snapshot_dto.h"
 
 
 MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):

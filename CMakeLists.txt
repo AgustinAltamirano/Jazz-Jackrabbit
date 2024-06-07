@@ -27,7 +27,7 @@ add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/ser
         src/server/logica_juego/assets/recogible.cpp
         src/server/logica_juego/assets/recogible.h
         src/server/logica_juego/assets/bala.h
-        src/server/logica_juego/assets/balaInfinita.cpp
+#        src/server/logica_juego/assets/balaInfinita.cpp
         src/server/logica_juego/assets/balaInfinita.h)
 
 add_subdirectory(src/client/vista_juego)

@@ -14,24 +14,27 @@
 #include "lista_botones.h"
 
 
+
 class MainWindow : public QMainWindow {
 public:
     explicit MainWindow();
 
 private:
+    static const std::unordered_map<std::string, TipoEscenarioEditor> STR_A_ESCENARIO;
+
+    static const std::unordered_map<std::string, TipoItemEditor> STR_A_BLOQUE;
+
     QWidget central_widget;
 
     QHBoxLayout layout_horizontal;
 
-    QWidget widget_layout_vertical;
-
-    ListaBotones layout_vertical;
+    QWidget widget_graphics_view;
 
     EscenaEditor escena;
 
-    QWidget widget_graphics_view;
+    QWidget widget_layout_vertical;
 
-    QGraphicsView graphics_view;
+    ListaBotones layout_vertical;
 
     BarraMenu menu_bar;
 
