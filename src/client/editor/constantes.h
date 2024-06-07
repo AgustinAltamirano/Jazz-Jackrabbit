@@ -1,6 +1,37 @@
 #ifndef CONSTANTES_H
 #define CONSTANTES_H
 
+
+typedef enum {
+    ESCENARIO_INDEFINIDO = 0,
+    ESCENARIO1,
+    ESCENARIO2,
+} TipoEscenarioEditor;
+
+typedef enum {
+    PISO = 0,
+    TECHO,
+    PARED,
+    DIAGONAL,
+    DIAGONAL_INVERTIDO,
+    SOPORTE_DIAGONAL,
+    SOPORTE_DIAGONAL_INVERTIDO,
+    SPAWNPOINT_JUGADOR,
+    SPAWNPOINT_ENEMIGO,
+    GEMA,
+    MONEDA,
+    TEXTURA
+} TipoItemEditor;
+
+Q_DECLARE_METATYPE(TipoEscenarioEditor)
+Q_DECLARE_METATYPE(TipoItemEditor)
+
+struct ItemEscena {
+    TipoItemEditor tipo;
+    TipoEscenarioEditor mapa_asociado;
+    QPixmap imagen;
+};
+
 #define ANCHO_PANTALLA 640
 #define ALTO_PANTALLA 480
 #define TAM_ITEM 32
@@ -23,7 +54,6 @@
 #define KEY_MAPA_BTN "mapa_asociado"
 #define KEY_TIPO_ITEM 0
 #define KEY_MAPA_ASOCIADO 1
-#define DELIMITADOR '_'  // Para separar el tipo de item y el mapa asociado en el YAML
 
 #define ALTO_LISTA_ITEMS 50
 

@@ -1,6 +1,26 @@
 #include "main_window.h"
 
 
+const std::unordered_map<std::string, TipoItemEditor> MainWindow::STR_A_BLOQUE{
+        {"piso", PISO},
+        {"bajopiso", PARED},
+        {"rampa_izq", DIAGONAL},
+        {"rampa_der", DIAGONAL_INVERTIDO},
+        {"final_rampa_izq", SOPORTE_DIAGONAL},
+        {"final_rampa_der", SOPORTE_DIAGONAL_INVERTIDO},
+        {"spawn_personajes", SPAWNPOINT_JUGADOR},
+        {"spawn_enemigos", SPAWNPOINT_ENEMIGO},
+        {"gema", GEMA},
+        {"moneda", MONEDA}
+};
+
+const std::unordered_map<std::string, TipoEscenarioEditor> MainWindow::STR_A_ESCENARIO{
+        {"castle", ESCENARIO1},
+        {"carrotus", ESCENARIO2},
+        {"", ESCENARIO_INDEFINIDO}
+};
+
+
 MainWindow::MainWindow() :
         QMainWindow(),
         central_widget(this),
@@ -42,8 +62,7 @@ void MainWindow::inicializar_items() {
             mapa_asociado = nodo_item_actual["mapa"].as<std::string>();
         }
 
-        auto item_actual = ItemEscena{tipo_item,
-                                      mapa_asociado,
+        auto item_actual = ItemEscena{STR_A_BLOQUE.at(tipo_item), STR_A_ESCENARIO.at(mapa_asociado),
                                       QPixmap(ruta_imagen.c_str())};
 
         layout_vertical.inicializar_boton_item(std::move(item_actual), posicion);
@@ -66,7 +85,7 @@ void MainWindow::inicializar_texturas() {
         auto imagen_recortada = imagen_fondo.copy(rectangulo);
         auto nombre_mapa = escenario_actual["nombre"].as<std::string>();
 
-        auto item_actual = ItemEscena{nombre_mapa, "", imagen_recortada};
+        auto item_actual = ItemEscena{TEXTURA, STR_A_ESCENARIO.at(nombre_mapa), imagen_recortada};
 
         layout_vertical.inicializar_boton_texturas(std::move(item_actual));
     }

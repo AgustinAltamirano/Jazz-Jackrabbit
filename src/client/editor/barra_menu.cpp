@@ -5,55 +5,11 @@
 #include <sstream>
 
 #include <yaml-cpp/yaml.h>
-
 #include "constantes.h"
 
 
-const std::set<std::string> BarraMenu::BLOQUES_SIN_ESCENARIO {
-        "spawn_personajes",
-        "spawn_enemigos",
-        "gema",
-        "moneda"
-};
-
-
-const std::unordered_map<std::string, TipoEscenario> BarraMenu::TIPO_A_ESCENARIO {
-        {"castle", ESCENARIO1},
-        {"carrotus", ESCENARIO2},
-};
-
-
-const std::unordered_map<TipoEscenario, std::string> BarraMenu::ESCENARIO_A_TIPO {
-        {ESCENARIO1, "castle"},
-        {ESCENARIO2, "carrotus"},
-};
-
-
-const std::unordered_map<std::string, TipoBloqueEscenario> BarraMenu::TIPO_A_BLOQUE {
-        {"piso", PISO},
-        {"bajopiso", PARED},
-        {"rampa_izq", DIAGONAL},
-        {"rampa_der", DIAGONAL_INVERTIDO},
-        {"final_rampa_izq", SOPORTE_DIAGONAL},
-        {"final_rampa_der", SOPORTE_DIAGONAL_INVERTIDO},
-        {"spawn_personajes", SPAWNPOINT_JUGADOR},
-        {"spawn_enemigos", SPAWNPOINT_ENEMIGO},
-        {"gema", GEMA},
-        {"moneda", MONEDA}
-};
-
-
-const std::unordered_map<TipoBloqueEscenario, std::string> BarraMenu::BLOQUE_A_TIPO {
-        {PISO, "piso"},
-        {PARED, "bajopiso"},
-        {DIAGONAL, "rampa_izq"},
-        {DIAGONAL_INVERTIDO, "rampa_der"},
-        {SOPORTE_DIAGONAL, "final_rampa_izq"},
-        {SOPORTE_DIAGONAL_INVERTIDO, "final_rampa_der"},
-        {SPAWNPOINT_JUGADOR, "spawn_personajes"},
-        {SPAWNPOINT_ENEMIGO, "spawn_enemigos"},
-        {GEMA, "gema"},
-        {MONEDA, "moneda"}
+const std::set<TipoItemEditor> BarraMenu::BLOQUES_SIN_ESCENARIO {
+        SPAWNPOINT_JUGADOR, SPAWNPOINT_ENEMIGO, GEMA, MONEDA
 };
 
 
@@ -106,21 +62,21 @@ void BarraMenu::cargar_mapa() {
         escena.limpiar_escena();
 
         auto escenario = yaml_mapa["items"][0]["escenario"].as<std::string>();
-        auto tipo_escenario = TipoEscenario(std::stoi(escenario));
+        auto tipo_escenario = TipoEscenarioEditor(std::stoi(escenario));
+        escena.actualizar_fondo(tipo_escenario);
 
         for (const auto& item: yaml_mapa["items"][1]["bloques"]) {
             auto bloque = item["tipo"].as<std::string>();
-            auto tipo_bloque = TipoBloqueEscenario(std::stoi(bloque));
+            auto tipo_bloque = TipoItemEditor(std::stoi(bloque));
 
-            auto tipo_item = BLOQUE_A_TIPO.at(tipo_bloque);
+            auto texturas = ESCENARIO_INDEFINIDO;
 
-            if (BLOQUES_SIN_ESCENARIO.find(tipo_item) == BLOQUES_SIN_ESCENARIO.end()) {
-                tipo_item += '_' + ESCENARIO_A_TIPO.at(tipo_escenario);
+            if (BLOQUES_SIN_ESCENARIO.find(tipo_bloque) == BLOQUES_SIN_ESCENARIO.end()) {
+                texturas = tipo_escenario;
             }
 
             int x = item["x"].as<int>(), y = item["y"].as<int>();
-            escena.actualizar_tipo_item_seleccionado(tipo_item);
-            escena.dibujar_bloque(x, y);
+            escena.dibujar_bloque(x, y, tipo_bloque, texturas);
         }
     }
 }
@@ -146,7 +102,7 @@ void BarraMenu::guardar_en_yaml(const QString& ruta_archivo_guardado) {
 
     if (not items.empty()) {
         yaml_mapa << YAML::BeginMap;
-        auto escenario = TIPO_A_ESCENARIO.at(escena.obtener_tipo_escenario());
+        auto escenario = escena.obtener_tipo_escenario();
         yaml_mapa << YAML::Key << "escenario" << YAML::Value << escenario;
         yaml_mapa << YAML::EndMap;
 
@@ -156,8 +112,7 @@ void BarraMenu::guardar_en_yaml(const QString& ruta_archivo_guardado) {
 
         for (const auto& coord_item: items) {
             yaml_mapa << YAML::BeginMap;
-            auto e = escena.obtener_tipo_bloque(coord_item);
-            auto tipo_bloque = TIPO_A_BLOQUE.at(e);
+            auto tipo_bloque = escena.obtener_tipo_bloque(coord_item);
             yaml_mapa << YAML::Key << "tipo" << YAML::Value << tipo_bloque;
             yaml_mapa << YAML::Key << "x" << YAML::Value << coord_item.first;
             yaml_mapa << YAML::Key << "y" << YAML::Value << coord_item.second;

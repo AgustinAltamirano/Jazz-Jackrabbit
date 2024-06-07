@@ -14,18 +14,16 @@
 #include "lista_botones.h"
 
 
-struct ItemEscena {
-    std::string tipo;
-    std::string mapa_asociado;
-    QPixmap imagen;
-};
-
 
 class MainWindow : public QMainWindow {
 public:
     explicit MainWindow();
 
 private:
+    static const std::unordered_map<std::string, TipoEscenarioEditor> STR_A_ESCENARIO;
+
+    static const std::unordered_map<std::string, TipoItemEditor> STR_A_BLOQUE;
+
     QWidget central_widget;
 
     QHBoxLayout layout_horizontal;

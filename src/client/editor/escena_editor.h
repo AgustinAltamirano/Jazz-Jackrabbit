@@ -2,9 +2,8 @@
 #define ESCENA_EDITOR_H
 
 
-#include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
-
+#include <QGraphicsPixmapItem>
 #include "constantes.h"
 #include "lista_botones.h"
 
@@ -13,19 +12,19 @@ class EscenaEditor: public QGraphicsScene {
 public:
     explicit EscenaEditor(ListaBotones& lista_botones, QWidget* widget);
 
-    void dibujar_bloque(int x, int y);
+    void dibujar_bloque(int x, int y, TipoItemEditor tipo_item, TipoEscenarioEditor texturas);
 
-    void actualizar_texturas(const std::string& tipo_texturas);
+    void actualizar_texturas(TipoEscenarioEditor nuevas_texturas);
 
-    std::string obtener_tipo_bloque(std::pair<int, int> coordenada);
+    TipoItemEditor obtener_tipo_bloque(std::pair<int, int> coordenada);
 
-    std::string obtener_tipo_escenario();
+    TipoEscenarioEditor obtener_tipo_escenario();
 
     std::vector<std::pair<int, int>> obtener_items_escena();
 
-    void actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item);
-
     void limpiar_escena();
+
+    void actualizar_fondo(TipoEscenarioEditor texturas);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
@@ -46,8 +45,6 @@ private:
     void borrar_bloque_item(QGraphicsSceneMouseEvent* event);
 
     qreal obtener_coordenada_bloque(qreal coord);
-
-    std::string obtener_tipo_item(const std::string& item_actual);
 };
 
 

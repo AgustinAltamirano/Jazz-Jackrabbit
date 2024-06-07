@@ -1,9 +1,8 @@
 #include "escena_editor.h"
 
 #include <QGraphicsSceneMouseEvent>
-#include <cmath>
-#include <sstream>
 #include <QScrollBar>
+#include <cmath>
 
 
 EscenaEditor::EscenaEditor(ListaBotones& lista_botones, QWidget* widget):
@@ -91,65 +90,43 @@ qreal EscenaEditor::obtener_coordenada_bloque(qreal coord) {
 
 
 // Es para usar desde fuera de la clase en la carga del mapa
-void EscenaEditor::dibujar_bloque(int x, int y) {
+void EscenaEditor::dibujar_bloque(int x, int y, TipoItemEditor tipo_item,
+                                  TipoEscenarioEditor texturas) {
+    auto item = lista_botones.obtener_item(tipo_item, texturas);
+    lista_botones.actualizar_item_seleccionado(item);
     QGraphicsSceneMouseEvent event;
     event.setScenePos(QPointF(x, y));
     dibujar_bloque_item(&event);
 }
 
 
-void EscenaEditor::actualizar_texturas(const std::string& tipo_texturas) {
-    QPixmap imagen_recortada = lista_botones.obtener_imagen_item(tipo_texturas);
-    QBrush brush(imagen_recortada);
-
-    vista_escena.setBackgroundBrush(brush);
+void EscenaEditor::actualizar_texturas(TipoEscenarioEditor nuevas_texturas) {
+    actualizar_fondo(nuevas_texturas);
 
     for (const auto& item_actual: nivel_actual) {
         auto item = item_actual.second.get();
-        auto mapa_asociado = item->data(KEY_MAPA_ASOCIADO).toString().toStdString();
+        auto mapa_asociado = item->data(KEY_MAPA_ASOCIADO).value<TipoEscenarioEditor>();
 
-        if (mapa_asociado.empty()) {
+        if (mapa_asociado == ESCENARIO_INDEFINIDO) {
             continue;
         }
 
-        auto tipo_item = item->data(KEY_TIPO_ITEM).toString().toStdString();
+        auto tipo_item = item->data(KEY_TIPO_ITEM).value<TipoItemEditor>();
 
-        auto nuevo_item = obtener_tipo_item(tipo_item) + DELIMITADOR + tipo_texturas;
-        auto imagen_item = lista_botones.obtener_imagen_item(nuevo_item);
-        item->setPixmap(imagen_item);
-        item->setData(KEY_TIPO_ITEM, QVariant(nuevo_item.c_str()));
-
-        if (lista_botones.obtener_tipo_item_seleccionado() == tipo_item) {
-            lista_botones.actualizar_tipo_item_seleccionado(nuevo_item);
-        }
+        auto nueva_textura = lista_botones.obtener_imagen_item(tipo_item, nuevas_texturas);
+        item->setPixmap(nueva_textura);
+        item->setData(KEY_MAPA_ASOCIADO, QVariant(nuevas_texturas));
     }
 }
 
 
-std::string EscenaEditor::obtener_tipo_item(const std::string& item_actual) {
-    std::string resultado = item_actual;
-    size_t pos = item_actual.rfind(DELIMITADOR);
-    if (pos != std::string::npos) {
-        resultado = item_actual.substr(0, pos);
-    }
-    return resultado;
-}
-
-
-std::string EscenaEditor::obtener_tipo_bloque(std::pair<int, int> coordenada) {
+TipoItemEditor EscenaEditor::obtener_tipo_bloque(std::pair<int, int> coordenada) {
     auto &item = nivel_actual.at(coordenada);
-
-    auto tipo_completo = item->data(KEY_TIPO_ITEM).toString();
-
-    auto mapa_asociado = item->data(KEY_MAPA_ASOCIADO);
-    if (not mapa_asociado.isValid()) {
-        return tipo_completo.toStdString();
-    }
-    return obtener_tipo_item(tipo_completo.toStdString());
+    return item->data(KEY_TIPO_ITEM).value<TipoItemEditor>();
 }
 
 
-std::string EscenaEditor::obtener_tipo_escenario() {
+TipoEscenarioEditor EscenaEditor::obtener_tipo_escenario() {
     return lista_botones.obtener_escenario();
 }
 
@@ -164,15 +141,17 @@ std::vector<std::pair<int, int>> EscenaEditor::obtener_items_escena() {
 }
 
 
-void EscenaEditor::actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item) {
-    lista_botones.actualizar_tipo_item_seleccionado(nuevo_tipo_item);
-}
-
-
 void EscenaEditor::limpiar_escena() {
     for (const auto& item : nivel_actual) {
         removeItem(item.second.get());
     }
     nivel_actual.clear();
     update();
+}
+
+
+void EscenaEditor::actualizar_fondo(TipoEscenarioEditor texturas) {
+    auto imagen_texturas = lista_botones.obtener_imagen_item(TEXTURA, texturas);
+    QBrush brush(imagen_texturas);
+    vista_escena.setBackgroundBrush(brush);
 }

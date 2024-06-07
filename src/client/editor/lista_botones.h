@@ -7,8 +7,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <string>
+#include "constantes.h"
 
-struct ItemEscena;
 class EscenaEditor;
 
 
@@ -20,15 +20,15 @@ public:
 
     void inicializar_boton_texturas(ItemEscena item);
 
-    std::unique_ptr<QGraphicsPixmapItem> obtener_item_seleccionado();
+    [[nodiscard]] std::unique_ptr<QGraphicsPixmapItem> obtener_item_seleccionado() const;
 
-    std::string obtener_tipo_item_seleccionado();
+    QPixmap& obtener_imagen_item(TipoItemEditor tipo, TipoEscenarioEditor texturas);
 
-    QPixmap& obtener_imagen_item(const std::string& tipo_item);
+    void actualizar_item_seleccionado(const ItemEscena& nuevo_item);
 
-    void actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item);
+    TipoEscenarioEditor obtener_escenario();
 
-    std::string obtener_escenario();
+    ItemEscena& obtener_item(TipoItemEditor tipo, TipoEscenarioEditor texturas);
 
 private Q_SLOTS:
     void seleccionar_item();
@@ -36,11 +36,11 @@ private Q_SLOTS:
     void seleccionar_texturas();
 
 private:
-    std::map<std::string, ItemEscena> items;
+    std::map<std::pair<TipoItemEditor, TipoEscenarioEditor>, ItemEscena> items;
 
-    std::string tipo_item_seleccionado;
+    ItemEscena item_seleccionado;
 
-    std::string escenario;
+    TipoEscenarioEditor escenario;
 
     EscenaEditor& escena;
 
