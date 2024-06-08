@@ -4,8 +4,8 @@
 
 LogicaJuego::LogicaJuego() {}
 
-void LogicaJuego::agregar_cliente(const int32_t& id_cliente) {
-    ClienteJuego* cliente = new ClienteJuego(id_cliente);
+void LogicaJuego::agregar_cliente(const int32_t& id_cliente, const TipoPersonaje& personaje) {
+    ClienteJuego* cliente = new ClienteJuego(id_cliente, personaje);
     mapa_clientes_juego[id_cliente] = cliente;
 }
 

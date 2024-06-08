@@ -21,6 +21,8 @@ private:
 
     int32_t codigo_partida;
 
+    std::string nombre_escenario;
+
     Queue<ComandoDTO*> cola_comandos;
 
     bool sigo_jugando;
@@ -30,7 +32,8 @@ private:
     int8_t capacidad_partida;
 
 public:
-    Partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo_partida, const int32_t& id_cliente,
+    Partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo_partida,
+            std::string& nombre_escenario, const int32_t& id_cliente, TipoPersonaje& personaje,
             int8_t& capacidad_partida);
 
     void run() override;
@@ -41,11 +44,13 @@ public:
 
     Queue<ComandoDTO*>* obtener_comandos();
 
-    void agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente);
+    void agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente, const TipoPersonaje& personaje);
 
-    bool comparar_partida(const int32_t& codigo_a_comparar);
+    bool comparar_codigo_partida(const int32_t& codigo_a_comparar);
 
     int32_t obtener_codigo_partida();
+
+    bool comparar_nombre_escenario(const std::string& nombre_escenario);
 
     bool borrar_cliente(int32_t& id_cliente);
 

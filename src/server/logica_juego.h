@@ -15,7 +15,7 @@ private:
 public:
     LogicaJuego();
 
-    void agregar_cliente(const int32_t& id_cliente);
+    void agregar_cliente(const int32_t& id_cliente, const TipoPersonaje& personaje);
 
     SnapshotDTO obtener_snapshot();
 

@@ -57,9 +57,11 @@ void EnviadorCliente::inicio_recibidor_cliente() {
             ComandoDTO* comando = servidor_deserializador.obtener_comando(&cerrado, id_cliente);
             if (comando->obtener_comando() == CREAR) {
                 ComandoCrearDTO* crear_dto = dynamic_cast<ComandoCrearDTO*>(comando);
+                std::string nombre_escenario = crear_dto->obtener_nombre_escenario();
+                TipoPersonaje personaje = crear_dto->obtener_personaje();
                 int8_t capacidad_partida = crear_dto->obtener_capacidad_partida();
-                cola_recibidor = gestor_partidas->crear_partida(&cola_enviador, id_cliente,
-                                                                codigo_partida, capacidad_partida);
+                cola_recibidor = gestor_partidas->crear_partida(&cola_enviador, nombre_escenario, id_cliente,
+                                                                codigo_partida, personaje, capacidad_partida);
                 // Si me devuelve un puntero nulo significa que no se pudo crear la partida
                 if (cola_recibidor == nullptr)
                     servidor_serializador.enviar_error_crear_partida(&cerrado);
