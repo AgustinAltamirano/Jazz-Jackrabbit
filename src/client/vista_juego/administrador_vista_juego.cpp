@@ -44,6 +44,13 @@ const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
 
 void AdministradorVistaJuego::actualizar_vista() {
     std::shared_ptr<SnapshotDTO_provisorio> snapshot;
+
+    // bool obtener_snapshot(std::shared_pointer<SnapshotDTO> snapshot);
+
+    // if (!cliente.obtener_snapshot(snapshot) {
+    //     return;
+    // }
+
     if (!cola_snapshots.try_pop(snapshot)) {
         return;
     }
