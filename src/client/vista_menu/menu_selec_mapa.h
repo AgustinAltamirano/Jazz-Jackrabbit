@@ -2,10 +2,9 @@
 #define MENU_SELEC_MAPA_H
 
 
-#include <QHBoxLayout>
-
 #include "boton_animado_mapa.h"
-#include "boton_menu.h"
+#include "menu_juego.h"
+#include "menu_seleccion.h"
 
 #define NUM_MAPA_1 3
 #define NUM_MAPA_2 4
@@ -21,8 +20,10 @@
 #define M_BOTTOM_MAPA 150
 
 
-class MenuSeleccionMapa: public QMainWindow {
+class MenuSeleccionMapa: public MenuSeleccion {
 private:
+    MenuJuego& juego;
+
     QWidget central_widget;
 
     QWidget vertical_layout_widget;
@@ -35,15 +36,11 @@ private:
 
     BotonAnimadoMapa opcion_mapa_custom;
 
-    QPushButton* boton_enfocado = nullptr;
-
-    void conectar_botones();
-
-    void mostrar_selector_jugador();
-
+protected:
+    void realizar_accion_menu(int boton_seleccionado) override;
 
 public:
-    explicit MenuSeleccionMapa(QMainWindow* parent);
+    explicit MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego);
 };
 
 

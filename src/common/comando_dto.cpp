@@ -4,7 +4,7 @@
 
 ComandoDTO::ComandoDTO() {
     id_cliente = -1;
-    tipo_comando = IDLE;
+    tipo_comando = EN_IDLE;
 }
 
 ComandoDTO::ComandoDTO(TipoComando tipo_comando): tipo_comando(tipo_comando) { id_cliente = -1; }

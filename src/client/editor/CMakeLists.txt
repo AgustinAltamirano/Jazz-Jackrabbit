@@ -17,15 +17,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Multimedia REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
-        ventana_inicial.cpp
-        ventana_inicial.h
-        menu_principal.cpp
-        menu_principal.h
-        boton_menu.cpp
-        boton_menu.h
-        boton_animado_jugador.cpp
-        boton_animado_jugador.cpp
-        ../../../assets/menu/resources.qrc
+        ../../../assets/editor/img/resources.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -39,36 +31,31 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 else()
     if(ANDROID)
-        add_library(lobby SHARED
+        add_library(editor SHARED
             ${PROJECT_SOURCES}
         )
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
-        add_executable(lobby
+        add_executable(editor
             ${PROJECT_SOURCES}
-                menu_crear_partida.cpp
-                menu_crear_partida.h
-                constantes_menu.h
-                menu_selec_jugador.cpp
-                menu_selec_jugador.h
-                menu_selec_mapa.cpp
-                menu_selec_mapa.h
-                sprites_jugador.cpp
-                sprites_jugador.h
-                manejador_sprites.cpp
-                manejador_sprites.h
-                sprites_mapa.cpp
-                sprites_mapa.h
-                boton_animado_mapa.cpp
-                boton_animado_mapa.h
+                main_window.cpp
+                main_window.h
+                escena_editor.cpp
+                escena_editor.h
+                constantes.h
+                barra_menu.cpp
+                barra_menu.h
+                lista_botones.cpp
+                lista_botones.h
+                coordenada_punto.h
         )
     endif()
 endif()
 
-target_link_libraries(lobby PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia yaml-cpp)
+target_link_libraries(editor PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia yaml-cpp)
 
-set_target_properties(lobby PROPERTIES
+set_target_properties(editor PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}

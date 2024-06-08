@@ -7,8 +7,9 @@
 
 #include "../../common/constantes.h"
 
-manejadorEscenario::manejadorEscenario(std::string path): path(std::move(path)) {
-    cargar_escenario_basico(620, 480);
+manejadorEscenario::manejadorEscenario(std::string path):
+        path(std::move(path)), clase_escenario(ESCENARIO_INDEFINIDO), alto(480), ancho(620) {
+    cargar_escenario_basico(ancho, alto);
 }
 
 void manejadorEscenario::cargar_escenario_basico(uint32_t ancho, uint32_t alto) {
@@ -22,6 +23,7 @@ void manejadorEscenario::cargar_escenario_basico(uint32_t ancho, uint32_t alto) 
 
 std::vector<spawnpoint>& manejadorEscenario::get_spawns() { return spawnpoints; }
 
+TipoEscenario manejadorEscenario::get_escenario() { return clase_escenario; }
 
 bool hay_colision_recta(const int32_t jug_x, const int32_t jug_y, const uint32_t alto,
                         const uint32_t ancho, const bloqueEscenario& bloque) {
@@ -47,9 +49,9 @@ std::vector<bloqueEscenario> chequeo_recto_individual(const personaje& jugador,
 uint32_t definir_punto_medio(const int32_t pos_org_jug, const uint32_t jug_largo,
                              const int32_t pos_bloque, const uint32_t bloque_largo) {
     if (pos_org_jug < pos_bloque) {  // si este es el caso ajusto por arriba o por izquierda
-        return (pos_bloque - jug_largo);
+        return (pos_bloque - jug_largo - 1);
     }
-    return (pos_bloque + bloque_largo);
+    return (pos_bloque + bloque_largo + 1);
 }
 
 bool colision_horizontal(const int32_t jug_x, const uint32_t jug_ancho,
@@ -102,4 +104,49 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
         }
         jugador.cambiar_posicion(nueva_pos_x, nueva_pos_y);
     }
+}
+
+void manejadorEscenario::colisiones_bloques_angulo(
+        const std::map<int, personaje>& jugadores) const {}
+
+
+void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& jugadores) {
+    for (auto& entidad: jugadores) {
+        personaje& jugador = entidad.second;
+        const std::vector<int32_t> posicion = jugador.get_pos_actual();
+        const int32_t punto_x = posicion[0];
+        const int32_t punto_y = posicion[1];
+        const uint32_t punto_y_pisando = punto_y + jugador.get_alto() + 1;
+        const bool cae = !std::any_of(
+                bloques_rectos.begin(), bloques_rectos.end(), [&](const bloqueEscenario& bloque) {
+                    return bloque.pos_y == punto_y_pisando &&
+                           colision_horizontal(punto_x, jugador.get_ancho(), bloque);
+                });
+        jugador.cambiar_estado(cae);
+        for (auto it = objetos.begin(); it != objetos.end();) {
+            uint32_t valor = (*it).chequear_colision(punto_x, punto_y, jugador.get_ancho(),
+                                                     jugador.get_alto());
+            if (valor != 0) {
+                jugador.recoger_objeto(valor, (*it).get_objeto());
+                it = objetos.erase(it);
+            }
+        }
+    }
+}
+
+
+// seccion de creacion de snapshots
+auto manejadorEscenario::crear_snapshot() {
+    auto snapshot = std::make_shared<SnapshotDTO_provisorio>(clase_escenario);
+    for (auto& bloque: bloques_rectos) {
+        BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                                bloque.alto, bloque.angulo, bloque.tipo);
+        snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
+    }
+    for (auto& bloque: bloques_angulados) {
+        BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                                bloque.alto, bloque.angulo, bloque.tipo);
+        snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
+    }
+    return snapshot;
 }

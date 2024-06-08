@@ -3,18 +3,22 @@
 #include <QFontDatabase>
 
 
-VentanaInicial::VentanaInicial():
-        QMainWindow(), press_click_btn(this), reproductor_musica(), playlist(), menu_principal() {
+VentanaInicial::VentanaInicial(MenuJuego& juego):
+        QMainWindow(), press_click_btn(this), reproductor_musica(), playlist(),
+        menu_principal(this, juego) {
     setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     reproducir_musica();
-    QString estilo = QString("QMainWindow {background-image: url(%1);}").arg(RUTA_IMG_MENU);
+    QString estilo = QString("QMainWindow {background-image: url(%1);}").arg(QString(ASSETS_PATH) + RUTA_IMG_MENU);
     setStyleSheet(estilo);
     inicializar_boton();
+    setWindowTitle(TITULO_VENTANAS);
+    setWindowIcon(QIcon(QString(ASSETS_PATH) + RUTA_ICONO));
 }
 
 
 void VentanaInicial::reproducir_musica() {
-    playlist.addMedia(QUrl(RUTA_MUSICA_FONDO));
+    auto url = QUrl::fromLocalFile(QString(ASSETS_PATH) + RUTA_MUSICA_FONDO);
+    playlist.addMedia(url);
     playlist.setPlaybackMode(QMediaPlaylist::Loop);
     reproductor_musica.setPlaylist(&playlist);
     reproductor_musica.setVolume(VOLUMEN_MUSICA);
@@ -46,7 +50,7 @@ QFont obtener_fuente() {
     static bool fuente_cargada = false;
 
     if (!fuente_cargada) {
-        int id = QFontDatabase::addApplicationFont(RUTA_FUENTE);
+        int id = QFontDatabase::addApplicationFont(QString(ASSETS_PATH) + RUTA_FUENTE);
 
         if (id != -1) {
             QStringList fontFamilies = QFontDatabase::applicationFontFamilies(id);

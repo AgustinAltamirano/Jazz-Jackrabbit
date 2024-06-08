@@ -6,11 +6,12 @@
 #include <cstdint>
 #include <list>
 #include <map>
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "../../common/queue.h"
-#include "../../common/snapshot_dto.h"
 #include "../../common/thread.h"
 #include "assets/spawnpoint.h"
 
@@ -22,11 +23,11 @@ private:
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_alive;
 
-    Queue<SnapshotDTO>& cola_entrada;
+    Queue<AccionJuegoDTO>& cola_entrada;
     // Monitor de salida de datos
 
     // aca todos los controladores
-    std::map<int, personaje> personajes;
+    std::map<int32_t, personaje> personajes;
     manejadorEscenario escenario;
     // controlador enemigos, etc
 
@@ -39,7 +40,8 @@ public:
      *un mapa con los ids de personajes que se crearan apuntando al tipo de personaje
      */
     explicit gameloop(const std::string& archivo_escenario,
-                      const std::map<int, TipoPersonaje>& mapa, Queue<SnapshotDTO>& cola_entrada);
+                      const std::map<int32_t, TipoPersonaje>& mapa,
+                      Queue<AccionJuegoDTO>& cola_entrada);
     void kill() override;
 };
 

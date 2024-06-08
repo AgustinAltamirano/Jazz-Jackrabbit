@@ -5,42 +5,9 @@
 #include <string>
 #include <vector>
 
-#include "../../common/snapshot_dto.h"
-
-// los siguientes enum deberian estar en snapshot
-typedef enum { JAZZ = 0, SPAZ, LORI } TipoPersonaje;
-
-typedef enum {
-    INFINITA = 0,
-    ARMA1,
-    ARMA2,
-    ARMA3,
-} ArmaActual;
-
-typedef enum {
-    IDLE = 0,
-    CORRER,
-    DASH,
-    DISPARAR_QUIETO,
-    SALTAR_ARRIBA,
-    SALTAR_ADELANTE,
-    CAER_ABAJO,
-    CAER_ADELANTE,
-    ATAQUE_ESPECIAL,
-    INTOXICADO,
-    IMPACTADO,
-    MUERTE,
-} EstadoPersonaje;
-
-typedef enum {
-    SALTAR = 0,
-    MOVER_IZQ,
-    MOVER_DER,
-    ACTIVAR_DASH,
-    DISPARAR_ACCION,
-    ARMA_ANTERIOR,
-    ARMA_SIGUIENTE,
-} AccionJuego;
+#include "../../client/vista_juego/accion_juego_dto.h"
+#include "../../client/vista_juego/snapshot_dto.h"
+#include "assets/recogible.h"
 
 class personaje {
 private:
@@ -80,7 +47,9 @@ public:
                                                                      // moverse, CAMBIA LA VELOCIDAD
     void cambiar_posicion(uint32_t x,
                           uint32_t y);  // despues de revisar colisiones se efectua el cambio real
-    void cambiar_estado(TipoPersonaje tipo);
+    void cambiar_estado(bool cae);
+    void pasar_tick();
+    void recoger_objeto(uint32_t valor, TipoRecogible tipo);
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.
@@ -93,6 +62,9 @@ public:
     // bool cambiar_arma();
     // bool efectuar_dano();
     // bool respawnear();
+
+    // funcion para la construccion del dto
+    [[nodiscard]] ClienteDTO crear_dto() const;
 };
 
 

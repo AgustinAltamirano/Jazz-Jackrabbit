@@ -6,6 +6,7 @@
 #include "juego/cliente.h"
 #include "juego/juego.h"
 #include "lobby/lobby.h"
+#include "vista_menu/menu_juego.h"
 
 int main(int argc, char* argv[]) {
     try {
@@ -17,8 +18,8 @@ int main(int argc, char* argv[]) {
         const std::string servname = std::string(argv[2]);
         Lobby lobby(hostname, servname);
         int32_t id_cliente = lobby.obtener_id_cliente();
+        MenuJuego menu(argc, argv, lobby);
         std::cout << "Cliente ID: " << id_cliente << "\n";
-        lobby.crear_partida(5);
         std::cout << "Partida creada ID: " << lobby.obtener_crear() << "\n";
         Socket socket = lobby.move_socket();
         Juego juego(id_cliente, socket);

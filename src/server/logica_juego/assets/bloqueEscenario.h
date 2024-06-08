@@ -3,12 +3,7 @@
 
 #include <cstdint>
 
-typedef enum {
-    PISO = 0,
-    TECHO,
-    PARED,
-    DIAGONAL,
-} TipoBloqueEscenario;
+#include "../../../client/vista_juego/snapshot_dto.h"
 
 class bloqueEscenario {
 public:

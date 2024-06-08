@@ -45,6 +45,13 @@ typedef enum {
     TECHO,
     PARED,
     DIAGONAL,
+    DIAGONAL_INVERTIDO,
+    SOPORTE_DIAGONAL,
+    SOPORTE_DIAGONAL_INVERTIDO,
+    SPAWNPOINT_JUGADOR,
+    SPAWNPOINT_ENEMIGO,
+    GEMA,
+    MONEDA,
 } TipoBloqueEscenario;
 
 struct ClienteDTO {
