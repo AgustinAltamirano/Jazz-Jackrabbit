@@ -56,7 +56,8 @@ private:
 public:
     ObjetoAnimado(uint32_t id, SDL2pp::Renderer& renderer, SDL2pp::Texture& textura,
                   const std::vector<SDL2pp::Rect>& sprite_coords, Camara& camara,
-                  const std::vector<int>& dimensiones_iniciales, uint32_t iteraciones_por_sprite);
+                  const SDL2pp::Rect& dimensiones_iniciales, int angulo,
+                  uint32_t iteraciones_por_sprite);
 
     ObjetoAnimado(const ObjetoAnimado&) = delete;
 
@@ -72,12 +73,13 @@ public:
      * Actualiza el sprite actual, así como su posición y dimensiones.
      * @param iteraciones_actuales Iteraciones actuales del renderizado del juego
      * @param dimensiones Nuevas dimensiones y posición del objeto
+     * @param angulo Nuevo ángulo del objeto
      * @param invertido Determina si el sprite debe dibujarse invertido horizontalmente o no
      */
-    void actualizar_animacion(unsigned int iteraciones_actuales,
-                              const std::vector<int>& dimensiones, bool invertido);
+    void actualizar_animacion(uint32_t iteraciones_actuales, const SDL2pp::Rect& dimensiones,
+                              int angulo, bool invertido);
 
-    void actualizar_camara(int pos_x, int pos_y) const;
+    void actualizar_camara(int camara_pos_x, int camara_pos_y) const;
 
     /**
      * Incluye al objeto actual en el renderer para su posterior renderización.

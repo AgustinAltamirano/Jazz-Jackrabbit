@@ -30,7 +30,7 @@ private:
     const uint32_t id;
     const std::string nombre_personaje;
     EstadoVisualPersonaje estado_actual;
-    int render_x, render_y, render_angulo;
+    int pos_x, pos_y, angulo;
     bool invertido;
     const uint32_t iteraciones_por_sprite;
 
@@ -53,11 +53,12 @@ public:
      * Actualiza la animación del personaje, así como su posición y dimensiones.
      * @param estado estado actual del personaje
      * @param iteraciones_actuales Iteraciones actuales del renderizado del juego
-     * @param dimensiones Nuevas dimensiones y posición del objeto
+     * @param dimensiones Nuevas dimensiones y posición del personaje
+     * @param angulo Nuevo ángulo del personaje
      * @param invertido Determina si la textura debe dibujarse invertida o no
      */
     void actualizar_animacion(EstadoVisualPersonaje estado, uint32_t iteraciones_actuales,
-                              const std::vector<int>& dimensiones, bool invertido);
+                              const SDL2pp::Rect& dimensiones, int angulo, bool invertido);
 
     void actualizar_camara() const;
 

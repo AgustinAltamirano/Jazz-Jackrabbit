@@ -139,7 +139,7 @@ void AdministradorVistaJuego::actualizar_vista() {
 
         personajes.at(cliente.id_cliente)
                 .actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(cliente.estado),
-                                      iteraciones_actuales, {cliente.pos_x, cliente.pos_y, 2, 2, 0},
+                                      iteraciones_actuales, {cliente.pos_x, cliente.pos_y, 2, 2}, 0,
                                       cliente.de_espaldas);
     }
 
