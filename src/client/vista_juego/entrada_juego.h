@@ -28,7 +28,7 @@ public:
     EntradaJuego& operator=(const EntradaJuego&) = delete;
 
     /** Lee todos los eventos producidos por el jugador y envía la acción correspondiente. */
-    void procesar_entrada() const;
+    [[nodiscard]] bool procesar_entrada(uint32_t id_cliente) const;
 };
 
 

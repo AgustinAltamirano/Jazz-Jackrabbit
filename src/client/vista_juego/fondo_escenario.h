@@ -20,6 +20,8 @@ public:
     FondoEscenario& operator=(const FondoEscenario&) = delete;
 
     void dibujar() const;
+
+    ~FondoEscenario();
 };
 
 #endif  // FONDO_ESCENARIO_H

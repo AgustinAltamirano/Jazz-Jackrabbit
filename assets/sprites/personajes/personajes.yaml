@@ -174,7 +174,7 @@ personajes:
             ancho: 24
             alto: 51
 
-      - nombre: uppercut
+      - nombre: ataque_especial
         sprites:
           - x: 303
             y: 717
