@@ -23,6 +23,7 @@ void manejadorEscenario::cargar_escenario_basico(uint32_t ancho, uint32_t alto) 
 
 std::vector<spawnpoint>& manejadorEscenario::get_spawns() { return spawnpoints; }
 
+TipoEscenario manejadorEscenario::get_escenario() { return clase_escenario; }
 
 bool hay_colision_recta(const int32_t jug_x, const int32_t jug_y, const uint32_t alto,
                         const uint32_t ancho, const bloqueEscenario& bloque) {
@@ -109,7 +110,7 @@ void manejadorEscenario::colisiones_bloques_angulo(
         const std::map<int, personaje>& jugadores) const {}
 
 
-void manejadorEscenario::chequear_caida(std::map<int, personaje>& jugadores) const {
+void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& jugadores) {
     for (auto& entidad: jugadores) {
         personaje& jugador = entidad.second;
         const std::vector<int32_t> posicion = jugador.get_pos_actual();
@@ -122,5 +123,30 @@ void manejadorEscenario::chequear_caida(std::map<int, personaje>& jugadores) con
                            colision_horizontal(punto_x, jugador.get_ancho(), bloque);
                 });
         jugador.cambiar_estado(cae);
+        for (auto it = objetos.begin(); it != objetos.end();) {
+            uint32_t valor = (*it).chequear_colision(punto_x, punto_y, jugador.get_ancho(),
+                                                     jugador.get_alto());
+            if (valor != 0) {
+                jugador.recoger_objeto(valor, (*it).get_objeto());
+                it = objetos.erase(it);
+            }
+        }
     }
+}
+
+
+// seccion de creacion de snapshots
+auto manejadorEscenario::crear_snapshot() {
+    auto snapshot = std::make_shared<SnapshotDTO_provisorio>(clase_escenario);
+    for (auto& bloque: bloques_rectos) {
+        BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                                bloque.alto, bloque.angulo, bloque.tipo);
+        snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
+    }
+    for (auto& bloque: bloques_angulados) {
+        BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                                bloque.alto, bloque.angulo, bloque.tipo);
+        snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
+    }
+    return snapshot;
 }

@@ -48,6 +48,7 @@ else()
                 barra_menu.h
                 lista_botones.cpp
                 lista_botones.h
+                coordenada_punto.h
         )
     endif()
 endif()
