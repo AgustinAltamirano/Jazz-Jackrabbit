@@ -32,6 +32,6 @@ std::vector<BloqueEscenarioDTO> SnapshotDTO::obtener_bloques_escenario() {
     return bloques_escenario;
 }
 
-bool SnapshotDTO::es_fin_juego() const { return fin_juego; }
+bool SnapshotDTO::es_fin_juego() { return fin_juego; }
 
 void SnapshotDTO::establecer_fin_juego(bool fin_juego) { this->fin_juego = fin_juego; }

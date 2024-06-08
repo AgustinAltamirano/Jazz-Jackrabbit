@@ -4,9 +4,11 @@
 #include <cstdint>
 #include <vector>
 
-#include "../client/vista_juego/snapshot_dto.h"
+#include "../server/logica_juego/assets/bloqueEscenario.h"
 
 #include "estado_personaje.h"
+#include "tipo_arma.h"
+#include "tipo_escenario.h"
 #include "tipo_personaje.h"
 
 struct ClienteDTO {
@@ -17,13 +19,12 @@ struct ClienteDTO {
     EstadoPersonaje estado;
     uint32_t vida;
     uint32_t puntos;
-    ArmaActual arma_actual;
+    TipoArma arma_actual;
     int32_t balas_restantes;
-
-    explicit ClienteDTO(iconst uint32_t id_cliente, const TipoPersonaje tipo_personaje,
-                        const int32_t pos_x, const int32_t pos_y, const bool de_espaldas,
-                        const EstadoPersonaje estado, const uint32_t vida, const uint32_t puntos,
-                        const ArmaActual arma_actual, const int32_t balas_restantes):
+    ClienteDTO(int32_t id_cliente, TipoPersonaje tipo_personaje, int32_t pos_x,
+               int32_t pos_y, bool de_espaldas, EstadoPersonaje estado,
+               uint32_t vida, uint32_t puntos, TipoArma arma_actual,
+               int32_t balas_restantes):
             id_cliente(id_cliente),
             tipo_personaje(tipo_personaje),
             pos_x(pos_x),
@@ -41,7 +42,7 @@ struct BloqueEscenarioDTO {
     uint32_t ancho, alto;
     TipoBloqueEscenario tipo;
     BloqueEscenarioDTO(int32_t pos_x, int32_t pos_y, uint32_t ancho, uint32_t alto, int32_t angulo,
-                       TipoEscenario tipo):
+                       TipoBloqueEscenario tipo):
             pos_x(pos_x), pos_y(pos_y), ancho(ancho), alto(alto), angulo(angullo), tipo(tipo);
 };
 
