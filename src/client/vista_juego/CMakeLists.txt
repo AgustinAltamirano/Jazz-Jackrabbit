@@ -9,17 +9,22 @@ add_library(vista_juego
         objeto_animado.h
         personaje.cpp
         personaje.h
-        personaje_jazz.cpp
-        personaje_jazz.h
-        personaje_lori.cpp
-        personaje_lori.h
-        personaje_spaz.cpp
-        personaje_spaz.h
         vista_juego_exception.h
         ../../common/accion_juego_dto.h
         snapshot_dto.h
         fondo_escenario.cpp
-        fondo_escenario.h)
+        fondo_escenario.h
+        bloque_escenario.cpp
+        bloque_escenario.h
+        piso_escenario.cpp
+        piso_escenario.h
+        pared_escenario.cpp
+        pared_escenario.h
+        techo_escenario.cpp
+        techo_escenario.h
+        camara.cpp
+        camara.h
+        vista_juego_defs.h)
 
 # Configuración de las librerías externas SDL2 y SDL2pp
 find_package(yaml-cpp REQUIRED)

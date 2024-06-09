@@ -5,6 +5,8 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include "camara.h"
+
 /** Los vectores de dimensiones deben contener
  * la posición en x, en y, el ancho, alto y el ángulo.
  */
@@ -24,6 +26,7 @@ private:
     const uint32_t id;
     SDL2pp::Renderer& renderer;
     SDL2pp::Texture& textura;
+    Camara& camara;
 
     /**
      * Vector con los rectángulos de cada uno de los sprites usados en la animación.
@@ -35,13 +38,10 @@ private:
 
     /**
      * Dimensiones y coordenadas donde debe ser renderizado el objeto.
-     * - @code render_x@endcode: posición horizontal del objeto
-     * - @code render_y@endcode: posición vertical del objeto
-     * - @code render_ancho@endcode: ancho del objeto
-     * - @code render_alto@endcode: alto del objeto
-     * - @code render_angulo@endcode: ángulo de rotación del objeto (respecto a su textura original)
      */
-    int render_x, render_y, render_ancho, render_alto, render_angulo;
+    SDL2pp::Rect render_coords;
+
+    int render_angulo;
 
     /** Determina si el objeto se debe renderizar invertido horizontalmente o no */
     bool invertido;
@@ -51,14 +51,12 @@ private:
     /** Índice del sprite actual en @code sprite_coords@endcode. */
     uint16_t sprite_actual;
 
-    const unsigned int frames_por_sprite;
-    unsigned int frame_ticks_anteriores;
+    const uint32_t iteraciones_por_sprite;
 
 public:
     ObjetoAnimado(uint32_t id, SDL2pp::Renderer& renderer, SDL2pp::Texture& textura,
-                  const std::vector<SDL2pp::Rect>& sprite_coords,
-                  const std::vector<int>& dimensiones_iniciales, unsigned int frames_por_sprite,
-                  unsigned int frame_ticks_actuales);
+                  const std::vector<SDL2pp::Rect>& sprite_coords, Camara& camara,
+                  const std::vector<int>& dimensiones_iniciales, uint32_t iteraciones_por_sprite);
 
     ObjetoAnimado(const ObjetoAnimado&) = delete;
 
@@ -72,13 +70,14 @@ public:
 
     /**
      * Actualiza el sprite actual, así como su posición y dimensiones.
-     * @param frame_ticks_transcurridos Cantidad de frames transcurridos desde la última
-     * actualización
+     * @param iteraciones_actuales Iteraciones actuales del renderizado del juego
      * @param dimensiones Nuevas dimensiones y posición del objeto
      * @param invertido Determina si el sprite debe dibujarse invertido horizontalmente o no
      */
-    void actualizar_animacion(unsigned int frame_ticks_transcurridos,
+    void actualizar_animacion(unsigned int iteraciones_actuales,
                               const std::vector<int>& dimensiones, bool invertido);
+
+    void actualizar_camara(int pos_x, int pos_y) const;
 
     /**
      * Incluye al objeto actual en el renderer para su posterior renderización.

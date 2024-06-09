@@ -5,6 +5,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <SDL2/SDL.h>
@@ -12,15 +13,16 @@
 #include "../../common/accion_juego_dto.h"
 #include "../../common/queue.h"
 
+#include "accion_juego_dto.h"
+#include "bloque_escenario.h"
+#include "camara.h"
 #include "entrada_juego.h"
 #include "fondo_escenario.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 #include "personaje.h"
 #include "snapshot_dto.h"
-
-#define ANCHO_VENTANA 640
-#define ALTO_VENTANA 480
+#include "vista_juego_defs.h"
 
 /**
  * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones
@@ -30,7 +32,12 @@
 class AdministradorVistaJuego {
 private:
     static const std::unordered_map<TipoEscenario, std::string> MAPA_TIPO_ESCENARIO;
+    static const std::unordered_map<TipoBloqueEscenario, std::pair<std::string, std::string>>
+            MAPA_TIPO_BLOQUE;
+    static const std::unordered_map<TipoPersonaje, std::string> MAPA_TIPO_PERSONAJE;
+    static const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje> MAPA_ESTADOS_PERSONAJE;
 
+    uint32_t id_jugador;
     uint32_t proximo_id;
 
     /** Inicializador de la librería SDL. */
@@ -42,12 +49,19 @@ private:
     EntradaJuego entrada_juego;
     Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots;
 
+    uint32_t iteraciones_actuales;
+    Camara camara;
     TipoEscenario tipo_escenario;
     std::optional<FondoEscenario> fondo_escenario;
     /** Mapa con todos los objetos asociados a personajes jugables. */
     std::unordered_map<uint32_t, Personaje> personajes;
 
+    /** Mapa con todos los objetos asociados a bloques del escenario. */
+    std::unordered_map<uint32_t, std::unique_ptr<BloqueEscenario>> bloques_escenario;
+
     void actualizar_vista();
+
+    int64_t sincronizar_vista(int64_t ticks_transcurridos);
 
 public:
     AdministradorVistaJuego(const std::string& titulo_ventana,
