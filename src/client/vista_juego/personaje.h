@@ -3,7 +3,6 @@
 
 #include <string>
 #include <unordered_map>
-#include <vector>
 
 #include "lector_texturas.h"
 #include "objeto_animado.h"
@@ -35,6 +34,8 @@ private:
     const uint32_t iteraciones_por_sprite;
 
     std::unordered_map<EstadoVisualPersonaje, ObjetoAnimado> animaciones;
+
+    SDL2pp::Rect corregir_desfase_sprite(const SDL2pp::Rect& dimensiones) const;
 
 public:
     Personaje(uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,

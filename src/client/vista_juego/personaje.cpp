@@ -1,6 +1,9 @@
 #include "personaje.h"
 
 #include <utility>
+#include <vector>
+
+#include "../../common/constantes.h"
 
 const std::unordered_map<EstadoVisualPersonaje, const std::string>
         Personaje::mapa_estados_personaje{{ESTADO_STAND, "stand"},
@@ -12,6 +15,19 @@ const std::unordered_map<EstadoVisualPersonaje, const std::string>
                                           {ESTADO_SALTAR_ADELANTE, "saltar_adelante"},
                                           {ESTADO_CAER_ADELANTE, "caer_adelante"},
                                           {ESTADO_ATAQUE_ESPECIAL, "ataque_especial"}};
+
+
+SDL2pp::Rect Personaje::corregir_desfase_sprite(const SDL2pp::Rect& dimensiones) const {
+    const SDL2pp::Rect& coords_sprite =
+            animaciones.at(estado_actual).obtener_coords_sprite_actual();
+    if (invertido) {
+        return {dimensiones.GetX() - (coords_sprite.GetW() - ANCHO_INICIAL),
+                dimensiones.GetY() - (coords_sprite.GetH() - ALTO_INICIAL), dimensiones.GetW(),
+                dimensiones.GetH()};
+    }
+    return {dimensiones.GetX(), dimensiones.GetY() - (coords_sprite.GetH() - ALTO_INICIAL),
+            dimensiones.GetW(), dimensiones.GetH()};
+}
 
 Personaje::Personaje(const uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,
                      LectorTexturas& lector_texturas, Camara& camara, const int pos_x,
@@ -64,8 +80,11 @@ void Personaje::actualizar_animacion(const EstadoVisualPersonaje estado,
         animaciones.at(estado_actual).resetear_animacion();
         estado_actual = estado;
     }
-    animaciones.at(estado_actual)
-            .actualizar_animacion(iteraciones_actuales, dimensiones, angulo, invertido);
+    animaciones.at(estado_actual).actualizar_iteracion(iteraciones_actuales);
+
+    const SDL2pp::Rect dimensiones_corregidas = corregir_desfase_sprite(dimensiones);
+
+    animaciones.at(estado_actual).actualizar_animacion(dimensiones_corregidas, angulo, invertido);
 }
 
 void Personaje::actualizar_camara() const {

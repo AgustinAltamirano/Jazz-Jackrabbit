@@ -39,17 +39,21 @@ ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
     otro.sprite_actual = 0;
 }
 
+const SDL2pp::Rect& ObjetoAnimado::obtener_coords_sprite_actual() const {
+    return sprite_coords.at(sprite_actual);
+}
+
 void ObjetoAnimado::resetear_animacion() { reseteado = true; }
 
-void ObjetoAnimado::actualizar_animacion(const uint32_t iteraciones_actuales,
-                                         const SDL2pp::Rect& dimensiones, const int angulo,
-                                         const bool invertido) {
+void ObjetoAnimado::actualizar_iteracion(const uint32_t iteraciones_actuales) {
     sprite_actual =
             !reseteado ? (iteraciones_actuales / iteraciones_por_sprite) % sprite_coords.size() : 0;
     reseteado = false;
+}
 
+void ObjetoAnimado::actualizar_animacion(const SDL2pp::Rect& dimensiones, const int angulo,
+                                         const bool invertido) {
     this->invertido = invertido;
-
     const SDL2pp::Rect nuevas_coords_absolutas(
             dimensiones.GetX(), dimensiones.GetY(),
             sprite_coords.at(sprite_actual).GetW() * dimensiones.GetW(),

@@ -67,17 +67,19 @@ public:
 
     ObjetoAnimado& operator=(ObjetoAnimado&& otro) = delete;
 
+    [[nodiscard]] const SDL2pp::Rect& obtener_coords_sprite_actual() const;
+
     void resetear_animacion();
+
+    void actualizar_iteracion(uint32_t iteraciones_actuales);
 
     /**
      * Actualiza el sprite actual, así como su posición y dimensiones.
-     * @param iteraciones_actuales Iteraciones actuales del renderizado del juego
      * @param dimensiones Nuevas dimensiones y posición del objeto
      * @param angulo Nuevo ángulo del objeto
      * @param invertido Determina si el sprite debe dibujarse invertido horizontalmente o no
      */
-    void actualizar_animacion(uint32_t iteraciones_actuales, const SDL2pp::Rect& dimensiones,
-                              int angulo, bool invertido);
+    void actualizar_animacion(const SDL2pp::Rect& dimensiones, int angulo, bool invertido);
 
     void actualizar_camara(int camara_pos_x, int camara_pos_y) const;
 
