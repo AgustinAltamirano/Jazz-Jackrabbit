@@ -16,9 +16,7 @@ ComunicadorCliente::ComunicadorCliente(Socket socket, GestorPartidas* gestor_par
     sigo_jugando = true;
 }
 
-bool ComunicadorCliente::still_alive() { return sigo_jugando; }
-
-void ComunicadorCliente::kill() {
+void ComunicadorCliente::stop() {
     sigo_en_partida = false;
     sigo_jugando = false;
     skt_cliente.shutdown(SHUT_RDWR);

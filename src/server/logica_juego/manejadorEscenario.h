@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "../../client/vista_juego/snapshot_dto.h"
+#include "../../common/tipo_escenario.h"
 #include "assets/bala.h"
 #include "assets/balaInfinita.h"
 #include "assets/bala_arma_1.h"

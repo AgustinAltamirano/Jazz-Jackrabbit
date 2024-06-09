@@ -7,3 +7,9 @@ std::vector<char> ClienteSerializador::serializar_comenzar_jugar() {
     buffer.push_back(COMENZAR);
     return buffer;
 }
+
+std::vector<char> ClienteSerializador::serializar_comando(const TipoComando& comando) {
+    std::vector<char> buffer;
+    buffer.push_back(comando);
+    return buffer;
+}

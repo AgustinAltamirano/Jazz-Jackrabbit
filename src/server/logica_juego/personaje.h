@@ -6,8 +6,10 @@
 #include <string>
 #include <vector>
 
-#include "../../client/vista_juego/accion_juego_dto.h"
-#include "../../client/vista_juego/snapshot_dto.h"
+#include "../../common/estado_personaje.h"
+#include "../../common/tipo_arma.h"
+#include "../../common/tipo_comando.h"
+#include "../../common/tipo_personaje.h"
 #include "assets/bala.h"
 #include "assets/balaInfinita.h"
 #include "assets/bala_arma_1.h"
@@ -43,15 +45,16 @@ private:
     int vida;
     int puntos;
 
-    ArmaActual arma_actual;
-    std::map<ArmaActual, int32_t> inventario_balas;
+    TipoArma arma_actual;
+    std::vector<int32_t> inventario_balas;
+    std::map<TipoArma, int32_t> inventario_balas;
     uint32_t tiempo_recarga;  // frames antes de poder disparar
 
 public:
     personaje(int32_t id, TipoPersonaje tipo, int32_t pos_x_inicial, int32_t pos_y_inicial);
 
-    bool ejecutar_acciones(const std::vector<AccionJuego>& teclas);
-
+    void cambiar_velocidad(const std::vector<TipoComando>& teclas);  // chequea estado y decide si
+                                                                     // moverse, CAMBIA LA VELOCIDAD
     void cambiar_posicion(uint32_t x,
                           uint32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(bool cae);
@@ -65,7 +68,7 @@ public:
     [[nodiscard]] uint32_t get_ancho() const;
     [[nodiscard]] uint32_t get_alto() const;
 
-    [[nodiscard]] ArmaActual get_arma() const;
+    [[nodiscard]] TipoArma get_arma() const;
     [[nodiscard]] bool get_invertido() const;
     void disparar(uint32_t frames_recarga);
     void efectuar_dano(uint32_t dano);

@@ -2,6 +2,8 @@
 
 #include "../../common/config.h"
 #include "../../common/constantes.h"
+#include "../../common/snapshot_dto.h"
+#include "../../common/tipo_comando.h"
 
 personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t pos_x_inicial,
                      const int32_t pos_y_inicial):
@@ -32,12 +34,11 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
     inventario_balas[ARMA3] = 0;
 }
 
-bool personaje::ejecutar_acciones(const std::vector<AccionJuego>& teclas) {
+void personaje::cambiar_velocidad(const std::vector<TipoComando>& teclas) {
     if (ataque_especial || this->estado == MUERTE || this->estado == IMPACTADO) {
         return false;
     }
-    bool disparo = false;
-    for (const AccionJuego tecla&: teclas) {
+    for (const TipoComando tecla&: teclas) {
         // verificar si el estado permite hacer acciones
         switch (tecla) {
             case SALTAR:
@@ -63,13 +64,13 @@ bool personaje::ejecutar_acciones(const std::vector<AccionJuego>& teclas) {
                 if (this->arma_actual == INFINITA) {
                     this->arma_actual = ARMA3;
                 } else {
-                    this->arma_actual = static_cast<ArmaActual>(arma_actual - 1);
+                    this->arma_actual = static_cast<TipoArma>(arma_actual - 1);
                 }
             case ARMA_SIGUIENTE:
                 if (this->arma_actual == ARMA3) {
                     this->arma_actual = INFINITA;
                 } else {
-                    this->arma_actual = static_cast<ArmaActual>(arma_actual + 1);
+                    this->arma_actual = static_cast<TipoArma>(arma_actual + 1);
                 }
             /*
             case ATAQUEESPECIAL:

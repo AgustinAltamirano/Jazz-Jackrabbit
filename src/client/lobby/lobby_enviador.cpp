@@ -24,6 +24,4 @@ void LobbyEnviador::run() {
     sigo_hablando = false;
 }
 
-void LobbyEnviador::kill() { sigo_hablando = false; }
-
-bool LobbyEnviador::still_alive() { return sigo_hablando; }
+void LobbyEnviador::stop() { sigo_hablando = false; }

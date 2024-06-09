@@ -24,12 +24,15 @@ Lobby::Lobby(const std::string& hostname, const std::string& servname):
     lobby_recibidor.start();
 }
 
-bool Lobby::crear_partida(const int8_t& capacidad_partida) {
-    return (cola_enviador.try_push(lobby_serializador.serializar_crear_partida(capacidad_partida)));
+bool Lobby::crear_partida(const std::string& nombre_escenario, const TipoPersonaje& personaje,
+                          const int8_t& capacidad_partida) {
+    return (cola_enviador.try_push(
+            lobby_serializador.serializar_crear_partida(nombre_escenario, personaje, capacidad_partida)));
 }
 
-bool Lobby::unir_partida(const int32_t& codigo_partida) {
-    return (cola_enviador.try_push(lobby_serializador.serializar_unir_partida(codigo_partida)));
+bool Lobby::unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje) {
+    return (cola_enviador.try_push(
+            lobby_serializador.serializar_unir_partida(codigo_partida, personaje)));
 }
 
 void Lobby::comenzar() { cola_enviador.try_push(lobby_serializador.serializar_comenzar_jugar()); }

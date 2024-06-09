@@ -42,10 +42,8 @@ void RecibidorCliente::establecer_cola_recibidor(Queue<ComandoDTO*>* cola_recibi
     this->cola_recibidor = cola_recibidor;
 }
 
-void RecibidorCliente::kill() {
+void RecibidorCliente::stop() {
     sigo_jugando = false;
     sigo_en_partida = false;
     cola_recibidor->close();
 }
-
-bool RecibidorCliente::still_alive() { return sigo_en_partida; }

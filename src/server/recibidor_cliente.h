@@ -36,9 +36,7 @@ public:
 
     void run() override;
 
-    void kill() override;
-
-    bool still_alive() override;
+    void stop() override;
 
     void establecer_cola_recibidor(Queue<ComandoDTO*>* cola_recibidor);
 };
