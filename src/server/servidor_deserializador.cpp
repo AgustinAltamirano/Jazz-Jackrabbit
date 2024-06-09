@@ -27,7 +27,7 @@ ComandoDTO* ServidorDeserializador::obtener_comando(bool* cerrado, int32_t& id_c
             return (deserializar_comenzar(cerrado, id_cliente));
             break;
         default:
-            throw std::invalid_argument("no se encontro el caso en el deserializador del servidor");
+            return new ComandoDTO(id_cliente, comando);
     }
 }
 
