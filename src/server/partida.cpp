@@ -73,7 +73,7 @@ void Partida::agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& 
     monitor_snapshots.agregar_cola(cola_enviador, id_cliente);
 }
 
-bool Partida::comparar_partida(const int32_t& codigo_a_comparar) {
+bool Partida::comparar_codigo_partida(const int32_t& codigo_a_comparar) {
     return (codigo_partida == codigo_a_comparar);
 }
 

@@ -19,7 +19,6 @@ int main(int argc, char* argv[]) {
         int32_t id_cliente = lobby.obtener_id_cliente();
         MenuJuego menu(argc, argv, lobby);
         std::cout << "Cliente ID: " << id_cliente << "\n";
-        std::cout << "Partida creada ID: " << lobby.obtener_crear() << "\n";
         Socket socket = lobby.move_socket();
         Cliente cliente(std::move(socket));
         return 0;

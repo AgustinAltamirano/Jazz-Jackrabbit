@@ -13,7 +13,7 @@ SnapshotDTO LogicaJuego::obtener_snapshot() {
     SnapshotDTO snapshot_dto;
     for (const auto& c: mapa_clientes_juego) {
         ClienteJuego* cliente_juego = c.second;
-        ClienteDTO cliente_dto(cliente_juego->obtener_id());
+        ClienteDTO cliente_dto(cliente_juego->obtener_id(), cliente_juego->obtener_personaje());
         snapshot_dto.agregar_cliente(cliente_dto);
     }
     return snapshot_dto;
