@@ -11,7 +11,13 @@
 #include <SDL2/SDL.h>
 
 #include "../../common/comando_dto.h"
+#include "../../common/estado_personaje.h"
 #include "../../common/queue.h"
+#include "../../common/snapshot_dto.h"
+#include "../../common/tipo_bloque_escenario.h"
+#include "../../common/tipo_escenario.h"
+#include "../../common/tipo_personaje.h"
+#include "../juego/cliente.h"
 
 #include "bloque_escenario.h"
 #include "camara.h"
@@ -21,11 +27,6 @@
 #include "objeto_animado.h"
 #include "personaje.h"
 #include "vista_juego_defs.h"
-#include "../../common/tipo_escenario.h"
-#include "../../common/tipo_bloque_escenario.h"
-#include "../../common/tipo_personaje.h"
-#include "../../common/estado_personaje.h"
-#include "../../common/snapshot_dto.h"
 
 /**
  * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones
@@ -50,7 +51,7 @@ private:
     SDL2pp::Renderer renderer;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
-    Queue<std::shared_ptr<SnapshotDTO>>& cola_snapshots;
+    Cliente& cliente;
 
     uint32_t iteraciones_actuales;
     Camara camara;
@@ -62,14 +63,15 @@ private:
     /** Mapa con todos los objetos asociados a bloques del escenario. */
     std::unordered_map<uint32_t, std::unique_ptr<BloqueEscenario>> bloques_escenario;
 
+    bool fin_juego;
+
     void actualizar_vista();
 
     int64_t sincronizar_vista(int64_t ticks_transcurridos);
 
 public:
-    AdministradorVistaJuego(const std::string& titulo_ventana,
-                            Queue<std::shared_ptr<ComandoDTO>>& cola_acciones,
-                            Queue<std::shared_ptr<SnapshotDTO>>& cola_snapshots);
+    AdministradorVistaJuego(int32_t id_cliente, const std::string& titulo_ventana,
+                            Cliente& cliente);
 
     AdministradorVistaJuego(AdministradorVistaJuego&) = delete;
     AdministradorVistaJuego& operator=(AdministradorVistaJuego&) = delete;

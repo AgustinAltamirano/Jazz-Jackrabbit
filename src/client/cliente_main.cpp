@@ -5,6 +5,7 @@
 
 #include "juego/cliente.h"
 #include "lobby/lobby.h"
+#include "vista_juego/administrador_vista_juego.h"
 #include "vista_menu/menu_juego.h"
 
 int main(int argc, char* argv[]) {
@@ -21,6 +22,8 @@ int main(int argc, char* argv[]) {
         std::cout << "Cliente ID: " << id_cliente << "\n";
         Socket socket = lobby.move_socket();
         Cliente cliente(std::move(socket));
+        AdministradorVistaJuego admin(id_cliente, "Jazz Jackrabbit", cliente);
+        admin.run();
         return 0;
 
     } catch (const std::exception& err) {
