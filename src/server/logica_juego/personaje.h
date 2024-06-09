@@ -5,8 +5,10 @@
 #include <string>
 #include <vector>
 
-#include "../../client/vista_juego/accion_juego_dto.h"
-#include "../../client/vista_juego/snapshot_dto.h"
+#include "../../common/estado_personaje.h"
+#include "../../common/tipo_arma.h"
+#include "../../common/tipo_comando.h"
+#include "../../common/tipo_personaje.h"
 #include "assets/recogible.h"
 
 class personaje {
@@ -37,13 +39,13 @@ private:
     int vida;
     int puntos;
 
-    ArmaActual arma_actual;
+    TipoArma arma_actual;
     std::vector<int32_t> inventario_balas;
 
 public:
     personaje(int32_t id, TipoPersonaje tipo, int32_t pos_x_inicial, int32_t pos_y_inicial);
 
-    void cambiar_velocidad(const std::vector<AccionJuego>& teclas);  // chequea estado y decide si
+    void cambiar_velocidad(const std::vector<TipoComando>& teclas);  // chequea estado y decide si
                                                                      // moverse, CAMBIA LA VELOCIDAD
     void cambiar_posicion(uint32_t x,
                           uint32_t y);  // despues de revisar colisiones se efectua el cambio real

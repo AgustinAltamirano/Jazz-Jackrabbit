@@ -11,8 +11,10 @@
 #include <utility>
 #include <vector>
 
+#include "../../common/comando_dto.h"
 #include "../../common/queue.h"
 #include "../../common/thread.h"
+#include "../../common/tipo_personaje.h"
 #include "assets/spawnpoint.h"
 
 #include "manejadorEscenario.h"
@@ -23,7 +25,7 @@ private:
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_alive;
 
-    Queue<AccionJuegoDTO>& cola_entrada;
+    Queue<ComandoDTO>& cola_entrada;
     // Monitor de salida de datos
 
     // aca todos los controladores
@@ -41,8 +43,8 @@ public:
      */
     explicit gameloop(const std::string& archivo_escenario,
                       const std::map<int32_t, TipoPersonaje>& mapa,
-                      Queue<AccionJuegoDTO>& cola_entrada);
-    void kill() override;
+                      Queue<ComandoDTO>& cola_entrada);
+    void stop() override;
 };
 
 #endif

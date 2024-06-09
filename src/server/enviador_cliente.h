@@ -10,7 +10,7 @@
 #include "../common/snapshot_dto.h"
 #include "../common/socket.h"
 #include "../common/thread.h"
-#include "../common/accion_juego.h.h"
+#include "../common/tipo_comando.h"
 
 #include "gestor_partidas.h"
 #include "recibidor_cliente.h"
@@ -48,9 +48,7 @@ public:
 
     void run() override;
 
-    void kill() override;
-
-    bool still_alive() override;
+    void stop() override;
 
     void join_recibidor_cliente();
 

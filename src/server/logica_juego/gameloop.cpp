@@ -1,16 +1,15 @@
 #include "gameloop.h"
 
-#include "../../client/vista_juego/accion_juego_dto.h"
-#include "../../client/vista_juego/snapshot_dto.h"
+#include "../../common/comando_dto.h"
 #include "../../common/constantes.h"
+#include "../../common/snapshot_dto.h"
 
 void hacer_tick(int tiempo) { std::this_thread::sleep_for(std::chrono::milliseconds(tiempo)); }
 
-void gameloop::kill() { this->keep_talking = false; }
+void gameloop::stop() { this->keep_talking = false; }
 
 gameloop::gameloop(const std::string& archivo_escenario,
-                   const std::map<int32_t, TipoPersonaje>& mapa,
-                   Queue<AccionJuegoDTO>& cola_entrada):
+                   const std::map<int32_t, TipoPersonaje>& mapa, Queue<ComandoDTO>& cola_entrada):
         keep_talking(true),
         is_alive(true),
         cola_entrada(cola_entrada),
@@ -39,11 +38,11 @@ void gameloop::run() {
 
         // seccion1 se encarga de leer la cola de entrada y efectuar los movimientos en los
         // jugadores
-        std::map<int32_t, std::vector<AccionJuego>> acciones;
-        std::shared_ptr<AccionJuegoDTO> comando;
+        std::map<int32_t, std::vector<TipoComando>> acciones;
+        std::shared_ptr<ComandoDTO> comando;
         while (cola_entrada.try_pop(comando)) {
             // asumo que el dto ya puede implementar conseguir el id y la accion que trae
-            acciones[comando->id].emplace_back(comando->accion);
+            acciones[comando->obtener_id_cliente()].emplace_back(comando->obtener_comando());
         }
         for (auto& entidad: personajes) {
             entidad.second.pasar_tick();
@@ -61,7 +60,7 @@ void gameloop::run() {
         //  por hacer
 
         // enviar dto vuelta
-        auto snapshot_juego = std::make_shared<SnapshotDTO_provisorio>(escenario.get_escenario());
+        auto snapshot_juego = std::make_shared<SnapshotDTO>(escenario.get_escenario());
         for (const auto& entidad: personajes) {
             ClienteDTO jugador_dto = entidad.second.crear_dto();
             snapshot_juego->agregar_cliente(std::move(jugador_dto));

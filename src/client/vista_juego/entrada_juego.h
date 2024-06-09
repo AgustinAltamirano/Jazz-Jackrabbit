@@ -6,7 +6,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "../../common/accion_juego_dto.h"
+#include "../../common/comando_dto.h"
 #include "../../common/queue.h"
 
 #define SALIR SDLK_ESCAPE
@@ -17,10 +17,10 @@ private:
     static const std::unordered_map<SDL_Keycode, const TipoComando> MAPA_ACCIONES;
 
     // Es una cola de TipoComando provisoriamente
-    Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones;
+    Queue<std::shared_ptr<ComandoDTO>>& cola_acciones;
 
 public:
-    explicit EntradaJuego(Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones);
+    explicit EntradaJuego(Queue<std::shared_ptr<ComandoDTO>>& cola_acciones);
 
     EntradaJuego(const EntradaJuego&) = delete;
 

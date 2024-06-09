@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "../../client/vista_juego/snapshot_dto.h"
+#include "../../common/tipo_escenario.h"
 #include "assets/bloqueEscenario.h"
 #include "assets/recogible.h"
 #include "assets/spawnpoint.h"

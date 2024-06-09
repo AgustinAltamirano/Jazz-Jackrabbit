@@ -10,10 +10,9 @@
 
 #include <SDL2/SDL.h>
 
-#include "../../common/accion_juego_dto.h"
+#include "../../common/comando_dto.h"
 #include "../../common/queue.h"
 
-#include "accion_juego_dto.h"
 #include "bloque_escenario.h"
 #include "camara.h"
 #include "entrada_juego.h"
@@ -21,8 +20,12 @@
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 #include "personaje.h"
-#include "snapshot_dto.h"
 #include "vista_juego_defs.h"
+#include "../../common/tipo_escenario.h"
+#include "../../common/tipo_bloque_escenario.h"
+#include "../../common/tipo_personaje.h"
+#include "../../common/estado_personaje.h"
+#include "../../common/snapshot_dto.h"
 
 /**
  * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones
@@ -47,7 +50,7 @@ private:
     SDL2pp::Renderer renderer;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
-    Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots;
+    Queue<std::shared_ptr<SnapshotDTO>>& cola_snapshots;
 
     uint32_t iteraciones_actuales;
     Camara camara;
@@ -65,8 +68,8 @@ private:
 
 public:
     AdministradorVistaJuego(const std::string& titulo_ventana,
-                            Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones,
-                            Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots);
+                            Queue<std::shared_ptr<ComandoDTO>>& cola_acciones,
+                            Queue<std::shared_ptr<SnapshotDTO>>& cola_snapshots);
 
     AdministradorVistaJuego(AdministradorVistaJuego&) = delete;
     AdministradorVistaJuego& operator=(AdministradorVistaJuego&) = delete;

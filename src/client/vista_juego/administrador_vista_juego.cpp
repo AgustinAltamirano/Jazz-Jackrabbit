@@ -7,6 +7,9 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
+#include "../../common/snapshot_dto.h"
+#include "../../common/tipo_bloque_escenario.h"
+
 #include "pared_escenario.h"
 #include "piso_escenario.h"
 #include "techo_escenario.h"
@@ -43,7 +46,7 @@ const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
         };
 
 void AdministradorVistaJuego::actualizar_vista() {
-    std::shared_ptr<SnapshotDTO_provisorio> snapshot;
+    std::shared_ptr<SnapshotDTO> snapshot;
     if (!cola_snapshots.try_pop(snapshot)) {
         return;
     }
@@ -167,7 +170,7 @@ int64_t AdministradorVistaJuego::sincronizar_vista(const int64_t ticks_transcurr
 
         // Debemos droppear frames de animación, algunas snapshots se pierden
         for (int i = 0; i < tiempo_atrasado / MILISEGUNDOS_POR_FRAME; i++) {
-            if (std::shared_ptr<SnapshotDTO_provisorio> snapshot;
+            if (std::shared_ptr<SnapshotDTO> snapshot;
                 !cola_snapshots.try_pop(snapshot)) {
                 break;
             }
@@ -182,8 +185,8 @@ int64_t AdministradorVistaJuego::sincronizar_vista(const int64_t ticks_transcurr
 }
 
 AdministradorVistaJuego::AdministradorVistaJuego(
-        const std::string& titulo_ventana, Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones,
-        Queue<std::shared_ptr<SnapshotDTO_provisorio>>& cola_snapshots):
+        const std::string& titulo_ventana, Queue<std::shared_ptr<ComandoDTO>>& cola_acciones,
+        Queue<std::shared_ptr<SnapshotDTO>>& cola_snapshots):
         id_jugador(0),
         proximo_id(0),
         sdl(SDL_INIT_VIDEO),

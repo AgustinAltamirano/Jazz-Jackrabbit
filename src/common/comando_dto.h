@@ -20,6 +20,8 @@ public:
 
     TipoComando obtener_comando();
 
+    int32_t obtener_id_cliente();
+
     virtual ~ComandoDTO() {}
 };
 

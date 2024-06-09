@@ -20,8 +20,8 @@ bool EntradaJuego::procesar_entrada(uint32_t id_cliente) const {
         }
 
 
-        const AccionJuego accion = MAPA_ACCIONES.at(event.key.keysym.sym);
-        auto accion_dto = std::make_shared<AccionJuegoDTO>(id_cliente, accion);
+        const TipoComando accion = MAPA_ACCIONES.at(event.key.keysym.sym);
+        auto accion_dto = std::make_shared<TipoComando>(id_cliente, accion);
         cola_acciones.try_push(accion_dto);
     }
     return true;
