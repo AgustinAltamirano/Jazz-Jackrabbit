@@ -38,9 +38,7 @@ public:
 
     void run() override;
 
-    bool still_alive() override;
-
-    void kill() override;
+    void stop() override;
 
     Queue<ComandoDTO*>* obtener_comandos();
 

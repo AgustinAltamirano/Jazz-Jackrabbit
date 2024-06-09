@@ -93,9 +93,7 @@ void EnviadorCliente::inicio_recibidor_cliente() {
     recibidor_cliente.start();
 }
 
-void EnviadorCliente::kill() {
+void EnviadorCliente::stop() {
     sigo_en_partida = false;
     sigo_jugando = false;
 }
-
-bool EnviadorCliente::still_alive() { return sigo_jugando; }

@@ -99,6 +99,4 @@ bool Partida::puedo_unir() {
 
 bool Partida::esta_jugando() { return sigo_jugando; }
 
-bool Partida::still_alive() { return sigo_jugando; }
-
-void Partida::kill() { sigo_jugando = false; }
+void Partida::stop() { sigo_jugando = false; }
