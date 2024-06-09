@@ -10,8 +10,7 @@ add_library(vista_juego
         personaje.cpp
         personaje.h
         vista_juego_exception.h
-        ../../common/accion_juego_dto.h
-        snapshot_dto.h
+        ../../common/snapshot_dto.h
         fondo_escenario.cpp
         fondo_escenario.h
         bloque_escenario.cpp
@@ -30,7 +29,7 @@ add_library(vista_juego
 find_package(yaml-cpp REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 find_package(SDL2 REQUIRED)
-#find_package(SDL2pp REQUIRED)
+find_package(SDL2pp REQUIRED)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support

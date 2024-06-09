@@ -8,6 +8,7 @@
 
 #include "estado_personaje.h"
 #include "tipo_arma.h"
+#include "tipo_bloque_escenario.h"
 #include "tipo_escenario.h"
 #include "tipo_personaje.h"
 
@@ -21,10 +22,9 @@ struct ClienteDTO {
     uint32_t puntos;
     TipoArma arma_actual;
     int32_t balas_restantes;
-    ClienteDTO(int32_t id_cliente, TipoPersonaje tipo_personaje, int32_t pos_x,
-               int32_t pos_y, bool de_espaldas, EstadoPersonaje estado,
-               uint32_t vida, uint32_t puntos, TipoArma arma_actual,
-               int32_t balas_restantes):
+    ClienteDTO(int32_t id_cliente, TipoPersonaje tipo_personaje, int32_t pos_x, int32_t pos_y,
+               bool de_espaldas, EstadoPersonaje estado, uint32_t vida, uint32_t puntos,
+               TipoArma arma_actual, int32_t balas_restantes):
             id_cliente(id_cliente),
             tipo_personaje(tipo_personaje),
             pos_x(pos_x),
@@ -43,7 +43,7 @@ struct BloqueEscenarioDTO {
     TipoBloqueEscenario tipo;
     BloqueEscenarioDTO(int32_t pos_x, int32_t pos_y, uint32_t ancho, uint32_t alto, int32_t angulo,
                        TipoBloqueEscenario tipo):
-            pos_x(pos_x), pos_y(pos_y), ancho(ancho), alto(alto), angulo(angullo), tipo(tipo);
+            pos_x(pos_x), pos_y(pos_y), ancho(ancho), alto(alto), angulo(angulo), tipo(tipo) {}
 };
 
 class SnapshotDTO {
@@ -56,7 +56,7 @@ private:
 public:
     SnapshotDTO();
 
-    SnapshotDTO(TipoEscenario tipo_escenario);
+    explicit SnapshotDTO(TipoEscenario tipo_escenario);
 
     SnapshotDTO(std::vector<ClienteDTO> clientes, std::vector<BloqueEscenarioDTO> bloques,
                 TipoEscenario tipo_escenario);
