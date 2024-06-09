@@ -25,13 +25,14 @@ private:
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_alive;
 
-    Queue<ComandoDTO>& cola_entrada;
-    // Monitor de salida de datos
+    Queue<std::shared_ptr<ComandoDTO>>& cola_entrada;
+    // como los jugadores no pueden conectarse en medio de una partida,
+    // no hay rc si gameloop tiene acceso a las colas de salida
+    std::list<Queue<std::shared_ptr<SnapshotDTO_provisorio>>*> colas_salida;
 
     // aca todos los controladores
     std::map<int32_t, personaje> personajes;
     manejadorEscenario escenario;
-    // controlador enemigos, etc
 
 public:
     void run() override;
@@ -43,7 +44,8 @@ public:
      */
     explicit gameloop(const std::string& archivo_escenario,
                       const std::map<int32_t, TipoPersonaje>& mapa,
-                      Queue<ComandoDTO>& cola_entrada);
+                      Queue<std::shared_ptr<ComandoDTO>>& cola_entrada,
+                      std::list<Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida);
     void stop() override;
 };
 

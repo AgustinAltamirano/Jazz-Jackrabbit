@@ -2,6 +2,7 @@
 #define PERSONAJE_H
 
 #include <cstdint>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -9,6 +10,11 @@
 #include "../../common/tipo_arma.h"
 #include "../../common/tipo_comando.h"
 #include "../../common/tipo_personaje.h"
+#include "assets/bala.h"
+#include "assets/balaInfinita.h"
+#include "assets/bala_arma_1.h"
+#include "assets/bala_arma_2.h"
+#include "assets/bala_arma_3.h"
 #include "assets/recogible.h"
 
 class personaje {
@@ -41,6 +47,8 @@ private:
 
     TipoArma arma_actual;
     std::vector<int32_t> inventario_balas;
+    std::map<TipoArma, int32_t> inventario_balas;
+    uint32_t tiempo_recarga;  // frames antes de poder disparar
 
 public:
     personaje(int32_t id, TipoPersonaje tipo, int32_t pos_x_inicial, int32_t pos_y_inicial);
@@ -60,9 +68,10 @@ public:
     [[nodiscard]] uint32_t get_ancho() const;
     [[nodiscard]] uint32_t get_alto() const;
 
-    // bool disparar();
-    // bool cambiar_arma();
-    // bool efectuar_dano();
+    [[nodiscard]] TipoArma get_arma() const;
+    [[nodiscard]] bool get_invertido() const;
+    void disparar(uint32_t frames_recarga);
+    void efectuar_dano(uint32_t dano);
     // bool respawnear();
 
     // funcion para la construccion del dto

@@ -23,19 +23,20 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
         estado(EstadoPersonaje::IDLE),
         tiempo_estado(0),
         puntos(0),
-        arma_actual(INFINITA) {
+        arma_actual(INFINITA),
+        tiempo_recarga(0) {
     const ConfigAdmin& configurador = ConfigAdmin::getInstance();
     aceleracion_y = configurador.get(GRAVEDAD);
     vida = configurador.get(VIDA_INICIAL);
-    inventario_balas.push_back(-1);
-    inventario_balas.push_back(0);
-    inventario_balas.push_back(0);
-    inventario_balas.push_back(0);
+    inventario_balas[INFINITA] = -1;
+    inventario_balas[ARMA1] = 0;
+    inventario_balas[ARMA2] = 0;
+    inventario_balas[ARMA3] = 0;
 }
 
 void personaje::cambiar_velocidad(const std::vector<TipoComando>& teclas) {
     if (ataque_especial || this->estado == MUERTE || this->estado == IMPACTADO) {
-        return;
+        return false;
     }
     for (const TipoComando tecla&: teclas) {
         // verificar si el estado permite hacer acciones
@@ -55,9 +56,9 @@ void personaje::cambiar_velocidad(const std::vector<TipoComando>& teclas) {
                 // por hacer
                 break;
             case DISPARAR_ACCION:
-                if (this->estado != INTOXICADO) {
-                    // disparar();
+                if (this->estado != INTOXICADO && this->tiempo_recarga == 0) {
                     this->estado = DISPARAR_QUIETO;
+                    disparo = true;
                 }
             case ARMA_ANTERIOR:
                 if (this->arma_actual == INFINITA) {
@@ -85,6 +86,7 @@ void personaje::cambiar_velocidad(const std::vector<TipoComando>& teclas) {
     if (en_aire) {
         this->vel_y += this->aceleracion_y;
     }
+    return disparo;
 }
 
 void personaje::cambiar_posicion(const uint32_t x, const uint32_t y) {
@@ -151,6 +153,9 @@ void personaje::cambiar_estado(const bool cae) {
 
 void personaje::pasar_tick() {
     this->tiempo_estado += 1;
+    if (this->tiempo_recarga != 0) {
+        this->tiempo_recarga -= 1;
+    }
     switch (estado) {
         case INTOXICADO:
             if (tiempo_estado == FRAMES_POR_SEGUNDO * 3) {
@@ -177,15 +182,15 @@ void personaje::pasar_tick() {
 
 void personaje::recoger_objeto(const uint32_t valor, const TipoRecogible tipo) {
     switch (tipo) {
-        case GEMA:
-        case MONEDA:
+        case GEMA_AGARRABLE:
+        case MONEDA_AGARRABLE:
             this->puntos += valor;
         case MUNICION_ARMA_1:
-            this->inventario_balas[1] += valor;
+            this->inventario_balas[ARMA1] += valor;
         case MUNICION_ARMA_2:
-            this->inventario_balas[2] += valor;
+            this->inventario_balas[ARMA2] += valor;
         case MUNICION_ARMA_3:
-            this->inventario_balas[3] += valor;
+            this->inventario_balas[ARMA3] += valor;
         case FRUTA_BUENA:
             this->vida += valor;
         case FRUTA_PODRIDA:
@@ -198,9 +203,31 @@ void personaje::recoger_objeto(const uint32_t valor, const TipoRecogible tipo) {
     }
 }
 
+ArmaActual personaje::get_arma() const { return this->arma_actual; }
+
+bool personaje::get_invertido() const { return this->de_espaldas; }
+
+void personaje::disparar(const uint32_t frames_recarga) {
+    this->tiempo_recarga = frames_recarga;
+    if (inventario_balas.at(arma_actual) != -1) {
+        inventario_balas[arma_actual] -= 1;
+    }
+}
+
+void personaje::efectuar_dano(uint32_t const dano) {
+    if (this->estado != IMPACTADO && this->estado != MUERTE) {
+        this->vida -= dano;
+        if (vida <= 0) {
+            this->vida = 0;
+            this->estado = MUERTE;
+        } else {
+            this->estado = IMPACTADO;
+        }
+    }
+}
 
 ClienteDTO personaje::crear_dto() const {
-    const int32_t balas_restantes = inventario_balas[arma_actual];
+    const int32_t balas_restantes = inventario_balas.at(arma_actual);
     const ClienteDTO jugador(id, tipo_de_personaje, pos_x, pos_y, de_espaldas, estado, vida, puntos,
                              arma_actual, balas_restantes);
     return jugador;

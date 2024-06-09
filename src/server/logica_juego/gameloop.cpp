@@ -9,11 +9,14 @@ void hacer_tick(int tiempo) { std::this_thread::sleep_for(std::chrono::milliseco
 void gameloop::stop() { this->keep_talking = false; }
 
 gameloop::gameloop(const std::string& archivo_escenario,
-                   const std::map<int32_t, TipoPersonaje>& mapa, Queue<ComandoDTO>& cola_entrada):
+                   const std::map<int32_t, TipoPersonaje>& mapa,
+                   Queue<std::shared_ptr<ComandoDTO>>& cola_entrada,
+                   std::list<Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida):
         keep_talking(true),
         is_alive(true),
         cola_entrada(cola_entrada),
-        escenario(archivo_escenario) {
+        escenario(archivo_escenario),
+        colas_salida(colas_salida) {
     std::vector<spawnpoint> lugares_spawnpoints = escenario.get_spawns();
     uint32_t index_spawns = 0;
     for (auto& [id, tipo]: mapa) {
@@ -30,7 +33,9 @@ gameloop::gameloop(const std::string& archivo_escenario,
 void gameloop::run() {
     // enviando dto escenario
     auto snapshot_escenario = escenario.crear_snapshot();
-    monitor_cola_snapshots.broadcast(snapshot_escenario);
+    for (auto& cola_salida: colas_salida) {
+        (*cola_salida).try_push(snapshot_escenario);
+    }
 
     while (this->keep_talking) {
         // comienzo el cronómetro
@@ -48,7 +53,9 @@ void gameloop::run() {
             entidad.second.pasar_tick();
         }
         for (const auto& accion: acciones) {
-            personajes[accion.first].cambiar_velocidad(accion.second);
+            if (personajes[accion.first].ejecutar_acciones(accion.second)) {
+                escenario.jugador_dispara(accion.first, personajes[accion.first]);
+            }
         }
 
         // seccion2 chequea colisiones con el entorno y los cambios de estado de los personajes
@@ -57,7 +64,7 @@ void gameloop::run() {
         escenario.chequear_caida_y_objetos(personajes);
 
         // seccion3 chequea colisiones con los puntos, municiones y enemigos
-        //  por hacer
+        escenario.manejar_balas(personajes);
 
         // enviar dto vuelta
         auto snapshot_juego = std::make_shared<SnapshotDTO>(escenario.get_escenario());
@@ -65,7 +72,9 @@ void gameloop::run() {
             ClienteDTO jugador_dto = entidad.second.crear_dto();
             snapshot_juego->agregar_cliente(std::move(jugador_dto));
         }
-        monitor_cola_snapshots.broadcast(snapshot_juego);
+        for (auto& cola_salida: colas_salida) {
+            (*cola_salida).try_push(snapshot_juego);
+        }
 
         // freno el cronometro y pongo a dormir por los milisegundos por frame menos la diferencia
         auto tiempo_final = std::chrono::high_resolution_clock::now();
