@@ -13,6 +13,9 @@ enum TipoComando : char {
     DISPARAR_ACCION,
     ARMA_ANTERIOR,
     ARMA_SIGUIENTE,
+    TRUCO1,
+    TRUCO2,
+    TRUCO3,
 };
 
 #endif
