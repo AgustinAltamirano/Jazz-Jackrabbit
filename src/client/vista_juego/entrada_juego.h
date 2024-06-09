@@ -6,22 +6,21 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include "../../common/comando_dto.h"
 #include "../../common/queue.h"
-
-#include "accion_juego_dto.h"
 
 #define SALIR SDLK_ESCAPE
 
 /** Clase encargada de leer la entrada del jugador y enviarla al hilo transmisor. */
 class EntradaJuego {
 private:
-    static const std::unordered_map<SDL_Keycode, const AccionJuego> MAPA_ACCIONES;
+    static const std::unordered_map<SDL_Keycode, const TipoComando> MAPA_ACCIONES;
 
-    // Es una cola de AccionJuego provisoriamente
-    Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones;
+    // Es una cola de TipoComando provisoriamente
+    Queue<std::shared_ptr<ComandoDTO>>& cola_acciones;
 
 public:
-    explicit EntradaJuego(Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones);
+    explicit EntradaJuego(Queue<std::shared_ptr<ComandoDTO>>& cola_acciones);
 
     EntradaJuego(const EntradaJuego&) = delete;
 

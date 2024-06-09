@@ -6,3 +6,20 @@ max_partidas: 5
 vida_inicial: 5
 
 aceleracion_gravedad: 1
+
+velocidad_arma_infinita: 3
+dano_arma_infinita: 1
+frames_recarga_arma_infinita: 16
+
+velocidad_arma1: 2
+dano_arma1: 1
+frames_recarga_arma1: 33
+
+velocidad_arma2: 4
+caida_arma2: 1
+dano_arma2: 2
+frames_recarga_arma2: 66
+
+velocidad_arma3: 6
+dano_arma3: 3
+frames_recarga_arma3: 132

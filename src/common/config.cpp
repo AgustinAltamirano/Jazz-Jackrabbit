@@ -18,6 +18,23 @@ ConfigAdmin::ConfigAdmin() {
 
     configuracion[VIDA_INICIAL] = config[VIDA_INICIAL].as<int>();
     configuracion[GRAVEDAD] = config[GRAVEDAD].as<int>();
+
+    configuracion[VEL_ARMA_INF] = config[VEL_ARMA_INF].as<int>();
+    configuracion[DANO_ARMA_INF] = config[DANO_ARMA_INF].as<int>();
+    configuracion[FRAMES_REC_ARMA_INF] = config[FRAMES_REC_ARMA_INF].as<int>();
+
+    configuracion[VEL_ARMA1] = config[VEL_ARMA1].as<int>();
+    configuracion[DANO_ARMA1] = config[DANO_ARMA1].as<int>();
+    configuracion[FRAMES_REC_ARMA1] = config[FRAMES_REC_ARMA1].as<int>();
+
+    configuracion[VEL_ARMA2] = config[VEL_ARMA2].as<int>();
+    configuracion[CAIDA_ARMA2] = config[CAIDA_ARMA2].as<int>();
+    configuracion[DANO_ARMA2] = config[DANO_ARMA2].as<int>();
+    configuracion[FRAMES_REC_ARMA2] = config[FRAMES_REC_ARMA2].as<int>();
+
+    configuracion[VEL_ARMA3] = config[VEL_ARMA3].as<int>();
+    configuracion[DANO_ARMA3] = config[DANO_ARMA3].as<int>();
+    configuracion[FRAMES_REC_ARMA3] = config[FRAMES_REC_ARMA3].as<int>();
 }
 
 int ConfigAdmin::get(const std::string& clave_config) const {

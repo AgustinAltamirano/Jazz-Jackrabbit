@@ -6,8 +6,8 @@
 #include "../../../common/constantes.h"
 
 typedef enum {
-    MONEDA = 0,
-    GEMA,
+    MONEDA_AGARRABLE = 0,
+    GEMA_AGARRABLE,
     MUNICION_ARMA_1,
     MUNICION_ARMA_2,
     MUNICION_ARMA_3,

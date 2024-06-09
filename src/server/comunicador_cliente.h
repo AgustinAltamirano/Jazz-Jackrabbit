@@ -28,9 +28,7 @@ private:
 public:
     ComunicadorCliente(Socket socket, GestorPartidas* gestor_partidas, int32_t id_cliente);
 
-    bool still_alive() override;
-
-    void kill() override;
+    void stop() override;
 
     void join();
 

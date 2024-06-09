@@ -18,6 +18,4 @@ void ClienteRecibidor::run() {
     }
 }
 
-void ClienteRecibidor::kill() { hablando = false; }
-
-bool ClienteRecibidor::still_alive() { return hablando; }
+void ClienteRecibidor::stop() { hablando = false; }

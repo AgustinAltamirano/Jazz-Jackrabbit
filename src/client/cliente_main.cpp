@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "juego/cliente.h"
-#include "juego/juego.h"
 #include "lobby/lobby.h"
 #include "vista_menu/menu_juego.h"
 
@@ -20,10 +19,8 @@ int main(int argc, char* argv[]) {
         int32_t id_cliente = lobby.obtener_id_cliente();
         MenuJuego menu(argc, argv, lobby);
         std::cout << "Cliente ID: " << id_cliente << "\n";
-        std::cout << "Partida creada ID: " << lobby.obtener_crear() << "\n";
         Socket socket = lobby.move_socket();
-        Juego juego(id_cliente, socket);
-        juego.start();
+        Cliente cliente(std::move(socket));
         return 0;
 
     } catch (const std::exception& err) {

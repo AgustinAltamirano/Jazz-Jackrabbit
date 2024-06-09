@@ -5,20 +5,69 @@
 #include <iostream>
 #include <utility>
 
+#include <yaml-cpp/yaml.h>
+
 #include "../../common/constantes.h"
+#include "../../common/snapshot_dto.h"
+#include "../../common/tipo_bloque_escenario.h"
 
 manejadorEscenario::manejadorEscenario(std::string path):
-        path(std::move(path)), clase_escenario(ESCENARIO_INDEFINIDO), alto(480), ancho(620) {
-    cargar_escenario_basico(ancho, alto);
+        path(std::move(path)), clase_escenario(ESCENARIO_INDEFINIDO) {
+    cargar_escenario();
 }
 
-void manejadorEscenario::cargar_escenario_basico(uint32_t ancho, uint32_t alto) {
-    // esto crea un generico de 620 x 480 para pruebas de colision
-    bloques_rectos.emplace_back(0, alto, ancho, 10, 0, PISO);
-    bloques_rectos.emplace_back(0, 0, ancho, 10, 0, TECHO);
-    bloques_rectos.emplace_back(0, 0, 10, alto, 0, PARED);
-    bloques_rectos.emplace_back(ancho - 10, 0, 10, alto, 0, PARED);
-    spawnpoints.emplace_back(ANCHO_INICIAL + 10, alto - ALTO_INICIAL);
+void manejadorEscenario::cargar_escenario() {
+    YAML::Node archivo = YAML::LoadFile(this->path);
+    // para calcular los bordes del mapa
+    int32_t ancho_mapa = 0;
+    int32_t alto_mapa = 0;
+    // cargo el tipo de escenario
+    this->clase_escenario = static_cast<TipoEscenario>(archivo["items"]["escenario"].as<int>());
+    // ahora cargo los bloques
+    const YAML::Node& nodo_bloques = archivo["items"]["bloques"];
+    for (const auto& nodo_bloque: nodo_bloques) {
+        auto tipo = static_cast<TipoBloqueEscenario>(nodo_bloque["tipo"].as<int>());
+        auto pos_x = nodo_bloque["x"].as<int>();
+        auto pos_y = nodo_bloque["y"].as<int>();
+        if (pos_x > ancho_mapa) {
+            ancho_mapa = pos_x;
+        }
+        if (pos_y > alto_mapa) {
+            alto_mapa = pos_x;
+        }
+        switch (tipo) {
+            case PISO:
+            case PARED:
+            case SOPORTE_DIAGONAL:
+            case SOPORTE_DIAGONAL_INVERTIDO:
+                bloques_rectos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, 0, tipo);
+            case DIAGONAL:
+            case DIAGONAL_INVERTIDO:
+                bloques_angulados.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, 0, tipo);
+            case SPAWNPOINT_JUGADOR:
+                spawnpoints.emplace_back(pos_x, pos_y - ALTO_INICIAL + TAMANO_BLOQUE);
+            case SPAWNPOINT_ENEMIGO:
+                spawnpoints_enemigos.emplace_back(pos_x, pos_y - ALTO_INICIAL + TAMANO_BLOQUE);
+            case GEMA:
+                objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, GEMA_AGARRABLE);
+            case MONEDA:
+                objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MONEDA_AGARRABLE);
+            default:
+                continue;
+        }
+    }
+    // creo los bordes del mapa (me ahorro errores)
+    bloques_rectos.emplace_back(-TAMANO_BLOQUE, -TAMANO_BLOQUE, ancho_mapa + TAMANO_BLOQUE,
+                                TAMANO_BLOQUE, 0, PISO);  // techo
+    bloques_rectos.emplace_back(-TAMANO_BLOQUE, alto_mapa + TAMANO_BLOQUE,
+                                ancho_mapa + TAMANO_BLOQUE, TAMANO_BLOQUE, 0, PISO);  // suelo
+    bloques_rectos.emplace_back(-TAMANO_BLOQUE, -TAMANO_BLOQUE, TAMANO_BLOQUE,
+                                alto_mapa + TAMANO_BLOQUE, 0, PARED);  // pared izq
+    bloques_rectos.emplace_back(ancho_mapa + TAMANO_BLOQUE, -TAMANO_BLOQUE, TAMANO_BLOQUE,
+                                alto_mapa + TAMANO_BLOQUE, 0, PARED);  // pared der
+    if (spawnpoints.empty()) {
+        spawnpoints.emplace_back(0, 0);  // si no hay spawnpoints creo uno (para mapas custom)
+    }
 }
 
 std::vector<spawnpoint>& manejadorEscenario::get_spawns() { return spawnpoints; }
@@ -106,8 +155,7 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
     }
 }
 
-void manejadorEscenario::colisiones_bloques_angulo(
-        const std::map<int, personaje>& jugadores) const {}
+void manejadorEscenario::colisiones_bloques_angulo(std::map<int, personaje>& jugadores) const {}
 
 
 void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& jugadores) {
@@ -137,7 +185,7 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
 
 // seccion de creacion de snapshots
 auto manejadorEscenario::crear_snapshot() {
-    auto snapshot = std::make_shared<SnapshotDTO_provisorio>(clase_escenario);
+    auto snapshot = std::make_shared<SnapshotDTO>(clase_escenario);
     for (auto& bloque: bloques_rectos) {
         BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
                                                 bloque.alto, bloque.angulo, bloque.tipo);
@@ -149,4 +197,74 @@ auto manejadorEscenario::crear_snapshot() {
         snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
     }
     return snapshot;
+}
+
+void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
+    const std::vector<int32_t> posicion = jugador.get_pos_actual();
+    int32_t punto_x = posicion[0];
+    if (!jugador.get_invertido()) {
+        punto_x += jugador.get_ancho();
+    }
+    int32_t punto_y = posicion[1] + jugador.get_alto() / 2;
+
+    switch (jugador.get_arma()) {
+        case INFINITA:
+            auto balaI = balaInfinita(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(balaI.disparar());
+            balas.emplace_back(std::move(balaI));
+        case ARMA1:
+            auto bala1 = balaArma1(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(bala1.disparar());
+            balas.emplace_back(std::move(bala1));
+        case ARMA2:
+            auto bala2 = balaArma2(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(bala2.disparar());
+            balas.emplace_back(std::move(bala2));
+        case ARMA3:
+            auto bala3 = balaArma3(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(bala3.disparar());
+            balas.emplace_back(std::move(bala3));
+        default:
+            return;
+    }
+}
+
+bool hay_colision_bala(int32_t bala_x, int32_t bala_y, int32_t target_x, int32_t target_y,
+                       uint32_t ancho, uint32_t alto) {
+    return (target_x < bala_x < target_x + ancho) && (target_y < bala_y < target_y + alto);
+}
+
+void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
+    for (auto it = balas.begin(); it != balas.end();) {
+        if ((*it).mover()) {
+            it = balas.erase(it);
+            continue;
+        }
+        std::vector<int32_t> posicion_bala = (*it).get_pos();
+        int32_t bala_x = posicion_bala[0];
+        int32_t bala_y = posicion_bala[1];
+        for (auto& jugador: jugadores) {
+            personaje& jug = jugador.second;
+            const std::vector<int32_t> posicion = jug.get_pos_actual();
+            const int32_t jug_x = posicion[0];
+            const int32_t jug_y = posicion[1];
+            if (((*it).get_id() != jugador.first) &&
+                hay_colision_bala(bala_x, bala_y, jug_x, jug_y, jug.get_ancho(), jug.get_alto())) {
+                uint32_t dano = (*it).impactar();
+                jug.efectuar_dano(dano);
+            }
+        }
+        for (const auto& bloque: bloques_rectos) {
+            if (hay_colision_bala(bala_x, bala_y, bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                  bloque.alto)) {
+                (*it).impactar();
+            }
+        }
+        for (const auto& bloque: bloques_angulados) {
+            if (hay_colision_bala(bala_x, bala_y, bloque.pos_x, bloque.pos_y, bloque.ancho,
+                                  bloque.alto)) {
+                (*it).impactar();
+            }
+        }
+    }
 }
