@@ -29,9 +29,3 @@ std::vector<char> LobbySerializador::serializar_unir_partida(const int32_t& codi
     buffer.insert(buffer.end(), p, p + sizeof(int32_t));
     return buffer;
 }
-
-std::vector<char> LobbySerializador::serializar_comenzar_jugar() {
-    std::vector<char> buffer;
-    buffer.push_back(COMENZAR);
-    return buffer;
-}

@@ -18,7 +18,6 @@ target_link_libraries(test_protocolo_cliente -lyaml-cpp)
 add_executable(test_protocolo_servidor
         protocolo/test_protocolo_servidor.cpp
         ../src/server/servidor_serializador.cpp
-        ../src/server/logica_juego/cliente_juego.cpp
         ../src/common/snapshot_dto.cpp
         ../src/common/socket.cpp
         ../src/common/resolver.cpp

@@ -9,7 +9,6 @@
 
 class ClienteSerializador {
 public:
-    std::vector<char> serializar_comenzar_jugar();
     std::vector<char> serializar_comando(const TipoComando& comando);
 };
 
