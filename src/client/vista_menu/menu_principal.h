@@ -10,6 +10,10 @@ class MenuPrincipal: public QMainWindow {
 private:
     MenuJuego& juego;
 
+    MenuCrearPartida menu_crear_partida;
+
+    MenuSeleccionJugador menu_seleccion_jug;
+
     VentanaDialogo popup_cod_partida;
 
     BotonMenu new_game_btn;

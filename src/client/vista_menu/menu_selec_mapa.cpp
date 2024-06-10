@@ -1,7 +1,7 @@
 #include "menu_selec_mapa.h"
+
 #include "constantes_menu.h"
-#include "menu_selec_jugador.h"
-#include "../../common/snapshot_dto.h"
+#include "menu_principal.h"
 
 
 const std::unordered_map<TipoEscenario, std::string> MenuSeleccionMapa::MAPA_TIPO_ESCENARIO {
@@ -14,6 +14,7 @@ const std::unordered_map<TipoEscenario, std::string> MenuSeleccionMapa::MAPA_TIP
 MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
         MenuSeleccion(parent),
         juego(juego),
+        selector_jugador(this, juego, true),
         central_widget(this),
         vertical_layout_widget(&central_widget),
         vertical_layout(&vertical_layout_widget),
@@ -37,8 +38,7 @@ MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
 void MenuSeleccionMapa::realizar_accion_menu(QPushButton* boton_seleccionado) {
     auto opcion_seleccionada = boton_seleccionado->property(KEY_TIPO_BOTON).value<TipoEscenario>();
     juego.definir_mapa_elegido(MAPA_TIPO_ESCENARIO.at(opcion_seleccionada));
-    auto* selector_jugador = new MenuSeleccionJugador(this, juego, true);
-    selector_jugador->move(this->pos());
-    selector_jugador->show();
+    selector_jugador.move(this->pos());
+    selector_jugador.show();
     hide();
 }

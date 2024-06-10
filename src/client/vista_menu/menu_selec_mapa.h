@@ -19,12 +19,16 @@
 #define M_RIGHT_MAPA 0
 #define M_BOTTOM_MAPA 150
 
+#include "menu_selec_jugador.h"
+
 
 class MenuSeleccionMapa: public MenuSeleccion {
 private:
     static const std::unordered_map<TipoEscenario, std::string> MAPA_TIPO_ESCENARIO;
 
     MenuJuego& juego;
+
+    MenuSeleccionJugador selector_jugador;
 
     QWidget central_widget;
 
