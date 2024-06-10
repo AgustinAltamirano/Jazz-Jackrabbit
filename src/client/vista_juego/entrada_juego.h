@@ -8,6 +8,7 @@
 
 #include "../../common/comando_dto.h"
 #include "../../common/queue.h"
+#include "../juego/cliente.h"
 
 #define SALIR SDLK_ESCAPE
 
@@ -16,18 +17,17 @@ class EntradaJuego {
 private:
     static const std::unordered_map<SDL_Keycode, const TipoComando> MAPA_ACCIONES;
 
-    // Es una cola de TipoComando provisoriamente
-    Queue<std::shared_ptr<ComandoDTO>>& cola_acciones;
+    Cliente& cliente;
 
 public:
-    explicit EntradaJuego(Queue<std::shared_ptr<ComandoDTO>>& cola_acciones);
+    explicit EntradaJuego(Cliente& cliente);
 
     EntradaJuego(const EntradaJuego&) = delete;
 
     EntradaJuego& operator=(const EntradaJuego&) = delete;
 
     /** Lee todos los eventos producidos por el jugador y envía la acción correspondiente. */
-    [[nodiscard]] bool procesar_entrada(uint32_t id_cliente) const;
+    [[nodiscard]] bool procesar_entrada() const;
 };
 
 

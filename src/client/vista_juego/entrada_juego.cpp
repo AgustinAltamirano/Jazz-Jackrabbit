@@ -5,10 +5,9 @@ const std::unordered_map<SDL_Keycode, const TipoComando> EntradaJuego::MAPA_ACCI
         {SDLK_x, ACTIVAR_DASH},  {SDLK_SPACE, DISPARAR_ACCION}, {SDLK_q, ARMA_ANTERIOR},
         {SDLK_e, ARMA_SIGUIENTE}};
 
-EntradaJuego::EntradaJuego(Queue<std::shared_ptr<AccionJuegoDTO>>& cola_acciones):
-        cola_acciones(cola_acciones) {}
+EntradaJuego::EntradaJuego(Cliente& cliente): cliente(cliente) {}
 
-bool EntradaJuego::procesar_entrada(uint32_t id_cliente) const {
+bool EntradaJuego::procesar_entrada() const {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT ||
@@ -19,10 +18,7 @@ bool EntradaJuego::procesar_entrada(uint32_t id_cliente) const {
             continue;
         }
 
-
-        const TipoComando accion = MAPA_ACCIONES.at(event.key.keysym.sym);
-        auto accion_dto = std::make_shared<TipoComando>(id_cliente, accion);
-        cola_acciones.try_push(accion_dto);
+        cliente.realizar_accion(MAPA_ACCIONES.at(event.key.keysym.sym));
     }
     return true;
 }
