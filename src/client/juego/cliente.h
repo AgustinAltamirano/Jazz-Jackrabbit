@@ -4,6 +4,7 @@
 #include <optional>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "../../common/snapshot_dto.h"
 
