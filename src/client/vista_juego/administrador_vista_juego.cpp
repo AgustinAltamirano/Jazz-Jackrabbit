@@ -42,8 +42,14 @@ const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
 void AdministradorVistaJuego::actualizar_vista() {
     std::shared_ptr<SnapshotDTO> snapshot;
     if (!cliente.obtener_snapshot(snapshot)) {
+        if (!primera_snapshot_recibida) {
+            pantalla_carga.dibujar();
+        }
         return;
     }
+
+    primera_snapshot_recibida = true;
+
     if (snapshot->es_fin_juego()) {
         fin_juego = true;
         return;
@@ -158,11 +164,13 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         ventana(titulo_ventana, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA,
                 ALTO_VENTANA, 0),
         renderer(ventana, -1, SDL_RENDERER_ACCELERATED),
+        pantalla_carga(renderer),
         lector_texturas(renderer),
         entrada_juego(cliente),
         cliente(cliente),
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
+        primera_snapshot_recibida(false),
         fin_juego(false) {
     lector_texturas.cargar_texturas_y_coordenadas();
 }

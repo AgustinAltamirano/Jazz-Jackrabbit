@@ -25,6 +25,7 @@
 #include "fondo_escenario.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
+#include "pantalla_carga.h"
 #include "personaje.h"
 #include "vista_juego_defs.h"
 
@@ -48,6 +49,7 @@ private:
 
     SDL2pp::Window ventana;
     SDL2pp::Renderer renderer;
+    PantallaCarga pantalla_carga;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
     Cliente& cliente;
@@ -65,6 +67,7 @@ private:
     /** Mapa con todos los objetos asociados a enemigos. */
     std::unordered_map<uint32_t, ObjetoAnimado> enemigos;
 
+    bool primera_snapshot_recibida;
     bool fin_juego;
 
     void actualizar_vista();

@@ -18,6 +18,11 @@
 #define RENDER_CAMARA_X (ANCHO_VENTANA / 2)
 #define RENDER_CAMARA_Y (ALTO_VENTANA * 3 / 4)
 
+
+#define COLOR_PANTALLA_CARGA_RED 122
+#define COLOR_PANTALLA_CARGA_GREEN 69
+#define COLOR_PANTALLA_CARGA_BLUE 255
+
 /**
  * Rutas usadas para cargar los sprites y las coordenadas de cada uno en sus respectivas imágenes.
  */
