@@ -1,6 +1,7 @@
 #ifndef LECTOR_TEXTURAS_H
 #define LECTOR_TEXTURAS_H
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -27,6 +28,10 @@ private:
 
     std::unordered_map<std::string, std::unordered_map<std::string, std::vector<SDL2pp::Rect>>>
             coords_personajes;
+
+    std::unique_ptr<SDL2pp::Texture> textura_enemigos;
+
+    std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_enemigos;
 
 public:
     explicit LectorTexturas(SDL2pp::Renderer& renderer);
@@ -61,6 +66,15 @@ public:
 
     const SDL2pp::Rect& obtener_coords_bloque(const std::string& tipo_escenario,
                                               const std::string& tipo_bloque) const;
+
+    SDL2pp::Texture& obtener_textura_enemigos() const;
+
+    /**
+     * Obtiene las coordenadas de todos los sprites de un enemigo
+     * @param enemigo nombre del enemigo
+     * @return referencia a un @code SDL2pp::Rect@endcode que contiene las coordenadas
+     */
+    const std::vector<SDL2pp::Rect>& obtener_coords_enemigo(const std::string& enemigo) const;
 
     ~LectorTexturas();
 

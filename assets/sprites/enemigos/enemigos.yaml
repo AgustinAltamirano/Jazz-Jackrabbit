@@ -1,0 +1,52 @@
+imagen: enemigos.png
+enemigos:
+  - nombre: lagartija
+    sprites:
+      - x: 18
+        y: 19
+        ancho: 61
+        alto: 46
+      - x: 99
+        y: 19
+        ancho: 52
+        alto: 44
+      - x: 165
+        y: 21
+        ancho: 44
+        alto: 42
+      - x: 219
+        y: 22
+        ancho: 69
+        alto: 42
+      - x: 299
+        y: 18
+        ancho: 52
+        alto: 50
+      - x: 368
+        y: 12
+        ancho: 52
+        alto: 50
+      - x: 434
+        y: 18
+        ancho: 58
+        alto: 49
+      - x: 512
+        y: 21
+        ancho: 58
+        alto: 48
+      - x: 597
+        y: 19
+        ancho: 62
+        alto: 53
+      - x: 679
+        y: 19
+        ancho: 61
+        alto: 54
+      - x: 753
+        y: 20
+        ancho: 70
+        alto: 52
+      - x: 833
+        y: 20
+        ancho: 72
+        alto: 51
