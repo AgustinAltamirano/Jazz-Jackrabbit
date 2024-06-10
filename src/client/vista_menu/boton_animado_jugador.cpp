@@ -3,8 +3,9 @@
 #include "constantes_menu.h"
 
 
-BotonAnimadoJugador::BotonAnimadoJugador(QMainWindow* parent, int num_sprite, int ancho, int alto):
+BotonAnimadoJugador::BotonAnimadoJugador(MenuSeleccion* parent, int num_sprite, int ancho, int alto):
         BotonMenu(parent, 0, 0, ANCHO_PANTALLA, ALTO_PANTALLA, ""),
+        menu(parent),
         label_jugador(this),
         label_nombre(this),
         manejador_sprites(label_jugador, label_nombre, num_sprite, ancho, alto) {
@@ -19,7 +20,7 @@ void BotonAnimadoJugador::paintEvent(QPaintEvent* event) {
 
 void BotonAnimadoJugador::focusInEvent(QFocusEvent* event) {
     manejador_sprites.animacion_hacia_adelante();
-    clicked();
+    menu->enfocar(this);
     BotonMenu::focusInEvent(event);
 }
 

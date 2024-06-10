@@ -18,9 +18,9 @@ MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
         central_widget(this),
         vertical_layout_widget(&central_widget),
         vertical_layout(&vertical_layout_widget),
-        opcion_mapa_1(parent, &central_widget, NUM_MAPA_1, ANCHO_BTN_MAPA, ALTO_BTN_MAPA),
-        opcion_mapa_2(parent, &central_widget, NUM_MAPA_2, ANCHO_BTN_MAPA, ALTO_BTN_MAPA),
-        opcion_mapa_custom(parent, &central_widget, NUM_MAPA_CUST, ANCHO_BTN_MAPA, ALTO_BTN_MAPA)
+        opcion_mapa_1(this, &central_widget, NUM_MAPA_1, ANCHO_BTN_MAPA, ALTO_BTN_MAPA),
+        opcion_mapa_2(this, &central_widget, NUM_MAPA_2, ANCHO_BTN_MAPA, ALTO_BTN_MAPA),
+        opcion_mapa_custom(this, &central_widget, NUM_MAPA_CUST, ANCHO_BTN_MAPA, ALTO_BTN_MAPA)
 {
     setCentralWidget(&central_widget);
 

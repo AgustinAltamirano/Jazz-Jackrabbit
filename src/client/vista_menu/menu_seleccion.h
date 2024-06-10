@@ -14,6 +14,8 @@ class MenuSeleccion : public QMainWindow {
 public:
     explicit MenuSeleccion(QMainWindow* parent);
 
+    void enfocar(QPushButton* boton);
+
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 
@@ -28,6 +30,8 @@ private:
     QMainWindow* menu_previo;
 
     QPushButton* boton_enfocado = nullptr;
+
+    void desenfocar_boton();
 };
 
 
