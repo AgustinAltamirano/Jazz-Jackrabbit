@@ -22,6 +22,8 @@
 
 class MenuSeleccionMapa: public MenuSeleccion {
 private:
+    static const std::unordered_map<TipoEscenario, std::string> MAPA_TIPO_ESCENARIO;
+
     MenuJuego& juego;
 
     QWidget central_widget;
@@ -37,7 +39,7 @@ private:
     BotonAnimadoMapa opcion_mapa_custom;
 
 protected:
-    void realizar_accion_menu(int boton_seleccionado) override;
+    void realizar_accion_menu(QPushButton* boton_seleccionado) override;
 
 public:
     explicit MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego);

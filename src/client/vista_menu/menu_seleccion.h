@@ -17,7 +17,7 @@ public:
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 
-    virtual void realizar_accion_menu(int boton_seleccionado) = 0;
+    virtual void realizar_accion_menu(QPushButton* boton_seleccionado) = 0;
 
     void realizar_accion_clic();
 

@@ -23,12 +23,13 @@ MenuSeleccionJugador::MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego
     horizontalLayout.setContentsMargins(M_LEFT, M_TOP, M_RIGHT, M_BOTTOM);
 
     conectar_botones({&jazz_player, &spaz_player, &lori_player},
-                     {NUM_JAZZ_PLAYER, NUM_SPAZ_PLAYER, NUM_LORI_PLAYER}, horizontalLayout);
+                     {JAZZ, SPAZ, LORI}, horizontalLayout);
 }
 
 
-void MenuSeleccionJugador::realizar_accion_menu(int boton_seleccionado) {
-    juego.definir_personaje_elegido(boton_seleccionado);
+void MenuSeleccionJugador::realizar_accion_menu(QPushButton* boton_seleccionado) {
+    auto opcion_seleccionada = boton_seleccionado->property(KEY_TIPO_BOTON).value<TipoPersonaje>();
+    juego.definir_personaje_elegido(opcion_seleccionada);
 
     if (es_de_creacion) {
         juego.crear_partida();

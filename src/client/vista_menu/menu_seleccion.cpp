@@ -30,8 +30,9 @@ void MenuSeleccion::realizar_accion_clic() {
     if (boton_clickeado == boton_enfocado) {
         boton_enfocado = nullptr;
 
-        int boton_seleccionado = boton_clickeado->property(KEY_TIPO_BOTON).toInt();
-        realizar_accion_menu(boton_seleccionado);
+//        int boton_seleccionado = boton_clickeado->property(KEY_TIPO_BOTON).toInt();
+//        realizar_accion_menu(boton_seleccionado);
+        realizar_accion_menu(boton_clickeado);
         return;
     }
     boton_enfocado = boton_clickeado;
@@ -47,7 +48,7 @@ void MenuSeleccion::conectar_botones(const std::vector<QPushButton*>& botones,
         connect(boton, &QPushButton::clicked, this,
                 &MenuSeleccion::realizar_accion_clic);
 
-        boton->setProperty(KEY_TIPO_BOTON, props[i]);
+        boton->setProperty(KEY_TIPO_BOTON, QVariant(props[i]));
 
         layout.addWidget(boton);
     }
