@@ -22,8 +22,6 @@ public:
     ComandoCrearDTO* deserializar_crear_partida(bool* cerrado);
 
     ComandoUnirDTO* deserializar_unir_partida(bool* cerrado);
-
-    ComandoComenzarDTO* deserializar_comenzar_juego(bool* cerrado);
 };
 
 #endif

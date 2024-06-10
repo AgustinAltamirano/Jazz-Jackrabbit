@@ -39,8 +39,6 @@ public:
 
     bool unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje);
 
-    void comenzar();
-
     void cerrar();
 
     void salir_lobby();

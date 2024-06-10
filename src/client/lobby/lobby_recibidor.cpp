@@ -13,11 +13,6 @@ void LobbyRecibidor::run() {
     while (sigo_hablando && !cerrado) {
         try {
             ComandoDTO* comando = lobby_deserializador.obtener_comando(&cerrado);
-            if (comando->obtener_comando() == COMENZAR) {
-                ComandoComenzarDTO* comenzar_dto = dynamic_cast<ComandoComenzarDTO*>(comando);
-                if (comenzar_dto->obtener_empezo())
-                    sigo_hablando = false;
-            }
             cola_recibidor->push(comando);
         } catch (const std::runtime_error& e) {
             sigo_hablando = false;

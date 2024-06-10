@@ -11,11 +11,9 @@
 #include "../common/thread.h"
 #include "./monitor_snapshots.h"
 
-#include "logica_juego.h"
-
 class Partida: public Thread {
 private:
-    LogicaJuego logica_juego;
+    std::map<int, TipoPersonaje> mapa_clientes_juego;
 
     MonitorSnapshots monitor_snapshots;
 

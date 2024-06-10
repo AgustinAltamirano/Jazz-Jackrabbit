@@ -23,9 +23,6 @@ ComandoDTO* ServidorDeserializador::obtener_comando(bool* cerrado, int32_t& id_c
         case UNIR:
             return (deserializar_unir(cerrado, id_cliente));
             break;
-        case COMENZAR:
-            return (deserializar_comenzar(cerrado, id_cliente));
-            break;
         default:
             return new ComandoDTO(id_cliente, comando);
     }

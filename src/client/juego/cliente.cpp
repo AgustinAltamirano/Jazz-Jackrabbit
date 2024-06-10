@@ -12,11 +12,6 @@ Cliente::Cliente(Socket&& socket):
         cliente_recibidor(&skt_cliente, std::ref(hablando), &cola_recibidor) {
     cliente_enviador.start();
     cliente_recibidor.start();
-    comenzar_jugar();
-}
-
-void Cliente::comenzar_jugar() {
-    cola_enviador.try_push(client_serializador.serializar_comenzar_jugar());
 }
 
 bool Cliente::realizar_accion(const TipoComando& comando) {

@@ -32,8 +32,6 @@ public:
 
     void join();
 
-    void comenzar_jugar();
-
     bool realizar_accion(const TipoComando& comando);
 
     bool obtener_snapshot(std::shared_ptr<SnapshotDTO> snapshot);
