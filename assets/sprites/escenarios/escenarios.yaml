@@ -6,11 +6,33 @@ escenarios:
         y: 1152
         ancho: 256
         alto: 256
+    bloques:
+      - nombre: piso
+        x: 32
+        y: 0
+        ancho: 32
+        alto: 32
+      - nombre: pared
+        x: 32
+        y: 32
+        ancho: 32
+        alto: 32
 
   - nombre: castle
     imagen: castle.png
     fondo_coords:
       - x: 0
-        y: 1732
+        y: 1728
         ancho: 224
         alto: 192
+    bloques:
+      - nombre: piso
+        x: 128
+        y: 0
+        ancho: 32
+        alto: 32
+      - nombre: pared
+        x: 160
+        y: 160
+        ancho: 32
+        alto: 32

@@ -19,7 +19,7 @@ Partida* MonitorPartidas::obtener_partidas_por_codigo(const int32_t& codigo_part
             [codigo_partida](Partida* encontrado, Partida* partida) {
                 if (encontrado)
                     return encontrado;
-                if (partida->comparar_partida(codigo_partida))
+                if (partida->comparar_codigo_partida(codigo_partida))
                     return partida;
                 return static_cast<Partida*>(nullptr);
             });

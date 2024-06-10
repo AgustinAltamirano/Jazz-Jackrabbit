@@ -8,7 +8,7 @@
 
 class ComandoDTO {
 private:
-    TipoComando tipo_comando;
+    TipoComando comando;
     int32_t id_cliente;
 
 public:
@@ -19,6 +19,8 @@ public:
     ComandoDTO(int32_t& id_cliente, TipoComando comando);
 
     TipoComando obtener_comando();
+
+    int32_t obtener_id_cliente();
 
     virtual ~ComandoDTO() {}
 };

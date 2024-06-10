@@ -30,7 +30,7 @@ void Aceptador::run() {
 
 void Aceptador::limpiar_clientes() {
     clientes.remove_if([](ComunicadorCliente* c) {
-        if (!c->still_alive()) {
+        if (!c->is_alive()) {
             c->join();
             delete c;
             return true;
@@ -41,19 +41,17 @@ void Aceptador::limpiar_clientes() {
 
 void Aceptador::eliminar_todos_clientes() {
     for (ComunicadorCliente* cliente: clientes) {
-        cliente->kill();
+        cliente->stop();
         cliente->join();
         delete cliente;
     }
     clientes.clear();
 }
 
-void Aceptador::kill() {
+void Aceptador::stop() {
     sigo_jugando = false;
     skt_servidor->shutdown(2);
     skt_servidor->close();
 }
-
-bool Aceptador::still_alive() { return true; }
 
 Aceptador::~Aceptador() {}

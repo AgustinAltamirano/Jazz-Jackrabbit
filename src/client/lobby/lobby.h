@@ -6,6 +6,8 @@
 #include <vector>
 
 #include "../../common/socket.h"
+#include "../../common/tipo_escenario.h"
+#include "../../common/tipo_personaje.h"
 
 #include "lobby_deserializador.h"
 #include "lobby_enviador.h"
@@ -33,9 +35,9 @@ private:
 public:
     Lobby(const std::string& hostname, const std::string& servname);
 
-    bool crear_partida(const int8_t& capacidad_partida);
+    bool crear_partida(const std::string& nombre_escenario, const TipoPersonaje& personaje, const int8_t& capacidad_partida);
 
-    bool unir_partida(const int32_t& codigo_partida);
+    bool unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje);
 
     void comenzar();
 

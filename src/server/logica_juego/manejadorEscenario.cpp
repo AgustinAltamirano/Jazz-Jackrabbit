@@ -8,6 +8,8 @@
 #include <yaml-cpp/yaml.h>
 
 #include "../../common/constantes.h"
+#include "../../common/snapshot_dto.h"
+#include "../../common/tipo_bloque_escenario.h"
 
 manejadorEscenario::manejadorEscenario(std::string path):
         path(std::move(path)), clase_escenario(ESCENARIO_INDEFINIDO) {
@@ -182,8 +184,8 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
 
 
 // seccion de creacion de snapshots
-std::shared_ptr<SnapshotDTO_provisorio> manejadorEscenario::crear_snapshot() {
-    auto snapshot = std::make_shared<SnapshotDTO_provisorio>(clase_escenario);
+auto manejadorEscenario::crear_snapshot() {
+    auto snapshot = std::make_shared<SnapshotDTO>(clase_escenario);
     for (auto& bloque: bloques_rectos) {
         BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
                                                 bloque.alto, bloque.angulo, bloque.tipo);

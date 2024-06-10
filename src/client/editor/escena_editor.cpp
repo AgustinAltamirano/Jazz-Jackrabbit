@@ -1,16 +1,19 @@
 #include "escena_editor.h"
 
 #include <QGraphicsSceneMouseEvent>
-#include <cmath>
-#include <sstream>
 #include <QScrollBar>
+#include <cmath>
 
 
-EscenaEditor::EscenaEditor(ListaBotones& lista_botones, QGraphicsView& vista_escena) :
+EscenaEditor::EscenaEditor(ListaBotones& lista_botones, QWidget* widget):
         QGraphicsScene(QRectF(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)),
         lista_botones(lista_botones),
         nivel_actual(),
-        vista_escena(vista_escena) {}
+        vista_escena(this, widget)
+{
+    vista_escena.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    vista_escena.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
 
 
 void EscenaEditor::mousePressEvent(QGraphicsSceneMouseEvent* event) {
@@ -52,8 +55,7 @@ void EscenaEditor::wheelEvent(QGraphicsSceneWheelEvent* event) {
 
 
 void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
-    auto imagen_item = lista_botones.obtener_imagen_item_seleccionado();
-    auto item = std::make_unique<QGraphicsPixmapItem>(imagen_item);
+    auto item = lista_botones.obtener_item_seleccionado();
 
     auto x = obtener_coordenada_bloque(event->scenePos().x());
     auto y = obtener_coordenada_bloque(event->scenePos().y());
@@ -64,13 +66,8 @@ void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
     }
 
     item->setPos(x, y);
-
-    auto tipo_item = lista_botones.obtener_tipo_item_seleccionado();
-    item->setData(KEY_TIPO_ITEM, QVariant(tipo_item.c_str()));
-    item->setData(KEY_MAPA_ASOCIADO, lista_botones.obtener_mapa_item(tipo_item).c_str());
-
     addItem(item.get());
-    nivel_actual[std::make_pair(x, y)] = std::move(item);
+    nivel_actual[CoordenadaPunto(x, y)] = std::move(item);
 }
 
 
@@ -78,7 +75,7 @@ void EscenaEditor::borrar_bloque_item(QGraphicsSceneMouseEvent* event) {
     auto x = obtener_coordenada_bloque(event->scenePos().x());
     auto y = obtener_coordenada_bloque(event->scenePos().y());
 
-    auto item = nivel_actual.find(std::make_pair(x, y));
+    auto item = nivel_actual.find(CoordenadaPunto(x, y));
     if (item != nivel_actual.end()) {
         removeItem(item->second.get());
         nivel_actual.erase(item);
@@ -93,50 +90,67 @@ qreal EscenaEditor::obtener_coordenada_bloque(qreal coord) {
 
 
 // Es para usar desde fuera de la clase en la carga del mapa
-void EscenaEditor::dibujar_bloque(int x, int y) {
+void EscenaEditor::dibujar_bloque(int x, int y, TipoItemEditor tipo,
+                                  TipoEscenarioEditor texturas) {
+    lista_botones.actualizar_item_seleccionado(tipo, texturas);
     QGraphicsSceneMouseEvent event;
     event.setScenePos(QPointF(x, y));
     dibujar_bloque_item(&event);
 }
 
 
-void EscenaEditor::actualizar_texturas(const std::string& tipo_texturas) {
+void EscenaEditor::actualizar_texturas(TipoEscenarioEditor nuevas_texturas) {
+    actualizar_fondo(nuevas_texturas);
+
     for (const auto& item_actual: nivel_actual) {
         auto item = item_actual.second.get();
-        auto mapa_asociado = item->data(KEY_MAPA_ASOCIADO).toString().toStdString();
+        auto mapa_asociado = item->data(KEY_MAPA_ASOCIADO).value<TipoEscenarioEditor>();
 
-        if (mapa_asociado.empty()) {
+        if (mapa_asociado == ESCENARIO_INDEFINIDO) {
             continue;
         }
 
-        auto tipo_item = item->data(KEY_TIPO_ITEM).toString().toStdString();
+        auto tipo_item = item->data(KEY_TIPO_ITEM).value<TipoItemEditor>();
 
-        auto nuevo_item = obtener_tipo_item(tipo_item, tipo_texturas);
-        auto imagen_item = lista_botones.obtener_imagen_item(nuevo_item);
-        item->setPixmap(imagen_item);
-        item->setData(KEY_TIPO_ITEM, QVariant(nuevo_item.c_str()));
-
-        if (lista_botones.obtener_tipo_item_seleccionado() == tipo_item) {
-            lista_botones.actualizar_tipo_item_seleccionado(nuevo_item);
-        }
+        auto nueva_textura = lista_botones.obtener_imagen_item(tipo_item, nuevas_texturas);
+        item->setPixmap(nueva_textura);
+        item->setData(KEY_MAPA_ASOCIADO, QVariant(nuevas_texturas));
     }
 }
 
 
-std::string EscenaEditor::obtener_tipo_item(const std::string& item_actual, const std::string& nuevas_texturas) {
-    std::vector<std::string> tipo_item_abs;
-    std::string stream;
-    std::istringstream tokenStream(item_actual);
-    std::string delimitador = DELIMITADOR;
+TipoItemEditor EscenaEditor::obtener_tipo_bloque(CoordenadaPunto coordenada) {
+    auto &item = nivel_actual.at(coordenada);
+    return item->data(KEY_TIPO_ITEM).value<TipoItemEditor>();
+}
 
-    while (std::getline(tokenStream, stream, delimitador.c_str()[0]))
-        tipo_item_abs.push_back(stream);
 
-    tipo_item_abs.at(tipo_item_abs.size()-1) = nuevas_texturas;
+TipoEscenarioEditor EscenaEditor::obtener_tipo_escenario() {
+    return lista_botones.obtener_escenario();
+}
 
-    std::string resultado = std::accumulate(std::begin(tipo_item_abs), std::end(tipo_item_abs), std::string(),
-                                            [delimitador](const std::string& a, const std::string& b) -> std::string {
-                                                return a + (!a.empty() ? delimitador : "") + b;
-                                            });
-    return resultado;
+
+std::vector<CoordenadaPunto> EscenaEditor::obtener_items_escena() {
+    std::vector<CoordenadaPunto> claves;
+
+    for (const auto& item : nivel_actual) {
+        claves.push_back(item.first);
+    }
+    return claves;
+}
+
+
+void EscenaEditor::limpiar_escena() {
+    for (const auto& item : nivel_actual) {
+        removeItem(item.second.get());
+    }
+    nivel_actual.clear();
+    update();
+}
+
+
+void EscenaEditor::actualizar_fondo(TipoEscenarioEditor texturas) {
+    auto imagen_texturas = lista_botones.obtener_imagen_item(TEXTURA, texturas);
+    QBrush brush(imagen_texturas);
+    vista_escena.setBackgroundBrush(brush);
 }

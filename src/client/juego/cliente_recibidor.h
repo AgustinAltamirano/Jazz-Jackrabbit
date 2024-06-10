@@ -26,9 +26,7 @@ public:
 
     void run() override;
 
-    void kill() override;
-
-    bool still_alive() override;
+    void stop() override;
 };
 
 #endif

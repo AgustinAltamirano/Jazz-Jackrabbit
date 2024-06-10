@@ -10,6 +10,7 @@
 LectorTexturas::LectorTexturas(SDL2pp::Renderer& renderer): renderer(renderer) {}
 
 void LectorTexturas::cargar_texturas_y_coordenadas() {
+    // Lectura de fondos de escenario y bloques
     const std::string ruta_escenarios(ASSETS_PATH RUTA_SPRITES DIR_ESCENARIOS);
     YAML::Node escenarios = YAML::LoadFile(ruta_escenarios + std::string(ESCENARIOS_CONFIG));
 
@@ -21,13 +22,24 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
                 renderer,
                 SDL2pp::Surface(imagen_escenario).SetColorKey(true, COLOR_KEY_ESCENARIOS));
         textura.SetBlendMode(SDL_BLENDMODE_BLEND);
-        texturas_fondos_escenarios.emplace(nombre_escenario, std::move(textura));
+        texturas_escenarios.emplace(nombre_escenario, std::move(textura));
         auto coords = escenario["fondo_coords"][0];
         SDL2pp::Rect fondo_coords(coords["x"].as<int>(), coords["y"].as<int>(),
                                   coords["ancho"].as<int>(), coords["alto"].as<int>());
         coords_fondos_escenarios.emplace(nombre_escenario, fondo_coords);
+
+        std::unordered_map<std::string, SDL2pp::Rect> dicc_coords;
+        coords_bloques_escenarios.emplace(nombre_escenario, std::move(dicc_coords));
+
+        for (const auto& bloque: escenario["bloques"]) {
+            auto nombre_bloque = bloque["nombre"].as<std::string>();
+            SDL2pp::Rect coords_bloque(bloque["x"].as<int>(), bloque["y"].as<int>(),
+                                       bloque["ancho"].as<int>(), bloque["alto"].as<int>());
+            coords_bloques_escenarios.at(nombre_escenario).emplace(nombre_bloque, coords_bloque);
+        }
     }
 
+    // Lectura de personajes
     const std::string ruta_personajes(ASSETS_PATH RUTA_SPRITES DIR_PERSONAJES);
     YAML::Node personajes = YAML::LoadFile(ruta_personajes + std::string(PERSONAJES_CONFIG));
 
@@ -57,7 +69,28 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
             }
         }
     }
+
+    // Lectura de enemigos
+    const std::string ruta_enemigos(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS);
+    YAML::Node enemigos_config = YAML::LoadFile(ruta_enemigos + std::string(ENEMIGOS_CONFIG));
+    auto imagen_enemigos = enemigos_config["imagen"].as<std::string>();
+    textura_enemigos = std::make_unique<SDL2pp::Texture>(
+            renderer, SDL2pp::Surface(imagen_enemigos).SetColorKey(true, COLOR_KEY_ENEMIGOS));
+    textura_enemigos->SetBlendMode(SDL_BLENDMODE_BLEND);
+
+    for (const auto& enemigo: enemigos_config["enemigos"]) {
+        auto nombre_enemigo = enemigo["nombre"].as<std::string>();
+        std::vector<SDL2pp::Rect> sprites;
+        coords_enemigos.emplace(nombre_enemigo, std::move(sprites));
+
+        for (const auto& sprite_coords: enemigo["sprites"]) {
+            SDL2pp::Rect sprite(sprite_coords["x"].as<int>(), sprite_coords["y"].as<int>(),
+                                sprite_coords["ancho"].as<int>(), sprite_coords["alto"].as<int>());
+            coords_enemigos.at(nombre_enemigo).emplace_back(sprite);
+        }
+    }
 }
+
 SDL2pp::Texture& LectorTexturas::obtener_textura_personaje(const std::string& personaje) {
     return texturas_personajes.at(personaje);
 }
@@ -69,7 +102,7 @@ const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_personaje(
 
 SDL2pp::Texture& LectorTexturas::obtener_textura_fondo_escenario(
         const std::string& tipo_escenario) {
-    return texturas_fondos_escenarios.at(tipo_escenario);
+    return texturas_escenarios.at(tipo_escenario);
 }
 
 const SDL2pp::Rect& LectorTexturas::obtener_coords_fondo_escenario(
@@ -77,6 +110,21 @@ const SDL2pp::Rect& LectorTexturas::obtener_coords_fondo_escenario(
     return coords_fondos_escenarios.at(tipo_escenario);
 }
 
+SDL2pp::Texture& LectorTexturas::obtener_textura_bloque(const std::string& tipo_escenario) {
+    return texturas_escenarios.at(tipo_escenario);
+}
+
+const SDL2pp::Rect& LectorTexturas::obtener_coords_bloque(const std::string& tipo_escenario,
+                                                          const std::string& tipo_bloque) const {
+    return coords_bloques_escenarios.at(tipo_escenario).at(tipo_bloque);
+}
+
+SDL2pp::Texture& LectorTexturas::obtener_textura_enemigos() const { return *textura_enemigos; }
+
+const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_enemigo(
+        const std::string& enemigo) const {
+    return coords_enemigos.at(enemigo);
+}
 
 LectorTexturas::IteradorTexturas LectorTexturas::begin_personajes() {
     const auto iterador_texturas = texturas_personajes.begin();

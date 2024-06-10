@@ -9,13 +9,16 @@
 double frecuencia = 0.05;
 
 Partida::Partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo_partida,
-                 const int32_t& id_cliente, int8_t& capacidad_partida):
+                 std::string& nombre_escenario, const int32_t& id_cliente, TipoPersonaje& personaje,
+                 int8_t& capacidad_partida):
         cola_comandos(10000),
+        nombre_escenario(nombre_escenario),
         codigo_partida(capacidad_partida),
         logica_juego(),
         sigo_jugando(true),
         admite_jugadores(true),
         capacidad_partida(capacidad_partida) {
+    logica_juego.agregar_cliente(id_cliente, personaje);
     monitor_snapshots.agregar_cola(cola_enviador, id_cliente);
 }
 
@@ -64,12 +67,13 @@ void Partida::run() {
 
 Queue<ComandoDTO*>* Partida::obtener_comandos() { return &cola_comandos; }
 
-void Partida::agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente) {
-    logica_juego.agregar_cliente(id_cliente);
+void Partida::agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente,
+                              const TipoPersonaje& personaje) {
+    logica_juego.agregar_cliente(id_cliente, personaje);
     monitor_snapshots.agregar_cola(cola_enviador, id_cliente);
 }
 
-bool Partida::comparar_partida(const int32_t& codigo_a_comparar) {
+bool Partida::comparar_codigo_partida(const int32_t& codigo_a_comparar) {
     return (codigo_partida == codigo_a_comparar);
 }
 
@@ -95,6 +99,4 @@ bool Partida::puedo_unir() {
 
 bool Partida::esta_jugando() { return sigo_jugando; }
 
-bool Partida::still_alive() { return sigo_jugando; }
-
-void Partida::kill() { sigo_jugando = false; }
+void Partida::stop() { sigo_jugando = false; }

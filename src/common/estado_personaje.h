@@ -1,0 +1,19 @@
+#ifndef ESTADO_PERSONAJE_H
+#define ESTADO_PERSONAJE_H
+
+enum EstadoPersonaje : char {
+    IDLE,
+    CORRER,
+    DASH,
+    DISPARAR_QUIETO,
+    SALTAR_ARRIBA,
+    SALTAR_ADELANTE,
+    CAER_ABAJO,
+    CAER_ADELANTE,
+    ATAQUE_ESPECIAL,
+    INTOXICADO,
+    IMPACTADO,
+    MUERTE
+};
+
+#endif

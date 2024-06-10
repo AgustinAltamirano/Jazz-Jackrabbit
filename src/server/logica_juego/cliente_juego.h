@@ -3,16 +3,21 @@
 
 #include <cstdint>
 
+#include "../../common/tipo_personaje.h"
+
 class ClienteJuego {
+private:
+    const std::int32_t id;
+    const TipoPersonaje personaje;
+
 public:
-    explicit ClienteJuego(std::int32_t id);
+    explicit ClienteJuego(const std::int32_t& id, const TipoPersonaje& personaje);
 
     std::int32_t obtener_id();
 
-    ~ClienteJuego();
+    TipoPersonaje obtener_personaje();
 
-private:
-    const std::int32_t id;
+    ~ClienteJuego();
 };
 
 #endif  // CLIENTE_JUEGO_H_

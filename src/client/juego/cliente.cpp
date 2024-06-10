@@ -19,14 +19,11 @@ void Cliente::comenzar_jugar() {
     cola_enviador.try_push(client_serializador.serializar_comenzar_jugar());
 }
 
-std::optional<SnapshotDTO> Cliente::obtener_snapshot() {
-    SnapshotDTO snapshot_dto;
-    if (cola_recibidor.try_pop(snapshot_dto)) {
-        return std::optional<SnapshotDTO>(snapshot_dto);
-    } else {
-        return std::optional<SnapshotDTO>();
-    }
+bool Cliente::realizar_accion(const TipoComando& comando) {
+    return cola_enviador.try_push(client_serializador.serializar_comando(comando));
 }
+
+bool Cliente::obtener_snapshot(SnapshotDTO& snapshot) { return cola_recibidor.try_pop(snapshot); }
 
 void Cliente::join() {
     skt_cliente.shutdown(2);

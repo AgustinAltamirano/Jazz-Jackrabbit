@@ -1,17 +1,36 @@
 #include "main_window.h"
 
 
+const std::unordered_map<std::string, TipoItemEditor> MainWindow::STR_A_BLOQUE{
+        {"piso", PISO},
+        {"bajopiso", PARED},
+        {"rampa_izq", DIAGONAL},
+        {"rampa_der", DIAGONAL_INVERTIDO},
+        {"final_rampa_izq", SOPORTE_DIAGONAL},
+        {"final_rampa_der", SOPORTE_DIAGONAL_INVERTIDO},
+        {"spawn_personajes", SPAWNPOINT_JUGADOR},
+        {"spawn_enemigos", SPAWNPOINT_ENEMIGO},
+        {"gema", GEMA},
+        {"moneda", MONEDA}
+};
+
+const std::unordered_map<std::string, TipoEscenarioEditor> MainWindow::STR_A_ESCENARIO{
+        {"castle", ESCENARIO1},
+        {"carrotus", ESCENARIO2},
+        {"", ESCENARIO_INDEFINIDO}
+};
+
+
 MainWindow::MainWindow() :
         QMainWindow(),
         central_widget(this),
         layout_horizontal(&central_widget),
         widget_graphics_view(),
-        escena(layout_vertical, graphics_view),
-        graphics_view(&escena, &widget_graphics_view),
+        escena(layout_vertical, &widget_graphics_view),
         widget_layout_vertical(),
-        layout_vertical(&widget_layout_vertical, graphics_view, escena),
-        menu_bar()
-{
+        layout_vertical(&widget_layout_vertical, escena),
+        menu_bar(this, escena) {
+    setWindowIcon(QIcon(QString(ASSETS_PATH) + RUTA_ICONO));
     inicializar_items();
     inicializar_texturas();
     setMenuBar(&menu_bar);
@@ -21,10 +40,7 @@ MainWindow::MainWindow() :
     layout_horizontal.addWidget(&widget_graphics_view);
     widget_graphics_view.setFixedSize(ANCHO_PANTALLA, ALTO_PANTALLA);
     setCentralWidget(&central_widget);
-    setWindowTitle(TITULO_VENTANA);
-
-    graphics_view.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    graphics_view.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setWindowTitle(TITULO_VENTANA SEPARADOR_TITULO MAPA_SIN_GUARDAR);
 }
 
 
@@ -34,17 +50,21 @@ void MainWindow::inicializar_items() {
     YAML::Node yaml_items = YAML::LoadFile(ruta_yaml);
 
     for (int posicion = 0; posicion < yaml_items["items"].size(); posicion++) {
-        auto item_actual = yaml_items["items"][posicion];
+        auto nodo_item_actual = yaml_items["items"][posicion];
 
-        QPixmap imagen_item(item_actual["ruta_imagen"].as<std::string>().c_str());
-        auto tipo_item = item_actual["tipo"].as<std::string>();
+        auto ruta_imagen = nodo_item_actual["ruta_imagen"].as<std::string>();
+
+        auto tipo_item = nodo_item_actual["tipo"].as<std::string>();
 
         std::string mapa_asociado;
-        if (item_actual["mapa"].IsDefined()) {
-            mapa_asociado = item_actual["mapa"].as<std::string>();
+        if (nodo_item_actual["mapa"].IsDefined()) {
+            mapa_asociado = nodo_item_actual["mapa"].as<std::string>();
         }
 
-        layout_vertical.inicializar_boton_item(imagen_item, tipo_item, mapa_asociado, posicion);
+        auto item_actual = ItemEscena{STR_A_BLOQUE.at(tipo_item), STR_A_ESCENARIO.at(mapa_asociado),
+                                      QPixmap(ruta_imagen.c_str())};
+
+        layout_vertical.inicializar_boton_item(std::move(item_actual), posicion);
     }
 }
 
@@ -64,6 +84,8 @@ void MainWindow::inicializar_texturas() {
         auto imagen_recortada = imagen_fondo.copy(rectangulo);
         auto nombre_mapa = escenario_actual["nombre"].as<std::string>();
 
-        layout_vertical.inicializar_boton_texturas(imagen_recortada, nombre_mapa);
+        auto item_actual = ItemEscena{TEXTURA, STR_A_ESCENARIO.at(nombre_mapa), imagen_recortada};
+
+        layout_vertical.inicializar_boton_texturas(std::move(item_actual));
     }
 }

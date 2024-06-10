@@ -7,30 +7,26 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <string>
+#include "constantes.h"
 
 class EscenaEditor;
 
 
 class ListaBotones: public QVBoxLayout {
 public:
-    explicit ListaBotones(QWidget* parent, QGraphicsView& vista_escena, EscenaEditor& escena);
+    ListaBotones(QWidget* parent, EscenaEditor& escena);
 
-    void inicializar_boton_item(QPixmap& imagen_item,
-                                const std::string& tipo_item,
-                                const std::string& mapa_asociado,
-                                int posicion);
+    void inicializar_boton_item(ItemEscena item, int posicion);
 
-    void inicializar_boton_texturas(QPixmap& imagen_fondo, const std::string& nombre_mapa);
+    void inicializar_boton_texturas(ItemEscena item);
 
-    QPixmap& obtener_imagen_item_seleccionado();
+    [[nodiscard]] std::unique_ptr<QGraphicsPixmapItem> obtener_item_seleccionado() const;
 
-    std::string obtener_tipo_item_seleccionado();
+    QPixmap& obtener_imagen_item(TipoItemEditor tipo, TipoEscenarioEditor texturas);
 
-    QPixmap& obtener_imagen_item(const std::string& tipo_item);
+    void actualizar_item_seleccionado(TipoItemEditor tipo, TipoEscenarioEditor texturas);
 
-    std::string obtener_mapa_item(const std::string& tipo_item);
-
-    void actualizar_tipo_item_seleccionado(const std::string& nuevo_tipo_item);
+    TipoEscenarioEditor obtener_escenario();
 
 private Q_SLOTS:
     void seleccionar_item();
@@ -38,19 +34,15 @@ private Q_SLOTS:
     void seleccionar_texturas();
 
 private:
-    std::map<std::string, QPixmap> items;
+    std::map<std::pair<TipoItemEditor, TipoEscenarioEditor>, ItemEscena> items;
 
-    std::map<std::string, std::string> items_por_mapa;
+    ItemEscena item_seleccionado;
 
-    std::map<std::string, std::vector<std::unique_ptr<QPushButton>>> botones_por_mapa;
-
-    std::string tipo_item_seleccionado;
+    TipoEscenarioEditor escenario;
 
     EscenaEditor& escena;
 
-    QGraphicsView& vista_escena;
-
-    std::unique_ptr<QPushButton> crear_boton(QPixmap& imagen_item, const std::string& tipo_item);
+    QPushButton* crear_boton(ItemEscena item);
 };
 
 

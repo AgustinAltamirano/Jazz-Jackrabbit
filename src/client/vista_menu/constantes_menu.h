@@ -10,7 +10,7 @@ enum PosicionBoton {
 #define ALTO_PANTALLA 480
 #define CANT_EFECTOS_SONIDO 6
 #define TITULO_VENTANAS "Jazz Jackrabbit 2"
-#define RUTA_ICONO "/menu/img/bgd_menuinicial.png"
+#define RUTA_ICONO "/menu/img/icono_menu.png"
 
 #define ALTURA_BTN 51
 #define TOP_MARGIN_BTN 160

@@ -1,37 +1,14 @@
 #ifndef LECTOR_TEXTURAS_H
 #define LECTOR_TEXTURAS_H
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
 #include <SDL2pp/SDL2pp.hh>
 
-/**
- * Rutas usadas para cargar los sprites y las coordenadas de cada uno en sus respectivas imágenes.
- */
-#define RUTA_SPRITES "/sprites"
-#define DIR_PERSONAJES "/personajes/"
-#define PERSONAJES_CONFIG "/personajes.yaml"
-
-#define DIR_ESCENARIOS "/escenarios/"
-#define ESCENARIOS_CONFIG "/escenarios.yaml"
-
-#define COLOR_KEY_PERSONAJES_RED 44
-#define COLOR_KEY_PERSONAJES_GREEN 102
-#define COLOR_KEY_PERSONAJES_BLUE 150
-
-#define COLOR_KEY_PERSONAJES                                                \
-    ((COLOR_KEY_PERSONAJES_RED << 24) + (COLOR_KEY_PERSONAJES_BLUE << 16) + \
-     (COLOR_KEY_PERSONAJES_GREEN << 8) + COLOR_KEY_PERSONAJES_RED)
-
-#define COLOR_KEY_ESCENARIOS_RED 87
-#define COLOR_KEY_ESCENARIOS_GREEN 0
-#define COLOR_KEY_ESCENARIOS_BLUE 203
-
-#define COLOR_KEY_ESCENARIOS                                                \
-    ((COLOR_KEY_ESCENARIOS_RED << 24) + (COLOR_KEY_ESCENARIOS_BLUE << 16) + \
-     (COLOR_KEY_ESCENARIOS_GREEN << 8) + COLOR_KEY_ESCENARIOS_RED)
+#include "vista_juego_defs.h"
 
 /**
  * La clase LectorTexturas se encarga de cargar las texturas y las coordenadas de los sprites.
@@ -40,14 +17,21 @@ class LectorTexturas {
 private:
     SDL2pp::Renderer& renderer;
 
-    std::unordered_map<std::string, SDL2pp::Texture> texturas_fondos_escenarios;
+    std::unordered_map<std::string, SDL2pp::Texture> texturas_escenarios;
 
     std::unordered_map<std::string, SDL2pp::Rect> coords_fondos_escenarios;
+
+    std::unordered_map<std::string, std::unordered_map<std::string, SDL2pp::Rect>>
+            coords_bloques_escenarios;
 
     std::unordered_map<std::string, SDL2pp::Texture> texturas_personajes;
 
     std::unordered_map<std::string, std::unordered_map<std::string, std::vector<SDL2pp::Rect>>>
             coords_personajes;
+
+    std::unique_ptr<SDL2pp::Texture> textura_enemigos;
+
+    std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_enemigos;
 
 public:
     explicit LectorTexturas(SDL2pp::Renderer& renderer);
@@ -77,6 +61,20 @@ public:
     SDL2pp::Texture& obtener_textura_fondo_escenario(const std::string& tipo_escenario);
 
     const SDL2pp::Rect& obtener_coords_fondo_escenario(const std::string& tipo_escenario) const;
+
+    SDL2pp::Texture& obtener_textura_bloque(const std::string& tipo_escenario);
+
+    const SDL2pp::Rect& obtener_coords_bloque(const std::string& tipo_escenario,
+                                              const std::string& tipo_bloque) const;
+
+    SDL2pp::Texture& obtener_textura_enemigos() const;
+
+    /**
+     * Obtiene las coordenadas de todos los sprites de un enemigo
+     * @param enemigo nombre del enemigo
+     * @return referencia a un @code SDL2pp::Rect@endcode que contiene las coordenadas
+     */
+    const std::vector<SDL2pp::Rect>& obtener_coords_enemigo(const std::string& enemigo) const;
 
     ~LectorTexturas();
 

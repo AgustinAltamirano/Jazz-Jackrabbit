@@ -27,6 +27,4 @@ void LobbyRecibidor::run() {
     }
 }
 
-void LobbyRecibidor::kill() { sigo_hablando = false; }
-
-bool LobbyRecibidor::still_alive() { return sigo_hablando; }
+void LobbyRecibidor::stop() { sigo_hablando = false; }
