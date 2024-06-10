@@ -15,12 +15,6 @@ add_library(vista_juego
         fondo_escenario.h
         bloque_escenario.cpp
         bloque_escenario.h
-        piso_escenario.cpp
-        piso_escenario.h
-        pared_escenario.cpp
-        pared_escenario.h
-        techo_escenario.cpp
-        techo_escenario.h
         camara.cpp
         camara.h
         vista_juego_defs.h)

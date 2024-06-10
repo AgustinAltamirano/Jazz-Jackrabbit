@@ -36,8 +36,7 @@
 class AdministradorVistaJuego {
 private:
     static const std::unordered_map<TipoEscenario, std::string> MAPA_TIPO_ESCENARIO;
-    static const std::unordered_map<TipoBloqueEscenario, std::pair<std::string, std::string>>
-            MAPA_TIPO_BLOQUE;
+    static const std::unordered_map<TipoBloqueEscenario, std::string> MAPA_TIPO_BLOQUE;
     static const std::unordered_map<TipoPersonaje, std::string> MAPA_TIPO_PERSONAJE;
     static const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje> MAPA_ESTADOS_PERSONAJE;
 

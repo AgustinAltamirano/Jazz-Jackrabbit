@@ -8,20 +8,15 @@
 #include "../../common/snapshot_dto.h"
 #include "../../common/tipo_bloque_escenario.h"
 
-#include "pared_escenario.h"
-#include "piso_escenario.h"
-#include "techo_escenario.h"
-
 const std::unordered_map<TipoEscenario, std::string> AdministradorVistaJuego::MAPA_TIPO_ESCENARIO{
         {ESCENARIO1, "castle"},
         {ESCENARIO2, "carrotus"},
 };
 
-const std::unordered_map<TipoBloqueEscenario, std::pair<std::string, std::string>>
+const std::unordered_map<TipoBloqueEscenario, std::string>
         AdministradorVistaJuego::MAPA_TIPO_BLOQUE{
-                {PARED, {"pared_superficie", "pared_relleno"}},
-                {PISO, {"piso_superficie", "piso_relleno"}},
-                {TECHO, {"techo_superficie", "techo_relleno"}},
+                {PARED, "pared"},
+                {PISO, "piso"},
         };
 
 const std::unordered_map<TipoPersonaje, std::string> AdministradorVistaJuego::MAPA_TIPO_PERSONAJE{
@@ -84,46 +79,16 @@ void AdministradorVistaJuego::actualizar_vista() {
         for (auto bloque: bloques_recibidos) {
             SDL2pp::Texture& textura_bloque =
                     lector_texturas.obtener_textura_bloque(MAPA_TIPO_ESCENARIO.at(tipo_escenario));
-            const SDL2pp::Rect& coords_superficie = lector_texturas.obtener_coords_bloque(
-                    MAPA_TIPO_ESCENARIO.at(tipo_escenario), MAPA_TIPO_BLOQUE.at(bloque.tipo).first);
-            const SDL2pp::Rect& coords_relleno =
-                    lector_texturas.obtener_coords_bloque(MAPA_TIPO_ESCENARIO.at(tipo_escenario),
-                                                          MAPA_TIPO_BLOQUE.at(bloque.tipo).second);
-            switch (bloque.tipo) {
-                case PISO:
-                    bloques_escenario.emplace(proximo_id,
-                                              std::make_unique<PisoEscenario>(
-                                                      SDL2pp::Rect(bloque.pos_x, bloque.pos_y,
-                                                                   static_cast<int>(bloque.ancho),
-                                                                   static_cast<int>(bloque.alto)),
-                                                      renderer, textura_bloque, textura_bloque,
-                                                      coords_superficie, coords_relleno, camara));
-                    proximo_id++;
-                    break;
-                case PARED:
-                    bloques_escenario.emplace(proximo_id,
-                                              std::make_unique<ParedEscenario>(
-                                                      SDL2pp::Rect(bloque.pos_x, bloque.pos_y,
-                                                                   static_cast<int>(bloque.ancho),
-                                                                   static_cast<int>(bloque.alto)),
-                                                      renderer, textura_bloque, textura_bloque,
-                                                      coords_superficie, coords_relleno, camara));
-                    proximo_id++;
-                    break;
-                case TECHO:
-                    bloques_escenario.emplace(proximo_id,
-                                              std::make_unique<TechoEscenario>(
-                                                      SDL2pp::Rect(bloque.pos_x, bloque.pos_y,
-                                                                   static_cast<int>(bloque.ancho),
-                                                                   static_cast<int>(bloque.alto)),
-                                                      renderer, textura_bloque, textura_bloque,
-                                                      coords_superficie, coords_relleno, camara));
-                    proximo_id++;
-                    break;
-                case DIAGONAL:
-                    // Falta implementar
-                    break;
-            }
+            const SDL2pp::Rect& coords_textura = lector_texturas.obtener_coords_bloque(
+                    MAPA_TIPO_ESCENARIO.at(tipo_escenario), MAPA_TIPO_BLOQUE.at(bloque.tipo));
+
+            bloques_escenario.emplace(
+                    proximo_id,
+                    std::make_unique<BloqueEscenario>(
+                            SDL2pp::Rect(bloque.pos_x, bloque.pos_y, static_cast<int>(bloque.ancho),
+                                         static_cast<int>(bloque.alto)),
+                            renderer, textura_bloque, coords_textura, camara));
+            proximo_id++;
         }
     }
 

@@ -7,32 +7,12 @@ escenarios:
         ancho: 256
         alto: 256
     bloques:
-      - nombre: piso_superficie
+      - nombre: piso
         x: 32
         y: 0
         ancho: 32
         alto: 32
-      - nombre: piso_relleno
-        x: 32
-        y: 32
-        ancho: 32
-        alto: 32
-      - nombre: pared_superficie
-        x: 32
-        y: 32
-        ancho: 32
-        alto: 32
-      - nombre: pared_relleno
-        x: 32
-        y: 32
-        ancho: 32
-        alto: 32
-      - nombre: techo_superficie
-        x: 96
-        y: 96
-        ancho: 32
-        alto: 32
-      - nombre: techo_relleno
+      - nombre: pared
         x: 32
         y: 32
         ancho: 32
@@ -46,32 +26,12 @@ escenarios:
         ancho: 224
         alto: 192
     bloques:
-      - nombre: piso_superficie
+      - nombre: piso
         x: 128
         y: 0
         ancho: 32
         alto: 32
-      - nombre: piso_relleno
-        x: 160
-        y: 160
-        ancho: 32
-        alto: 32
-      - nombre: pared_superficie
-        x: 160
-        y: 160
-        ancho: 32
-        alto: 32
-      - nombre: pared_relleno
-        x: 160
-        y: 160
-        ancho: 32
-        alto: 32
-      - nombre: techo_superficie
-        x: 160
-        y: 160
-        ancho: 32
-        alto: 32
-      - nombre: techo_relleno
+      - nombre: pared
         x: 160
         y: 160
         ancho: 32
