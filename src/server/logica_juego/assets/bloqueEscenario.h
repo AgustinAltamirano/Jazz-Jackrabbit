@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-#include "../../../client/vista_juego/snapshot_dto.h"
+#include "../../../common/snapshot_dto.h"
 
 class bloqueEscenario {
 public:

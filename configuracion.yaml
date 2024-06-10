@@ -45,3 +45,7 @@ velocidad_esqueleto: 1
 puntos_lagarto: 250
 puntos_murcielago: 500
 puntos_esqueleto: 1000
+
+frames_hasta_revivir_lagarto: 100
+frames_hasta_revivir_murcielago: 150
+frames_hasta_revivir_esqueleto: 300

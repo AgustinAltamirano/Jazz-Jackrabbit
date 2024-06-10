@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "../../common/snapshot_dto.h"
 #include "../../common/tipo_escenario.h"
 #include "assets/bala.h"
 #include "assets/balaInfinita.h"
@@ -48,7 +49,7 @@ public:
     void manejar_balas(std::map<int, personaje>& jugadores);
 
     // crear snapshots
-    std::shared_ptr<SnapshotDTO_provisorio> crear_snapshot();
+    std::shared_ptr<SnapshotDTO> crear_snapshot();
 };
 
 

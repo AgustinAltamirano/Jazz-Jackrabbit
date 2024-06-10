@@ -3,9 +3,9 @@
 recogible::recogible(int32_t x, int32_t y, uint32_t ancho, uint32_t alto, TipoRecogible tipo):
         pos_x(x), pos_y(y), ancho(ancho), alto(alto), tipo(tipo) {
     switch (tipo) {
-        case GEMA:
+        case GEMA_AGARRABLE:
             this->valor = PUNTOS_GEMA;
-        case MONEDA:
+        case MONEDA_AGARRABLE:
             this->valor = PUNTOS_MONEDA;
         case MUNICION_ARMA_1:
             this->valor = MUNICIONES_ARMA1;

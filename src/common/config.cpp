@@ -35,6 +35,26 @@ ConfigAdmin::ConfigAdmin() {
     configuracion[VEL_ARMA3] = config[VEL_ARMA3].as<int>();
     configuracion[DANO_ARMA3] = config[DANO_ARMA3].as<int>();
     configuracion[FRAMES_REC_ARMA3] = config[FRAMES_REC_ARMA3].as<int>();
+
+    configuracion[VIDA_LAGARTO] = config[VIDA_LAGARTO].as<int>();
+    configuracion[VIDA_MURCIELAGO] = config[VIDA_MURCIELAGO].as<int>();
+    configuracion[VIDA_ESQUELETO] = config[VIDA_ESQUELETO].as<int>();
+
+    configuracion[DANO_LAGARTO] = config[DANO_LAGARTO].as<int>();
+    configuracion[DANO_MURCIELAGO] = config[DANO_MURCIELAGO].as<int>();
+    configuracion[DANO_ESQUELETO] = config[DANO_ESQUELETO].as<int>();
+
+    configuracion[VELOCIDAD_LAGARTO] = config[VELOCIDAD_LAGARTO].as<int>();
+    configuracion[VELOCIDAD_MURCIELAGO] = config[VELOCIDAD_MURCIELAGO].as<int>();
+    configuracion[VELOCIDAD_ESQUELETO] = config[VELOCIDAD_ESQUELETO].as<int>();
+
+    configuracion[PUNTOS_LAGARTO] = config[PUNTOS_LAGARTO].as<int>();
+    configuracion[PUNTOS_MURCIELAGO] = config[PUNTOS_MURCIELAGO].as<int>();
+    configuracion[PUNTOS_ESQUELETO] = config[PUNTOS_ESQUELETO].as<int>();
+
+    configuracion[FRAMES_REVIVIR_LAG] = config[FRAMES_REVIVIR_LAG].as<int>();
+    configuracion[FRAMES_REVIVIR_MUR] = config[FRAMES_REVIVIR_MUR].as<int>();
+    configuracion[FRAMES_REVIVIR_ESQ] = config[FRAMES_REVIVIR_ESQ].as<int>();
 }
 
 int ConfigAdmin::get(const std::string& clave_config) const {
