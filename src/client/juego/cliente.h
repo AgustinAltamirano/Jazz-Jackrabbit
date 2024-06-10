@@ -4,7 +4,6 @@
 #include <optional>
 #include <string>
 #include <vector>
-#include <memory>
 
 #include "../../common/snapshot_dto.h"
 
@@ -26,7 +25,7 @@ private:
 
     Queue<std::vector<char>> cola_enviador;
 
-    Queue<SnapshotDTO> cola_recibidor;
+    Queue<std::shared_ptr<SnapshotDTO>> cola_recibidor;
 
 public:
     explicit Cliente(Socket&& socket);
