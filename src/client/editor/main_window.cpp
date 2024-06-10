@@ -88,4 +88,5 @@ void MainWindow::inicializar_texturas() {
 
         layout_vertical.inicializar_boton_texturas(std::move(item_actual));
     }
+    escena.actualizar_texturas(ESCENARIO1);
 }

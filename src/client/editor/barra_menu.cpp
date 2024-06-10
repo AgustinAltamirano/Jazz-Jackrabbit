@@ -103,12 +103,12 @@ void BarraMenu::guardar_en_yaml(const QString& ruta_archivo_guardado) {
 
     auto items = escena.obtener_items_escena();
 
-    if (not items.empty()) {
-        yaml_mapa << YAML::BeginMap;
-        auto escenario = escena.obtener_tipo_escenario();
-        yaml_mapa << YAML::Key << KEY_ESCENARIO << YAML::Value << escenario;
-        yaml_mapa << YAML::EndMap;
+    yaml_mapa << YAML::BeginMap;
+    auto escenario = escena.obtener_tipo_escenario();
+    yaml_mapa << YAML::Key << KEY_ESCENARIO << YAML::Value << escenario;
+    yaml_mapa << YAML::EndMap;
 
+    if (not items.empty()) {
         yaml_mapa << YAML::BeginMap;
         yaml_mapa << YAML::Key << KEY_BLOQUES;
         yaml_mapa << YAML::Value << YAML::BeginSeq;

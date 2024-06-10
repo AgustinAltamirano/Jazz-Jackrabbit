@@ -29,9 +29,6 @@ void MenuSeleccion::realizar_accion_clic() {
     auto boton_clickeado = qobject_cast<QPushButton*>(sender());
     if (boton_clickeado == boton_enfocado) {
         boton_enfocado = nullptr;
-
-//        int boton_seleccionado = boton_clickeado->property(KEY_TIPO_BOTON).toInt();
-//        realizar_accion_menu(boton_seleccionado);
         realizar_accion_menu(boton_clickeado);
         return;
     }
