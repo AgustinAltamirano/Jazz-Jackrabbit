@@ -28,6 +28,9 @@
 #define DIR_ESCENARIOS "/escenarios/"
 #define ESCENARIOS_CONFIG "/escenarios.yaml"
 
+#define DIR_ENEMIGOS "/enemigos/"
+#define ENEMIGOS_CONFIG "/enemigos.yaml"
+
 #define COLOR_KEY_PERSONAJES_RED 44
 #define COLOR_KEY_PERSONAJES_GREEN 102
 #define COLOR_KEY_PERSONAJES_BLUE 150
@@ -43,5 +46,13 @@
 #define COLOR_KEY_ESCENARIOS                                                \
     ((COLOR_KEY_ESCENARIOS_RED << 24) + (COLOR_KEY_ESCENARIOS_BLUE << 16) + \
      (COLOR_KEY_ESCENARIOS_GREEN << 8) + COLOR_KEY_ESCENARIOS_RED)
+
+#define COLOR_KEY_ENEMIGOS_RED 0
+#define COLOR_KEY_ENEMIGOS_GREEN 128
+#define COLOR_KEY_ENEMIGOS_BLUE 255
+
+#define COLOR_KEY_ENEMIGOS                                              \
+    ((COLOR_KEY_ENEMIGOS_RED << 24) + (COLOR_KEY_ENEMIGOS_BLUE << 16) + \
+     (COLOR_KEY_ENEMIGOS_GREEN << 8) + COLOR_KEY_ENEMIGOS_RED)
 
 #endif  // VISTA_JUEGO_DEFS_H

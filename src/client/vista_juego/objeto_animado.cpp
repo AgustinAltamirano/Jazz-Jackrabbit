@@ -5,17 +5,15 @@
 ObjetoAnimado::ObjetoAnimado(const uint32_t id, SDL2pp::Renderer& renderer,
                              SDL2pp::Texture& textura,
                              const std::vector<SDL2pp::Rect>& sprite_coords, Camara& camara,
-                             const std::vector<int>& dimensiones_iniciales,
-                             uint32_t iteraciones_por_sprite):
+                             const SDL2pp::Rect& dimensiones_iniciales, const int angulo,
+                             const uint32_t iteraciones_por_sprite):
         id(id),
         renderer(renderer),
         textura(textura),
-        sprite_coords(sprite_coords),
         camara(camara),
-        render_coords(camara.obtener_coords_ventana(SDL2pp::Rect(
-                dimensiones_iniciales.at(RENDER_X), dimensiones_iniciales.at(RENDER_Y),
-                dimensiones_iniciales.at(RENDER_ANCHO), dimensiones_iniciales.at(RENDER_ALTO)))),
-        render_angulo(dimensiones_iniciales.at(RENDER_ANGULO)),
+        sprite_coords(sprite_coords),
+        render_coords(camara.obtener_coords_ventana(dimensiones_iniciales)),
+        render_angulo(angulo),
         invertido(false),
         reseteado(true),
         sprite_actual(0),
@@ -41,29 +39,33 @@ ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
     otro.sprite_actual = 0;
 }
 
+const SDL2pp::Rect& ObjetoAnimado::obtener_coords_sprite_actual() const {
+    return sprite_coords.at(sprite_actual);
+}
+
 void ObjetoAnimado::resetear_animacion() { reseteado = true; }
 
-void ObjetoAnimado::actualizar_animacion(const uint32_t iteraciones_actuales,
-                                         const std::vector<int>& dimensiones,
-                                         const bool invertido) {
+void ObjetoAnimado::actualizar_iteracion(const uint32_t iteraciones_actuales) {
     sprite_actual =
             !reseteado ? (iteraciones_actuales / iteraciones_por_sprite) % sprite_coords.size() : 0;
     reseteado = false;
-
-    this->invertido = invertido;
-
-    const SDL2pp::Rect nuevas_coords_absolutas(
-            dimensiones.at(RENDER_X), dimensiones.at(RENDER_Y),
-            sprite_coords.at(sprite_actual).GetW() * dimensiones.at(RENDER_ANCHO),
-            sprite_coords.at(sprite_actual).GetH() * dimensiones.at(RENDER_ALTO));
-    render_coords = camara.obtener_coords_ventana(nuevas_coords_absolutas);
-    render_angulo = dimensiones.at(RENDER_ANGULO);
 }
 
-void ObjetoAnimado::actualizar_camara(const int pos_x, const int pos_y) const {
+void ObjetoAnimado::actualizar_animacion(const SDL2pp::Rect& dimensiones, const int angulo,
+                                         const bool invertido) {
+    this->invertido = invertido;
+    const SDL2pp::Rect nuevas_coords_absolutas(
+            dimensiones.GetX(), dimensiones.GetY(),
+            sprite_coords.at(sprite_actual).GetW() * dimensiones.GetW(),
+            sprite_coords.at(sprite_actual).GetH() * dimensiones.GetH());
+    render_coords = camara.obtener_coords_ventana(nuevas_coords_absolutas);
+    render_angulo = angulo;
+}
+
+void ObjetoAnimado::actualizar_camara(const int camara_pos_x, const int camara_pos_y) const {
     const SDL2pp::Rect& coords_actual = sprite_coords.at(0);
-    camara.actualizar_pos_camara(pos_x + coords_actual.GetW() / 2,
-                                 pos_y + coords_actual.GetH() / 2);
+    camara.actualizar_pos_camara(camara_pos_x + coords_actual.GetW() / 2,
+                                 camara_pos_y + coords_actual.GetH() / 2);
 }
 
 

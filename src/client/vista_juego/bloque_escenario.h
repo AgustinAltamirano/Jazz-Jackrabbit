@@ -6,20 +6,17 @@
 #include "camara.h"
 
 class BloqueEscenario {
-protected:
+private:
     SDL2pp::Rect coords;
     SDL2pp::Rect render_coords;
     SDL2pp::Renderer& renderer;
-    SDL2pp::Texture &textura_superficie, &textura_relleno;
-    const SDL2pp::Rect& coords_superficie;
-    const SDL2pp::Rect& coords_relleno;
+    SDL2pp::Texture& textura;
+    const SDL2pp::Rect& coords_textura;
     const Camara& camara;
 
 public:
-    BloqueEscenario(SDL2pp::Rect coords, SDL2pp::Renderer& renderer,
-                    SDL2pp::Texture& textura_superficie, SDL2pp::Texture& textura_relleno,
-                    const SDL2pp::Rect& coords_superficie, const SDL2pp::Rect& coords_relleno,
-                    const Camara& camara);
+    BloqueEscenario(SDL2pp::Rect coords, SDL2pp::Renderer& renderer, SDL2pp::Texture& textura,
+                    const SDL2pp::Rect& coords_textura, const Camara& camara);
 
     BloqueEscenario(const BloqueEscenario&) = delete;
 
@@ -27,9 +24,9 @@ public:
 
     void actualizar_vista();
 
-    virtual void dibujar() const = 0;
+    void dibujar() const;
 
-    virtual ~BloqueEscenario();
+    ~BloqueEscenario();
 };
 
 #endif  // BLOQUE_ESCENARIO_H
