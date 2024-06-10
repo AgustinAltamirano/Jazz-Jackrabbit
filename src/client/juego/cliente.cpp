@@ -23,7 +23,14 @@ bool Cliente::realizar_accion(const TipoComando& comando) {
     return cola_enviador.try_push(client_serializador.serializar_comando(comando));
 }
 
-bool Cliente::obtener_snapshot(SnapshotDTO& snapshot) { return cola_recibidor.try_pop(snapshot); }
+bool Cliente::obtener_snapshot(std::shared_ptr<SnapshotDTO>& snapshot) {
+    SnapshotDTO s;
+    if (!cola_recibidor.try_pop(s)) {
+        return false;
+    }
+    snapshot = std::make_shared<SnapshotDTO>(s);
+    return true;
+}
 
 void Cliente::join() {
     skt_cliente.shutdown(2);
