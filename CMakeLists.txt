@@ -36,7 +36,10 @@ add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/ser
         src/server/logica_juego/assets/bala_arma_2.cpp
         src/server/logica_juego/assets/bala_arma_2.h
         src/server/logica_juego/assets/bala_arma_3.cpp
-        src/server/logica_juego/assets/bala_arma_3.h)
+        src/server/logica_juego/assets/bala_arma_3.h
+        src/server/logica_juego/enemigo.cpp
+        src/server/logica_juego/enemigo.h
+)
 
 add_subdirectory(src/client/vista_juego)
 add_subdirectory(test)

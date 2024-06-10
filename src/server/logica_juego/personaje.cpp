@@ -42,7 +42,7 @@ bool personaje::ejecutar_acciones(const std::vector<AccionJuego>& teclas) {
         switch (tecla) {
             case SALTAR:
                 if (!en_aire && (this->estado != INTOXICADO)) {
-                    this->vel_y = 12;
+                    this->vel_y = -11;
                     this->en_aire = true;
                 }
             case MOVER_DER:
@@ -74,8 +74,13 @@ bool personaje::ejecutar_acciones(const std::vector<AccionJuego>& teclas) {
             /*
             case ATAQUEESPECIAL:
                 // por hacer
-                ataque_especial = true;
-                break;
+                this->ataque_especial = true;
+            case ACTIVAR_DASH:
+                // por hacer
+                this->dash = true;
+            case TRUCO1:
+            case TRUCO2:
+            case TRUCO3:
             */
             default:  // si no es ningun caso que conozco lo ignoro
                 break;

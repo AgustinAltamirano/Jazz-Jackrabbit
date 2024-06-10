@@ -23,3 +23,25 @@ frames_recarga_arma2: 66
 velocidad_arma3: 6
 dano_arma3: 3
 frames_recarga_arma3: 132
+
+probabilidad_comida_buena: 1
+probabilidad_comida_mala: 1
+probabilidad_municion_1: 1
+probabilidad_municion_2: 1
+probabilidad_municion_3: 1
+
+vida_lagarto: 6
+vida_murcielago: 3
+vida_esqueleto: 9
+
+dano_lagarto: 1
+dano_murcielago: 2
+dano_esqueleto: 3
+
+velocidad_lagarto: 2
+velocidad_murcielago: 3
+velocidad_esqueleto: 1
+
+puntos_lagarto: 250
+puntos_murcielago: 500
+puntos_esqueleto: 1000
