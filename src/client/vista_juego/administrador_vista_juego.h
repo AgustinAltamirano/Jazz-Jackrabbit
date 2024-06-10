@@ -62,6 +62,9 @@ private:
     /** Mapa con todos los objetos asociados a bloques del escenario. */
     std::unordered_map<uint32_t, std::unique_ptr<BloqueEscenario>> bloques_escenario;
 
+    /** Mapa con todos los objetos asociados a enemigos. */
+    std::unordered_map<uint32_t, ObjetoAnimado> enemigos;
+
     bool fin_juego;
 
     void actualizar_vista();
