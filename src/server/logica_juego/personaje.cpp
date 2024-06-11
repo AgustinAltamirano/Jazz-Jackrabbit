@@ -2,8 +2,6 @@
 
 #include "../../common/config.h"
 #include "../../common/constantes.h"
-#include "../../common/snapshot_dto.h"
-#include "../../common/tipo_comando.h"
 
 personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t pos_x_inicial,
                      const int32_t pos_y_inicial):
@@ -34,16 +32,17 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
     inventario_balas[ARMA3] = 0;
 }
 
-void personaje::cambiar_velocidad(const std::vector<TipoComando>& teclas) {
+bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
     if (ataque_especial || this->estado == MUERTE || this->estado == IMPACTADO) {
         return false;
     }
+    bool disparo = false;
     for (const TipoComando tecla&: teclas) {
         // verificar si el estado permite hacer acciones
         switch (tecla) {
             case SALTAR:
                 if (!en_aire && (this->estado != INTOXICADO)) {
-                    this->vel_y = 12;
+                    this->vel_y = -11;
                     this->en_aire = true;
                 }
             case MOVER_DER:
@@ -73,11 +72,12 @@ void personaje::cambiar_velocidad(const std::vector<TipoComando>& teclas) {
                     this->arma_actual = static_cast<TipoArma>(arma_actual + 1);
                 }
             /*
-            case ATAQUEESPECIAL:
-                // por hacer
-                ataque_especial = true;
-                break;
+            case ATAQUE_ESPECIAL:
+                por haacer
             */
+            case TRUCO1:
+            case TRUCO2:
+            case TRUCO3:
             default:  // si no es ningun caso que conozco lo ignoro
                 break;
         }
@@ -89,7 +89,7 @@ void personaje::cambiar_velocidad(const std::vector<TipoComando>& teclas) {
     return disparo;
 }
 
-void personaje::cambiar_posicion(const uint32_t x, const uint32_t y) {
+void personaje::cambiar_posicion(const int32_t x, const int32_t y) {
     this->pos_x = x;
     this->pos_y = y;
 }
@@ -125,7 +125,13 @@ uint32_t personaje::get_ancho() const { return ancho; }
 void personaje::cambiar_estado(const bool cae) {
     this->en_aire = cae;
     if (estado == MUERTE || estado == IMPACTADO || estado == DISPARAR_QUIETO ||
-        estado == ATAQUE_ESPECIAL || estado == INTOXICADO) {
+        estado == ATAQUE_ESPECIAL) {
+        return;
+    }
+    if (estado == INTOXICADO) {
+        if (vel_x != 0) {
+            this->estado = INTOXICADO_MOVIMIENTO;
+        }
         return;
     }
     if (cae) {
@@ -203,7 +209,7 @@ void personaje::recoger_objeto(const uint32_t valor, const TipoRecogible tipo) {
     }
 }
 
-ArmaActual personaje::get_arma() const { return this->arma_actual; }
+TipoArma personaje::get_arma() const { return this->arma_actual; }
 
 bool personaje::get_invertido() const { return this->de_espaldas; }
 
@@ -225,6 +231,8 @@ void personaje::efectuar_dano(uint32_t const dano) {
         }
     }
 }
+
+void personaje::dar_puntos(int32_t const puntos) { this->puntos += puntos; }
 
 ClienteDTO personaje::crear_dto() const {
     const int32_t balas_restantes = inventario_balas.at(arma_actual);

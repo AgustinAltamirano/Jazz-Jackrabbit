@@ -3,8 +3,14 @@
 
 enum TipoBloqueEscenario : char {
     PISO,
-    TECHO,
     PARED,
-    DIAGONAL
+    DIAGONAL,
+    DIAGONAL_INVERTIDO,
+    SOPORTE_DIAGONAL,
+    SOPORTE_DIAGONAL_INVERTIDO,
+    SPAWNPOINT_JUGADOR,
+    SPAWNPOINT_ENEMIGO,
+    GEMA,
+    MONEDA
 };
 #endif

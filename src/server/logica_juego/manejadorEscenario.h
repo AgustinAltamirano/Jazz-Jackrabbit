@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "../../common/snapshot_dto.h"
 #include "../../common/tipo_escenario.h"
 #include "assets/bala.h"
 #include "assets/balaInfinita.h"
@@ -18,6 +19,7 @@
 #include "assets/recogible.h"
 #include "assets/spawnpoint.h"
 
+#include "enemigo.h"
 #include "personaje.h"
 
 class manejadorEscenario {
@@ -28,6 +30,7 @@ private:
     std::vector<bloqueEscenario> bloques_angulados;
     std::vector<spawnpoint> spawnpoints;
     std::vector<spawnpoint> spawnpoints_enemigos;
+    std::vector<enemigo> enemigos;
     std::list<recogible> objetos;
     std::list<bala> balas;
 
@@ -35,6 +38,7 @@ public:
     // creacion, cargar escenario y ayudar a gameloop
     explicit manejadorEscenario(std::string path);
     void cargar_escenario();
+    void cargar_enemigos();
     std::vector<spawnpoint>& get_spawns();
     TipoEscenario get_escenario();
 
@@ -47,8 +51,12 @@ public:
     void jugador_dispara(int32_t id, personaje& jugador);
     void manejar_balas(std::map<int, personaje>& jugadores);
 
+    // manejo enemigos
+    void hacer_tick_enemigos();
+    void generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y);
+
     // crear snapshots
-    std::shared_ptr<SnapshotDTO_provisorio> crear_snapshot();
+    std::shared_ptr<SnapshotDTO> crear_snapshot();
 };
 
 
