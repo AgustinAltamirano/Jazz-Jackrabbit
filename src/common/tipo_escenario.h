@@ -4,6 +4,6 @@
 enum TipoEscenario : char {
     ESCENARIO1,
     ESCENARIO2,
-    ESCENARIO_INDEFINIDO,
+    ESCENARIO_INDEFINIDO
 };
 #endif

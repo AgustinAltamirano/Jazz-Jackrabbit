@@ -8,12 +8,13 @@
 #include <QPushButton>
 
 #include "boton_menu.h"
+#include "menu_seleccion.h"
 #include "sprites_jugador.h"
 
 
 class BotonAnimadoJugador: public BotonMenu {
 public:
-    BotonAnimadoJugador(QMainWindow* parent, int num_sprite, int ancho, int alto);
+    BotonAnimadoJugador(MenuSeleccion* parent, int num_sprite, int ancho, int alto);
 
 protected:
     void focusInEvent(QFocusEvent* event) override;
@@ -21,6 +22,8 @@ protected:
     void focusOutEvent(QFocusEvent* event) override;
 
 private:
+    MenuSeleccion* menu;
+
     QLabel label_jugador;
 
     QLabel label_nombre;

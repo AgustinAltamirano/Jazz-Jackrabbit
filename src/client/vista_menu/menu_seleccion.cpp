@@ -15,7 +15,7 @@ MenuSeleccion::MenuSeleccion(QMainWindow* parent):
 
 void MenuSeleccion::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Escape) {
-        boton_enfocado = nullptr;
+        desenfocar_boton();
         menu_previo->move(this->pos());
         menu_previo->show();
         hide();
@@ -27,14 +27,9 @@ void MenuSeleccion::keyPressEvent(QKeyEvent* event) {
 
 void MenuSeleccion::realizar_accion_clic() {
     auto boton_clickeado = qobject_cast<QPushButton*>(sender());
-    if (boton_clickeado == boton_enfocado) {
-        boton_enfocado = nullptr;
-
-        int boton_seleccionado = boton_clickeado->property(KEY_TIPO_BOTON).toInt();
-        realizar_accion_menu(boton_seleccionado);
-        return;
-    }
-    boton_enfocado = boton_clickeado;
+    boton_clickeado->clearFocus();
+    enfocar(boton_clickeado);
+    realizar_accion_menu(boton_clickeado);
 }
 
 
@@ -47,8 +42,21 @@ void MenuSeleccion::conectar_botones(const std::vector<QPushButton*>& botones,
         connect(boton, &QPushButton::clicked, this,
                 &MenuSeleccion::realizar_accion_clic);
 
-        boton->setProperty(KEY_TIPO_BOTON, props[i]);
+        boton->setProperty(KEY_TIPO_BOTON, QVariant(props[i]));
 
         layout.addWidget(boton);
+    }
+}
+
+
+void MenuSeleccion::enfocar(QPushButton* boton) {
+    boton_enfocado = boton;
+}
+
+
+void MenuSeleccion::desenfocar_boton() {
+    if (boton_enfocado != nullptr) {
+        boton_enfocado->clearFocus();
+        boton_enfocado = nullptr;
     }
 }

@@ -6,7 +6,7 @@
 
 
 MenuJuego::MenuJuego(int argc, char* argv[], Lobby& lobby) :
-        lobby(lobby), personaje_elegido(0), mapa_elegido(0), cant_jugadores(0), codigo_partida(0) {
+        lobby(lobby), personaje_elegido(), mapa_elegido(), cant_jugadores(0), codigo_partida(0) {
     QApplication a(argc, argv);
     VentanaInicial ventana(*this);
     ventana.show();
@@ -14,12 +14,12 @@ MenuJuego::MenuJuego(int argc, char* argv[], Lobby& lobby) :
 }
 
 
-void MenuJuego::definir_personaje_elegido(int personaje) {
+void MenuJuego::definir_personaje_elegido(TipoPersonaje personaje) {
     personaje_elegido = personaje;
 }
 
 
-void MenuJuego::definir_mapa_elegido(int mapa) {
+void MenuJuego::definir_mapa_elegido(const std::string& mapa) {
     mapa_elegido = mapa;
 }
 
@@ -28,12 +28,12 @@ void MenuJuego::definir_cant_jugadores(int cant_jug) { cant_jugadores = cant_jug
 
 
 void MenuJuego::crear_partida() {
-    lobby.crear_partida(cant_jugadores);
+    lobby.crear_partida(mapa_elegido, personaje_elegido, cant_jugadores);
 }
 
 
 void MenuJuego::unir_partida() {
-    lobby.unir_partida(codigo_partida);
+    lobby.unir_partida(codigo_partida, personaje_elegido);
 }
 
 
