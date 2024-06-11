@@ -6,6 +6,8 @@
 
 #include <unistd.h>
 
+#include "logica_juego/gameloop.h"
+
 double frecuencia = 0.05;
 
 Partida::Partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo_partida,
@@ -14,54 +16,26 @@ Partida::Partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo_partida,
         cola_comandos(10000),
         nombre_escenario(nombre_escenario),
         codigo_partida(capacidad_partida),
-        logica_juego(),
         sigo_jugando(true),
         admite_jugadores(true),
         capacidad_partida(capacidad_partida) {
-    logica_juego.agregar_cliente(id_cliente, personaje);
     monitor_snapshots.agregar_cola(cola_enviador, id_cliente);
+    monitor_mapa_clientes.agregar_cliente(id_cliente, personaje);
 }
 
 void Partida::run() {
-    ComandoDTO* comando_dto;
-    bool pop_comando;
-    int capacidad_inicial = 0;
-    while (capacidad_inicial < monitor_snapshots.obtener_cantidad_clientes() && sigo_jugando) {
+    while (monitor_snapshots.obtener_cantidad_clientes() < capacidad_partida && sigo_jugando) {
         try {
-            pop_comando = cola_comandos.try_pop(comando_dto);
-            if (pop_comando) {
-                if (comando_dto->obtener_comando() == COMENZAR) {
-                    capacidad_inicial++;
-                    delete comando_dto;
-                }
-            }
             std::this_thread::sleep_for(std::chrono::duration<double>(frecuencia));
         } catch (const ClosedQueue& e) {
-            std::cout << "Partida finalizado" << std::endl;
+            std::cout << "Partida finalizada" << std::endl;
             sigo_jugando = false;
             return;
         }
     }
     admite_jugadores = false;
-    while (sigo_jugando) {
-        auto t_inicio = std::chrono::high_resolution_clock::now();  // Comienzo el timer
-        SnapshotDTO snapshot_dto = logica_juego.obtener_snapshot();
-        monitor_snapshots.agregar_snapshot(snapshot_dto);
-        auto t_fin = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> duracion = t_fin - t_inicio;
-        double descanso = frecuencia - duracion.count();
-        if (descanso < 0) {
-            double adelanto = -descanso;
-            double perdida = adelanto - std::fmod(adelanto, frecuencia);
-            t_inicio += std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(
-                    std::chrono::duration<double>(perdida));
-        } else {
-            std::this_thread::sleep_for(std::chrono::duration<double>(descanso));
-        }
-    }
-    SnapshotDTO snapshot_dto = logica_juego.obtener_snapshot();
-    snapshot_dto.establecer_fin_juego(true);
-    monitor_snapshots.agregar_snapshot(snapshot_dto);
+    Gameloop gameloop(nombre_escenario, monitor_mapa_clientes, cola_comandos, monitor_snapshots);
+    gameloop.run();
     cola_comandos.close();
 }
 
@@ -69,7 +43,7 @@ Queue<ComandoDTO*>* Partida::obtener_comandos() { return &cola_comandos; }
 
 void Partida::agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente,
                               const TipoPersonaje& personaje) {
-    logica_juego.agregar_cliente(id_cliente, personaje);
+    monitor_mapa_clientes.agregar_cliente(id_cliente, personaje);
     monitor_snapshots.agregar_cola(cola_enviador, id_cliente);
 }
 

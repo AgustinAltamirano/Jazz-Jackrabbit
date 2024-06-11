@@ -1,10 +1,8 @@
 #include "lobby_enviador.h"
 
 #include <iostream>
-#include <string>
 #include <vector>
 
-#include <arpa/inet.h>
 
 LobbyEnviador::LobbyEnviador(Socket* socket, std::atomic<bool>& sigo_hablando,
                              Queue<std::vector<char>>* cola_enviador):

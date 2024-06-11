@@ -1,4 +1,4 @@
-#include "gameloop.h"
+#include "Gameloop.h"
 
 #include "../../common/comando_dto.h"
 #include "../../common/constantes.h"
@@ -6,9 +6,9 @@
 
 void hacer_tick(int tiempo) { std::this_thread::sleep_for(std::chrono::milliseconds(tiempo)); }
 
-void gameloop::stop() { this->keep_talking = false; }
+void Gameloop::stop() { this->keep_talking = false; }
 
-gameloop::gameloop(const std::string& archivo_escenario,
+Gameloop::Gameloop(const std::string& archivo_escenario,
                    const std::map<int32_t, TipoPersonaje>& mapa,
                    Queue<std::shared_ptr<ComandoDTO>>& cola_entrada,
                    std::list<Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida):
@@ -30,7 +30,7 @@ gameloop::gameloop(const std::string& archivo_escenario,
     }
 }
 
-void gameloop::run() {
+void Gameloop::run() {
     // enviando dto escenario
     auto snapshot_escenario = escenario.crear_snapshot();
     for (auto& cola_salida: colas_salida) {

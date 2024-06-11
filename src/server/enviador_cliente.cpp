@@ -24,7 +24,6 @@ void EnviadorCliente::run() {
     servidor_serializador.enviar_id_cliente(id_cliente, &cerrado);
     while (sigo_jugando) {
         inicio_recibidor_cliente();
-        // Llamar al gameloop
         try {
             while (sigo_en_partida && !cerrado) {
                 SnapshotDTO snapshot_dto = cola_enviador.pop();
@@ -61,8 +60,9 @@ void EnviadorCliente::inicio_recibidor_cliente() {
                 std::string nombre_escenario = crear_dto->obtener_nombre_escenario();
                 TipoPersonaje personaje = crear_dto->obtener_personaje();
                 int8_t capacidad_partida = crear_dto->obtener_capacidad_partida();
-                cola_recibidor = gestor_partidas->crear_partida(&cola_enviador, nombre_escenario, id_cliente,
-                                                                codigo_partida, personaje, capacidad_partida);
+                cola_recibidor = gestor_partidas->crear_partida(&cola_enviador, nombre_escenario,
+                                                                id_cliente, codigo_partida,
+                                                                personaje, capacidad_partida);
                 // Si me devuelve un puntero nulo significa que no se pudo crear la partida
                 if (cola_recibidor == nullptr) {
                     servidor_serializador.enviar_error_crear_partida(&cerrado);
@@ -74,16 +74,9 @@ void EnviadorCliente::inicio_recibidor_cliente() {
                 ComandoUnirDTO* unir_dto = dynamic_cast<ComandoUnirDTO*>(comando);
                 codigo_partida = unir_dto->obtener_codigo_partida();
                 TipoPersonaje personaje = unir_dto->obtener_personaje();
-                cola_recibidor =
-                        gestor_partidas->unir_partida(&cola_enviador, codigo_partida, id_cliente, personaje);
+                cola_recibidor = gestor_partidas->unir_partida(&cola_enviador, codigo_partida,
+                                                               id_cliente, personaje);
                 servidor_serializador.enviar_unir_partida((cola_recibidor != nullptr), &cerrado);
-            } else if (comando->obtener_comando() == COMENZAR) {
-                servidor_serializador.enviar_iniciar_juego(cola_recibidor != nullptr, &cerrado);
-                if (cola_recibidor != nullptr) {
-                    delete comando;
-                    sigo_en_partida = true;
-                    break;
-                }
             }
             delete comando;
         } catch (const std::runtime_error& e) {
