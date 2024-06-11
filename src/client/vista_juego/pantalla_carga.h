@@ -3,8 +3,6 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "vista_juego_defs.h"
-
 class PantallaCarga {
 private:
     SDL2pp::Renderer& renderer;

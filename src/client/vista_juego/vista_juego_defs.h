@@ -60,4 +60,19 @@
     ((COLOR_KEY_ENEMIGOS_RED << 24) + (COLOR_KEY_ENEMIGOS_BLUE << 16) + \
      (COLOR_KEY_ENEMIGOS_GREEN << 8) + COLOR_KEY_ENEMIGOS_RED)
 
+
+/** Constantes del HUD de cliente */
+
+#define SEPARACION_ENTRE_NUMEROS 5
+
+#define POS_PUNTOS_X 10
+#define POS_PUNTOS_Y 10
+
+#define POS_VIDA_X (ANCHO_VENTANA / 2)
+#define POS_VIDA_Y 10
+
+#define POS_ARMA_ACTUAL_X 10
+#define POS_ARMA_ACTUAL_Y (ALTO_VENTANA - 30)
+
+
 #endif  // VISTA_JUEGO_DEFS_H

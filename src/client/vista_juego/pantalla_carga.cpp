@@ -1,5 +1,6 @@
 #include "pantalla_carga.h"
 
+#include "vista_juego_defs.h"
 
 PantallaCarga::PantallaCarga(SDL2pp::Renderer& renderer):
         renderer(renderer),
