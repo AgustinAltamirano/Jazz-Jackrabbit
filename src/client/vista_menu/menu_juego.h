@@ -9,9 +9,9 @@ class MenuJuego {
 public:
     MenuJuego(int argc, char* argv[], Lobby& lobby);
 
-    void definir_mapa_elegido(int mapa);
+    void definir_mapa_elegido(const std::string& mapa);
 
-    void definir_personaje_elegido(int personaje);
+    void definir_personaje_elegido(TipoPersonaje personaje);
 
     void definir_cant_jugadores(int cant_jug);
 
@@ -24,9 +24,9 @@ public:
 private:
     Lobby& lobby;
 
-    int personaje_elegido;
+    TipoPersonaje personaje_elegido;
 
-    int mapa_elegido;
+    std::string mapa_elegido;
 
     int cant_jugadores;
 

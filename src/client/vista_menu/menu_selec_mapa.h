@@ -19,10 +19,19 @@
 #define M_RIGHT_MAPA 0
 #define M_BOTTOM_MAPA 150
 
+#include "menu_selec_jugador.h"
+#include "ventana_dialogo.h"
+
 
 class MenuSeleccionMapa: public MenuSeleccion {
 private:
+    static const std::unordered_map<TipoEscenario, std::string> MAPA_TIPO_ESCENARIO;
+
     MenuJuego& juego;
+
+    MenuSeleccionJugador selector_jugador;
+
+    VentanaDialogo popup_nombre_mapa;
 
     QWidget central_widget;
 
@@ -36,11 +45,17 @@ private:
 
     BotonAnimadoMapa opcion_mapa_custom;
 
+    void desplegar_popup();
+
+    void definir_mapa_custom();
+
 protected:
-    void realizar_accion_menu(int boton_seleccionado) override;
+    void realizar_accion_menu(QPushButton* boton_seleccionado) override;
 
 public:
     explicit MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego);
+
+    void validar_seleccion_mapa();
 };
 
 

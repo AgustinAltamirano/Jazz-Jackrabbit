@@ -17,7 +17,6 @@ void BotonAnimadoMapa::paintEvent(QPaintEvent* event) { manejador_sprites.pintar
 
 void BotonAnimadoMapa::focusInEvent(QFocusEvent* event) {
     manejador_sprites.animacion_hacia_adelante();
-    clicked();
     BotonMenu::focusInEvent(event);
 }
 
