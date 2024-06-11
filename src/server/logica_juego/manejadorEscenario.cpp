@@ -18,7 +18,7 @@ manejadorEscenario::manejadorEscenario(std::string path):
 }
 
 void manejadorEscenario::cargar_escenario() {
-    YAML::Node archivo = YAML::LoadFile(this->path);
+    YAML::Node archivo = YAML::LoadFile("../../../mapas" + this->path + ".yaml");
     // para calcular los bordes del mapa
     int32_t ancho_mapa = 0;
     int32_t alto_mapa = 0;
