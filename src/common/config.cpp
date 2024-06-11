@@ -55,6 +55,14 @@ ConfigAdmin::ConfigAdmin() {
     configuracion[FRAMES_REVIVIR_LAG] = config[FRAMES_REVIVIR_LAG].as<int>();
     configuracion[FRAMES_REVIVIR_MUR] = config[FRAMES_REVIVIR_MUR].as<int>();
     configuracion[FRAMES_REVIVIR_ESQ] = config[FRAMES_REVIVIR_ESQ].as<int>();
+
+    configuracion[PROBABILIDAD_COM] = config[PROBABILIDAD_COM].as<int>();
+    configuracion[PROBABILIDAD_MUN] = config[PROBABILIDAD_MUN].as<int>();
+    configuracion[PROB_COM_BUENA] = config[PROB_COM_BUENA].as<int>();
+    configuracion[PROB_COM_MALA] = config[PROB_COM_MALA].as<int>();
+    configuracion[PROB_MUN_1] = config[PROB_MUN_1].as<int>();
+    configuracion[PROB_MUN_2] = config[PROB_MUN_2].as<int>();
+    configuracion[PROB_MUN_3] = config[PROB_MUN_3].as<int>();
 }
 
 int ConfigAdmin::get(const std::string& clave_config) const {

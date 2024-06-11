@@ -1,4 +1,4 @@
-#include "Gameloop.h"
+#include "gameloop.h"
 
 #include "../../common/comando_dto.h"
 #include "../../common/constantes.h"
@@ -15,9 +15,9 @@ Gameloop::Gameloop(const std::string& archivo_escenario,
         keep_talking(true),
         is_alive(true),
         cola_entrada(cola_entrada),
-        escenario(archivo_escenario),
-        colas_salida(colas_salida) {
-    std::vector<spawnpoint> lugares_spawnpoints = escenario.get_spawns();
+        colas_salida(colas_salida),
+        escenario(archivo_escenario) {
+    const std::vector<spawnpoint> lugares_spawnpoints = escenario.get_spawns();
     uint32_t index_spawns = 0;
     for (auto& [id, tipo]: mapa) {
         const int32_t spawn_x = lugares_spawnpoints[index_spawns].pos_x;

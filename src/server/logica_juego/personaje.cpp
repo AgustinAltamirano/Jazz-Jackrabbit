@@ -125,7 +125,13 @@ uint32_t personaje::get_ancho() const { return ancho; }
 void personaje::cambiar_estado(const bool cae) {
     this->en_aire = cae;
     if (estado == MUERTE || estado == IMPACTADO || estado == DISPARAR_QUIETO ||
-        estado == ATAQUE_ESPECIAL || estado == INTOXICADO) {
+        estado == ATAQUE_ESPECIAL) {
+        return;
+    }
+    if (estado == INTOXICADO) {
+        if (vel_x != 0) {
+            this->estado = INTOXICADO_MOVIMIENTO;
+        }
         return;
     }
     if (cae) {

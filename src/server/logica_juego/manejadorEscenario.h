@@ -53,6 +53,7 @@ public:
 
     // manejo enemigos
     void hacer_tick_enemigos();
+    void generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y);
 
     // crear snapshots
     std::shared_ptr<SnapshotDTO> crear_snapshot();

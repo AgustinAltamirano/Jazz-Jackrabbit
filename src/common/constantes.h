@@ -45,6 +45,16 @@
 #define FRAMES_REVIVIR_MUR "frames_hasta_revivir_murcielago"
 #define FRAMES_REVIVIR_ESQ "frames_hasta_revivir_esqueleto"
 
+#define PROBABILIDAD_COM "probabilidad_comida"
+#define PROBABILIDAD_MUN "probabilidad_municion"
+
+#define PROB_COM_BUENA "probabilidad_comida_buena"
+#define PROB_COM_MALA "probabilidad_comida_mala"
+
+#define PROB_MUN_1 "probabilidad_municion_1"
+#define PROB_MUN_2 "probabilidad_municion_2"
+#define PROB_MUN_3 "probabilidad_municion_3"
+
 // CONFIGURACION PERSONAJE
 #define ANCHO_INICIAL 40
 #define ALTO_INICIAL 50

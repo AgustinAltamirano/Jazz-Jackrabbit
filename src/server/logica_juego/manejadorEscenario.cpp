@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
-#include <iostream>
 #include <utility>
 
 #include <yaml-cpp/yaml.h>
@@ -215,7 +214,6 @@ void manejadorEscenario::hacer_tick_enemigos() {
     }
 }
 
-
 void manejadorEscenario::colisiones_bloques_angulo(std::map<int, personaje>& jugadores) const {}
 
 
@@ -293,6 +291,33 @@ void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
 bool hay_colision_bala(int32_t bala_x, int32_t bala_y, int32_t target_x, int32_t target_y,
                        uint32_t ancho, uint32_t alto) {
     return (target_x < bala_x < target_x + ancho) && (target_y < bala_y < target_y + alto);
+}
+
+void manejadorEscenario::generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y) {
+    const ConfigAdmin& configurador = ConfigAdmin::getInstance();
+    int prob_com = configurador.get(PROBABILIDAD_COM);
+    int prob_mun = configurador.get(PROBABILIDAD_MUN);
+    srand(pos_x + pos_y);
+    if (rand() % (prob_com + prob_mun) < prob_com) {  // si el objeto es una comida
+        int prob_buena = configurador.get(PROB_COM_BUENA);
+        int prob_mala = configurador.get(PROB_COM_MALA);
+        if (rand() % (prob_buena + prob_mala) < prob_buena) {
+            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, FRUTA_BUENA);
+        } else {
+            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, FRUTA_PODRIDA);
+        }
+    } else {  // si el objeto es municion
+        int prob_1 = configurador.get(PROB_MUN_1);
+        int prob_2 = configurador.get(PROB_MUN_2);
+        int prob_3 = configurador.get(PROB_MUN_3);
+        if (const int num = rand() % (prob_1 + prob_2 + prob_3) < prob_1) {
+            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MUNICION_ARMA_1);
+        } else if (num < prob_1 + prob_2) {
+            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MUNICION_ARMA_2);
+        } else {
+            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MUNICION_ARMA_3);
+        }
+    }
 }
 
 void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
