@@ -24,7 +24,7 @@ add_library(vista_juego
 find_package(yaml-cpp REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 find_package(SDL2 REQUIRED)
-find_package(SDL2pp REQUIRED)
+#find_package(SDL2pp REQUIRED)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
