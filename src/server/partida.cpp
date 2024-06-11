@@ -20,11 +20,11 @@ Partida::Partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo_partida,
         admite_jugadores(true),
         capacidad_partida(capacidad_partida) {
     monitor_snapshots.agregar_cola(cola_enviador, id_cliente);
-    mapa_clientes_juego[id_cliente] = personaje;
+    monitor_mapa_clientes.agregar_cliente(id_cliente, personaje);
 }
 
 void Partida::run() {
-    while (mapa_clientes_juego.size() < capacidad_partida && sigo_jugando) {
+    while (monitor_snapshots.obtener_cantidad_clientes() < capacidad_partida && sigo_jugando) {
         try {
             std::this_thread::sleep_for(std::chrono::duration<double>(frecuencia));
         } catch (const ClosedQueue& e) {
@@ -34,8 +34,7 @@ void Partida::run() {
         }
     }
     admite_jugadores = false;
-    // Llamo al gameloop
-    Gameloop gameloop(nombre_escenario, mapa_clientes_juego, cola_comandos, monitor_snapshots);
+    Gameloop gameloop(nombre_escenario, monitor_mapa_clientes, cola_comandos, monitor_snapshots);
     gameloop.run();
     cola_comandos.close();
 }
@@ -44,7 +43,7 @@ Queue<ComandoDTO*>* Partida::obtener_comandos() { return &cola_comandos; }
 
 void Partida::agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente,
                               const TipoPersonaje& personaje) {
-    mapa_clientes_juego[id_cliente] = personaje;
+    monitor_mapa_clientes.agregar_cliente(id_cliente, personaje);
     monitor_snapshots.agregar_cola(cola_enviador, id_cliente);
 }
 

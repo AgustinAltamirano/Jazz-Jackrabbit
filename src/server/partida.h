@@ -11,9 +11,11 @@
 #include "../common/thread.h"
 #include "./monitor_snapshots.h"
 
+#include "monitor_mapa_clientes.h"
+
 class Partida: public Thread {
 private:
-    std::map<int, TipoPersonaje> mapa_clientes_juego;
+    MonitorMapaClientes monitor_mapa_clientes;
 
     MonitorSnapshots monitor_snapshots;
 
@@ -40,7 +42,8 @@ public:
 
     Queue<ComandoDTO*>* obtener_comandos();
 
-    void agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente, const TipoPersonaje& personaje);
+    void agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente,
+                         const TipoPersonaje& personaje);
 
     bool comparar_codigo_partida(const int32_t& codigo_a_comparar);
 

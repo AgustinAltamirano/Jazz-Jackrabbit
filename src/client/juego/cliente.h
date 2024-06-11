@@ -34,7 +34,7 @@ public:
 
     bool realizar_accion(const TipoComando& comando);
 
-    bool obtener_snapshot(std::shared_ptr<SnapshotDTO> snapshot);
+    bool obtener_snapshot(std::shared_ptr<SnapshotDTO>& snapshot);
 
     Cliente(const Cliente&) = delete;
 

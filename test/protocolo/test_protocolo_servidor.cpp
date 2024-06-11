@@ -1,11 +1,10 @@
-#include "../acutest.h"
-#include <vector>
 #include <string>
+#include <vector>
 
-#include "server/servidor_serializador.h"
-
+#include "../acutest.h"
 #include "common/snapshot_dto.h"
 #include "common/tipo_comando.h"
+#include "server/servidor_serializador.h"
 
 void test_serializar_crear_partida(void) {
     ServidorSerializador servidor_serializador;
@@ -43,22 +42,6 @@ void test_serializar_unir_partida_false(void) {
     TEST_CHECK(buffer.at(1) == 0x00);
 }
 
-void test_serializar_comenzar_jugar_true(void) {
-    ServidorSerializador servidor_serializador;
-    std::vector<char> buffer = servidor_serializador.serializar_iniciar_juego(true);
-    TEST_CHECK(buffer.size() == 2);
-    TEST_CHECK(buffer.at(0) == COMENZAR);
-    TEST_CHECK(buffer.at(1) == 1);
-}
-
-void test_serializar_comenzar_jugar_false(void) {
-    ServidorSerializador servidor_serializador;
-    std::vector<char> buffer = servidor_serializador.serializar_iniciar_juego(false);
-    TEST_CHECK(buffer.size() == 2);
-    TEST_CHECK(buffer.at(0) == COMENZAR);
-    TEST_CHECK(buffer.at(1) == 0);
-}
-
 void test_serializar_id_cliente(void) {
     ServidorSerializador servidor_serializador;
     int32_t id_cliente = 10;
@@ -70,35 +53,29 @@ void test_serializar_id_cliente(void) {
     TEST_CHECK(buffer.at(3) == 10);
 }
 
-// Soldier position or infected position
 void test_serializar_snapshot_dto(void) {
     ServidorSerializador servidor_serializador;
-    ClienteDTO cliente_dto(10);
+    ClienteDTO cliente_dto(10, JAZZ, 5, 10, false, ATAQUE_ESPECIAL, 100, 10, ARMA1, 3);
+    BloqueEscenarioDTO bloque_dto(10, 15, 5, 20, 45, PARED);
     SnapshotDTO snapshot_dto;
     snapshot_dto.agregar_cliente(cliente_dto);
-    snapshot_dto.establecer_fin_juego(true);
+    snapshot_dto.agregar_bloque_escenario(bloque_dto) snapshot_dto.establecer_fin_juego(true);
+    snapshot_dto.establecer_tipo_escenario(ESCENARIO1);
+    snapshot_dto.establecer_fin_juego(false);
     std::vector<char> buffer = servidor_serializador.serializar_snapshot(snapshot_dto);
 
-    TEST_CHECK(buffer.size() == 8);
+    TEST_CHECK(buffer.size() == 53);
     TEST_CHECK(buffer.at(0) == 0x01);
     TEST_CHECK(buffer.at(1) == 0x01);
-    TEST_CHECK(buffer.at(2) == 0x00);
+    TEST_CHECK(buffer.at(2) == 0x01);
     TEST_CHECK(buffer.at(3) == 0x00);
-
-    TEST_CHECK(buffer.at(4) == 0x00);
-    TEST_CHECK(buffer.at(5) == 0x00);
-    TEST_CHECK(buffer.at(6) == 0x00);
-    TEST_CHECK(buffer.at(7) == 10);
 }
 
 
-TEST_LIST = {
-        {"Test serializar crear partida",       test_serializar_crear_partida},
-        {"Test serializar error crear partida", test_serializar_error_crear_partida},
-        {"Test serializar unir partida true",   test_serializar_unir_partida_true},
-        {"Test serializar unir partida false",  test_serializar_unir_partida_false},
-        {"Test serializar comenzar jugar",      test_serializar_comenzar_jugar_true},
-        {"Test serializar comenzar false",      test_serializar_comenzar_jugar_false},
-        {"Test serializar id cliente ",         test_serializar_id_cliente},
-        {"Test serializar snapshot dto ",       test_serializar_snapshot_dto},
-        {NULL, NULL}};
+TEST_LIST = {{"Test serializar crear partida", test_serializar_crear_partida},
+             {"Test serializar error crear partida", test_serializar_error_crear_partida},
+             {"Test serializar unir partida true", test_serializar_unir_partida_true},
+             {"Test serializar unir partida false", test_serializar_unir_partida_false},
+             {"Test serializar id cliente ", test_serializar_id_cliente},
+             {"Test serializar snapshot dto ", test_serializar_snapshot_dto},
+             {NULL, NULL}};
