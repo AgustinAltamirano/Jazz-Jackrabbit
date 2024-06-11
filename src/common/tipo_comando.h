@@ -5,7 +5,6 @@ enum TipoComando : char {
     NINGUNA,
     CREAR,
     UNIR,
-    COMENZAR,
     SALTAR,
     MOVER_IZQ,
     MOVER_DER,

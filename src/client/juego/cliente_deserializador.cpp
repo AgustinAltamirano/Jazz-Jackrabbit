@@ -2,6 +2,8 @@
 
 #include <arpa/inet.h>
 
+#include "../../common/tipo_bloque_escenario.h"
+
 ClienteDeserializador::ClienteDeserializador(Socket* socket): socket(socket) {}
 
 
