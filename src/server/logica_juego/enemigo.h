@@ -34,6 +34,7 @@ private:
 public:
     enemigo(int32_t id, int32_t pos_x_in, int32_t pos_y_in, TipoEnemigo tipo);
     [[nodiscard]] int32_t get_prox_pos_x() const;
+    [[nodiscard]] int32_t get_pos_x() const;
     [[nodiscard]] int32_t get_pos_y() const;
     [[nodiscard]] uint32_t get_alto() const;
     [[nodiscard]] uint32_t get_ancho() const;

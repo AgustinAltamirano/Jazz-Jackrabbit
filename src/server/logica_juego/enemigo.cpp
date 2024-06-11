@@ -40,6 +40,8 @@ enemigo::enemigo(const int32_t id, const int32_t pos_x_in, const int32_t pos_y_i
 
 int32_t enemigo::get_prox_pos_x() const { return pos_x + vel_x; }
 
+int32_t enemigo::get_pos_x() const { return pos_x; }
+
 int32_t enemigo::get_pos_y() const { return pos_y; }
 
 uint32_t enemigo::get_alto() const { return alto; }

@@ -50,8 +50,8 @@ public:
 
     bool ejecutar_accion(const std::vector<TipoComando>& teclas);  // chequea estado y decide si
                                                                    // moverse, CAMBIA LA VELOCIDAD
-    void cambiar_posicion(uint32_t x,
-                          uint32_t y);  // despues de revisar colisiones se efectua el cambio real
+    void cambiar_posicion(int32_t x,
+                          int32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(bool cae);
     void pasar_tick();
     void recoger_objeto(uint32_t valor, TipoRecogible tipo);
@@ -67,7 +67,7 @@ public:
     [[nodiscard]] bool get_invertido() const;
     void disparar(uint32_t frames_recarga);
     void efectuar_dano(uint32_t dano);
-    // bool respawnear();
+    void dar_puntos(int32_t puntos);
 
     // funcion para la construccion del dto
     [[nodiscard]] ClienteDTO crear_dto() const;

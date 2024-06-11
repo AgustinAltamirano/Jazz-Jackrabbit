@@ -89,7 +89,7 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
     return disparo;
 }
 
-void personaje::cambiar_posicion(const uint32_t x, const uint32_t y) {
+void personaje::cambiar_posicion(const int32_t x, const int32_t y) {
     this->pos_x = x;
     this->pos_y = y;
 }
@@ -225,6 +225,8 @@ void personaje::efectuar_dano(uint32_t const dano) {
         }
     }
 }
+
+void personaje::dar_puntos(int32_t const puntos) { this->puntos += puntos; }
 
 ClienteDTO personaje::crear_dto() const {
     const int32_t balas_restantes = inventario_balas.at(arma_actual);

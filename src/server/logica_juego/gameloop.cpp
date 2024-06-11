@@ -53,7 +53,7 @@ void gameloop::run() {
             entidad.second.pasar_tick();
         }
         for (const auto& accion: acciones) {
-            if (personajes[accion.first].ejecutar_acciones(accion.second)) {
+            if (personajes[accion.first].ejecutar_accion(accion.second)) {
                 escenario.jugador_dispara(accion.first, personajes[accion.first]);
             }
         }
@@ -65,6 +65,7 @@ void gameloop::run() {
 
         // seccion3 chequea colisiones con los puntos, municiones y enemigos
         escenario.manejar_balas(personajes);
+        escenario.hacer_tick_enemigos();
 
         // enviar dto vuelta
         auto snapshot_juego = std::make_shared<SnapshotDTO>(escenario.get_escenario());
