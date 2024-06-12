@@ -9,8 +9,8 @@ void hacer_tick(int tiempo) { std::this_thread::sleep_for(std::chrono::milliseco
 void Gameloop::stop() { this->keep_talking = false; }
 
 Gameloop::Gameloop(const std::string& archivo_escenario,
-                   const std::map<int32_t, TipoPersonaje>& mapa, Queue<ComandoDTO>& cola_entrada,
-                   std::list<Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida):
+                   const std::map<int32_t, TipoPersonaje>& mapa, Queue<ComandoDTO*>& cola_entrada,
+                   std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida):
         keep_talking(true),
         is_alive(true),
         cola_entrada(cola_entrada),
@@ -33,7 +33,7 @@ void Gameloop::run() {
     // enviando dto escenario
     auto snapshot_escenario = escenario.crear_snapshot();
     for (auto& cola_salida: colas_salida) {
-        (*cola_salida).try_push(snapshot_escenario);
+        cola_salida.second->try_push(snapshot_escenario);
     }
 
     while (this->keep_talking) {
@@ -43,10 +43,10 @@ void Gameloop::run() {
         // seccion1 se encarga de leer la cola de entrada y efectuar los movimientos en los
         // jugadores
         std::map<int32_t, std::vector<TipoComando>> acciones;
-        ComandoDTO comando;
+        ComandoDTO* comando;
         while (cola_entrada.try_pop(comando)) {
             // asumo que el dto ya puede implementar conseguir el id y la accion que trae
-            acciones[comando.obtener_id_cliente()].emplace_back(comando.obtener_comando());
+            acciones[comando->obtener_id_cliente()].push_back(comando->obtener_comando());
         }
         for (auto& entidad: personajes) {
             entidad.second.pasar_tick();
@@ -73,7 +73,7 @@ void Gameloop::run() {
             snapshot_juego->agregar_cliente(std::move(jugador_dto));
         }
         for (auto& cola_salida: colas_salida) {
-            (*cola_salida).try_push(snapshot_juego);
+            cola_salida.second->try_push(snapshot_escenario);
         }
 
         // freno el cronometro y pongo a dormir por los milisegundos por frame menos la diferencia
