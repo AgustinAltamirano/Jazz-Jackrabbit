@@ -270,19 +270,19 @@ void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
         case INFINITA:
             auto balaI = balaInfinita(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(balaI.disparar());
-            balas.emplace_back(std::move(balaI));
+            balas.push_back(std::move(balaI));
         case ARMA1:
             auto bala1 = balaArma1(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(bala1.disparar());
-            balas.emplace_back(std::move(bala1));
+            balas.push_back(std::move(bala1));
         case ARMA2:
             auto bala2 = balaArma2(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(bala2.disparar());
-            balas.emplace_back(std::move(bala2));
+            balas.push_back(std::move(bala2));
         case ARMA3:
             auto bala3 = balaArma3(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(bala3.disparar());
-            balas.emplace_back(std::move(bala3));
+            balas.push_back(std::move(bala3));
         default:
             return;
     }
