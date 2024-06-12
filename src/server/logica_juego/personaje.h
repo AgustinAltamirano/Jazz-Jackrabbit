@@ -7,14 +7,10 @@
 #include <vector>
 
 #include "../../common/estado_personaje.h"
+#include "../../common/snapshot_dto.h"
 #include "../../common/tipo_arma.h"
 #include "../../common/tipo_comando.h"
 #include "../../common/tipo_personaje.h"
-#include "assets/bala.h"
-#include "assets/balaInfinita.h"
-#include "assets/bala_arma_1.h"
-#include "assets/bala_arma_2.h"
-#include "assets/bala_arma_3.h"
 #include "assets/recogible.h"
 
 class personaje {
@@ -46,17 +42,16 @@ private:
     int puntos;
 
     TipoArma arma_actual;
-    std::vector<int32_t> inventario_balas;
     std::map<TipoArma, int32_t> inventario_balas;
     uint32_t tiempo_recarga;  // frames antes de poder disparar
 
 public:
     personaje(int32_t id, TipoPersonaje tipo, int32_t pos_x_inicial, int32_t pos_y_inicial);
 
-    void cambiar_velocidad(const std::vector<TipoComando>& teclas);  // chequea estado y decide si
-                                                                     // moverse, CAMBIA LA VELOCIDAD
-    void cambiar_posicion(uint32_t x,
-                          uint32_t y);  // despues de revisar colisiones se efectua el cambio real
+    bool ejecutar_accion(const std::vector<TipoComando>& teclas);  // chequea estado y decide si
+                                                                   // moverse, CAMBIA LA VELOCIDAD
+    void cambiar_posicion(int32_t x,
+                          int32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(bool cae);
     void pasar_tick();
     void recoger_objeto(uint32_t valor, TipoRecogible tipo);
@@ -72,7 +67,7 @@ public:
     [[nodiscard]] bool get_invertido() const;
     void disparar(uint32_t frames_recarga);
     void efectuar_dano(uint32_t dano);
-    // bool respawnear();
+    void dar_puntos(int32_t puntos);
 
     // funcion para la construccion del dto
     [[nodiscard]] ClienteDTO crear_dto() const;

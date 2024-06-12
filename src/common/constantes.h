@@ -25,6 +25,36 @@
 #define DANO_ARMA3 "dano_arma3"
 #define FRAMES_REC_ARMA3 "frames_recarga_arma3"
 
+#define VIDA_LAGARTO "vida_lagarto"
+#define VIDA_MURCIELAGO "vida_murcielago"
+#define VIDA_ESQUELETO "vida_esqueleto"
+
+#define DANO_LAGARTO "dano_lagarto"
+#define DANO_MURCIELAGO "dano_murcielago"
+#define DANO_ESQUELETO "dano_esqueleto"
+
+#define VELOCIDAD_LAGARTO "velocidad_lagarto"
+#define VELOCIDAD_MURCIELAGO "velocidad_murcielago"
+#define VELOCIDAD_ESQUELETO "velocidad_esqueleto"
+
+#define PUNTOS_LAGARTO "puntos_lagarto"
+#define PUNTOS_MURCIELAGO "puntos_murcielago"
+#define PUNTOS_ESQUELETO "puntos_esqueleto"
+
+#define FRAMES_REVIVIR_LAG "frames_hasta_revivir_lagarto"
+#define FRAMES_REVIVIR_MUR "frames_hasta_revivir_murcielago"
+#define FRAMES_REVIVIR_ESQ "frames_hasta_revivir_esqueleto"
+
+#define PROBABILIDAD_COM "probabilidad_comida"
+#define PROBABILIDAD_MUN "probabilidad_municion"
+
+#define PROB_COM_BUENA "probabilidad_comida_buena"
+#define PROB_COM_MALA "probabilidad_comida_mala"
+
+#define PROB_MUN_1 "probabilidad_municion_1"
+#define PROB_MUN_2 "probabilidad_municion_2"
+#define PROB_MUN_3 "probabilidad_municion_3"
+
 // CONFIGURACION PERSONAJE
 #define ANCHO_INICIAL 40
 #define ALTO_INICIAL 50
@@ -45,5 +75,9 @@
 
 // para la lectura de mapas
 #define TAMANO_BLOQUE 32
+
+// para los enemigos
+#define ALTURA_ENEMIGO 32
+#define ANCHO_ENEMIGO 32
 
 #endif  // CONSTANTES_H

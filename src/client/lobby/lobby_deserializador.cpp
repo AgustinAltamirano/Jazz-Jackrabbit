@@ -20,9 +20,6 @@ ComandoDTO* LobbyDeserializador::obtener_comando(bool* cerrado) {
         case UNIR:
             return (deserializar_unir_partida(cerrado));
             break;
-        case COMENZAR:
-            return (deserializar_comenzar_juego(cerrado));
-            break;
         default:
             throw std::invalid_argument("no se encontro el caso en el deserializador del servidor");
     }
@@ -41,11 +38,4 @@ ComandoUnirDTO* LobbyDeserializador::deserializar_unir_partida(bool* cerrado) {
     socket->recvall(&unio, 1, cerrado);
     ComandoUnirDTO* unir_dto = new ComandoUnirDTO(unio);
     return unir_dto;
-}
-
-ComandoComenzarDTO* LobbyDeserializador::deserializar_comenzar_juego(bool* cerrado) {
-    bool empezo;
-    socket->recvall(&empezo, 1, cerrado);
-    ComandoComenzarDTO* empezar_dto = new ComandoComenzarDTO(empezo);
-    return empezar_dto;
 }

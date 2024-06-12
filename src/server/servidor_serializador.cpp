@@ -22,11 +22,6 @@ void ServidorSerializador::enviar_unir_partida(const bool& unir, bool* cerrado) 
     socket->sendall(buffer.data(), buffer.size(), cerrado);
 }
 
-void ServidorSerializador::enviar_iniciar_juego(const bool& iniciar, bool* cerrado) {
-    std::vector<char> buffer = serializar_iniciar_juego(iniciar);
-    socket->sendall(buffer.data(), buffer.size(), cerrado);
-}
-
 void ServidorSerializador::enviar_id_cliente(const int32_t& id_cliente, bool* cerrado) {
     std::vector<char> buffer = serializar_id_cliente(id_cliente);
     socket->sendall(buffer.data(), buffer.size(), cerrado);
@@ -59,13 +54,6 @@ std::vector<char> ServidorSerializador::serializar_unir_partida(const bool& unir
     std::vector<char> buffer;
     buffer.push_back(UNIR);
     buffer.push_back(unir);
-    return buffer;
-}
-
-std::vector<char> ServidorSerializador::serializar_iniciar_juego(const bool& iniciar) {
-    std::vector<char> buffer;
-    buffer.push_back(COMENZAR);
-    buffer.push_back(iniciar);
     return buffer;
 }
 

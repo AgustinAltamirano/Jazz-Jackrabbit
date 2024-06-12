@@ -1,10 +1,16 @@
 #ifndef CONSTANTES_MENU_H
 #define CONSTANTES_MENU_H
 
+#include "../../common/tipo_personaje.h"
+#include "../../common/tipo_escenario.h"
+
 enum PosicionBoton {
     POS_NEWGAME_BTN,
     POS_JOINGAME_BTN,
 };
+
+Q_DECLARE_METATYPE(TipoPersonaje)
+Q_DECLARE_METATYPE(TipoEscenario)
 
 #define ANCHO_PANTALLA 640
 #define ALTO_PANTALLA 480

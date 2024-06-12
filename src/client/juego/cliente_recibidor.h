@@ -14,7 +14,7 @@
 
 class ClienteRecibidor: public Thread {
 private:
-    Queue<SnapshotDTO>* cola_recibidor;
+    Queue<std::shared_ptr<SnapshotDTO>>* cola_recibidor;
 
     std::atomic<bool>& hablando;
 
@@ -22,7 +22,7 @@ private:
 
 public:
     ClienteRecibidor(Socket* socket, std::atomic<bool>& hablando,
-                     Queue<SnapshotDTO>* cola_recibidor);
+                     Queue<std::shared_ptr<SnapshotDTO>>* cola_recibidor);
 
     void run() override;
 

@@ -25,18 +25,16 @@ private:
 
     Queue<std::vector<char>> cola_enviador;
 
-    Queue<SnapshotDTO> cola_recibidor;
+    Queue<std::shared_ptr<SnapshotDTO>> cola_recibidor;
 
 public:
     explicit Cliente(Socket&& socket);
 
     void join();
 
-    void comenzar_jugar();
-
     bool realizar_accion(const TipoComando& comando);
 
-    bool obtener_snapshot(SnapshotDTO& snapshot);
+    bool obtener_snapshot(std::shared_ptr<SnapshotDTO>& snapshot);
 
     Cliente(const Cliente&) = delete;
 

@@ -12,6 +12,7 @@ enum EstadoPersonaje : char {
     CAER_ADELANTE,
     ATAQUE_ESPECIAL,
     INTOXICADO,
+    INTOXICADO_MOVIMIENTO,
     IMPACTADO,
     MUERTE
 };

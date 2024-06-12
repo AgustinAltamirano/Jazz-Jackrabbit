@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "../../common/comando_comenzar_dto.h"
 #include "../../common/comando_crear_dto.h"
 #include "../../common/comando_dto.h"
 #include "../../common/comando_unir_dto.h"
@@ -22,8 +21,6 @@ public:
     ComandoCrearDTO* deserializar_crear_partida(bool* cerrado);
 
     ComandoUnirDTO* deserializar_unir_partida(bool* cerrado);
-
-    ComandoComenzarDTO* deserializar_comenzar_juego(bool* cerrado);
 };
 
 #endif

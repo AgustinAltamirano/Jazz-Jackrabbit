@@ -39,7 +39,7 @@ private:
     BotonAnimadoJugador lori_player;
 
 protected:
-    void realizar_accion_menu(int boton_seleccionado) override;
+    void realizar_accion_menu(QPushButton* boton_seleccionado) override;
 
 public:
     explicit MenuSeleccionJugador(QMainWindow* parent, MenuJuego& juego, bool config);

@@ -14,8 +14,6 @@ public:
                                                const int8_t& capacidad_partida);
 
     std::vector<char> serializar_unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje);
-
-    std::vector<char> serializar_comenzar_jugar();
 };
 
 #endif

@@ -6,18 +6,18 @@
 
 void hacer_tick(int tiempo) { std::this_thread::sleep_for(std::chrono::milliseconds(tiempo)); }
 
-void gameloop::stop() { this->keep_talking = false; }
+void Gameloop::stop() { this->keep_talking = false; }
 
-gameloop::gameloop(const std::string& archivo_escenario,
+Gameloop::Gameloop(const std::string& archivo_escenario,
                    const std::map<int32_t, TipoPersonaje>& mapa,
                    Queue<std::shared_ptr<ComandoDTO>>& cola_entrada,
                    std::list<Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida):
         keep_talking(true),
         is_alive(true),
         cola_entrada(cola_entrada),
-        escenario(archivo_escenario),
-        colas_salida(colas_salida) {
-    std::vector<spawnpoint> lugares_spawnpoints = escenario.get_spawns();
+        colas_salida(colas_salida),
+        escenario(archivo_escenario) {
+    const std::vector<spawnpoint> lugares_spawnpoints = escenario.get_spawns();
     uint32_t index_spawns = 0;
     for (auto& [id, tipo]: mapa) {
         const int32_t spawn_x = lugares_spawnpoints[index_spawns].pos_x;
@@ -30,7 +30,7 @@ gameloop::gameloop(const std::string& archivo_escenario,
     }
 }
 
-void gameloop::run() {
+void Gameloop::run() {
     // enviando dto escenario
     auto snapshot_escenario = escenario.crear_snapshot();
     for (auto& cola_salida: colas_salida) {
@@ -53,7 +53,7 @@ void gameloop::run() {
             entidad.second.pasar_tick();
         }
         for (const auto& accion: acciones) {
-            if (personajes[accion.first].ejecutar_acciones(accion.second)) {
+            if (personajes[accion.first].ejecutar_accion(accion.second)) {
                 escenario.jugador_dispara(accion.first, personajes[accion.first]);
             }
         }
@@ -65,6 +65,7 @@ void gameloop::run() {
 
         // seccion3 chequea colisiones con los puntos, municiones y enemigos
         escenario.manejar_balas(personajes);
+        escenario.hacer_tick_enemigos();
 
         // enviar dto vuelta
         auto snapshot_juego = std::make_shared<SnapshotDTO>(escenario.get_escenario());
