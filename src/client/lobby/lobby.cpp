@@ -35,6 +35,11 @@ bool Lobby::unir_partida(const int32_t& codigo_partida, const TipoPersonaje& per
             lobby_serializador.serializar_unir_partida(codigo_partida, personaje)));
 }
 
+bool Lobby::validar_escenario(const std::string& nombre_escenario) {
+    return (cola_enviador.try_push(
+            lobby_serializador.serializar_validar_escenario(nombre_escenario)));
+}
+
 void Lobby::cerrar() {
     sigo_hablando = false;
     socket.shutdown(SHUT_RDWR);
@@ -68,6 +73,14 @@ bool Lobby::obtener_unir() {
     bool unio = unir_dto->obtener_unio();
     delete comando_dto;
     return unio;
+}
+
+bool Lobby::obtener_validar_escenario() {
+    ComandoDTO* comando_dto = cola_recibidor.pop();
+    ComandoValidarDTO* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando_dto);
+    bool es_valida = validar_dto->obtener_es_valida();
+    delete comando_dto;
+    return es_valida;
 }
 
 int Lobby::obtener_id_cliente() { return id_cliente; }

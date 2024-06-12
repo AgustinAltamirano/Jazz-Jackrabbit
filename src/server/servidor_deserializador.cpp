@@ -23,6 +23,8 @@ ComandoDTO* ServidorDeserializador::obtener_comando(bool* cerrado, int32_t& id_c
         case UNIR:
             return (deserializar_unir(cerrado, id_cliente));
             break;
+        case VALIDAR_ESCENARIO:
+            return (deserializar_validar(cerrado, id_cliente));
         default:
             return new ComandoDTO(id_cliente, comando);
     }
@@ -53,7 +55,13 @@ ComandoUnirDTO* ServidorDeserializador::deserializar_unir(bool* cerrado,
     return unir_dto;
 }
 
-ComandoDTO* ServidorDeserializador::deserializar_comenzar(bool* cerrado, int32_t& id_cliente) {
-    ComandoDTO* comando_dto = new ComandoDTO(id_cliente, COMENZAR);
-    return comando_dto;
+ComandoValidarDTO* ServidorDeserializador::deserializar_validar(bool* cerrado, int32_t& id_cliente){
+    uint8_t len_nombre = 0;
+    socket->recvall(&len_nombre, 1, cerrado);
+    std::vector<char> buffer(len_nombre);
+    socket->recvall(buffer.data(), len_nombre, cerrado);
+    ComandoValidarDTO* validar_dto = new ComandoValidarDTO(
+            id_cliente, std::string(buffer.begin(), buffer.end()));
+    return validar_dto;
 }
+

@@ -15,6 +15,7 @@ enum TipoComando : char {
     TRUCO1,
     TRUCO2,
     TRUCO3,
+    VALIDAR_ESCENARIO,
 };
 
 #endif

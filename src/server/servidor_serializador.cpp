@@ -27,7 +27,13 @@ void ServidorSerializador::enviar_id_cliente(const int32_t& id_cliente, bool* ce
     socket->sendall(buffer.data(), buffer.size(), cerrado);
 }
 
-void ServidorSerializador::enviar_snapshot(const SnapshotDTO& snapshot_dto, bool* cerrado) {
+void ServidorSerializador::enviar_validar_escenario(const bool& es_valido, bool* cerrado) {
+    std::vector<char> buffer = serializar_validar_escenario(es_valido);
+    socket->sendall(buffer.data(), buffer.size(), cerrado);
+}
+
+void ServidorSerializador::enviar_snapshot(std::shared_ptr<SnapshotDTO>& snapshot_dto,
+                                           bool* cerrado) {
     std::vector<char> buffer = serializar_snapshot(snapshot_dto);
     socket->sendall(buffer.data(), buffer.size(), cerrado);
 }
@@ -57,6 +63,13 @@ std::vector<char> ServidorSerializador::serializar_unir_partida(const bool& unir
     return buffer;
 }
 
+std::vector<char> ServidorSerializador::serializar_validar_escenario(const bool& es_valido) {
+    std::vector<char> buffer;
+    buffer.push_back(VALIDAR_ESCENARIO);
+    buffer.push_back(es_valido);
+    return buffer;
+}
+
 std::vector<char> ServidorSerializador::serializar_id_cliente(const int32_t& id_cliente) {
     std::vector<char> buffer;
     int32_t id_cliente_transformado = htonl(id_cliente);
@@ -65,9 +78,10 @@ std::vector<char> ServidorSerializador::serializar_id_cliente(const int32_t& id_
     return buffer;
 }
 
-std::vector<char> ServidorSerializador::serializar_snapshot(SnapshotDTO snapshot_dto) {
-    std::vector<ClienteDTO> clientes_dto = snapshot_dto.obtener_clientes();
-    std::vector<BloqueEscenarioDTO> bloques_dto = snapshot_dto.obtener_bloques_escenario();
+std::vector<char> ServidorSerializador::serializar_snapshot(
+        std::shared_ptr<SnapshotDTO> snapshot_dto) {
+    std::vector<ClienteDTO> clientes_dto = snapshot_dto->obtener_clientes();
+    std::vector<BloqueEscenarioDTO> bloques_dto = snapshot_dto->obtener_bloques_escenario();
 
     uint8_t num_clientes = clientes_dto.size();
     uint8_t num_bloques = bloques_dto.size();
@@ -78,8 +92,8 @@ std::vector<char> ServidorSerializador::serializar_snapshot(SnapshotDTO snapshot
 
     buffer.push_back(static_cast<char>(num_clientes));
     buffer.push_back(static_cast<char>(num_bloques));
-    buffer.push_back(snapshot_dto.obtener_tipo_escenario());
-    buffer.push_back(snapshot_dto.es_fin_juego());
+    buffer.push_back(snapshot_dto->obtener_tipo_escenario());
+    buffer.push_back(snapshot_dto->es_fin_juego());
 
     for (const auto& obj: clientes_dto) {
         int32_t id_cliente_transformado = htonl(obj.id_cliente);

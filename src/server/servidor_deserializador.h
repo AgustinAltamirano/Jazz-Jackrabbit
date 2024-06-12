@@ -7,6 +7,7 @@
 #include "../common/comando_crear_dto.h"
 #include "../common/comando_dto.h"
 #include "../common/comando_unir_dto.h"
+#include "../common/comando_validar_dto.h"
 #include "../common/socket.h"
 
 class ServidorDeserializador {
@@ -16,6 +17,8 @@ private:
     ComandoCrearDTO* deserializar_crear(bool* cerrado, int32_t& id_cliente);
 
     ComandoUnirDTO* deserializar_unir(bool* cerrado, const int32_t& id_cliente);
+
+    ComandoValidarDTO* deserializar_validar(bool* cerrado, int32_t& id_cliente);
 
 public:
     explicit ServidorDeserializador(Socket* socket);

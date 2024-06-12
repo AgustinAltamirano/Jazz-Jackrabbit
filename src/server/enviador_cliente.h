@@ -29,7 +29,7 @@ private:
 
     bool cerrado = false;
 
-    Queue<SnapshotDTO> cola_enviador;
+    Queue<std::shared_ptr<SnapshotDTO>> cola_enviador;
 
     // El EnviadorCliente se encargara de lanzarlo y manejarlo debido a que al principio tenemos una
     // parte sincronica.
