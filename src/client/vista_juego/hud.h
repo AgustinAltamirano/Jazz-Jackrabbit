@@ -15,12 +15,7 @@ class HUD {
 private:
     static const std::unordered_map<TipoArma, std::string> MAPA_TIPO_ARMA;
     SDL2pp::Renderer& renderer;
-    SDL2pp::Texture& textura_items;
-    SDL2pp::Texture& textura_numeros;
-    const SDL2pp::Rect& coords_corazon;
-    const SDL2pp::Rect& coords_infinito;
-    const std::unordered_map<std::string, SDL2pp::Rect>& coords_armas;
-    const std::vector<SDL2pp::Rect>& coords_numeros;
+    const LectorTexturas& lector_texturas;
 
     uint32_t puntos, vida;
     TipoArma arma_actual;

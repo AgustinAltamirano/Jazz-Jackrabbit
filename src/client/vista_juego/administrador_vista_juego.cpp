@@ -42,9 +42,6 @@ const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
 void AdministradorVistaJuego::actualizar_vista() {
     std::shared_ptr<SnapshotDTO> snapshot;
     if (!cliente.obtener_snapshot(snapshot)) {
-        if (!primera_snapshot_recibida) {
-            pantalla_carga.dibujar();
-        }
         return;
     }
 
@@ -81,8 +78,8 @@ void AdministradorVistaJuego::actualizar_vista() {
         personajes.at(jugador->id_cliente).actualizar_camara();
 
         // Actualizar HUD en base a los datos del jugador
-        /*hud.actualizar(jugador->puntos, jugador->vida, jugador->arma_actual,
-                       jugador->balas_restantes);*/
+        hud.actualizar(jugador->puntos, jugador->vida, jugador->arma_actual,
+                       jugador->balas_restantes);
     }
 
     if (const std::vector<BloqueEscenarioDTO> bloques_recibidos =
@@ -171,7 +168,7 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         pantalla_carga(renderer),
         lector_texturas(renderer),
         entrada_juego(cliente),
-        // hud(renderer, lector_texturas),
+        hud(renderer, lector_texturas),
         cliente(cliente),
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
@@ -194,7 +191,12 @@ void AdministradorVistaJuego::run() {
         for (auto& [fst, snd]: personajes) {
             snd.dibujar();
         }
-        // hud.dibujar();
+        if (primera_snapshot_recibida) {
+            hud.dibujar();
+        } else {
+            pantalla_carga.dibujar();
+        }
+
         renderer.Present();
 
         if (!entrada_juego.procesar_entrada()) {
