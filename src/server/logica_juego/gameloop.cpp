@@ -9,8 +9,7 @@ void hacer_tick(int tiempo) { std::this_thread::sleep_for(std::chrono::milliseco
 void Gameloop::stop() { this->keep_talking = false; }
 
 Gameloop::Gameloop(const std::string& archivo_escenario,
-                   const std::map<int32_t, TipoPersonaje>& mapa,
-                   Queue<std::shared_ptr<ComandoDTO>>& cola_entrada,
+                   const std::map<int32_t, TipoPersonaje>& mapa, Queue<ComandoDTO>& cola_entrada,
                    std::list<Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida):
         keep_talking(true),
         is_alive(true),
@@ -44,10 +43,10 @@ void Gameloop::run() {
         // seccion1 se encarga de leer la cola de entrada y efectuar los movimientos en los
         // jugadores
         std::map<int32_t, std::vector<TipoComando>> acciones;
-        std::shared_ptr<ComandoDTO> comando;
+        ComandoDTO comando;
         while (cola_entrada.try_pop(comando)) {
             // asumo que el dto ya puede implementar conseguir el id y la accion que trae
-            acciones[comando->obtener_id_cliente()].emplace_back(comando->obtener_comando());
+            acciones[comando.obtener_id_cliente()].emplace_back(comando.obtener_comando());
         }
         for (auto& entidad: personajes) {
             entidad.second.pasar_tick();
@@ -60,7 +59,7 @@ void Gameloop::run() {
 
         // seccion2 chequea colisiones con el entorno y los cambios de estado de los personajes
         escenario.colisiones_bloques_rectos(personajes);
-        escenario.colisiones_bloques_angulo(personajes);
+        // escenario.colisiones_bloques_angulo(personajes);
         escenario.chequear_caida_y_objetos(personajes);
 
         // seccion3 chequea colisiones con los puntos, municiones y enemigos
