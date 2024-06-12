@@ -14,7 +14,7 @@ class Partida: public Thread {
 private:
     std::map<int, TipoPersonaje> mapa_clientes_juego;
 
-    std::map<int, Queue<SnapshotDTO>*> cola_snapshots;
+    std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*> cola_snapshots;
 
     int32_t codigo_partida;
 
@@ -33,7 +33,7 @@ private:
     bool borrar_cliente_snapshots(int32_t& id_cliente);
 
 public:
-    Partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo_partida,
+    Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t& codigo_partida,
             std::string& nombre_escenario, const int32_t& id_cliente, TipoPersonaje& personaje,
             int8_t& capacidad_partida);
 
@@ -43,7 +43,7 @@ public:
 
     Queue<ComandoDTO*>* obtener_comandos();
 
-    void agregar_cliente(Queue<SnapshotDTO>* cola_enviador, const int32_t& id_cliente,
+    void agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, const int32_t& id_cliente,
                          const TipoPersonaje& personaje);
 
     bool comparar_codigo_partida(const int32_t& codigo_a_comparar);

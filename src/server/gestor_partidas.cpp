@@ -5,7 +5,7 @@
 
 GestorPartidas::GestorPartidas() { contador_partidas = 0; }
 
-Queue<ComandoDTO*>* GestorPartidas::crear_partida(Queue<SnapshotDTO>* cola_enviador,
+Queue<ComandoDTO*>* GestorPartidas::crear_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
                                                   std::string& nombre_escenario,
                                                   int32_t& id_cliente, int32_t& codigo_partida,
                                                   TipoPersonaje& personaje,
@@ -34,7 +34,7 @@ Partida* GestorPartidas::existe_partida_por_codigo(const int& codigo) {
     return partida_encontrada;
 }
 
-Queue<ComandoDTO*>* GestorPartidas::unir_partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo,
+Queue<ComandoDTO*>* GestorPartidas::unir_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t& codigo,
                                                  const int32_t& id_cliente,
                                                  const TipoPersonaje& personaje) {
     std::lock_guard<std::mutex> lock(m);

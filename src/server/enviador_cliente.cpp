@@ -28,7 +28,7 @@ void EnviadorCliente::run() {
         inicio_recibidor_cliente();
         try {
             while (sigo_en_partida && !cerrado) {
-                SnapshotDTO snapshot_dto = cola_enviador.pop();
+                std::shared_ptr<SnapshotDTO> snapshot_dto = cola_enviador.pop();
                 servidor_serializador.enviar_snapshot(snapshot_dto, &cerrado);
             }
         } catch (const ClosedQueue& e) {

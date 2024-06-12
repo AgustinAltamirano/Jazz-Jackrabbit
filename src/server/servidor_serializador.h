@@ -25,7 +25,7 @@ public:
 
     void enviar_id_cliente(const int32_t& id_cliente, bool* cerrado);
 
-    void enviar_snapshot(const SnapshotDTO& snapshot_dto, bool *cerrado);
+    void enviar_snapshot(std::shared_ptr<SnapshotDTO>& snapshot_dto, bool *cerrado);
 
     void enviar_validar_escenario(const bool& es_valido, bool* cerrado);
 
@@ -41,7 +41,7 @@ public:
 
     std::vector<char> serializar_id_cliente(const int32_t &id_cliente);
 
-    std::vector<char> serializar_snapshot(SnapshotDTO snapshot_dto);
+    std::vector<char> serializar_snapshot(std::shared_ptr<SnapshotDTO> snapshot_dto);
 };
 
 #endif
