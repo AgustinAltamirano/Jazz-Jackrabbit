@@ -9,15 +9,17 @@
 
 #include "../../common/tipo_arma.h"
 
+#include "lector_texturas.h"
+
 class HUD {
 private:
     static const std::unordered_map<TipoArma, std::string> MAPA_TIPO_ARMA;
     SDL2pp::Renderer& renderer;
     SDL2pp::Texture& textura_items;
     SDL2pp::Texture& textura_numeros;
-    SDL2pp::Rect& coords_corazon;
-    SDL2pp::Rect& coords_infinito;
-    const std::unordered_map<TipoArma, SDL2pp::Rect>& coords_armas;
+    const SDL2pp::Rect& coords_corazon;
+    const SDL2pp::Rect& coords_infinito;
+    const std::unordered_map<std::string, SDL2pp::Rect>& coords_armas;
     const std::vector<SDL2pp::Rect>& coords_numeros;
 
     uint32_t puntos, vida;
@@ -31,11 +33,7 @@ private:
     void dibujar_arma() const;
 
 public:
-    HUD(SDL2pp::Renderer& renderer, SDL2pp::Texture& textura_items,
-        SDL2pp::Texture& textura_numeros, SDL2pp::Rect& coords_corazon,
-        SDL2pp::Rect& coords_infinito,
-        const std::unordered_map<TipoArma, SDL2pp::Rect>& coords_armas,
-        const std::vector<SDL2pp::Rect>& coords_numeros);
+    HUD(SDL2pp::Renderer& renderer, const LectorTexturas& lector_texturas);
 
     HUD(const HUD&) = delete;
     HUD& operator=(const HUD&) = delete;

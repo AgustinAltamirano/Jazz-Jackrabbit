@@ -36,6 +36,12 @@
 #define DIR_ENEMIGOS "/enemigos/"
 #define ENEMIGOS_CONFIG "/enemigos.yaml"
 
+#define DIR_FUENTE "/fuente/"
+#define FUENTE_CONFIG "/fuente.yaml"
+
+#define DIR_ITEMS "/items/"
+#define ITEMS_CONFIG "/items.yaml"
+
 #define COLOR_KEY_PERSONAJES_RED 44
 #define COLOR_KEY_PERSONAJES_GREEN 102
 #define COLOR_KEY_PERSONAJES_BLUE 150
@@ -60,6 +66,9 @@
     ((COLOR_KEY_ENEMIGOS_RED << 24) + (COLOR_KEY_ENEMIGOS_BLUE << 16) + \
      (COLOR_KEY_ENEMIGOS_GREEN << 8) + COLOR_KEY_ENEMIGOS_RED)
 
+#define COLOR_KEY_FUENTE COLOR_KEY_ENEMIGOS
+
+#define COLOR_KEY_ITEMS COLOR_KEY_ENEMIGOS
 
 /** Constantes del HUD de cliente */
 

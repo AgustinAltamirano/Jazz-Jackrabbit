@@ -23,6 +23,7 @@
 #include "camara.h"
 #include "entrada_juego.h"
 #include "fondo_escenario.h"
+#include "hud.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 #include "pantalla_carga.h"
@@ -52,6 +53,7 @@ private:
     PantallaCarga pantalla_carga;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
+    HUD hud;
     Cliente& cliente;
 
     uint32_t iteraciones_actuales;

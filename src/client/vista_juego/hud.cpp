@@ -2,6 +2,9 @@
 
 #include "vista_juego_defs.h"
 
+#define CORAZON "corazon"
+#define INFINITO "infinito"
+
 const std::unordered_map<TipoArma, std::string> HUD::MAPA_TIPO_ARMA{
         {INFINITA, "arma_infinita"},
         {ARMA1, "arma1"},
@@ -37,11 +40,12 @@ void HUD::dibujar_vida() const {
 
 void HUD::dibujar_arma() const {
     int posicion_actual = POS_ARMA_ACTUAL_X;
-    renderer.Copy(
-            textura_items, coords_armas.at(arma_actual),
-            SDL2pp::Rect(posicion_actual, POS_ARMA_ACTUAL_Y, coords_armas.at(arma_actual).GetW(),
-                         coords_armas.at(arma_actual).GetH()));
-    posicion_actual += coords_armas.at(arma_actual).GetW() + SEPARACION_ENTRE_NUMEROS;
+    renderer.Copy(textura_items, coords_armas.at(MAPA_TIPO_ARMA.at(arma_actual)),
+                  SDL2pp::Rect(posicion_actual, POS_ARMA_ACTUAL_Y,
+                               coords_armas.at(MAPA_TIPO_ARMA.at(arma_actual)).GetW(),
+                               coords_armas.at(MAPA_TIPO_ARMA.at(arma_actual)).GetH()));
+    posicion_actual +=
+            coords_armas.at(MAPA_TIPO_ARMA.at(arma_actual)).GetW() + SEPARACION_ENTRE_NUMEROS;
     if (balas_restantes < 0) {
         renderer.Copy(textura_items, coords_infinito,
                       SDL2pp::Rect(posicion_actual, POS_ARMA_ACTUAL_Y, coords_infinito.GetW(),
@@ -51,18 +55,14 @@ void HUD::dibujar_arma() const {
     dibujar_numero(balas_restantes, posicion_actual, POS_ARMA_ACTUAL_Y);
 }
 
-HUD::HUD(SDL2pp::Renderer& renderer, SDL2pp::Texture& textura_items,
-         SDL2pp::Texture& textura_numeros, SDL2pp::Rect& coords_corazon,
-         SDL2pp::Rect& coords_infinito,
-         const std::unordered_map<TipoArma, SDL2pp::Rect>& coords_armas,
-         const std::vector<SDL2pp::Rect>& coords_numeros):
+HUD::HUD(SDL2pp::Renderer& renderer, const LectorTexturas& lector_texturas):
         renderer(renderer),
-        textura_items(textura_items),
-        textura_numeros(textura_numeros),
-        coords_corazon(coords_corazon),
-        coords_infinito(coords_infinito),
-        coords_armas(coords_armas),
-        coords_numeros(coords_numeros),
+        textura_items(lector_texturas.obtener_textura_items()),
+        textura_numeros(lector_texturas.obtener_textura_fuente()),
+        coords_corazon(lector_texturas.obtener_coords_icono(CORAZON)),
+        coords_infinito(lector_texturas.obtener_coords_simbolo(INFINITO)),
+        coords_armas(lector_texturas.obtener_coords_armas()),
+        coords_numeros(lector_texturas.obtener_coords_numeros()),
         puntos(0),
         vida(0),
         arma_actual(INFINITA),
