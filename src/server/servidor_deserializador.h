@@ -17,6 +17,8 @@ private:
 
     ComandoUnirDTO* deserializar_unir(bool* cerrado, const int32_t& id_cliente);
 
+    ComandoCrearDTO* deserializar_crear(bool* cerrado, int32_t& id_cliente);
+
 public:
     explicit ServidorDeserializador(Socket* socket);
 

@@ -4,6 +4,8 @@
 
 #include "../common/comando_crear_dto.h"
 #include "../common/comando_unir_dto.h"
+#include "../common/comando_validar_dto.h"
+#include "../common/validador_de_mapas.h"
 
 EnviadorCliente::EnviadorCliente(Socket* skt_cliente, std::atomic<bool>& sigo_en_partida,
                                  std::atomic<bool>& sigo_jugando, GestorPartidas* gestor_partidas,
@@ -77,6 +79,11 @@ void EnviadorCliente::inicio_recibidor_cliente() {
                 cola_recibidor = gestor_partidas->unir_partida(&cola_enviador, codigo_partida,
                                                                id_cliente, personaje);
                 servidor_serializador.enviar_unir_partida((cola_recibidor != nullptr), &cerrado);
+            } else if (comando->obtener_comando() == VALIDAR_ESCENARIO) {
+                ComandoValidarDTO* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando);
+                std::string nombre_escenario = validar_dto->obtener_nombre_escenario();
+                bool es_valido = validador_de_mapas::validar_mapa_custom(nombre_escenario);
+                servidor_serializador.enviar_validar_escenario(es_valido, &cerrado);
             }
             delete comando;
         } catch (const std::runtime_error& e) {

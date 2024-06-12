@@ -29,3 +29,12 @@ std::vector<char> LobbySerializador::serializar_unir_partida(const int32_t& codi
     buffer.insert(buffer.end(), p, p + sizeof(int32_t));
     return buffer;
 }
+
+std::vector<char> LobbySerializador::serializar_validar_escenario(const std::string& nombre_escenario){
+    std::vector<char> buffer;
+    uint8_t len_nombre = nombre_escenario.length();
+    buffer.push_back(VALIDAR_ESCENARIO);
+    buffer.push_back(len_nombre);
+    buffer.insert(buffer.end(), nombre_escenario.begin(), nombre_escenario.end());
+    return buffer;
+}

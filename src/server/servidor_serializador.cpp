@@ -27,6 +27,11 @@ void ServidorSerializador::enviar_id_cliente(const int32_t& id_cliente, bool* ce
     socket->sendall(buffer.data(), buffer.size(), cerrado);
 }
 
+void ServidorSerializador::enviar_validar_escenario(const bool& es_valido, bool* cerrado){
+    std::vector<char> buffer = serializar_validar_escenario(es_valido);
+    socket->sendall(buffer.data(), buffer.size(), cerrado);
+}
+
 void ServidorSerializador::enviar_snapshot(const SnapshotDTO& snapshot_dto, bool* cerrado) {
     std::vector<char> buffer = serializar_snapshot(snapshot_dto);
     socket->sendall(buffer.data(), buffer.size(), cerrado);
@@ -54,6 +59,13 @@ std::vector<char> ServidorSerializador::serializar_unir_partida(const bool& unir
     std::vector<char> buffer;
     buffer.push_back(UNIR);
     buffer.push_back(unir);
+    return buffer;
+}
+
+std::vector<char> ServidorSerializador::serializar_validar_escenario(const bool& es_valido){
+    std::vector<char> buffer;
+    buffer.push_back(VALIDAR_ESCENARIO);
+    buffer.push_back(es_valido);
     return buffer;
 }
 

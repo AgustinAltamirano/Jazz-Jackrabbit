@@ -4,6 +4,8 @@
 
 #include <arpa/inet.h>
 
+#include "../../common/comando_validar_dto.h"
+
 LobbyDeserializador::LobbyDeserializador(Socket* socket): socket(socket) {}
 
 ComandoDTO* LobbyDeserializador::obtener_comando(bool* cerrado) {
@@ -19,6 +21,9 @@ ComandoDTO* LobbyDeserializador::obtener_comando(bool* cerrado) {
             break;
         case UNIR:
             return (deserializar_unir_partida(cerrado));
+            break;
+        case VALIDAR_ESCENARIO:
+            return (deserializar_validar_escenario(cerrado));
             break;
         default:
             throw std::invalid_argument("no se encontro el caso en el deserializador del servidor");
@@ -38,4 +43,11 @@ ComandoUnirDTO* LobbyDeserializador::deserializar_unir_partida(bool* cerrado) {
     socket->recvall(&unio, 1, cerrado);
     ComandoUnirDTO* unir_dto = new ComandoUnirDTO(unio);
     return unir_dto;
+}
+
+ComandoValidarDTO* LobbyDeserializador::deserializar_validar_escenario(bool* cerrado) {
+    bool es_valida;
+    socket->recvall(&es_valida, 1, cerrado);
+    ComandoValidarDTO* validar_dto = new ComandoValidarDTO(es_valida);
+    return validar_dto;
 }
