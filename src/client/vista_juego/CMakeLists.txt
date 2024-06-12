@@ -18,13 +18,17 @@ add_library(vista_juego
         camara.cpp
         camara.h
         vista_juego_defs.h
-        tipo_enemigo.h)
+        tipo_enemigo.h
+        pantalla_carga.cpp
+        pantalla_carga.h
+        hud.cpp
+        hud.h)
 
 # Configuración de las librerías externas SDL2 y SDL2pp
 find_package(yaml-cpp REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 find_package(SDL2 REQUIRED)
-#find_package(SDL2pp REQUIRED)
+find_package(SDL2pp REQUIRED)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support

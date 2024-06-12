@@ -1,9 +1,16 @@
 #include "entrada_juego.h"
 
 const std::unordered_map<SDL_Keycode, const TipoComando> EntradaJuego::MAPA_ACCIONES{
-        {SDLK_w, SALTAR},        {SDLK_a, MOVER_IZQ},           {SDLK_d, MOVER_DER},
-        {SDLK_x, ACTIVAR_DASH},  {SDLK_SPACE, DISPARAR_ACCION}, {SDLK_q, ARMA_ANTERIOR},
-        {SDLK_e, ARMA_SIGUIENTE}};
+        {SDLK_w, SALTAR},
+        {SDLK_a, MOVER_IZQ},
+        {SDLK_d, MOVER_DER},
+        {SDLK_x, ACTIVAR_DASH},
+        {SDLK_SPACE, DISPARAR_ACCION},
+        {SDLK_q, ARMA_ANTERIOR},
+        {SDLK_e, ARMA_SIGUIENTE},
+        {SDLK_i, TRUCO1},
+        {SDLK_o, TRUCO2},
+        {SDLK_p, TRUCO3}};
 
 EntradaJuego::EntradaJuego(Cliente& cliente): cliente(cliente) {}
 

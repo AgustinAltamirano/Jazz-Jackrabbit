@@ -71,9 +71,10 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
     }
 
     // Lectura de enemigos
-    const std::string ruta_enemigos(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS);
-    YAML::Node enemigos_config = YAML::LoadFile(ruta_enemigos + std::string(ENEMIGOS_CONFIG));
-    auto imagen_enemigos = enemigos_config["imagen"].as<std::string>();
+    YAML::Node enemigos_config =
+            YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS ENEMIGOS_CONFIG);
+    auto imagen_enemigos = std::string(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS) +
+                           enemigos_config["imagen"].as<std::string>();
     textura_enemigos = std::make_unique<SDL2pp::Texture>(
             renderer, SDL2pp::Surface(imagen_enemigos).SetColorKey(true, COLOR_KEY_ENEMIGOS));
     textura_enemigos->SetBlendMode(SDL_BLENDMODE_BLEND);
@@ -88,6 +89,46 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
                                 sprite_coords["ancho"].as<int>(), sprite_coords["alto"].as<int>());
             coords_enemigos.at(nombre_enemigo).emplace_back(sprite);
         }
+    }
+
+    // Lectura de fuente (números, símbolos, etc.)
+    YAML::Node fuente_config = YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_FUENTE FUENTE_CONFIG);
+    auto imagen_fuente = std::string(ASSETS_PATH RUTA_SPRITES DIR_FUENTE) +
+                         fuente_config["imagen"].as<std::string>();
+    textura_fuente = std::make_unique<SDL2pp::Texture>(
+            renderer, SDL2pp::Surface(imagen_fuente).SetColorKey(true, COLOR_KEY_FUENTE));
+    textura_fuente->SetBlendMode(SDL_BLENDMODE_BLEND);
+
+    for (const auto& numero_coords: fuente_config["numeros"]) {
+        SDL2pp::Rect sprite(numero_coords["x"].as<int>(), numero_coords["y"].as<int>(),
+                            numero_coords["ancho"].as<int>(), numero_coords["alto"].as<int>());
+        coords_numeros.emplace_back(sprite);
+    }
+
+    for (const auto& simbolo_coords: fuente_config["simbolos"]) {
+        SDL2pp::Rect sprite(simbolo_coords["x"].as<int>(), simbolo_coords["y"].as<int>(),
+                            simbolo_coords["ancho"].as<int>(), simbolo_coords["alto"].as<int>());
+        coords_simbolos.emplace(simbolo_coords["nombre"].as<std::string>(), sprite);
+    }
+
+    // Lectura de íconos/ítems
+    YAML::Node items_config = YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_ITEMS ITEMS_CONFIG);
+    auto imagen_items = std::string(ASSETS_PATH RUTA_SPRITES DIR_ITEMS) +
+                        items_config["imagen"].as<std::string>();
+    textura_items = std::make_unique<SDL2pp::Texture>(
+            renderer, SDL2pp::Surface(imagen_items).SetColorKey(true, COLOR_KEY_ITEMS));
+    textura_items->SetBlendMode(SDL_BLENDMODE_BLEND);
+
+    for (const auto& icono_coords: items_config["iconos"]) {
+        SDL2pp::Rect sprite(icono_coords["x"].as<int>(), icono_coords["y"].as<int>(),
+                            icono_coords["ancho"].as<int>(), icono_coords["alto"].as<int>());
+        coords_iconos.emplace(icono_coords["nombre"].as<std::string>(), sprite);
+    }
+
+    for (const auto& arma_coords: items_config["armas"]) {
+        SDL2pp::Rect sprite(arma_coords["x"].as<int>(), arma_coords["y"].as<int>(),
+                            arma_coords["ancho"].as<int>(), arma_coords["alto"].as<int>());
+        coords_iconos.emplace(arma_coords["nombre"].as<std::string>(), sprite);
     }
 }
 
@@ -125,6 +166,28 @@ const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_enemigo(
         const std::string& enemigo) const {
     return coords_enemigos.at(enemigo);
 }
+SDL2pp::Texture& LectorTexturas::obtener_textura_fuente() const { return *textura_fuente; }
+
+const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_numeros() const {
+    return coords_numeros;
+}
+
+const SDL2pp::Rect& LectorTexturas::obtener_coords_simbolo(
+        const std::string& nombre_simbolo) const {
+    return coords_simbolos.at(nombre_simbolo);
+}
+
+
+SDL2pp::Texture& LectorTexturas::obtener_textura_items() const { return *textura_items; }
+
+const SDL2pp::Rect& LectorTexturas::obtener_coords_icono(const std::string& nombre_icono) const {
+    return coords_iconos.at(nombre_icono);
+}
+
+const std::unordered_map<std::string, SDL2pp::Rect>& LectorTexturas::obtener_coords_armas() const {
+    return coords_armas;
+}
+
 
 LectorTexturas::IteradorTexturas LectorTexturas::begin_personajes() {
     const auto iterador_texturas = texturas_personajes.begin();

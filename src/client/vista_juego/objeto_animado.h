@@ -7,19 +7,6 @@
 
 #include "camara.h"
 
-/** Los vectores de dimensiones deben contener
- * la posición en x, en y, el ancho, alto y el ángulo.
- */
-#define CANTIDAD_PARAM_DIMENSIONES 5
-
-enum pos_dimension : uint8_t {
-    RENDER_X = 0,
-    RENDER_Y,
-    RENDER_ANCHO,
-    RENDER_ALTO,
-    RENDER_ANGULO,
-};
-
 /** La clase ObjetoAnimado modela un objeto visual genérico con animación. */
 class ObjetoAnimado {
 private:
