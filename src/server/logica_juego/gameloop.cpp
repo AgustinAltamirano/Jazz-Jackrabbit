@@ -21,7 +21,7 @@ Gameloop::Gameloop(const std::string& archivo_escenario,
     for (auto& [id, tipo]: mapa) {
         const int32_t spawn_x = lugares_spawnpoints[index_spawns].pos_x;
         const int32_t spawn_y = lugares_spawnpoints[index_spawns].pos_y;
-        personajes[id] = personaje(id, tipo, spawn_x, spawn_y);
+        personajes.emplace(id, personaje(id, tipo, spawn_x, spawn_y));
         ++index_spawns;
         if (index_spawns >= size(lugares_spawnpoints)) {
             index_spawns = 0;
