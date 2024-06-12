@@ -19,7 +19,6 @@ add_executable(Client src/client/cliente_main.cpp src/client/juego/cliente.h src
         src/client/vista_menu/menu_seleccion.cpp
         src/client/vista_menu/menu_seleccion.h src/common/estado_personaje.h src/common/tipo_arma.h src/common/tipo_bloque_escenario.h src/common/tipo_comando.h src/common/tipo_escenario.h src/common/tipo_personaje.h
         src/client/vista_menu/menu_seleccion.h
-        src/common/config.cpp
         src/common/validador_de_mapas.cpp
         src/common/validador_de_mapas.h
 )

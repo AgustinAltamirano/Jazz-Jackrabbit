@@ -81,8 +81,8 @@ void AdministradorVistaJuego::actualizar_vista() {
         personajes.at(jugador->id_cliente).actualizar_camara();
 
         // Actualizar HUD en base a los datos del jugador
-        hud.actualizar(jugador->puntos, jugador->vida, jugador->arma_actual,
-                       jugador->balas_restantes);
+        /*hud.actualizar(jugador->puntos, jugador->vida, jugador->arma_actual,
+                       jugador->balas_restantes);*/
     }
 
     if (const std::vector<BloqueEscenarioDTO> bloques_recibidos =
@@ -140,7 +140,6 @@ int64_t AdministradorVistaJuego::sincronizar_vista(const int64_t ticks_transcurr
     int64_t tiempo_rest = MILISEGUNDOS_POR_FRAME - ticks_transcurridos;
     if (tiempo_rest < 0) {
         const int64_t tiempo_atrasado = -tiempo_rest;
-        std::cout << tiempo_atrasado << std::endl;
         tiempo_rest = MILISEGUNDOS_POR_FRAME - tiempo_atrasado % MILISEGUNDOS_POR_FRAME;
         ajuste_tiempo_anterior += tiempo_rest + tiempo_atrasado;
         iteraciones_actuales += ajuste_tiempo_anterior / MILISEGUNDOS_POR_FRAME;
@@ -172,7 +171,7 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         pantalla_carga(renderer),
         lector_texturas(renderer),
         entrada_juego(cliente),
-        hud(renderer, lector_texturas),
+        // hud(renderer, lector_texturas),
         cliente(cliente),
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
@@ -195,7 +194,7 @@ void AdministradorVistaJuego::run() {
         for (auto& [fst, snd]: personajes) {
             snd.dibujar();
         }
-        hud.dibujar();
+        // hud.dibujar();
         renderer.Present();
 
         if (!entrada_juego.procesar_entrada()) {

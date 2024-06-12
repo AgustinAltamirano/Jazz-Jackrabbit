@@ -53,7 +53,7 @@ private:
     PantallaCarga pantalla_carga;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
-    HUD hud;
+    // HUD hud;
     Cliente& cliente;
 
     uint32_t iteraciones_actuales;
