@@ -33,6 +33,18 @@ private:
 
     std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_enemigos;
 
+    std::unique_ptr<SDL2pp::Texture> textura_fuente;
+
+    std::vector<SDL2pp::Rect> coords_numeros;
+
+    std::unordered_map<std::string, SDL2pp::Rect> coords_simbolos;
+
+    std::unique_ptr<SDL2pp::Texture> textura_items;
+
+    std::unordered_map<std::string, SDL2pp::Rect> coords_iconos;
+
+    std::unordered_map<std::string, SDL2pp::Rect> coords_armas;
+
 public:
     explicit LectorTexturas(SDL2pp::Renderer& renderer);
 
@@ -75,6 +87,18 @@ public:
      * @return referencia a un @code SDL2pp::Rect@endcode que contiene las coordenadas
      */
     const std::vector<SDL2pp::Rect>& obtener_coords_enemigo(const std::string& enemigo) const;
+
+    SDL2pp::Texture& obtener_textura_fuente() const;
+
+    const std::vector<SDL2pp::Rect>& obtener_coords_numeros() const;
+
+    const SDL2pp::Rect& obtener_coords_simbolo(const std::string& nombre_simbolo) const;
+
+    SDL2pp::Texture& obtener_textura_items() const;
+
+    const SDL2pp::Rect& obtener_coords_icono(const std::string& nombre_icono) const;
+
+    const std::unordered_map<std::string, SDL2pp::Rect>& obtener_coords_armas() const;
 
     ~LectorTexturas();
 

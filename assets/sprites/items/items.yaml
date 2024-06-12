@@ -1,0 +1,29 @@
+imagen: items.png
+iconos:
+  - nombre: corazon
+    x: 446
+    y: 502
+    ancho: 15
+    alto: 12
+
+armas:
+  - nombre: infinita
+    x: 91
+    y: 28
+    ancho: 15
+    alto: 20
+  - nombre: arma1
+    x: 89
+    y: 59
+    ancho: 14
+    alto: 19
+  - nombre: arma2
+    x: 11
+    y: 397
+    ancho: 28
+    alto: 19
+  - nombre: arma3
+    x: 11
+    y: 422
+    ancho: 28
+    alto: 19

@@ -26,23 +26,30 @@ const std::unordered_map<TipoPersonaje, std::string> AdministradorVistaJuego::MA
 };
 
 const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
-        AdministradorVistaJuego::MAPA_ESTADOS_PERSONAJE{
-                {IDLE, ESTADO_STAND},
-                {CORRER, ESTADO_CORRER},
-                {DASH, ESTADO_DASH},
-                {DISPARAR_QUIETO, ESTADO_DISPARAR},
-                {SALTAR_ARRIBA, ESTADO_SALTAR_ARRIBA},
-                {SALTAR_ADELANTE, ESTADO_SALTAR_ADELANTE},
-                {CAER_ABAJO, ESTADO_CAER_ABAJO},
-                {CAER_ADELANTE, ESTADO_CAER_ADELANTE},
-                {ATAQUE_ESPECIAL, ESTADO_ATAQUE_ESPECIAL},
-        };
+        AdministradorVistaJuego::MAPA_ESTADOS_PERSONAJE{{IDLE, ESTADO_STAND},
+                                                        {CORRER, ESTADO_CORRER},
+                                                        {DASH, ESTADO_DASH},
+                                                        {DISPARAR_QUIETO, ESTADO_DISPARAR},
+                                                        {SALTAR_ARRIBA, ESTADO_SALTAR_ARRIBA},
+                                                        {SALTAR_ADELANTE, ESTADO_SALTAR_ADELANTE},
+                                                        {CAER_ABAJO, ESTADO_CAER_ABAJO},
+                                                        {CAER_ADELANTE, ESTADO_CAER_ADELANTE},
+                                                        {ATAQUE_ESPECIAL, ESTADO_ATAQUE_ESPECIAL},
+                                                        {INTOXICADO, ESTADO_INTOXICADO_IDLE},
+                                                        {IMPACTADO, ESTADO_DANIO},
+                                                        {MUERTE, ESTADO_MUERTE}};
 
 void AdministradorVistaJuego::actualizar_vista() {
     std::shared_ptr<SnapshotDTO> snapshot;
     if (!cliente.obtener_snapshot(snapshot)) {
+        if (!primera_snapshot_recibida) {
+            pantalla_carga.dibujar();
+        }
         return;
     }
+
+    primera_snapshot_recibida = true;
+
     if (snapshot->es_fin_juego()) {
         fin_juego = true;
         return;
@@ -60,17 +67,22 @@ void AdministradorVistaJuego::actualizar_vista() {
     const std::vector<ClienteDTO> clientes_recibidos = snapshot->obtener_clientes();
 
     // Actualizar posición de la cámara
-    if (const auto it = std::find_if(
+    if (const auto jugador = std::find_if(
                 clientes_recibidos.begin(), clientes_recibidos.end(),
                 [this](const auto& cliente) { return cliente.id_cliente == this->id_jugador; });
-        it != clientes_recibidos.end()) {
-        if (personajes.count(it->id_cliente) == 0) {
-            Personaje nuevo_personaje(it->id_cliente, MAPA_TIPO_PERSONAJE.at(it->tipo_personaje),
-                                      renderer, lector_texturas, camara, it->pos_x, it->pos_y, 0,
+        jugador != clientes_recibidos.end()) {
+        if (personajes.count(jugador->id_cliente) == 0) {
+            Personaje nuevo_personaje(jugador->id_cliente,
+                                      MAPA_TIPO_PERSONAJE.at(jugador->tipo_personaje), renderer,
+                                      lector_texturas, camara, jugador->pos_x, jugador->pos_y, 0,
                                       ITERACIONES_POR_SPRITE);
-            personajes.emplace(it->id_cliente, std::move(nuevo_personaje));
+            personajes.emplace(jugador->id_cliente, std::move(nuevo_personaje));
         }
-        personajes.at(it->id_cliente).actualizar_camara();
+        personajes.at(jugador->id_cliente).actualizar_camara();
+
+        // Actualizar HUD en base a los datos del jugador
+        hud.actualizar(jugador->puntos, jugador->vida, jugador->arma_actual,
+                       jugador->balas_restantes);
     }
 
     if (const std::vector<BloqueEscenarioDTO> bloques_recibidos =
@@ -157,11 +169,14 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         ventana(titulo_ventana, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA,
                 ALTO_VENTANA, 0),
         renderer(ventana, -1, SDL_RENDERER_ACCELERATED),
+        pantalla_carga(renderer),
         lector_texturas(renderer),
         entrada_juego(cliente),
+        hud(renderer, lector_texturas),
         cliente(cliente),
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
+        primera_snapshot_recibida(false),
         fin_juego(false) {
     lector_texturas.cargar_texturas_y_coordenadas();
 }
@@ -180,6 +195,7 @@ void AdministradorVistaJuego::run() {
         for (auto& [fst, snd]: personajes) {
             snd.dibujar();
         }
+        hud.dibujar();
         renderer.Present();
 
         if (!entrada_juego.procesar_entrada()) {

@@ -14,7 +14,11 @@ const std::unordered_map<EstadoVisualPersonaje, const std::string>
                                           {ESTADO_CAER_ABAJO, "caer_abajo"},
                                           {ESTADO_SALTAR_ADELANTE, "saltar_adelante"},
                                           {ESTADO_CAER_ADELANTE, "caer_adelante"},
-                                          {ESTADO_ATAQUE_ESPECIAL, "ataque_especial"}};
+                                          {ESTADO_ATAQUE_ESPECIAL, "ataque_especial"},
+                                          {ESTADO_INTOXICADO_IDLE, "intoxicado_idle"},
+                                          {ESTADO_INTOXICADO_CAMINAR, "intoxicado_caminar"},
+                                          {ESTADO_DANIO, "danio"},
+                                          {ESTADO_MUERTE, "muerte"}};
 
 
 SDL2pp::Rect Personaje::corregir_desfase_sprite(const SDL2pp::Rect& dimensiones) const {
