@@ -181,7 +181,7 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
             }
         }
         jugador.cambiar_posicion(nueva_pos_x, nueva_pos_y);
-        for (auto& enemigo: enemigos) {
+        for (const auto& enemigo: enemigos) {
             if (hay_colision_enemigo(nueva_pos_x, nueva_pos_y, jugador.get_alto(),
                                      jugador.get_ancho(), enemigo)) {
                 int32_t dano = enemigo.atacar();
@@ -197,7 +197,7 @@ void manejadorEscenario::hacer_tick_enemigos() {
         int32_t pos_y = en.get_pos_y();
         uint32_t ancho = en.get_ancho();
         uint32_t alto = en.get_alto();
-        for (auto& bloque: bloques_rectos) {
+        for (const auto& bloque: bloques_rectos) {
             if (hay_colision_recta(prox_pos_x, pos_y, alto, ancho, bloque)) {
                 en.chocar_pared();
             }
@@ -243,14 +243,14 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
 
 
 // seccion de creacion de snapshots
-auto manejadorEscenario::crear_snapshot() {
+std::shared_ptr<SnapshotDTO> manejadorEscenario::crear_snapshot() {
     auto snapshot = std::make_shared<SnapshotDTO>(clase_escenario);
-    for (auto& bloque: bloques_rectos) {
+    for (const auto& bloque: bloques_rectos) {
         BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
                                                 bloque.alto, bloque.angulo, bloque.tipo);
         snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
     }
-    for (auto& bloque: bloques_angulados) {
+    for (const auto& bloque: bloques_angulados) {
         BloqueEscenarioDTO bloque_escenario_dto(bloque.pos_x, bloque.pos_y, bloque.ancho,
                                                 bloque.alto, bloque.angulo, bloque.tipo);
         snapshot->agregar_bloque_escenario(std::move(bloque_escenario_dto));
@@ -354,7 +354,7 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
                                   en.get_alto())) {
                 uint32_t dano = (*it)->impactar();
                 if (en.hacer_dano(dano)) {
-                    jugadores[(*it)->get_id()].dar_puntos(en.get_puntos());
+                    jugadores.at((*it)->get_id()).dar_puntos(en.get_puntos());
                 }
             }
         }

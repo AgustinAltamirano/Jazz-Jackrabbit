@@ -37,7 +37,7 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
         return false;
     }
     bool disparo = false;
-    for (const TipoComando tecla&: teclas) {
+    for (const TipoComando& tecla: teclas) {
         // verificar si el estado permite hacer acciones
         switch (tecla) {
             case SALTAR:

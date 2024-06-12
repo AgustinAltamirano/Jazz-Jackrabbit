@@ -4,8 +4,10 @@
 
 #include "constantes.h"
 
+std::mutex ConfigAdmin::m;
+
 ConfigAdmin& ConfigAdmin::getInstance() {
-    std::lock_guard<std::mutex> lock(mutex);
+    std::lock_guard<std::mutex> lock(m);
     static ConfigAdmin singleton;
     return singleton;
 }

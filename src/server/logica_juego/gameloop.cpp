@@ -52,8 +52,8 @@ void Gameloop::run() {
             entidad.second.pasar_tick();
         }
         for (const auto& accion: acciones) {
-            if (personajes[accion.first].ejecutar_accion(accion.second)) {
-                escenario.jugador_dispara(accion.first, personajes[accion.first]);
+            if (personajes.at(accion.first).ejecutar_accion(accion.second)) {
+                escenario.jugador_dispara(accion.first, personajes.at(accion.first));
             }
         }
 

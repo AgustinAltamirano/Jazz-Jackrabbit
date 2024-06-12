@@ -11,7 +11,7 @@ private:
 
     std::unordered_map<std::string, int> configuracion;
 
-    static std::mutex mutex;
+    static std::mutex m;
 
 public:
     static ConfigAdmin& getInstance();

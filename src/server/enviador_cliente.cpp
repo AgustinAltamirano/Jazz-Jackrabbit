@@ -1,5 +1,6 @@
 #include "enviador_cliente.h"
 
+#include <memory>
 #include <string>
 
 #include "../common/comando_crear_dto.h"
@@ -81,7 +82,7 @@ void EnviadorCliente::inicio_recibidor_cliente() {
                 servidor_serializador.enviar_unir_partida((cola_recibidor != nullptr), &cerrado);
             } else if (comando->obtener_comando() == VALIDAR_ESCENARIO) {
                 ComandoValidarDTO* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando);
-                std::string nombre_escenario = validar_dto->obtener_nombre_escenario();
+                const std::string nombre_escenario = validar_dto->obtener_nombre_escenario();
                 bool es_valido = validador_de_mapas::validar_mapa_custom(nombre_escenario);
                 servidor_serializador.enviar_validar_escenario(es_valido, &cerrado);
             }
