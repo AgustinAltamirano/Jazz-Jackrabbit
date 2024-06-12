@@ -9,15 +9,12 @@
 #include "../common/queue.h"
 #include "../common/snapshot_dto.h"
 #include "../common/thread.h"
-#include "./monitor_snapshots.h"
-
-#include "monitor_mapa_clientes.h"
 
 class Partida: public Thread {
 private:
-    MonitorMapaClientes monitor_mapa_clientes;
+    std::map<int, TipoPersonaje> mapa_clientes_juego;
 
-    MonitorSnapshots monitor_snapshots;
+    std::map<int, Queue<SnapshotDTO>*> cola_snapshots;
 
     int32_t codigo_partida;
 
@@ -30,6 +27,10 @@ private:
     bool admite_jugadores;
 
     int8_t capacidad_partida;
+
+    bool borrar_cliente_mapa(int32_t& id_cliente);
+
+    bool borrar_cliente_snapshots(int32_t& id_cliente);
 
 public:
     Partida(Queue<SnapshotDTO>* cola_enviador, int32_t& codigo_partida,

@@ -1,5 +1,5 @@
-#ifndef MATCHMANANGER_H
-#define MATCHMANANGER_H
+#ifndef GESTOR_PARTIDAS_H
+#define GESTOR_PARTIDAS_H
 
 #include <atomic>
 #include <list>
@@ -8,15 +8,16 @@
 #include <vector>
 
 #include "../common/queue.h"
-#include "./monitor_partidas.h"
 
 #include "partida.h"
 
 class GestorPartidas {
 private:
-    int32_t contador_partidas;  // Corresponde con el codigo de partida.
+    std::mutex m;
 
-    MonitorPartidas monitor_partidas;
+    std::list<Partida*> lista_partidas;
+
+    int32_t contador_partidas;  // Corresponde con el codigo de partida.
 
     Partida* existe_partida_por_codigo(const int& codigo);
 
