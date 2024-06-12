@@ -32,7 +32,7 @@ private:
     std::vector<spawnpoint> spawnpoints_enemigos;
     std::vector<enemigo> enemigos;
     std::list<recogible> objetos;
-    std::list<bala> balas;
+    std::list<std::unique_ptr<bala>> balas;
 
 public:
     // creacion, cargar escenario y ayudar a gameloop
