@@ -268,20 +268,24 @@ void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
 
     switch (jugador.get_arma()) {
         case INFINITA:
-            auto balaI = balaInfinita(id, punto_x, punto_y, jugador.get_invertido());
-            jugador.disparar(balaI.disparar());
+            std::unique_ptr<bala> balaI =
+                    std::make_unique<balaInfinita>(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(balaI->disparar());
             balas.push_back(std::move(balaI));
         case ARMA1:
-            auto bala1 = balaArma1(id, punto_x, punto_y, jugador.get_invertido());
-            jugador.disparar(bala1.disparar());
+            std::unique_ptr<bala> bala1 =
+                    std::make_unique<balaArma1>(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(bala1->disparar());
             balas.push_back(std::move(bala1));
         case ARMA2:
-            auto bala2 = balaArma2(id, punto_x, punto_y, jugador.get_invertido());
-            jugador.disparar(bala2.disparar());
+            std::unique_ptr<bala> bala2 =
+                    std::make_unique<balaArma2>(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(bala2->disparar());
             balas.push_back(std::move(bala2));
         case ARMA3:
-            auto bala3 = balaArma3(id, punto_x, punto_y, jugador.get_invertido());
-            jugador.disparar(bala3.disparar());
+            std::unique_ptr<bala> bala3 =
+                    std::make_unique<balaArma3>(id, punto_x, punto_y, jugador.get_invertido());
+            jugador.disparar(bala3->disparar());
             balas.push_back(std::move(bala3));
         default:
             return;
@@ -322,11 +326,11 @@ void manejadorEscenario::generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y) 
 
 void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
     for (auto it = balas.begin(); it != balas.end();) {
-        if ((*it).mover()) {
+        if ((*it)->mover()) {
             it = balas.erase(it);
             continue;
         }
-        std::vector<int32_t> posicion_bala = (*it).get_pos();
+        std::vector<int32_t> posicion_bala = (*it)->get_pos();
         int32_t bala_x = posicion_bala[0];
         int32_t bala_y = posicion_bala[1];
         for (auto& jugador: jugadores) {
@@ -334,9 +338,9 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
             const std::vector<int32_t> posicion = jug.get_pos_actual();
             const int32_t jug_x = posicion[0];
             const int32_t jug_y = posicion[1];
-            if (((*it).get_id() != jugador.first) &&
+            if (((*it)->get_id() != jugador.first) &&
                 hay_colision_bala(bala_x, bala_y, jug_x, jug_y, jug.get_ancho(), jug.get_alto())) {
-                uint32_t dano = (*it).impactar();
+                uint32_t dano = (*it)->impactar();
                 jug.efectuar_dano(dano);
             }
         }
@@ -344,22 +348,22 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
             if (en.get_estado() != MUERTO &&
                 hay_colision_bala(bala_x, bala_y, en.get_pos_x(), en.get_pos_y(), en.get_ancho(),
                                   en.get_alto())) {
-                uint32_t dano = (*it).impactar();
+                uint32_t dano = (*it)->impactar();
                 if (en.hacer_dano(dano)) {
-                    jugadores[(*it).get_id()].dar_puntos(en.get_puntos());
+                    jugadores[(*it)->get_id()].dar_puntos(en.get_puntos());
                 }
             }
         }
         for (const auto& bloque: bloques_rectos) {
             if (hay_colision_bala(bala_x, bala_y, bloque.pos_x, bloque.pos_y, bloque.ancho,
                                   bloque.alto)) {
-                (*it).impactar();
+                (*it)->impactar();
             }
         }
         for (const auto& bloque: bloques_angulados) {
             if (hay_colision_bala(bala_x, bala_y, bloque.pos_x, bloque.pos_y, bloque.ancho,
                                   bloque.alto)) {
-                (*it).impactar();
+                (*it)->impactar();
             }
         }
     }
