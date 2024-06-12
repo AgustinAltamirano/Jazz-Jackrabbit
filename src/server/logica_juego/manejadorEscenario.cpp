@@ -267,26 +267,30 @@ void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
     int32_t punto_y = posicion[1] + jugador.get_alto() / 2;
 
     switch (jugador.get_arma()) {
-        case INFINITA:
+        case INFINITA: {
             std::unique_ptr<bala> balaI =
                     std::make_unique<balaInfinita>(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(balaI->disparar());
             balas.push_back(std::move(balaI));
-        case ARMA1:
+        }
+        case ARMA1: {
             std::unique_ptr<bala> bala1 =
                     std::make_unique<balaArma1>(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(bala1->disparar());
             balas.push_back(std::move(bala1));
-        case ARMA2:
+        }
+        case ARMA2: {
             std::unique_ptr<bala> bala2 =
                     std::make_unique<balaArma2>(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(bala2->disparar());
             balas.push_back(std::move(bala2));
-        case ARMA3:
+        }
+        case ARMA3: {
             std::unique_ptr<bala> bala3 =
                     std::make_unique<balaArma3>(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(bala3->disparar());
             balas.push_back(std::move(bala3));
+        }
         default:
             return;
     }
