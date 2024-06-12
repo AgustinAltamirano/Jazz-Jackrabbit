@@ -25,14 +25,14 @@ private:
 
     ServidorDeserializador servidor_deserializador;
 
-    Queue<SnapshotDTO>& cola_enviador;
+    Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador;
 
     int32_t id_cliente;
 
 public:
     RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_partida,
                      std::atomic<bool>& sigo_jugando, int32_t& id_cliente,
-                     Queue<SnapshotDTO>& cola_enviador);
+                     Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador);
 
     void run() override;
 

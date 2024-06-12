@@ -5,7 +5,7 @@
 
 RecibidorCliente::RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_partida,
                                    std::atomic<bool>& sigo_jugando, int32_t& id_cliente,
-                                   Queue<SnapshotDTO>& cola_enviador):
+                                   Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador):
         cola_enviador(cola_enviador),
         id_cliente(id_cliente),
         sigo_en_partida(sigo_en_partida),
