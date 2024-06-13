@@ -51,7 +51,7 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 this->de_espaldas = false;
                 break;
             case MOVER_IZQ:
-                this->vel_y = -4;
+                this->vel_x = -4;
                 this->de_espaldas = true;
                 break;
             case ACTIVAR_DASH:
@@ -135,8 +135,7 @@ int32_t personaje::get_ancho() const { return ancho; }
 
 void personaje::cambiar_estado(const bool cae) {
     this->en_aire = cae;
-    if (estado == MUERTE || estado == IMPACTADO || estado == DISPARAR_QUIETO ||
-        estado == ATAQUE_ESPECIAL) {
+    if (estado == MUERTE || estado == IMPACTADO || estado == ATAQUE_ESPECIAL) {
         this->vel_x = 0;  // reseteo la velocidad
         return;
     }
@@ -144,10 +143,7 @@ void personaje::cambiar_estado(const bool cae) {
         if (vel_x != 0) {
             this->estado = INTOXICADO_MOVIMIENTO;
         }
-        this->vel_x = 0;  // reseteo la velocidad
-        return;
-    }
-    if (cae) {
+    } else if (cae) {
         if (this->vel_x != 0) {
             if (this->vel_y < 0) {
                 this->estado = SALTAR_ADELANTE;
@@ -168,7 +164,9 @@ void personaje::cambiar_estado(const bool cae) {
             this->estado = IDLE;
         }
     }
-    this->vel_x = 0;  // reseteo la velocidad
+    if (!en_aire) {
+        this->vel_x = 0;  // reseteo la velocidad
+    }
 }
 
 void personaje::pasar_tick() {

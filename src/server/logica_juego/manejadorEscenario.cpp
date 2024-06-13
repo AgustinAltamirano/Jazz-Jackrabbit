@@ -153,14 +153,29 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
         int32_t nueva_pos_x = pos_x_jug_prox, nueva_pos_y = pos_y_jug_prox;
         for (const auto& bloque: colisiones) {
             bool col_vert = colision_vertical(pos_y_jug_prox, jugador.get_alto(), bloque);
-            // bool col_hor = colision_horizontal(pos_x_jug_prox, jugador.get_ancho(), bloque);
-            if (col_vert) {  // si solo hay colision vertical
+            bool col_hor = colision_horizontal(pos_x_jug_prox, jugador.get_ancho(), bloque);
+            if (col_vert && !col_hor) {  // si solo hay colision vertical
                 nueva_pos_y = definir_punto_medio(pos_y_jug_act, jugador.get_alto(), bloque.pos_y,
                                                   bloque.alto);
                 jugador.dejar_de_caer();
-            } else {
+            } else if (col_hor && !col_vert) {
                 nueva_pos_x = definir_punto_medio(pos_x_jug_act, jugador.get_ancho(), bloque.pos_x,
                                                   bloque.ancho);
+            } else {
+                const int32_t inter_x = std::min(pos_x_jug_prox + jugador.get_ancho(),
+                                                 bloque.pos_x + bloque.ancho) -
+                                        std::max(pos_x_jug_prox, bloque.pos_x);
+                const int32_t inter_y =
+                        std::min(pos_y_jug_prox + jugador.get_alto(), bloque.pos_y + bloque.alto) -
+                        std::max(pos_y_jug_prox, bloque.pos_y);
+                if (inter_x > inter_y) {
+                    nueva_pos_y = definir_punto_medio(pos_y_jug_act, jugador.get_alto(),
+                                                      bloque.pos_y, bloque.alto);
+                    jugador.dejar_de_caer();
+                } else {
+                    nueva_pos_x = definir_punto_medio(pos_x_jug_act, jugador.get_ancho(),
+                                                      bloque.pos_x, bloque.ancho);
+                }
             }
         }
         jugador.cambiar_posicion(nueva_pos_x, nueva_pos_y);
@@ -285,7 +300,8 @@ void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
 
 bool hay_colision_bala(int32_t bala_x, int32_t bala_y, int32_t target_x, int32_t target_y,
                        int32_t ancho, int32_t alto) {
-    return (target_x < bala_x < target_x + ancho) && (target_y < bala_y < target_y + alto);
+    return ((target_x < bala_x) && (bala_x < target_x + ancho) && (target_y < bala_y) &&
+            (bala_y < target_y + alto));
 }
 
 void manejadorEscenario::generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y) {
