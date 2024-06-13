@@ -1,7 +1,5 @@
 #include "personaje.h"
 
-#include <iostream>
-
 #include "../../common/config.h"
 #include "../../common/constantes.h"
 
@@ -131,9 +129,9 @@ std::vector<int> personaje::get_pos_a_ir() const {
     return pos_prox;
 }
 
-uint32_t personaje::get_alto() const { return alto; }
+int32_t personaje::get_alto() const { return alto; }
 
-uint32_t personaje::get_ancho() const { return ancho; }
+int32_t personaje::get_ancho() const { return ancho; }
 
 void personaje::cambiar_estado(const bool cae) {
     this->en_aire = cae;
@@ -205,7 +203,7 @@ void personaje::pasar_tick() {
     }
 }
 
-void personaje::recoger_objeto(const uint32_t valor, const TipoRecogible tipo) {
+void personaje::recoger_objeto(const int32_t valor, const TipoRecogible tipo) {
     switch (tipo) {
         case GEMA_AGARRABLE:
         case MONEDA_AGARRABLE:
@@ -238,14 +236,14 @@ TipoArma personaje::get_arma() const { return this->arma_actual; }
 
 bool personaje::get_invertido() const { return this->de_espaldas; }
 
-void personaje::disparar(const uint32_t frames_recarga) {
+void personaje::disparar(const int32_t frames_recarga) {
     this->tiempo_recarga = frames_recarga;
     if (inventario_balas.at(arma_actual) != -1) {
         inventario_balas[arma_actual] -= 1;
     }
 }
 
-void personaje::efectuar_dano(uint32_t const dano) {
+void personaje::efectuar_dano(int32_t const dano) {
     if (this->estado != IMPACTADO && this->estado != MUERTE) {
         this->vida -= dano;
         if (vida <= 0) {

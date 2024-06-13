@@ -24,7 +24,7 @@ bool balaArma1::mover() {
     return this->choco;
 }
 
-uint32_t balaArma1::impactar() {
+int32_t balaArma1::impactar() {
     if (rebotes == 3) {
         this->choco = true;
     } else {
@@ -35,7 +35,7 @@ uint32_t balaArma1::impactar() {
 
 int32_t balaArma1::get_id() const { return this->id_dueno; }
 
-uint32_t balaArma1::disparar() {
+int32_t balaArma1::disparar() {
     this->mover();
     return this->tiempo_recarga;
 }
