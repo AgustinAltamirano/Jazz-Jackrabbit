@@ -92,7 +92,8 @@ void Personaje::actualizar_animacion(const EstadoVisualPersonaje estado,
 }
 
 void Personaje::actualizar_camara() const {
-    animaciones.at(estado_actual).actualizar_camara(pos_x, pos_y);
+    animaciones.at(estado_actual)
+            .actualizar_camara(pos_x + ANCHO_INICIAL / 2, pos_y + ALTO_INICIAL / 2);
 }
 
 

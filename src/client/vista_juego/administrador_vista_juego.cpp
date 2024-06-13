@@ -117,7 +117,7 @@ void AdministradorVistaJuego::actualizar_vista() {
         }
 
         personajes.at(id).actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(c.estado),
-                                               iteraciones_actuales, {c.pos_x, c.pos_y, 2, 2}, 0,
+                                               iteraciones_actuales, {c.pos_x, c.pos_y, 1, 1}, 0,
                                                c.de_espaldas);
     }
 
@@ -193,7 +193,7 @@ void AdministradorVistaJuego::run() {
             snd.dibujar();
         }
         if (primera_snapshot_recibida) {
-            // hud.dibujar();
+            hud.dibujar();
         } else {
             pantalla_carga.dibujar();
         }

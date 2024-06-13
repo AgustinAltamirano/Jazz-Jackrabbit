@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
         Cliente cliente(std::move(socket));
         AdministradorVistaJuego admin(id_cliente, "Jazz Jackrabbit", cliente);
         admin.run();
+        cliente.join();
         return 0;
 
     } catch (const std::exception& err) {
