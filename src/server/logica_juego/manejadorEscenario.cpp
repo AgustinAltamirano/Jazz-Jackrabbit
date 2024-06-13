@@ -48,10 +48,10 @@ void manejadorEscenario::cargar_escenario() {
                 bloques_angulados.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, 0, tipo);
                 break;
             case SPAWNPOINT_JUGADOR:
-                spawnpoints.emplace_back(pos_x, pos_y - ALTO_INICIAL + TAMANO_BLOQUE);
+                spawnpoints.emplace_back(pos_x, pos_y);
                 break;
             case SPAWNPOINT_ENEMIGO:
-                spawnpoints_enemigos.emplace_back(pos_x, pos_y - ALTURA_ENEMIGO + TAMANO_BLOQUE);
+                spawnpoints_enemigos.emplace_back(pos_x, pos_y);
                 break;
             case GEMA:
                 objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, GEMA_AGARRABLE);
@@ -170,6 +170,7 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
             if (!col_hor && col_vert) {  // si solo hay colision vertical
                 nueva_pos_y = definir_punto_medio(pos_y_jug_act, jugador.get_alto(), bloque.pos_y,
                                                   bloque.alto);
+                jugador.dejar_de_caer();
             } else if (col_hor && !col_vert) {  // si solo hay colision horizontal
                 nueva_pos_x = definir_punto_medio(pos_x_jug_act, jugador.get_ancho(), bloque.pos_x,
                                                   bloque.ancho);
@@ -181,6 +182,7 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
                         std::min(pos_y_jug_prox + jugador.get_alto(), bloque.pos_y + bloque.alto) -
                         std::max(pos_y_jug_prox, bloque.pos_y);
                 if (inter_x > inter_y) {
+                    jugador.dejar_de_caer();
                     nueva_pos_y = definir_punto_medio(pos_y_jug_act, jugador.get_alto(),
                                                       bloque.pos_y, bloque.alto);
                 } else {

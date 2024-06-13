@@ -63,6 +63,10 @@ public:
     [[nodiscard]] uint32_t get_ancho() const;
     [[nodiscard]] uint32_t get_alto() const;
 
+    // efectos de gravedad
+    void efectuar_gravedad();
+    void dejar_de_caer();
+
     [[nodiscard]] TipoArma get_arma() const;
     [[nodiscard]] bool get_invertido() const;
     void disparar(uint32_t frames_recarga);

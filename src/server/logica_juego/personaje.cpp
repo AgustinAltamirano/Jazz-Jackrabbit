@@ -1,5 +1,7 @@
 #include "personaje.h"
 
+#include <iostream>
+
 #include "../../common/config.h"
 #include "../../common/constantes.h"
 
@@ -42,16 +44,16 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
         switch (tecla) {
             case SALTAR:
                 if (!en_aire && (this->estado != INTOXICADO)) {
-                    this->vel_y = -11;
+                    this->vel_y = -16;
                     this->en_aire = true;
                 }
                 break;
             case MOVER_DER:
-                this->vel_x = 2;
+                this->vel_x = 4;
                 this->de_espaldas = false;
                 break;
             case MOVER_IZQ:
-                this->vel_y = -2;
+                this->vel_y = -4;
                 this->de_espaldas = true;
                 break;
             case ACTIVAR_DASH:
@@ -88,12 +90,17 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 break;
         }
     }
-    this->vel_x += this->aceleracion_x;
+    return disparo;
+}
+
+void personaje::efectuar_gravedad() {
     if (en_aire) {
         this->vel_y += this->aceleracion_y;
     }
-    return disparo;
 }
+
+void personaje::dejar_de_caer() { this->en_aire = false; }
+
 
 void personaje::cambiar_posicion(const int32_t x, const int32_t y) {
     this->pos_x = x;
@@ -132,12 +139,14 @@ void personaje::cambiar_estado(const bool cae) {
     this->en_aire = cae;
     if (estado == MUERTE || estado == IMPACTADO || estado == DISPARAR_QUIETO ||
         estado == ATAQUE_ESPECIAL) {
+        this->vel_x = 0;  // reseteo la velocidad
         return;
     }
     if (estado == INTOXICADO) {
         if (vel_x != 0) {
             this->estado = INTOXICADO_MOVIMIENTO;
         }
+        this->vel_x = 0;  // reseteo la velocidad
         return;
     }
     if (cae) {
@@ -161,6 +170,7 @@ void personaje::cambiar_estado(const bool cae) {
             this->estado = IDLE;
         }
     }
+    this->vel_x = 0;  // reseteo la velocidad
 }
 
 void personaje::pasar_tick() {

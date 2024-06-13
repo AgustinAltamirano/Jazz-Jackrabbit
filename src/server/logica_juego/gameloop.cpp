@@ -50,6 +50,7 @@ void Gameloop::run() {
         }
         for (auto& entidad: personajes) {
             entidad.second.pasar_tick();
+            entidad.second.efectuar_gravedad();
         }
         for (const auto& accion: acciones) {
             if (personajes.at(accion.first).ejecutar_accion(accion.second)) {
