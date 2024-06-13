@@ -2,7 +2,7 @@
 #define CONSTANTES_H
 
 // CONFIGURACION Y SUS CONSTANTES
-#define ARCHIVO_CONFIG "../../configuracion.yaml"
+#define ARCHIVO_CONFIG "/configuracion.yaml"
 #define MAX_JUG_POR_PARTIDA "max_jugadores_por_partida"
 #define MAX_PARTIDAS "max_partidas"
 #define VIDA_INICIAL "vida_inicial"

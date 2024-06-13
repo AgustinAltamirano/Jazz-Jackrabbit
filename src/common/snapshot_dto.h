@@ -35,7 +35,18 @@ struct ClienteDTO {
             puntos(puntos),
             arma_actual(arma_actual),
             balas_restantes(balas_restantes) {}
-};
+    ClienteDTO() :
+            id_cliente(),
+            tipo_personaje(),
+            pos_x(),
+            pos_y(),
+            de_espaldas(),
+            estado(),
+            vida(),
+            puntos(),
+            arma_actual(),
+            balas_restantes() {}
+} __attribute__((packed));
 
 struct BloqueEscenarioDTO {
     int32_t pos_x, pos_y, angulo;
@@ -44,7 +55,9 @@ struct BloqueEscenarioDTO {
     BloqueEscenarioDTO(int32_t pos_x, int32_t pos_y, uint32_t ancho, uint32_t alto, int32_t angulo,
                        TipoBloqueEscenario tipo):
             pos_x(pos_x), pos_y(pos_y), ancho(ancho), alto(alto), angulo(angulo), tipo(tipo) {}
-};
+    BloqueEscenarioDTO():
+            pos_x(), pos_y(), ancho(), alto(), angulo(), tipo() {}
+} __attribute__((packed));
 
 class SnapshotDTO {
 private:
@@ -67,11 +80,11 @@ public:
 
     void agregar_cliente(ClienteDTO cliente);
 
-    std::vector<ClienteDTO> obtener_clientes();
+    std::vector<ClienteDTO>& obtener_clientes();
 
     void agregar_bloque_escenario(BloqueEscenarioDTO bloque_escenario);
 
-    std::vector<BloqueEscenarioDTO> obtener_bloques_escenario();
+    std::vector<BloqueEscenarioDTO>& obtener_bloques_escenario();
 
     bool es_fin_juego();
 

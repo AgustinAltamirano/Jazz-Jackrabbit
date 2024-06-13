@@ -18,14 +18,14 @@ manejadorEscenario::manejadorEscenario(std::string path):
 }
 
 void manejadorEscenario::cargar_escenario() {
-    YAML::Node archivo = YAML::LoadFile("../../../mapas" + this->path + ".yaml");
+    YAML::Node archivo = YAML::LoadFile(MAPAS_PATH + this->path + ".yaml");
     // para calcular los bordes del mapa
     int32_t ancho_mapa = 0;
     int32_t alto_mapa = 0;
     // cargo el tipo de escenario
-    this->clase_escenario = static_cast<TipoEscenario>(archivo["items"]["escenario"].as<int>());
+    this->clase_escenario = static_cast<TipoEscenario>(archivo["items"][0]["escenario"].as<int>());
     // ahora cargo los bloques
-    const YAML::Node& nodo_bloques = archivo["items"]["bloques"];
+    const YAML::Node& nodo_bloques = archivo["items"][1]["bloques"];
     for (const auto& nodo_bloque: nodo_bloques) {
         auto tipo = static_cast<TipoBloqueEscenario>(nodo_bloque["tipo"].as<int>());
         auto pos_x = nodo_bloque["x"].as<int>();
@@ -34,7 +34,7 @@ void manejadorEscenario::cargar_escenario() {
             ancho_mapa = pos_x;
         }
         if (pos_y > alto_mapa) {
-            alto_mapa = pos_x;
+            alto_mapa = pos_y;
         }
         switch (tipo) {
             case PISO:
@@ -42,17 +42,23 @@ void manejadorEscenario::cargar_escenario() {
             case SOPORTE_DIAGONAL:
             case SOPORTE_DIAGONAL_INVERTIDO:
                 bloques_rectos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, 0, tipo);
+                break;
             case DIAGONAL:
             case DIAGONAL_INVERTIDO:
                 bloques_angulados.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, 0, tipo);
+                break;
             case SPAWNPOINT_JUGADOR:
                 spawnpoints.emplace_back(pos_x, pos_y - ALTO_INICIAL + TAMANO_BLOQUE);
+                break;
             case SPAWNPOINT_ENEMIGO:
                 spawnpoints_enemigos.emplace_back(pos_x, pos_y - ALTURA_ENEMIGO + TAMANO_BLOQUE);
+                break;
             case GEMA:
                 objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, GEMA_AGARRABLE);
+                break;
             case MONEDA:
                 objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MONEDA_AGARRABLE);
+                break;
             default:
                 continue;
         }

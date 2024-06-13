@@ -291,10 +291,7 @@ int Socket::recvall(void* data, unsigned int sz, bool* was_closed) {
              *  - retornar end of stream (0) si es lo q recibimos de `Socket::recvsome`
              * */
             assert(s == 0);
-            if (received)
-                throw LibError(EPIPE, "socket received only %d of %d bytes", received, sz);
-            else
-                return 0;
+            throw LibError(EPIPE, "socket received only %d of %d bytes", received, sz);
         } else {
             /*
              * OK, recibimos algo pero no necesariamente todo lo que

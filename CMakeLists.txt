@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_FLAGS -pthread)
 add_definitions(-DPROJECT_DIR="${PROJECT_SOURCE_DIR}")
 add_definitions(-DASSETS_PATH="${PROJECT_SOURCE_DIR}/assets")
+add_definitions(-DMAPAS_PATH="${PROJECT_SOURCE_DIR}/src/mapas/")
 # add_definitions(-lSDL2main -lSDL2)
 
 # Agrega los archivos fuente del juego

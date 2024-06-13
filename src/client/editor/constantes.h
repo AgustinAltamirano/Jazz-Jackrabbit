@@ -10,7 +10,6 @@ typedef enum {
 
 typedef enum {
     PISO = 0,
-    TECHO,
     PARED,
     DIAGONAL,
     DIAGONAL_INVERTIDO,

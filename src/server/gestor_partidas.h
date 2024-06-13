@@ -19,7 +19,7 @@ private:
 
     int32_t contador_partidas;  // Corresponde con el codigo de partida.
 
-    Partida* existe_partida_por_codigo(const int& codigo);
+    Partida* existe_partida_por_codigo(int codigo);
 
 public:
     GestorPartidas();

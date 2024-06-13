@@ -10,12 +10,12 @@
 
 double frecuencia = 0.05;
 
-Partida::Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t& codigo_partida,
+Partida::Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t codigo_partida,
                  std::string& nombre_escenario, const int32_t& id_cliente, TipoPersonaje& personaje,
                  int8_t& capacidad_partida):
         cola_comandos(10000),
         nombre_escenario(nombre_escenario),
-        codigo_partida(capacidad_partida),
+        codigo_partida(codigo_partida),
         sigo_jugando(true),
         admite_jugadores(true),
         capacidad_partida(capacidad_partida) {
@@ -24,7 +24,9 @@ Partida::Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t& co
 }
 
 void Partida::run() {
-    while (admite_jugadores && sigo_jugando) {
+    std::cout << int(capacidad_partida) << std::endl;
+    while (cola_snapshots.size() < capacidad_partida && sigo_jugando) {
+        std::cout << "esperando " << cola_snapshots.size() << std::endl;
         try {
             std::this_thread::sleep_for(std::chrono::duration<double>(frecuencia));
         } catch (const ClosedQueue& e) {
@@ -33,9 +35,10 @@ void Partida::run() {
             return;
         }
     }
+    std::cout << "arranca el juego" << std::endl;
     Gameloop gameloop(nombre_escenario, mapa_clientes_juego, cola_comandos, cola_snapshots);
     gameloop.run();
-    cola_comandos.close();
+//    cola_comandos.close();
 }
 
 Queue<ComandoDTO*>* Partida::obtener_comandos() { return &cola_comandos; }
@@ -87,7 +90,7 @@ void Partida::detener_partida() { sigo_jugando = false; }
 
 int32_t Partida::obtener_codigo_partida() { return codigo_partida; }
 
-bool Partida::puedo_unir() { return admite_jugadores && cola_snapshots.size() < capacidad_partida; }
+bool Partida::puedo_unir() { return cola_snapshots.size() < capacidad_partida; }
 
 bool Partida::esta_jugando() { return sigo_jugando; }
 

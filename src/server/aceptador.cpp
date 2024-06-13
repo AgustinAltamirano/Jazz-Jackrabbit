@@ -16,7 +16,7 @@ void Aceptador::run() {
             ComunicadorCliente* nuevo_cliente = new ComunicadorCliente(
                     std::move(skt_aceptado), &gestor_partidas, int32_t(clientes.size()));
             clientes.push_back(nuevo_cliente);
-            limpiar_clientes();
+//            limpiar_clientes();
         }
     } catch (const std::exception& err) {
         if (sigo_jugando) {
