@@ -45,12 +45,15 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                     this->vel_y = -11;
                     this->en_aire = true;
                 }
+                break;
             case MOVER_DER:
                 this->vel_x = 2;
                 this->de_espaldas = false;
+                break;
             case MOVER_IZQ:
                 this->vel_y = -2;
                 this->de_espaldas = true;
+                break;
             case ACTIVAR_DASH:
                 // por hacer
                 break;
@@ -59,18 +62,21 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                     this->estado = DISPARAR_QUIETO;
                     disparo = true;
                 }
+                break;
             case ARMA_ANTERIOR:
                 if (this->arma_actual == INFINITA) {
                     this->arma_actual = ARMA3;
                 } else {
                     this->arma_actual = static_cast<TipoArma>(arma_actual - 1);
                 }
+                break;
             case ARMA_SIGUIENTE:
                 if (this->arma_actual == ARMA3) {
                     this->arma_actual = INFINITA;
                 } else {
                     this->arma_actual = static_cast<TipoArma>(arma_actual + 1);
                 }
+                break;
             /*
             case ATAQUE_ESPECIAL:
                 por haacer
@@ -167,16 +173,19 @@ void personaje::pasar_tick() {
             if (tiempo_estado == FRAMES_POR_SEGUNDO * 3) {
                 this->estado = IDLE;
             }
+            break;
         case MUERTE:
             if (tiempo_estado == FRAMES_POR_SEGUNDO * 5) {
                 const ConfigAdmin& configurador = ConfigAdmin::getInstance();
                 this->estado = IDLE;
                 this->vida = configurador.get(VIDA_INICIAL);
             }
+            break;
         case IMPACTADO:
             if (tiempo_estado == FRAMES_POR_SEGUNDO) {
                 this->estado = IDLE;
             }
+            break;
         case ATAQUE_ESPECIAL:
             return;
             // aca tengo que procesar cada caso individual
@@ -191,19 +200,25 @@ void personaje::recoger_objeto(const uint32_t valor, const TipoRecogible tipo) {
         case GEMA_AGARRABLE:
         case MONEDA_AGARRABLE:
             this->puntos += valor;
+            break;
         case MUNICION_ARMA_1:
             this->inventario_balas[ARMA1] += valor;
+            break;
         case MUNICION_ARMA_2:
             this->inventario_balas[ARMA2] += valor;
+            break;
         case MUNICION_ARMA_3:
             this->inventario_balas[ARMA3] += valor;
+            break;
         case FRUTA_BUENA:
             this->vida += valor;
+            break;
         case FRUTA_PODRIDA:
             if (this->vida > valor) {
                 this->vida -= valor;
             }
             this->estado = INTOXICADO;
+            break;
         default:
             break;
     }

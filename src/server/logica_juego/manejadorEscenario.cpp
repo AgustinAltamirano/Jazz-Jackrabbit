@@ -88,11 +88,14 @@ void manejadorEscenario::cargar_enemigos() {
         switch (enemigo_aleatorio(id)) {
             case 0:  // creo un lagarto
                 enemigos.emplace_back(id, spawn.pos_x, spawn.pos_y, LAGARTO);
+                break;
             case 1:  // creo un esqueleto
                 enemigos.emplace_back(id, spawn.pos_x, spawn.pos_y, ESQUELETO);
+                break;
             case 2:   // creo un murcielago
             default:  // si el generador de numeros falla, creo un murcielago
                 enemigos.emplace_back(id, spawn.pos_x, spawn.pos_y, MURCIELAGO);
+                break;
         }
         ++id;
     }
@@ -278,24 +281,28 @@ void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
                     std::make_unique<balaInfinita>(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(balaI->disparar());
             balas.push_back(std::move(balaI));
+            break;
         }
         case ARMA1: {
             std::unique_ptr<bala> bala1 =
                     std::make_unique<balaArma1>(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(bala1->disparar());
             balas.push_back(std::move(bala1));
+            break;
         }
         case ARMA2: {
             std::unique_ptr<bala> bala2 =
                     std::make_unique<balaArma2>(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(bala2->disparar());
             balas.push_back(std::move(bala2));
+            break;
         }
         case ARMA3: {
             std::unique_ptr<bala> bala3 =
                     std::make_unique<balaArma3>(id, punto_x, punto_y, jugador.get_invertido());
             jugador.disparar(bala3->disparar());
             balas.push_back(std::move(bala3));
+            break;
         }
         default:
             return;
