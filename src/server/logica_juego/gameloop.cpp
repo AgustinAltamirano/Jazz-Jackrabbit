@@ -73,7 +73,7 @@ void Gameloop::run() {
             snapshot_juego->agregar_cliente(std::move(jugador_dto));
         }
         for (auto& cola_salida: colas_salida) {
-            cola_salida.second->try_push(snapshot_escenario);
+            cola_salida.second->try_push(snapshot_juego);
         }
 
         // freno el cronometro y pongo a dormir por los milisegundos por frame menos la diferencia

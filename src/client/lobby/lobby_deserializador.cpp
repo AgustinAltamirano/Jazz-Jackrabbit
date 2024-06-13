@@ -18,14 +18,12 @@ ComandoDTO* LobbyDeserializador::obtener_comando(bool* cerrado) {
     switch (tipo_comando) {
         case CREAR:
             return (deserializar_crear_partida(cerrado));
-            break;
         case UNIR:
             return (deserializar_unir_partida(cerrado));
-            break;
         case VALIDAR_ESCENARIO:
             return (deserializar_validar_escenario(cerrado));
-            break;
         default:
+            std::cout << "ERROR de comando";
             throw std::invalid_argument("no se encontro el caso en el deserializador del servidor");
     }
 }
@@ -35,6 +33,7 @@ ComandoCrearDTO* LobbyDeserializador::deserializar_crear_partida(bool* cerrado) 
     socket->recvall(&codigo_partida, 4, cerrado);
     codigo_partida = ntohl(codigo_partida);
     ComandoCrearDTO* crear_dto = new ComandoCrearDTO(codigo_partida);
+    *cerrado = true;
     return crear_dto;
 }
 
@@ -42,6 +41,7 @@ ComandoUnirDTO* LobbyDeserializador::deserializar_unir_partida(bool* cerrado) {
     bool unio;
     socket->recvall(&unio, 1, cerrado);
     ComandoUnirDTO* unir_dto = new ComandoUnirDTO(unio);
+    *cerrado = true;
     return unir_dto;
 }
 

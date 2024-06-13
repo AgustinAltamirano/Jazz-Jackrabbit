@@ -33,7 +33,8 @@ void EnviadorCliente::run() {
                 std::shared_ptr<SnapshotDTO> snapshot_dto = cola_enviador.pop();
 
                 std::vector<ClienteDTO>& clientes_dto = snapshot_dto->obtener_clientes();
-                std::vector<BloqueEscenarioDTO>& bloques_dto = snapshot_dto->obtener_bloques_escenario();
+                std::vector<BloqueEscenarioDTO>& bloques_dto =
+                        snapshot_dto->obtener_bloques_escenario();
 
                 uint8_t num_clientes = clientes_dto.size();
                 uint8_t num_bloques = bloques_dto.size();
@@ -41,12 +42,13 @@ void EnviadorCliente::run() {
                 auto tipo_escenario = static_cast<uint8_t>(snapshot_dto->obtener_tipo_escenario());
                 auto fin_juego = snapshot_dto->es_fin_juego();
 
+
                 bool skt_cerrado;
 
-                skt_cliente->sendall(&num_clientes, sizeof(num_clientes), &skt_cerrado);
-                skt_cliente->sendall(&num_bloques, sizeof(num_bloques), &skt_cerrado);
-                skt_cliente->sendall(&tipo_escenario, sizeof(tipo_escenario), &skt_cerrado);
-                skt_cliente->sendall(&fin_juego, sizeof(fin_juego), &skt_cerrado);
+                skt_cliente->sendall(&num_clientes, sizeof(uint8_t), &skt_cerrado);
+                skt_cliente->sendall(&num_bloques, sizeof(uint8_t), &skt_cerrado);
+                skt_cliente->sendall(&tipo_escenario, sizeof(uint8_t), &skt_cerrado);
+                skt_cliente->sendall(&fin_juego, sizeof(bool), &skt_cerrado);
 
                 for (const auto& cliente_dto: clientes_dto) {
                     skt_cliente->sendall(&cliente_dto, sizeof(cliente_dto), &skt_cerrado);
@@ -78,18 +80,18 @@ void EnviadorCliente::join_recibidor_cliente() {
 void EnviadorCliente::cerrar_cola() { cola_enviador.close(); }
 
 void EnviadorCliente::inicio_recibidor_cliente() {
-    int32_t codigo_partida;
-//    while (sigo_jugando) {
+    //    while (sigo_jugando) {
     try {
+        int32_t codigo_partida;
         ComandoDTO* comando = servidor_deserializador.obtener_comando(&cerrado, id_cliente);
         if (comando->obtener_comando() == CREAR) {
             ComandoCrearDTO* crear_dto = dynamic_cast<ComandoCrearDTO*>(comando);
             std::string nombre_escenario = crear_dto->obtener_nombre_escenario();
             TipoPersonaje personaje = crear_dto->obtener_personaje();
             int8_t capacidad_partida = crear_dto->obtener_capacidad_partida();
-            cola_recibidor = gestor_partidas->crear_partida(&cola_enviador, nombre_escenario,
-                                                            id_cliente, codigo_partida,
-                                                            personaje, capacidad_partida);
+            cola_recibidor =
+                    gestor_partidas->crear_partida(&cola_enviador, nombre_escenario, id_cliente,
+                                                   codigo_partida, personaje, capacidad_partida);
             // Si me devuelve un puntero nulo significa que no se pudo crear la partida
             if (cola_recibidor == nullptr) {
                 servidor_serializador.enviar_error_crear_partida(&cerrado);
@@ -117,7 +119,7 @@ void EnviadorCliente::inicio_recibidor_cliente() {
         sigo_jugando = false;
         return;
     }
-//    }
+    //    }
     recibidor_cliente.establecer_cola_recibidor(cola_recibidor);
     recibidor_cliente.start();
 }

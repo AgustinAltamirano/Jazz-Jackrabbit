@@ -128,7 +128,7 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
     for (const auto& arma_coords: items_config["armas"]) {
         SDL2pp::Rect sprite(arma_coords["x"].as<int>(), arma_coords["y"].as<int>(),
                             arma_coords["ancho"].as<int>(), arma_coords["alto"].as<int>());
-        coords_iconos.emplace(arma_coords["nombre"].as<std::string>(), sprite);
+        coords_armas.emplace(arma_coords["nombre"].as<std::string>(), sprite);
     }
 }
 

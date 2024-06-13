@@ -21,6 +21,7 @@ int main(int argc, char* argv[]) {
         MenuJuego menu(argc, argv, lobby);
         std::cout << "Cliente ID: " << id_cliente << "\n";
         Socket socket = lobby.move_socket();
+        lobby.salir_lobby();
         Cliente cliente(std::move(socket));
         AdministradorVistaJuego admin(id_cliente, "Jazz Jackrabbit", cliente);
         admin.run();

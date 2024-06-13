@@ -3,9 +3,9 @@
 
 
 typedef enum {
-    ESCENARIO_INDEFINIDO = 0,
-    ESCENARIO1,
+    ESCENARIO1 = 0,
     ESCENARIO2,
+    ESCENARIO_INDEFINIDO,
 } TipoEscenarioEditor;
 
 typedef enum {
@@ -26,7 +26,9 @@ Q_DECLARE_METATYPE(TipoEscenarioEditor)
 Q_DECLARE_METATYPE(TipoItemEditor)
 
 struct ItemEscena {
+    // cppcheck-suppress unusedStructMember
     TipoItemEditor tipo;
+    // cppcheck-suppress unusedStructMember
     TipoEscenarioEditor mapa_asociado;
     QPixmap imagen;
 };

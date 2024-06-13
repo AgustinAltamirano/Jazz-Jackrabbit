@@ -116,9 +116,9 @@ void AdministradorVistaJuego::actualizar_vista() {
             personajes.emplace(id, std::move(nuevo_personaje));
         }
 
-        personajes.at(id)
-                .actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(c.estado), iteraciones_actuales,
-                                      {c.pos_x, c.pos_y, 2, 2}, 0, c.de_espaldas);
+        personajes.at(id).actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(c.estado),
+                                               iteraciones_actuales, {c.pos_x, c.pos_y, 2, 2}, 0,
+                                               c.de_espaldas);
     }
 
     std::unordered_set<uint32_t> ids_clientes_borrar;
@@ -193,7 +193,7 @@ void AdministradorVistaJuego::run() {
             snd.dibujar();
         }
         if (primera_snapshot_recibida) {
-            hud.dibujar();
+            // hud.dibujar();
         } else {
             pantalla_carga.dibujar();
         }
