@@ -42,16 +42,16 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
         switch (tecla) {
             case SALTAR:
                 if (!en_aire && (this->estado != INTOXICADO)) {
-                    this->vel_y = -11;
+                    this->vel_y = -16;
                     this->en_aire = true;
                 }
                 break;
             case MOVER_DER:
-                this->vel_x = 2;
+                this->vel_x = 4;
                 this->de_espaldas = false;
                 break;
             case MOVER_IZQ:
-                this->vel_y = -2;
+                this->vel_x = -4;
                 this->de_espaldas = true;
                 break;
             case ACTIVAR_DASH:
@@ -88,12 +88,17 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 break;
         }
     }
-    this->vel_x += this->aceleracion_x;
+    return disparo;
+}
+
+void personaje::efectuar_gravedad() {
     if (en_aire) {
         this->vel_y += this->aceleracion_y;
     }
-    return disparo;
 }
+
+void personaje::dejar_de_caer() { this->en_aire = false; }
+
 
 void personaje::cambiar_posicion(const int32_t x, const int32_t y) {
     this->pos_x = x;
@@ -124,23 +129,21 @@ std::vector<int> personaje::get_pos_a_ir() const {
     return pos_prox;
 }
 
-uint32_t personaje::get_alto() const { return alto; }
+int32_t personaje::get_alto() const { return alto; }
 
-uint32_t personaje::get_ancho() const { return ancho; }
+int32_t personaje::get_ancho() const { return ancho; }
 
 void personaje::cambiar_estado(const bool cae) {
     this->en_aire = cae;
-    if (estado == MUERTE || estado == IMPACTADO || estado == DISPARAR_QUIETO ||
-        estado == ATAQUE_ESPECIAL) {
+    if (estado == MUERTE || estado == IMPACTADO || estado == ATAQUE_ESPECIAL) {
+        this->vel_x = 0;  // reseteo la velocidad
         return;
     }
     if (estado == INTOXICADO) {
         if (vel_x != 0) {
             this->estado = INTOXICADO_MOVIMIENTO;
         }
-        return;
-    }
-    if (cae) {
+    } else if (cae) {
         if (this->vel_x != 0) {
             if (this->vel_y < 0) {
                 this->estado = SALTAR_ADELANTE;
@@ -160,6 +163,9 @@ void personaje::cambiar_estado(const bool cae) {
         } else {
             this->estado = IDLE;
         }
+    }
+    if (!en_aire) {
+        this->vel_x = 0;  // reseteo la velocidad
     }
 }
 
@@ -195,7 +201,7 @@ void personaje::pasar_tick() {
     }
 }
 
-void personaje::recoger_objeto(const uint32_t valor, const TipoRecogible tipo) {
+void personaje::recoger_objeto(const int32_t valor, const TipoRecogible tipo) {
     switch (tipo) {
         case GEMA_AGARRABLE:
         case MONEDA_AGARRABLE:
@@ -228,14 +234,14 @@ TipoArma personaje::get_arma() const { return this->arma_actual; }
 
 bool personaje::get_invertido() const { return this->de_espaldas; }
 
-void personaje::disparar(const uint32_t frames_recarga) {
+void personaje::disparar(const int32_t frames_recarga) {
     this->tiempo_recarga = frames_recarga;
     if (inventario_balas.at(arma_actual) != -1) {
         inventario_balas[arma_actual] -= 1;
     }
 }
 
-void personaje::efectuar_dano(uint32_t const dano) {
+void personaje::efectuar_dano(int32_t const dano) {
     if (this->estado != IMPACTADO && this->estado != MUERTE) {
         this->vida -= dano;
         if (vida <= 0) {

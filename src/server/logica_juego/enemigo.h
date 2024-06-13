@@ -21,8 +21,8 @@ private:
     int32_t pos_x;
     int32_t pos_y;
     int32_t vel_x;
-    uint32_t ancho;
-    uint32_t alto;
+    int32_t ancho;
+    int32_t alto;
     TipoEnemigo tipo;
     EstadoEnemigo estado;
     int contador_estado_muerto;  // cuenta cuantos frames lleva en estado muerto
@@ -36,15 +36,15 @@ public:
     [[nodiscard]] int32_t get_prox_pos_x() const;
     [[nodiscard]] int32_t get_pos_x() const;
     [[nodiscard]] int32_t get_pos_y() const;
-    [[nodiscard]] uint32_t get_alto() const;
-    [[nodiscard]] uint32_t get_ancho() const;
+    [[nodiscard]] int32_t get_alto() const;
+    [[nodiscard]] int32_t get_ancho() const;
     [[nodiscard]] EstadoEnemigo get_estado() const;
     [[nodiscard]] int32_t get_puntos() const;
     [[nodiscard]] bool esta_invertido() const;
     void mover();
     void chocar_pared();
     [[nodiscard]] int32_t atacar() const;
-    bool hacer_dano(uint32_t puntos_dano);
+    bool hacer_dano(int32_t puntos_dano);
     void revivir();
 
     // virtual EnemigoDTO crear_dto() const = 0;

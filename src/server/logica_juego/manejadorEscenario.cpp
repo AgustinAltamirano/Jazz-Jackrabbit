@@ -48,10 +48,10 @@ void manejadorEscenario::cargar_escenario() {
                 bloques_angulados.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, 0, tipo);
                 break;
             case SPAWNPOINT_JUGADOR:
-                spawnpoints.emplace_back(pos_x, pos_y - ALTO_INICIAL + TAMANO_BLOQUE);
+                spawnpoints.emplace_back(pos_x, pos_y);
                 break;
             case SPAWNPOINT_ENEMIGO:
-                spawnpoints_enemigos.emplace_back(pos_x, pos_y - ALTURA_ENEMIGO + TAMANO_BLOQUE);
+                spawnpoints_enemigos.emplace_back(pos_x, pos_y);
                 break;
             case GEMA:
                 objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, GEMA_AGARRABLE);
@@ -62,18 +62,6 @@ void manejadorEscenario::cargar_escenario() {
             default:
                 continue;
         }
-    }
-    // creo los bordes del mapa (me ahorro errores)
-    bloques_rectos.emplace_back(-TAMANO_BLOQUE, -TAMANO_BLOQUE, ancho_mapa + TAMANO_BLOQUE,
-                                TAMANO_BLOQUE, 0, PISO);  // techo
-    bloques_rectos.emplace_back(-TAMANO_BLOQUE, alto_mapa + TAMANO_BLOQUE,
-                                ancho_mapa + TAMANO_BLOQUE, TAMANO_BLOQUE, 0, PISO);  // suelo
-    bloques_rectos.emplace_back(-TAMANO_BLOQUE, -TAMANO_BLOQUE, TAMANO_BLOQUE,
-                                alto_mapa + TAMANO_BLOQUE, 0, PARED);  // pared izq
-    bloques_rectos.emplace_back(ancho_mapa + TAMANO_BLOQUE, -TAMANO_BLOQUE, TAMANO_BLOQUE,
-                                alto_mapa + TAMANO_BLOQUE, 0, PARED);  // pared der
-    if (spawnpoints.empty()) {
-        spawnpoints.emplace_back(0, 0);  // si no hay spawnpoints creo uno (para mapas custom)
     }
 }
 
@@ -105,14 +93,14 @@ std::vector<spawnpoint>& manejadorEscenario::get_spawns() { return spawnpoints; 
 
 TipoEscenario manejadorEscenario::get_escenario() { return clase_escenario; }
 
-bool hay_colision_recta(const int32_t jug_x, const int32_t jug_y, const uint32_t alto,
-                        const uint32_t ancho, const bloqueEscenario& bloque) {
+bool hay_colision_recta(const int32_t jug_x, const int32_t jug_y, const int32_t alto,
+                        const int32_t ancho, const bloqueEscenario& bloque) {
     return (jug_x < bloque.pos_x + bloque.ancho && jug_x + ancho > bloque.pos_x &&
             jug_y < bloque.pos_y + bloque.alto && jug_y + alto > bloque.pos_y);
 }
 
-bool hay_colision_enemigo(const int32_t jug_x, const int32_t jug_y, const uint32_t alto,
-                          const uint32_t ancho, const enemigo& enemigo) {
+bool hay_colision_enemigo(const int32_t jug_x, const int32_t jug_y, const int32_t alto,
+                          const int32_t ancho, const enemigo& enemigo) {
     return (jug_x < enemigo.get_pos_x() + enemigo.get_ancho() &&
             jug_x + ancho > enemigo.get_pos_x() &&
             jug_y < enemigo.get_pos_y() + enemigo.get_alto() && jug_y + alto > enemigo.get_pos_y());
@@ -122,8 +110,8 @@ std::vector<bloqueEscenario> chequeo_recto_individual(const personaje& jugador,
                                                       const std::vector<bloqueEscenario>& bloques) {
     std::vector<bloqueEscenario> colisiones;
     const std::vector<int> posicion_prox = jugador.get_pos_a_ir();
-    int jug_x = posicion_prox[0];
-    int jug_y = posicion_prox[1];
+    int32_t jug_x = posicion_prox[0];
+    int32_t jug_y = posicion_prox[1];
     colisiones.reserve(bloques.size());
     std::copy_if(bloques.begin(), bloques.end(), std::back_inserter(colisiones),
                  [&](const bloqueEscenario& bloque) {
@@ -133,23 +121,22 @@ std::vector<bloqueEscenario> chequeo_recto_individual(const personaje& jugador,
     return colisiones;
 }
 
-int32_t definir_punto_medio(const int32_t pos_org_jug, const uint32_t jug_largo,
-                            const int32_t pos_bloque, const uint32_t bloque_largo) {
+int32_t definir_punto_medio(const int32_t pos_org_jug, const int32_t jug_largo,
+                            const int32_t pos_bloque, const int32_t bloque_largo) {
     if (pos_org_jug < pos_bloque) {  // si este es el caso ajusto por arriba o por izquierda
         return (pos_bloque - jug_largo - 1);
     }
     return (pos_bloque + bloque_largo + 1);
 }
 
-bool colision_horizontal(const int32_t jug_x, const uint32_t jug_ancho,
+bool colision_horizontal(const int32_t jug_x, const int32_t jug_ancho,
                          const bloqueEscenario& bloque) {
     return ((jug_x + jug_ancho > bloque.pos_x && jug_x < bloque.pos_x) ||
             (jug_x < bloque.pos_x + bloque.ancho &&
              jug_x + jug_ancho > bloque.pos_x + bloque.ancho));
 }
 
-bool colision_vertical(const int32_t jug_y, const uint32_t jug_alto,
-                       const bloqueEscenario& bloque) {
+bool colision_vertical(const int32_t jug_y, const int32_t jug_alto, const bloqueEscenario& bloque) {
     return ((jug_y + jug_alto > bloque.pos_y && jug_y < bloque.pos_y) ||
             (jug_y < bloque.pos_y + bloque.alto && jug_y + jug_alto > bloque.pos_y + bloque.alto));
 }
@@ -167,13 +154,14 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
         for (const auto& bloque: colisiones) {
             bool col_vert = colision_vertical(pos_y_jug_prox, jugador.get_alto(), bloque);
             bool col_hor = colision_horizontal(pos_x_jug_prox, jugador.get_ancho(), bloque);
-            if (!col_hor && col_vert) {  // si solo hay colision vertical
+            if (col_vert && !col_hor) {  // si solo hay colision vertical
                 nueva_pos_y = definir_punto_medio(pos_y_jug_act, jugador.get_alto(), bloque.pos_y,
                                                   bloque.alto);
-            } else if (col_hor && !col_vert) {  // si solo hay colision horizontal
+                jugador.dejar_de_caer();
+            } else if (col_hor && !col_vert) {
                 nueva_pos_x = definir_punto_medio(pos_x_jug_act, jugador.get_ancho(), bloque.pos_x,
                                                   bloque.ancho);
-            } else {  // si hay colision por ambos lados
+            } else {
                 const int32_t inter_x = std::min(pos_x_jug_prox + jugador.get_ancho(),
                                                  bloque.pos_x + bloque.ancho) -
                                         std::max(pos_x_jug_prox, bloque.pos_x);
@@ -183,6 +171,7 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
                 if (inter_x > inter_y) {
                     nueva_pos_y = definir_punto_medio(pos_y_jug_act, jugador.get_alto(),
                                                       bloque.pos_y, bloque.alto);
+                    jugador.dejar_de_caer();
                 } else {
                     nueva_pos_x = definir_punto_medio(pos_x_jug_act, jugador.get_ancho(),
                                                       bloque.pos_x, bloque.ancho);
@@ -204,8 +193,8 @@ void manejadorEscenario::hacer_tick_enemigos() {
     for (auto& en: enemigos) {
         int32_t prox_pos_x = en.get_prox_pos_x();
         int32_t pos_y = en.get_pos_y();
-        uint32_t ancho = en.get_ancho();
-        uint32_t alto = en.get_alto();
+        int32_t ancho = en.get_ancho();
+        int32_t alto = en.get_alto();
         for (const auto& bloque: bloques_rectos) {
             if (hay_colision_recta(prox_pos_x, pos_y, alto, ancho, bloque)) {
                 en.chocar_pared();
@@ -232,7 +221,7 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
         const std::vector<int32_t> posicion = jugador.get_pos_actual();
         const int32_t punto_x = posicion[0];
         const int32_t punto_y = posicion[1];
-        const uint32_t punto_y_pisando = punto_y + jugador.get_alto() + 1;
+        const int32_t punto_y_pisando = punto_y + jugador.get_alto() + 1;
         const bool cae = !std::any_of(
                 bloques_rectos.begin(), bloques_rectos.end(), [&](const bloqueEscenario& bloque) {
                     return bloque.pos_y == punto_y_pisando &&
@@ -240,8 +229,8 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
                 });
         jugador.cambiar_estado(cae);
         for (auto it = objetos.begin(); it != objetos.end();) {
-            uint32_t valor = (*it).chequear_colision(punto_x, punto_y, jugador.get_ancho(),
-                                                     jugador.get_alto());
+            int32_t valor = (*it).chequear_colision(punto_x, punto_y, jugador.get_ancho(),
+                                                    jugador.get_alto());
             if (valor != 0) {
                 jugador.recoger_objeto(valor, (*it).get_objeto());
                 it = objetos.erase(it);
@@ -310,8 +299,9 @@ void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
 }
 
 bool hay_colision_bala(int32_t bala_x, int32_t bala_y, int32_t target_x, int32_t target_y,
-                       uint32_t ancho, uint32_t alto) {
-    return (target_x < bala_x < target_x + ancho) && (target_y < bala_y < target_y + alto);
+                       int32_t ancho, int32_t alto) {
+    return ((target_x < bala_x) && (bala_x < target_x + ancho) && (target_y < bala_y) &&
+            (bala_y < target_y + alto));
 }
 
 void manejadorEscenario::generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y) {
@@ -357,7 +347,7 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
             const int32_t jug_y = posicion[1];
             if (((*it)->get_id() != jugador.first) &&
                 hay_colision_bala(bala_x, bala_y, jug_x, jug_y, jug.get_ancho(), jug.get_alto())) {
-                uint32_t dano = (*it)->impactar();
+                int32_t dano = (*it)->impactar();
                 jug.efectuar_dano(dano);
             }
         }
@@ -365,7 +355,7 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
             if (en.get_estado() != MUERTO &&
                 hay_colision_bala(bala_x, bala_y, en.get_pos_x(), en.get_pos_y(), en.get_ancho(),
                                   en.get_alto())) {
-                uint32_t dano = (*it)->impactar();
+                int32_t dano = (*it)->impactar();
                 if (en.hacer_dano(dano)) {
                     jugadores.at((*it)->get_id()).dar_puntos(en.get_puntos());
                 }

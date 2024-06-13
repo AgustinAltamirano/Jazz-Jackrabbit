@@ -14,15 +14,15 @@ private:
     int32_t pos_x, pos_y;
     int32_t vel_x;
     bool choco;
-    uint32_t dano;
-    uint32_t tiempo_recarga;  // frames hasta poder volver a disparar
+    int32_t dano;
+    int32_t tiempo_recarga;  // frames hasta poder volver a disparar
 public:
     balaInfinita(int32_t id, int32_t pos_x_in, int32_t pos_y_in, bool invertido);
     [[nodiscard]] std::vector<int32_t> get_pos() const override;
     bool mover() override;
-    uint32_t impactar() override;
+    int32_t impactar() override;
     [[nodiscard]] int32_t get_id() const override;
-    [[nodiscard]] uint32_t disparar() override;
+    [[nodiscard]] int32_t disparar() override;
 };
 
 

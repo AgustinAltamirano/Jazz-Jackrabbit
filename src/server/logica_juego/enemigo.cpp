@@ -47,9 +47,9 @@ int32_t enemigo::get_pos_x() const { return pos_x; }
 
 int32_t enemigo::get_pos_y() const { return pos_y; }
 
-uint32_t enemigo::get_alto() const { return alto; }
+int32_t enemigo::get_alto() const { return alto; }
 
-uint32_t enemigo::get_ancho() const { return ancho; }
+int32_t enemigo::get_ancho() const { return ancho; }
 
 EstadoEnemigo enemigo::get_estado() const { return estado; }
 
@@ -75,7 +75,7 @@ void enemigo::chocar_pared() {
 
 int32_t enemigo::atacar() const { return dano; }
 
-bool enemigo::hacer_dano(uint32_t puntos_dano) {
+bool enemigo::hacer_dano(int32_t const puntos_dano) {
     this->vida -= puntos_dano;
     if (vida <= 0) {
         this->estado = MUERTO;

@@ -3,7 +3,10 @@ items:
   - bloques:
       - tipo: 6
         x: 160
-        y: 224
+        y: 150
+      - tipo: 6
+        x: 140
+        y: -50
       - tipo: 0
         x: 96
         y: 256
@@ -34,3 +37,18 @@ items:
       - tipo: 0
         x: 384
         y: 256
+      - tipo: 1
+        x: 416
+        y: 256
+      - tipo: 1
+        x: 416
+        y: 224
+      - tipo: 0
+        x: 416
+        y: 192
+      - tipo: 0
+        x: 448
+        y: 192
+      - tipo: 0
+        x: 480
+        y: 192
