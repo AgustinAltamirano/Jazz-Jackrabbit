@@ -5,16 +5,22 @@ recogible::recogible(int32_t x, int32_t y, uint32_t ancho, uint32_t alto, TipoRe
     switch (tipo) {
         case GEMA_AGARRABLE:
             this->valor = PUNTOS_GEMA;
+            break;
         case MONEDA_AGARRABLE:
             this->valor = PUNTOS_MONEDA;
+            break;
         case MUNICION_ARMA_1:
             this->valor = MUNICIONES_ARMA1;
+            break;
         case MUNICION_ARMA_2:
             this->valor = MUNICIONES_ARMA2;
+            break;
         case MUNICION_ARMA_3:
             this->valor = MUNICIONES_ARMA3;
+            break;
         default:
             this->valor = VIDA_COMIDA;
+            break;
     }
 }
 

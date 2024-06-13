@@ -21,18 +21,21 @@ enemigo::enemigo(const int32_t id, const int32_t pos_x_in, const int32_t pos_y_i
             this->puntos = configurador.get(PUNTOS_LAGARTO);
             this->vida = configurador.get(VIDA_LAGARTO);
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_LAG);
+            break;
         case MURCIELAGO:
             this->vel_x = configurador.get(VELOCIDAD_MURCIELAGO);
             this->dano = configurador.get(DANO_MURCIELAGO);
             this->puntos = configurador.get(PUNTOS_MURCIELAGO);
             this->vida = configurador.get(VIDA_MURCIELAGO);
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_MUR);
+            break;
         case ESQUELETO:
             this->vel_x = configurador.get(VELOCIDAD_ESQUELETO);
             this->dano = configurador.get(DANO_ESQUELETO);
             this->puntos = configurador.get(PUNTOS_ESQUELETO);
             this->vida = configurador.get(VIDA_ESQUELETO);
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_ESQ);
+            break;
         default:
             break;
     }
@@ -87,9 +90,12 @@ void enemigo::revivir() {
     switch (this->tipo) {
         case LAGARTO:
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_LAG);
+            break;
         case MURCIELAGO:
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_MUR);
+            break;
         case ESQUELETO:
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_ESQ);
+            break;
     }
 }
