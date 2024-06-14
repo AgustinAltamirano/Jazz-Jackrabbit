@@ -51,7 +51,6 @@ add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/ser
 )
 
 add_subdirectory(src/client/vista_juego)
-add_subdirectory(test)
 include_directories(${SDL2PP_INCLUDE_DIRS})
 
 # Busca e incluye las dependencias del proyecto
