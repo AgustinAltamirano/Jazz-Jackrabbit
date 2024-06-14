@@ -21,18 +21,21 @@ enemigo::enemigo(const int32_t id, const int32_t pos_x_in, const int32_t pos_y_i
             this->puntos = configurador.get(PUNTOS_LAGARTO);
             this->vida = configurador.get(VIDA_LAGARTO);
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_LAG);
+            break;
         case MURCIELAGO:
             this->vel_x = configurador.get(VELOCIDAD_MURCIELAGO);
             this->dano = configurador.get(DANO_MURCIELAGO);
             this->puntos = configurador.get(PUNTOS_MURCIELAGO);
             this->vida = configurador.get(VIDA_MURCIELAGO);
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_MUR);
+            break;
         case ESQUELETO:
             this->vel_x = configurador.get(VELOCIDAD_ESQUELETO);
             this->dano = configurador.get(DANO_ESQUELETO);
             this->puntos = configurador.get(PUNTOS_ESQUELETO);
             this->vida = configurador.get(VIDA_ESQUELETO);
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_ESQ);
+            break;
         default:
             break;
     }
@@ -44,9 +47,9 @@ int32_t enemigo::get_pos_x() const { return pos_x; }
 
 int32_t enemigo::get_pos_y() const { return pos_y; }
 
-uint32_t enemigo::get_alto() const { return alto; }
+int32_t enemigo::get_alto() const { return alto; }
 
-uint32_t enemigo::get_ancho() const { return ancho; }
+int32_t enemigo::get_ancho() const { return ancho; }
 
 EstadoEnemigo enemigo::get_estado() const { return estado; }
 
@@ -72,7 +75,7 @@ void enemigo::chocar_pared() {
 
 int32_t enemigo::atacar() const { return dano; }
 
-bool enemigo::hacer_dano(uint32_t puntos_dano) {
+bool enemigo::hacer_dano(int32_t const puntos_dano) {
     this->vida -= puntos_dano;
     if (vida <= 0) {
         this->estado = MUERTO;
@@ -87,9 +90,12 @@ void enemigo::revivir() {
     switch (this->tipo) {
         case LAGARTO:
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_LAG);
+            break;
         case MURCIELAGO:
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_MUR);
+            break;
         case ESQUELETO:
             this->contador_estado_muerto = configurador.get(FRAMES_REVIVIR_ESQ);
+            break;
     }
 }

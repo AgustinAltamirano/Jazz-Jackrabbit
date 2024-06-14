@@ -24,14 +24,14 @@ bool balaInfinita::mover() {
     return this->choco;
 }
 
-uint32_t balaInfinita::impactar() {
+int32_t balaInfinita::impactar() {
     this->choco = true;
     return this->dano;
 }
 
 int32_t balaInfinita::get_id() const { return this->id_dueno; }
 
-uint32_t balaInfinita::disparar() {
+int32_t balaInfinita::disparar() {
     this->mover();
     return this->tiempo_recarga;
 }

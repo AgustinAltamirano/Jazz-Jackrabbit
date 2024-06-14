@@ -23,6 +23,8 @@ private:
 
     ServidorDeserializador servidor_deserializador;
 
+    Socket* skt_cliente;
+
     std::atomic<bool>& sigo_en_partida;
 
     std::atomic<bool>& sigo_jugando;

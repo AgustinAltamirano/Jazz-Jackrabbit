@@ -63,9 +63,7 @@ void ObjetoAnimado::actualizar_animacion(const SDL2pp::Rect& dimensiones, const 
 }
 
 void ObjetoAnimado::actualizar_camara(const int camara_pos_x, const int camara_pos_y) const {
-    const SDL2pp::Rect& coords_actual = sprite_coords.at(0);
-    camara.actualizar_pos_camara(camara_pos_x + coords_actual.GetW() / 2,
-                                 camara_pos_y + coords_actual.GetH() / 2);
+    camara.actualizar_pos_camara(camara_pos_x, camara_pos_y);
 }
 
 

@@ -13,7 +13,7 @@ ConfigAdmin& ConfigAdmin::getInstance() {
 }
 
 ConfigAdmin::ConfigAdmin() {
-    YAML::Node config = YAML::LoadFile(ARCHIVO_CONFIG);
+    YAML::Node config = YAML::LoadFile(PROJECT_DIR ARCHIVO_CONFIG);
 
     configuracion[MAX_JUG_POR_PARTIDA] = config[MAX_JUG_POR_PARTIDA].as<int>();
     configuracion[MAX_PARTIDAS] = config[MAX_PARTIDAS].as<int>();

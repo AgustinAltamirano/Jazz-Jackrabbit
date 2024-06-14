@@ -12,7 +12,7 @@ ComunicadorCliente::ComunicadorCliente(Socket socket, GestorPartidas* gestor_par
                          gestor_partidas, id_cliente) {
     this->skt_cliente = std::move(socket);
     enviador_cliente.start();
-    sigo_en_partida = false;
+    sigo_en_partida = true;
     sigo_jugando = true;
 }
 

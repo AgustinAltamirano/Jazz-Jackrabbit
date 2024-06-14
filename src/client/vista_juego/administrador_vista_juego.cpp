@@ -108,16 +108,17 @@ void AdministradorVistaJuego::actualizar_vista() {
     std::unordered_set<uint32_t> ids_clientes_recibidos;
     for (auto c: clientes_recibidos) {
         ids_clientes_recibidos.insert(c.id_cliente);
+        auto id = c.id_cliente;
         if (personajes.count(c.id_cliente) == 0) {
             Personaje nuevo_personaje(c.id_cliente, MAPA_TIPO_PERSONAJE.at(c.tipo_personaje),
                                       renderer, lector_texturas, camara, c.pos_x, c.pos_y, 0,
                                       ITERACIONES_POR_SPRITE);
-            personajes.emplace(c.id_cliente, std::move(nuevo_personaje));
+            personajes.emplace(id, std::move(nuevo_personaje));
         }
 
-        personajes.at(c.id_cliente)
-                .actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(c.estado), iteraciones_actuales,
-                                      {c.pos_x, c.pos_y, 2, 2}, 0, c.de_espaldas);
+        personajes.at(id).actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(c.estado),
+                                               iteraciones_actuales, {c.pos_x, c.pos_y, 1, 1}, 0,
+                                               c.de_espaldas);
     }
 
     std::unordered_set<uint32_t> ids_clientes_borrar;

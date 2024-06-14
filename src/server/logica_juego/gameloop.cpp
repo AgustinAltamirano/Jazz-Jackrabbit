@@ -50,6 +50,7 @@ void Gameloop::run() {
         }
         for (auto& entidad: personajes) {
             entidad.second.pasar_tick();
+            entidad.second.efectuar_gravedad();
         }
         for (const auto& accion: acciones) {
             if (personajes.at(accion.first).ejecutar_accion(accion.second)) {
@@ -73,7 +74,7 @@ void Gameloop::run() {
             snapshot_juego->agregar_cliente(std::move(jugador_dto));
         }
         for (auto& cola_salida: colas_salida) {
-            cola_salida.second->try_push(snapshot_escenario);
+            cola_salida.second->try_push(snapshot_juego);
         }
 
         // freno el cronometro y pongo a dormir por los milisegundos por frame menos la diferencia

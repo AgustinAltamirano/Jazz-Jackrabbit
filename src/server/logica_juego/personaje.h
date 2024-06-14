@@ -17,8 +17,8 @@ class personaje {
 private:
     int32_t id;
     TipoPersonaje tipo_de_personaje;
-    uint32_t alto;
-    uint32_t ancho;
+    int32_t alto;
+    int32_t ancho;
 
     int32_t pos_x;
     int vel_x;
@@ -54,19 +54,23 @@ public:
                           int32_t y);  // despues de revisar colisiones se efectua el cambio real
     void cambiar_estado(bool cae);
     void pasar_tick();
-    void recoger_objeto(uint32_t valor, TipoRecogible tipo);
+    void recoger_objeto(int32_t valor, TipoRecogible tipo);
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.
     [[nodiscard]] std::vector<int32_t> get_pos_actual() const;
     [[nodiscard]] std::vector<int32_t> get_pos_a_ir() const;
-    [[nodiscard]] uint32_t get_ancho() const;
-    [[nodiscard]] uint32_t get_alto() const;
+    [[nodiscard]] int32_t get_ancho() const;
+    [[nodiscard]] int32_t get_alto() const;
+
+    // efectos de gravedad
+    void efectuar_gravedad();
+    void dejar_de_caer();
 
     [[nodiscard]] TipoArma get_arma() const;
     [[nodiscard]] bool get_invertido() const;
-    void disparar(uint32_t frames_recarga);
-    void efectuar_dano(uint32_t dano);
+    void disparar(int32_t frames_recarga);
+    void efectuar_dano(int32_t dano);
     void dar_puntos(int32_t puntos);
 
     // funcion para la construccion del dto

@@ -6,7 +6,7 @@
 #define INFINITO "infinito"
 
 const std::unordered_map<TipoArma, std::string> HUD::MAPA_TIPO_ARMA{
-        {INFINITA, "arma_infinita"},
+        {INFINITA, "infinita"},
         {ARMA1, "arma1"},
         {ARMA2, "arma2"},
         {ARMA3, "arma3"},
@@ -14,6 +14,9 @@ const std::unordered_map<TipoArma, std::string> HUD::MAPA_TIPO_ARMA{
 
 void HUD::dibujar_numero(uint32_t numero, int pos_x, const int pos_y) const {
     std::vector<uint8_t> cifras;
+    if (numero == 0) {
+        cifras.push_back(0);
+    }
     while (numero > 0) {
         cifras.push_back(static_cast<uint8_t>(numero % 10));
         numero /= 10;
@@ -55,8 +58,9 @@ void HUD::dibujar_arma() const {
     posicion_actual +=
             coords_armas.at(MAPA_TIPO_ARMA.at(arma_actual)).GetW() + SEPARACION_ENTRE_NUMEROS;
     if (balas_restantes < 0) {
+        SDL2pp::Texture& textura_fuente = lector_texturas.obtener_textura_fuente();
         const SDL2pp::Rect& coords_infinito = lector_texturas.obtener_coords_simbolo(INFINITO);
-        renderer.Copy(textura_items, coords_infinito,
+        renderer.Copy(textura_fuente, coords_infinito,
                       SDL2pp::Rect(posicion_actual, POS_ARMA_ACTUAL_Y, coords_infinito.GetW(),
                                    coords_infinito.GetH()));
         return;

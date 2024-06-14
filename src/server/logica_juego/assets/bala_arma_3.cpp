@@ -24,14 +24,14 @@ bool balaArma3::mover() {
     return this->choco;
 }
 
-uint32_t balaArma3::impactar() {
+int32_t balaArma3::impactar() {
     this->choco = true;
     return this->dano;
 }
 
 int32_t balaArma3::get_id() const { return this->id_dueno; }
 
-uint32_t balaArma3::disparar() {
+int32_t balaArma3::disparar() {
     this->mover();
     return this->tiempo_recarga;
 }

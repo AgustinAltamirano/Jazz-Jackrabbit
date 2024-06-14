@@ -3,7 +3,7 @@
 #include <iostream>
 #include <numeric>
 
-GestorPartidas::GestorPartidas() { contador_partidas = 0; }
+GestorPartidas::GestorPartidas() { contador_partidas = 1; }
 
 Queue<ComandoDTO*>* GestorPartidas::crear_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
                                                   std::string& nombre_escenario,
@@ -11,17 +11,18 @@ Queue<ComandoDTO*>* GestorPartidas::crear_partida(Queue<std::shared_ptr<Snapshot
                                                   TipoPersonaje& personaje,
                                                   int8_t& capacidad_partidas) {
     std::lock_guard<std::mutex> lock(m);
+    codigo_partida = contador_partidas;
     Partida* nueva_partida = new Partida(cola_enviador, codigo_partida, nombre_escenario,
                                          id_cliente, personaje, capacidad_partidas);
     lista_partidas.push_back(nueva_partida);
-    codigo_partida = contador_partidas;
+    std::cout << codigo_partida << std::endl;
     contador_partidas++;
     Queue<ComandoDTO*>* aux = nueva_partida->obtener_comandos();
     nueva_partida->start();
     return (aux);
 }
 
-Partida* GestorPartidas::existe_partida_por_codigo(const int& codigo) {
+Partida* GestorPartidas::existe_partida_por_codigo(int codigo) {
     Partida* partida_encontrada = std::accumulate(
             lista_partidas.begin(), lista_partidas.end(), static_cast<Partida*>(nullptr),
             [codigo](Partida* encontrado, Partida* partida) {
@@ -39,7 +40,9 @@ Queue<ComandoDTO*>* GestorPartidas::unir_partida(Queue<std::shared_ptr<SnapshotD
                                                  const TipoPersonaje& personaje) {
     std::lock_guard<std::mutex> lock(m);
     Partida* partida = existe_partida_por_codigo(codigo);
+    std::cout << "pedido para agregar" << std::endl;
     if (partida && partida->puedo_unir()) {
+        std::cout << "agregue cliente a la partida" << std::endl;
         partida->agregar_cliente(cola_enviador, id_cliente, personaje);
         return partida->obtener_comandos();
     }

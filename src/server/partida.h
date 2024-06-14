@@ -33,7 +33,7 @@ private:
     bool borrar_cliente_snapshots(int32_t& id_cliente);
 
 public:
-    Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t& codigo_partida,
+    Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t codigo_partida,
             std::string& nombre_escenario, const int32_t& id_cliente, TipoPersonaje& personaje,
             int8_t& capacidad_partida);
 

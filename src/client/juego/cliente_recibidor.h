@@ -20,6 +20,8 @@ private:
 
     ClienteDeserializador cliente_deserializador;
 
+    Socket* skt_cliente;
+
 public:
     ClienteRecibidor(Socket* socket, std::atomic<bool>& hablando,
                      Queue<std::shared_ptr<SnapshotDTO>>* cola_recibidor);

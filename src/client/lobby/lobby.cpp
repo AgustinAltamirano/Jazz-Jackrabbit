@@ -52,6 +52,7 @@ void Lobby::cerrar() {
 
 void Lobby::salir_lobby() {
     sigo_hablando = false;
+    cola_enviador.close();
     cola_recibidor.close();
     lobby_enviador.join();
     lobby_recibidor.join();
