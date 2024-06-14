@@ -136,11 +136,6 @@ bool colision_horizontal(const int32_t jug_x, const int32_t jug_ancho,
              jug_x + jug_ancho > bloque.pos_x + bloque.ancho));
 }
 
-bool colision_vertical(const int32_t jug_y, const int32_t jug_alto, const bloqueEscenario& bloque) {
-    return ((jug_y + jug_alto > bloque.pos_y && jug_y < bloque.pos_y) ||
-            (jug_y < bloque.pos_y + bloque.alto && jug_y + jug_alto > bloque.pos_y + bloque.alto));
-}
-
 void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jugadores) const {
     for (auto& entidad: jugadores) {
         personaje& jugador = entidad.second;
@@ -152,30 +147,19 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
         int32_t pos_x_jug_prox = posicion_prox[0], pos_y_jug_prox = posicion_prox[1];
         int32_t nueva_pos_x = pos_x_jug_prox, nueva_pos_y = pos_y_jug_prox;
         for (const auto& bloque: colisiones) {
-            bool col_vert = colision_vertical(pos_y_jug_prox, jugador.get_alto(), bloque);
-            bool col_hor = colision_horizontal(pos_x_jug_prox, jugador.get_ancho(), bloque);
-            if (col_vert && !col_hor) {  // si solo hay colision vertical
+            const int32_t inter_x =
+                    std::min(pos_x_jug_prox + jugador.get_ancho(), bloque.pos_x + bloque.ancho) -
+                    std::max(pos_x_jug_prox, bloque.pos_x);
+            const int32_t inter_y =
+                    std::min(pos_y_jug_prox + jugador.get_alto(), bloque.pos_y + bloque.alto) -
+                    std::max(pos_y_jug_prox, bloque.pos_y);
+            if (inter_x > inter_y) {
                 nueva_pos_y = definir_punto_medio(pos_y_jug_act, jugador.get_alto(), bloque.pos_y,
                                                   bloque.alto);
                 jugador.dejar_de_caer();
-            } else if (col_hor && !col_vert) {
+            } else {
                 nueva_pos_x = definir_punto_medio(pos_x_jug_act, jugador.get_ancho(), bloque.pos_x,
                                                   bloque.ancho);
-            } else {
-                const int32_t inter_x = std::min(pos_x_jug_prox + jugador.get_ancho(),
-                                                 bloque.pos_x + bloque.ancho) -
-                                        std::max(pos_x_jug_prox, bloque.pos_x);
-                const int32_t inter_y =
-                        std::min(pos_y_jug_prox + jugador.get_alto(), bloque.pos_y + bloque.alto) -
-                        std::max(pos_y_jug_prox, bloque.pos_y);
-                if (inter_x > inter_y) {
-                    nueva_pos_y = definir_punto_medio(pos_y_jug_act, jugador.get_alto(),
-                                                      bloque.pos_y, bloque.alto);
-                    jugador.dejar_de_caer();
-                } else {
-                    nueva_pos_x = definir_punto_medio(pos_x_jug_act, jugador.get_ancho(),
-                                                      bloque.pos_x, bloque.ancho);
-                }
             }
         }
         jugador.cambiar_posicion(nueva_pos_x, nueva_pos_y);
