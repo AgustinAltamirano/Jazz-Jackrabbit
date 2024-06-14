@@ -47,18 +47,19 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 }
                 break;
             case MOVER_DER:
-                this->vel_x = 4;
+                this->vel_x = 5;
                 this->de_espaldas = false;
                 break;
             case MOVER_IZQ:
-                this->vel_x = -4;
+                this->vel_x = -5;
                 this->de_espaldas = true;
                 break;
             case ACTIVAR_DASH:
                 // por hacer
                 break;
             case DISPARAR_ACCION:
-                if (this->estado != INTOXICADO && this->tiempo_recarga == 0) {
+                if (this->estado != INTOXICADO && this->tiempo_recarga == 0 &&
+                    inventario_balas[arma_actual] != 0) {
                     this->estado = DISPARAR_QUIETO;
                     disparo = true;
                 }
@@ -139,7 +140,9 @@ void personaje::cambiar_estado(const bool cae) {
         this->vel_x = 0;  // reseteo la velocidad
         return;
     }
-    if (estado == INTOXICADO) {
+    if (tiempo_recarga > 0) {
+        this->estado = DISPARAR_QUIETO;
+    } else if (estado == INTOXICADO) {
         if (vel_x != 0) {
             this->estado = INTOXICADO_MOVIMIENTO;
         }
@@ -165,7 +168,17 @@ void personaje::cambiar_estado(const bool cae) {
         }
     }
     if (!en_aire) {
-        this->vel_x = 0;  // reseteo la velocidad
+        if (this->vel_x > 0) {
+            this->vel_x -= 1;
+            if (this->vel_x <= 0) {
+                this->vel_x = 0;
+            }
+        } else if (this->vel_x < 0) {
+            this->vel_x += 1;
+            if (this->vel_x >= 0) {
+                this->vel_x = 0;
+            }
+        }
     }
 }
 

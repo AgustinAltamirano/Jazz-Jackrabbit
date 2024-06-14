@@ -25,7 +25,8 @@ bool balaArma1::mover() {
 }
 
 int32_t balaArma1::impactar() {
-    if (rebotes == 3) {
+    rebotes += 1;
+    if (rebotes >= 3) {
         this->choco = true;
     } else {
         this->vel_x *= -1;
