@@ -357,5 +357,6 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
                 (*it)->impactar();
             }
         }
+        ++it;
     }
 }
