@@ -1,8 +1,6 @@
 # shellcheck disable=SC2028
 echo "Instalador de dependencias del proyecto\n"
 
-git submodule update --init --recursive
-
 # Librerías principales del proyecto
 sudo apt install cmake \
   make \
@@ -11,6 +9,7 @@ sudo apt install cmake \
   libyaml-cpp-dev \
   qtbase5-dev \
   qtmultimedia5-dev \
+  libqt5multimedia5-plugins \
   libsdl2-dev -y
 
 # Librerías necesarias para SDL
