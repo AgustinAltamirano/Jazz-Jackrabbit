@@ -25,13 +25,13 @@ sudo apt install libopusfile-dev \
 EXTLIB="extlib"
 
 cd $EXTLIB || exit
-wget "https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.2/SDL2_image-2.8.2.zip" -P "$EXTLIB"
-wget "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.0/SDL2_mixer-2.8.0.zip" -P "$EXTLIB"
-wget "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.zip" -P "$EXTLIB"
+wget "https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.2/SDL2_image-2.8.2.zip" -P "."
+wget "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.0/SDL2_mixer-2.8.0.zip" -P "."
+wget "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.zip" -P "."
 
-unzip "$SDL_DIR/SDL2_image-2.8.2.zip" -d "$SDL_DIR"
-unzip "$SDL_DIR/SDL2_mixer-2.8.0.zip" -d "$SDL_DIR"
-unzip "$SDL_DIR/SDL2_ttf-2.22.0.zip" -d "$SDL_DIR"
+unzip "SDL2_image-2.8.2.zip" -d "."
+unzip "SDL2_mixer-2.8.0.zip" -d "."
+unzip "SDL2_ttf-2.22.0.zip" -d "."
 
 
 cd "SDL2_image-2.8.2" || exit
@@ -67,4 +67,4 @@ sudo make install
 
 cd ../../..
 
-sudo ./build.sh
+sudo sh build.sh
