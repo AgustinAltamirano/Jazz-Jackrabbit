@@ -16,7 +16,7 @@ private:
     bool choco;
     int32_t dano;
     int32_t tiempo_recarga;  // frames hasta poder volver a disparar
-    uint32_t rebotes;
+    int32_t rebotes;
 
 public:
     balaArma1(int32_t id, int32_t pos_x_in, int32_t pos_y_in, bool invertido);
