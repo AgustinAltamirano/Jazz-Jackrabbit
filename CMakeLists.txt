@@ -9,6 +9,11 @@ add_definitions(-DASSETS_PATH="${PROJECT_SOURCE_DIR}/assets")
 add_definitions(-DMAPAS_PATH="${PROJECT_SOURCE_DIR}/src/mapas/")
 # add_definitions(-lSDL2main -lSDL2)
 
+set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
+set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
+set(SDL2PP_WITH_TTF ON) # if you need SDL_ttf support
+add_subdirectory(extlib/libSDL2pp)
+
 # Agrega los archivos fuente del juego
 add_executable(Client src/client/cliente_main.cpp src/client/juego/cliente.h src/client/juego/cliente.cpp src/client/juego/cliente_enviador.h src/client/juego/cliente_enviador.cpp src/client/juego/cliente_recibidor.h src/client/juego/cliente_recibidor.cpp src/client/juego/cliente_serializador.h src/client/juego/cliente_serializador.cpp src/client/juego/cliente_deserializador.h src/client/juego/cliente_deserializador.cpp
         src/client/lobby/lobby.h src/client/lobby/lobby.cpp src/client/lobby/lobby_serializador.h src/client/lobby/lobby_serializador.cpp src/client/lobby/lobby_enviador.h src/client/lobby/lobby_enviador.cpp src/client/lobby/lobby_deserializador.h src/client/lobby/lobby_deserializador.cpp src/client/lobby/lobby_recibidor.h src/client/lobby/lobby_recibidor.cpp
@@ -54,12 +59,10 @@ find_package(yaml-cpp REQUIRED)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Multimedia REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Multimedia REQUIRED)
 
-target_link_libraries(Client PRIVATE vista_juego)
-target_link_libraries(Server PRIVATE yaml-cpp)
 target_link_libraries(Client PRIVATE vista_juego Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia)
 target_link_libraries(Server PRIVATE yaml-cpp)
 
 set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR} "/extlib/libSDL2pp")
 
-add_subdirectory(extlib/libSDL2pp)
+
 add_subdirectory(src/client/editor)

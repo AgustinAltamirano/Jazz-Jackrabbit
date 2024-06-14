@@ -18,9 +18,12 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         auto nombre_escenario = escenario["nombre"].as<std::string>();
         auto imagen_escenario = ruta_escenarios + escenario["imagen"].as<std::string>();
 
+        SDL2pp::Surface surface(imagen_escenario);
+        uint32_t color_key = SDL_MapRGB(surface.Get()->format, COLOR_KEY_ESCENARIOS_RED, COLOR_KEY_ESCENARIOS_GREEN, COLOR_KEY_ESCENARIOS_BLUE);
+        surface.SetColorKey(true, color_key);
         SDL2pp::Texture textura(
                 renderer,
-                SDL2pp::Surface(imagen_escenario).SetColorKey(true, COLOR_KEY_ESCENARIOS));
+                surface);
         textura.SetBlendMode(SDL_BLENDMODE_BLEND);
         texturas_escenarios.emplace(nombre_escenario, std::move(textura));
         auto coords = escenario["fondo_coords"][0];
@@ -47,9 +50,12 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         auto nombre_personaje = personaje["nombre"].as<std::string>();
         auto imagen_personaje = ruta_personajes + personaje["imagen"].as<std::string>();
 
+        SDL2pp::Surface surface(imagen_personaje);
+        uint32_t color_key = SDL_MapRGB(surface.Get()->format, COLOR_KEY_PERSONAJES_RED, COLOR_KEY_PERSONAJES_GREEN, COLOR_KEY_PERSONAJES_BLUE);
+        surface.SetColorKey(true, color_key);
         SDL2pp::Texture textura(
                 renderer,
-                SDL2pp::Surface(imagen_personaje).SetColorKey(true, COLOR_KEY_PERSONAJES));
+                surface);
         textura.SetBlendMode(SDL_BLENDMODE_BLEND);
         std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_personaje;
 
@@ -75,8 +81,11 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
             YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS ENEMIGOS_CONFIG);
     auto imagen_enemigos = std::string(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS) +
                            enemigos_config["imagen"].as<std::string>();
+    SDL2pp::Surface surface_enemigos(imagen_enemigos);
+    uint32_t color_key_enemigos = SDL_MapRGB(surface_enemigos.Get()->format, COLOR_KEY_ENEMIGOS_RED, COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    surface_enemigos.SetColorKey(true, color_key_enemigos);
     textura_enemigos = std::make_unique<SDL2pp::Texture>(
-            renderer, SDL2pp::Surface(imagen_enemigos).SetColorKey(true, COLOR_KEY_ENEMIGOS));
+            renderer, surface_enemigos);
     textura_enemigos->SetBlendMode(SDL_BLENDMODE_BLEND);
 
     for (const auto& enemigo: enemigos_config["enemigos"]) {
@@ -95,8 +104,11 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
     YAML::Node fuente_config = YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_FUENTE FUENTE_CONFIG);
     auto imagen_fuente = std::string(ASSETS_PATH RUTA_SPRITES DIR_FUENTE) +
                          fuente_config["imagen"].as<std::string>();
+    SDL2pp::Surface surface_fuente(imagen_fuente);
+    uint32_t color_key_fuente = SDL_MapRGB(surface_fuente.Get()->format, COLOR_KEY_ENEMIGOS_RED, COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    surface_fuente.SetColorKey(true, color_key_fuente);
     textura_fuente = std::make_unique<SDL2pp::Texture>(
-            renderer, SDL2pp::Surface(imagen_fuente).SetColorKey(true, COLOR_KEY_FUENTE));
+            renderer, surface_fuente);
     textura_fuente->SetBlendMode(SDL_BLENDMODE_BLEND);
 
     for (const auto& numero_coords: fuente_config["numeros"]) {
@@ -115,8 +127,11 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
     YAML::Node items_config = YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_ITEMS ITEMS_CONFIG);
     auto imagen_items = std::string(ASSETS_PATH RUTA_SPRITES DIR_ITEMS) +
                         items_config["imagen"].as<std::string>();
+    SDL2pp::Surface surface_items(imagen_items);
+    uint32_t color_key_items = SDL_MapRGB(surface_items.Get()->format, COLOR_KEY_ENEMIGOS_RED, COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    surface_items.SetColorKey(true, color_key_items);
     textura_items = std::make_unique<SDL2pp::Texture>(
-            renderer, SDL2pp::Surface(imagen_items).SetColorKey(true, COLOR_KEY_ITEMS));
+            renderer, surface_items);
     textura_items->SetBlendMode(SDL_BLENDMODE_BLEND);
 
     for (const auto& icono_coords: items_config["iconos"]) {
