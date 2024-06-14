@@ -16,6 +16,7 @@ sudo apt install cmake \
 sudo apt install libopusfile-dev \
   libxmp-dev \
   libfluidsynth-dev \
+  fluidsynth \
   libwavpack-dev \
   libfreetype-dev \
   libjpeg-dev \
