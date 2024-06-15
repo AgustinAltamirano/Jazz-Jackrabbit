@@ -64,4 +64,61 @@ target_link_libraries(Server PRIVATE yaml-cpp)
 set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR} "/extlib/libSDL2pp")
 
 
-add_subdirectory(src/client/editor)
+# Configuración del editor
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(yaml-cpp REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Multimedia REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Multimedia REQUIRED)
+
+set(PROJECT_SOURCES
+        src/client/editor/main.cpp
+        assets/editor/img/resources.qrc
+)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(.
+            MANUAL_FINALIZATION
+            ${PROJECT_SOURCES}
+    )
+    # Define target properties for Android with Qt 6 as:
+    #    set_property(TARGET vista_menu APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+    #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
+    # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+else()
+    if(ANDROID)
+        add_library(editor SHARED
+                ${PROJECT_SOURCES}
+        )
+        # Define properties for Android with Qt 5 after find_package() calls as:
+        #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+    else()
+        add_executable(editor
+                ${PROJECT_SOURCES}
+                src/client/editor/main_window.cpp
+                src/client/editor/main_window.h
+                src/client/editor/escena_editor.cpp
+                src/client/editor/escena_editor.h
+                src/client/editor/constantes.h
+                src/client/editor/barra_menu.cpp
+                src/client/editor/barra_menu.h
+                src/client/editor/lista_botones.cpp
+                src/client/editor/lista_botones.h
+                src/client/editor/coordenada_punto.h
+        )
+    endif()
+endif()
+
+target_link_libraries(editor PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia yaml-cpp)
+
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt_finalize_executable(.)
+endif()
+

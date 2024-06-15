@@ -24,3 +24,23 @@ Si se desea recompilar el juego, se debe ejecutar el siguiente comando:
 ```
 sh build.sh
 ```
+
+## Ejecución
+
+Para ejecutar el servidor, se debe ejecutar el siguiente comando:
+
+```
+./Server <puerto>
+```
+
+Para ejecutar el cliente, se debe ejecutar el siguiente comando:
+
+```
+./Client <hostname> <puerto>
+```
+
+Para ejecutar el editor de mapas, se debe ejecutar el siguiente comando:
+
+```
+./editor
+```
