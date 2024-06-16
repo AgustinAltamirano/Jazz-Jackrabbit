@@ -23,6 +23,12 @@ TipoEscenario SnapshotDTO::obtener_tipo_escenario() { return tipo_escenario; }
 
 void SnapshotDTO::agregar_cliente(ClienteDTO cliente) { clientes.push_back(cliente); }
 
+void SnapshotDTO::agregar_bala(BalaDTO bala) { balas.push_back(bala); }
+
+void SnapshotDTO::agregar_enemigo(EnemigoDTO enemigo) { enemigos.push_back(enemigo); }
+
+void SnapshotDTO::agregar_recogible(RecogibleDTO recogible) { recogibles.push_back(recogible); }
+
 std::vector<ClienteDTO>& SnapshotDTO::obtener_clientes() { return clientes; }
 
 void SnapshotDTO::agregar_bloque_escenario(BloqueEscenarioDTO bloque_escenario) {

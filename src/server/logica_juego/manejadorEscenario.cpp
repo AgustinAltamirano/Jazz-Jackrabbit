@@ -10,6 +10,8 @@
 #include "../../common/constantes.h"
 #include "../../common/snapshot_dto.h"
 #include "../../common/tipo_bloque_escenario.h"
+#include "../../common/tipo_enemigo.h"
+#include "../../common/tipo_recogible.h"
 
 manejadorEscenario::manejadorEscenario(std::string path):
         path(std::move(path)), clase_escenario(ESCENARIO_INDEFINIDO) {

@@ -1,0 +1,14 @@
+#ifndef TIPO_RECOGIBLE_H
+#define TIPO_RECOGIBLE_H
+
+enum TipoRecogible : char {
+    MONEDA_AGARRABLE,
+    GEMA_AGARRABLE,
+    MUNICION_ARMA_1,
+    MUNICION_ARMA_2,
+    MUNICION_ARMA_3,
+    FRUTA_PODRIDA,
+    FRUTA_BUENA
+};
+
+#endif  // TIPO_RECOGIBLE_H

@@ -22,7 +22,9 @@ add_library(vista_juego
         pantalla_carga.cpp
         pantalla_carga.h
         hud.cpp
-        hud.h)
+        hud.h
+        ../../common/tipo_enemigo.h
+        ../../common/tipo_recogible.h)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
