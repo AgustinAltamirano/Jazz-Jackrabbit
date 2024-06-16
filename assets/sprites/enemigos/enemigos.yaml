@@ -1,6 +1,6 @@
 imagen: enemigos.png
 enemigos:
-  - nombre: lagartija
+  - nombre: lagarto
     sprites:
       - x: 18
         y: 19
