@@ -125,6 +125,35 @@ void AdministradorVistaJuego::actualizar_vista_personajes(
     }
 }
 
+void AdministradorVistaJuego::actualizar_vista_enemigos(
+        const std::vector<EnemigoDTO>& enemigos_recibidos) {
+    for (const auto& enemigo: enemigos_recibidos) {
+        if (!enemigos.existe_enemigo(enemigo.id)) {
+            enemigos.agregar_enemigo(enemigo.id, enemigo.tipo, {enemigo.pos_x, enemigo.pos_y, 1, 1},
+                                     enemigo.invertido);
+        }
+        enemigos.actualizar_animacion(enemigo.id, iteraciones_actuales,
+                                      {enemigo.pos_x, enemigo.pos_y, enemigo.ancho, enemigo.alto},
+                                      enemigo.invertido);
+    }
+}
+
+void AdministradorVistaJuego::actualizar_vista_balas(const std::vector<BalaDTO>& balas_recibidas) {
+    balas.eliminar_balas();
+    for (const auto& bala: balas_recibidas) {
+        balas.agregar_bala(bala.tipo, bala.pos_x, bala.pos_y);
+    }
+}
+
+void AdministradorVistaJuego::actualizar_vista_recogibles(
+        const std::vector<RecogibleDTO>& recogibles_recibidos) {
+    recogibles.eliminar_recogibles();
+    for (const auto& recogible: recogibles_recibidos) {
+        recogibles.agregar_recogible(recogible.tipo, {recogible.pos_x, recogible.pos_y,
+                                                      recogible.ancho, recogible.alto});
+    }
+}
+
 void AdministradorVistaJuego::actualizar_vista() {
     std::shared_ptr<SnapshotDTO> snapshot;
     if (!cliente.obtener_snapshot(snapshot)) {
@@ -157,6 +186,9 @@ void AdministradorVistaJuego::actualizar_vista() {
     actualizar_vista_fondo_escenario(snapshot->obtener_tipo_escenario());
     actualizar_vista_camara_y_hud(clientes_recibidos);
     actualizar_vista_bloques_escenario(snapshot->obtener_bloques_escenario());
+    actualizar_vista_enemigos(snapshot->obtener_enemigos());
+    actualizar_vista_balas(snapshot->obtener_balas());
+    actualizar_vista_recogibles(snapshot->obtener_recogibles());
 }
 
 int64_t AdministradorVistaJuego::sincronizar_vista(const int64_t ticks_transcurridos) {
@@ -192,6 +224,9 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         cliente(cliente),
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
+        enemigos(renderer, lector_texturas, camara),
+        balas(renderer, lector_texturas, camara),
+        recogibles(renderer, lector_texturas, camara),
         primera_snapshot_recibida(false),
         fin_juego(false) {
     lector_texturas.cargar_texturas_y_coordenadas();
@@ -208,6 +243,10 @@ void AdministradorVistaJuego::run() {
         for (auto& [fst, snd]: bloques_escenario) {
             snd->dibujar();
         }
+        recogibles.dibujar_recogibles();
+        balas.dibujar_balas();
+        enemigos.dibujar_enemigos();
+
         for (auto& [fst, snd]: personajes) {
             snd.dibujar();
         }
