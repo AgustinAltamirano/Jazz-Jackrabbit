@@ -25,6 +25,8 @@ add_executable(Client src/client/cliente_main.cpp src/client/juego/cliente.h src
         src/client/vista_menu/menu_seleccion.cpp
         src/client/vista_menu/menu_seleccion.h src/common/estado_personaje.h src/common/tipo_arma.h src/common/tipo_bloque_escenario.h src/common/tipo_comando.h src/common/tipo_escenario.h src/common/tipo_personaje.h src/common/comando_validar_dto.cpp src/common/comando_validar_dto.h
         src/client/vista_menu/menu_seleccion.h
+        src/common/tipo_enemigo.h
+        src/common/tipo_recogible.h
 )
 
 add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/server/servidor.cpp src/server/aceptador.h src/server/aceptador.cpp src/server/comunicador_cliente.h src/server/comunicador_cliente.cpp src/server/enviador_cliente.h src/server/enviador_cliente.cpp src/server/gestor_partidas.h src/server/gestor_partidas.cpp
@@ -48,6 +50,8 @@ add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/ser
         src/server/logica_juego/enemigo.h
         src/common/validador_de_mapas.cpp
         src/common/validador_de_mapas.h
+        src/common/tipo_enemigo.h
+        src/common/tipo_recogible.h
 )
 
 add_subdirectory(src/client/vista_juego)

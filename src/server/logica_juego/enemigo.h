@@ -4,11 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-typedef enum {
-    LAGARTO = 0,
-    ESQUELETO,
-    MURCIELAGO,
-} TipoEnemigo;
+#include "../../common/tipo_enemigo.h"
 
 typedef enum {
     ACTIVO = 0,

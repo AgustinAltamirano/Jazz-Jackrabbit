@@ -9,8 +9,10 @@
 #include "estado_personaje.h"
 #include "tipo_arma.h"
 #include "tipo_bloque_escenario.h"
+#include "tipo_enemigo.h"
 #include "tipo_escenario.h"
 #include "tipo_personaje.h"
+#include "tipo_recogible.h"
 
 struct ClienteDTO {
     int32_t id_cliente;
@@ -35,7 +37,7 @@ struct ClienteDTO {
             puntos(puntos),
             arma_actual(arma_actual),
             balas_restantes(balas_restantes) {}
-    ClienteDTO() :
+    ClienteDTO():
             id_cliente(),
             tipo_personaje(),
             pos_x(),
@@ -55,8 +57,38 @@ struct BloqueEscenarioDTO {
     BloqueEscenarioDTO(int32_t pos_x, int32_t pos_y, uint32_t ancho, uint32_t alto, int32_t angulo,
                        TipoBloqueEscenario tipo):
             pos_x(pos_x), pos_y(pos_y), ancho(ancho), alto(alto), angulo(angulo), tipo(tipo) {}
-    BloqueEscenarioDTO():
-            pos_x(), pos_y(), ancho(), alto(), angulo(), tipo() {}
+    BloqueEscenarioDTO(): pos_x(), pos_y(), ancho(), alto(), angulo(), tipo() {}
+} __attribute__((packed));
+
+struct BalaDTO {
+    int32_t pos_x, pos_y;
+    TipoArma tipo;
+    BalaDTO(int32_t pos_x, int32_t pos_y, TipoArma tipo): pos_x(pos_x), pos_y(pos_y), tipo(tipo) {}
+    BalaDTO(): pos_x(), pos_y(), tipo() {}
+} __attribute__((packed));
+
+struct EnemigoDTO {
+    int32_t id, pos_x, pos_y, alto, ancho;
+    TipoEnemigo tipo;
+    bool invertido;
+    EnemigoDTO(int32_t id, int32_t pos_x, int32_t pos_y, int32_t alto, int32_t ancho,
+               TipoEnemigo tipo, bool invertido):
+            id(id),
+            pos_x(pos_x),
+            pos_y(pos_y),
+            alto(alto),
+            ancho(ancho),
+            tipo(tipo),
+            invertido(invertido) {}
+    EnemigoDTO(): id(), pos_x(), pos_y(), alto(), ancho(), tipo(), invertido() {}
+} __attribute__((packed));
+
+struct RecogibleDTO {
+    int32_t pos_x, pos_y, alto, ancho;
+    TipoRecogible tipo;
+    RecogibleDTO(int32_t pos_x, int32_t pos_y, int32_t alto, int32_t ancho, TipoRecogible tipo):
+            pos_x(pos_x), pos_y(pos_y), alto(alto), ancho(ancho), tipo(tipo) {}
+    RecogibleDTO(): pos_x(), pos_y(), alto(), ancho(), tipo() {}
 } __attribute__((packed));
 
 class SnapshotDTO {
@@ -64,6 +96,9 @@ private:
     TipoEscenario tipo_escenario;
     std::vector<BloqueEscenarioDTO> bloques_escenario;
     std::vector<ClienteDTO> clientes;
+    std::vector<BalaDTO> balas;
+    std::vector<EnemigoDTO> enemigos;
+    std::vector<RecogibleDTO> recogibles;
     bool fin_juego;
 
 public:
@@ -79,6 +114,12 @@ public:
     TipoEscenario obtener_tipo_escenario();
 
     void agregar_cliente(ClienteDTO cliente);
+
+    void agregar_bala(BalaDTO bala);
+
+    void agregar_enemigo(EnemigoDTO enemigo);
+
+    void agregar_recogible(RecogibleDTO recogible);
 
     std::vector<ClienteDTO>& obtener_clientes();
 
