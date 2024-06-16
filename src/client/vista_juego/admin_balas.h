@@ -40,5 +40,4 @@ public:
     ~AdminBalas();
 };
 
-
 #endif  // ADMIN_BALAS_H

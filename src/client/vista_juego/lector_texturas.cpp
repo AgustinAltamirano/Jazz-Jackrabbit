@@ -154,6 +154,14 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         coords_balas.at(bala_coords["nombre"].as<std::string>()).emplace_back(sprite);
     }
 
+    for (const auto& recogible_coords: items_config["recogibles"]) {
+        std::vector<SDL2pp::Rect> sprites_recogibles;
+        coords_balas.emplace(recogible_coords["nombre"].as<std::string>(), std::move(sprites_recogibles));
+        SDL2pp::Rect sprite(recogible_coords["x"].as<int>(), recogible_coords["y"].as<int>(),
+                            recogible_coords["ancho"].as<int>(), recogible_coords["alto"].as<int>());
+        coords_balas.at(recogible_coords["nombre"].as<std::string>()).emplace_back(sprite);
+    }
+
 }
 
 SDL2pp::Texture& LectorTexturas::obtener_textura_personaje(const std::string& personaje) {
@@ -212,8 +220,14 @@ const std::unordered_map<std::string, SDL2pp::Rect>& LectorTexturas::obtener_coo
     return coords_armas;
 }
 
-const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_bala(const std::string& nombre_arma) const {
+const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_bala(
+        const std::string& nombre_arma) const {
     return coords_balas.at(nombre_arma);
+}
+
+const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_recogible(
+        const std::string& nombre_recogible) const {
+    return coords_recogibles.at(nombre_recogible);
 }
 
 

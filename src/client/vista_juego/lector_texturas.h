@@ -47,6 +47,8 @@ private:
 
     std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_balas;
 
+    std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_recogibles;
+
 public:
     explicit LectorTexturas(SDL2pp::Renderer& renderer);
 
@@ -103,6 +105,8 @@ public:
     const std::unordered_map<std::string, SDL2pp::Rect>& obtener_coords_armas() const;
 
     const std::vector<SDL2pp::Rect>& obtener_coords_bala(const std::string& nombre_arma) const;
+
+    const std::vector<SDL2pp::Rect>& obtener_coords_recogible(const std::string& nombre_recogible) const;
 
     ~LectorTexturas();
 
