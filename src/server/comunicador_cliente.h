@@ -23,8 +23,6 @@ private:
 
     std::atomic<bool> sigo_en_partida;
 
-    std::atomic<bool> sigo_jugando;
-
 public:
     ComunicadorCliente(Socket socket, GestorPartidas* gestor_partidas, int32_t id_cliente);
 

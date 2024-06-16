@@ -27,8 +27,6 @@ private:
 
     std::atomic<bool>& sigo_en_partida;
 
-    std::atomic<bool>& sigo_jugando;
-
     bool cerrado = false;
 
     Queue<std::shared_ptr<SnapshotDTO>> cola_enviador;
@@ -45,8 +43,7 @@ private:
 
 public:
     EnviadorCliente(Socket* skt_cliente, std::atomic<bool>& sigo_en_partida,
-                    std::atomic<bool>& sigo_jugando, GestorPartidas* gestor_partidas,
-                    int32_t& id_cliente);
+                    GestorPartidas* gestor_partidas, int32_t& id_cliente);
 
     void run() override;
 

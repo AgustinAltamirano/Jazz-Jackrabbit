@@ -1,6 +1,7 @@
 #ifndef CLIENTE_DESERIALIZADOR_H
 #define CLIENTE_DESERIALIZADOR_H
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -15,7 +16,7 @@ private:
 public:
     explicit ClienteDeserializador(Socket* socket);
 
-    SnapshotDTO deserializar_juego_dto(bool* cerrado);
+    std::shared_ptr<SnapshotDTO> deserializar_snapshot_dto();
 };
 
 #endif

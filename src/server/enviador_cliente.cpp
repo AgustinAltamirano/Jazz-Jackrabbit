@@ -9,12 +9,10 @@
 #include "../common/validador_de_mapas.h"
 
 EnviadorCliente::EnviadorCliente(Socket* skt_cliente, std::atomic<bool>& sigo_en_partida,
-                                 std::atomic<bool>& sigo_jugando, GestorPartidas* gestor_partidas,
-                                 int32_t& id_cliente):
+                                 GestorPartidas* gestor_partidas, int32_t& id_cliente):
         sigo_en_partida(sigo_en_partida),
-        sigo_jugando(sigo_jugando),
         cola_enviador(10000),
-        recibidor_cliente(skt_cliente, sigo_en_partida, sigo_jugando, id_cliente, cola_enviador),
+        recibidor_cliente(skt_cliente, sigo_en_partida, id_cliente, cola_enviador),
         gestor_partidas(gestor_partidas),
         servidor_deserializador(skt_cliente),
         servidor_serializador(skt_cliente),
@@ -27,42 +25,16 @@ EnviadorCliente::EnviadorCliente(Socket* skt_cliente, std::atomic<bool>& sigo_en
 void EnviadorCliente::run() {
     servidor_serializador.enviar_id_cliente(id_cliente, &cerrado);
     inicio_recibidor_cliente();
-    while (sigo_jugando) {
+    while (sigo_en_partida) {
         try {
-            while (sigo_en_partida && !cerrado) {
+            while (!cerrado) {
                 std::shared_ptr<SnapshotDTO> snapshot_dto = cola_enviador.pop();
-
-                std::vector<ClienteDTO>& clientes_dto = snapshot_dto->obtener_clientes();
-                std::vector<BloqueEscenarioDTO>& bloques_dto =
-                        snapshot_dto->obtener_bloques_escenario();
-
-                uint8_t num_clientes = clientes_dto.size();
-                uint8_t num_bloques = bloques_dto.size();
-
-                auto tipo_escenario = static_cast<uint8_t>(snapshot_dto->obtener_tipo_escenario());
-                auto fin_juego = snapshot_dto->es_fin_juego();
-
-
-                bool skt_cerrado;
-
-                skt_cliente->sendall(&num_clientes, sizeof(uint8_t), &skt_cerrado);
-                skt_cliente->sendall(&num_bloques, sizeof(uint8_t), &skt_cerrado);
-                skt_cliente->sendall(&tipo_escenario, sizeof(uint8_t), &skt_cerrado);
-                skt_cliente->sendall(&fin_juego, sizeof(bool), &skt_cerrado);
-
-                for (const auto& cliente_dto: clientes_dto) {
-                    skt_cliente->sendall(&cliente_dto, sizeof(cliente_dto), &skt_cerrado);
-                }
-
-                for (const auto& bloque_dto: bloques_dto) {
-                    skt_cliente->sendall(&bloque_dto, sizeof(bloque_dto), &skt_cerrado);
-                }
+                servidor_serializador.enviar_snapshot(snapshot_dto, &cerrado);
             }
         } catch (const ClosedQueue& e) {
             std::cout << "Se cerro la cola correctamente" << std::endl;
         }
         sigo_en_partida = false;
-        sigo_jugando = false;
         // Si esta asociada a una partida lo elimino de la partida
         if (cola_recibidor != nullptr)
             gestor_partidas->borrar_cliente(
@@ -80,7 +52,6 @@ void EnviadorCliente::join_recibidor_cliente() {
 void EnviadorCliente::cerrar_cola() { cola_enviador.close(); }
 
 void EnviadorCliente::inicio_recibidor_cliente() {
-    //    while (sigo_jugando) {
     try {
         int32_t codigo_partida;
         ComandoDTO* comando = servidor_deserializador.obtener_comando(&cerrado, id_cliente);
@@ -116,15 +87,10 @@ void EnviadorCliente::inicio_recibidor_cliente() {
     } catch (const std::runtime_error& e) {
         std::cout << e.what() << std::endl;
         sigo_en_partida = false;
-        sigo_jugando = false;
         return;
     }
-    //    }
     recibidor_cliente.establecer_cola_recibidor(cola_recibidor);
     recibidor_cliente.start();
 }
 
-void EnviadorCliente::stop() {
-    sigo_en_partida = false;
-    sigo_jugando = false;
-}
+void EnviadorCliente::stop() { sigo_en_partida = false; }

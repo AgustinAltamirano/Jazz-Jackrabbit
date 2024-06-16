@@ -40,8 +40,6 @@ public:
     std::vector<char> serializar_validar_escenario(const bool &es_valido);
 
     std::vector<char> serializar_id_cliente(const int32_t &id_cliente);
-
-    std::vector<char> serializar_snapshot(std::shared_ptr<SnapshotDTO> snapshot_dto);
 };
 
 #endif
