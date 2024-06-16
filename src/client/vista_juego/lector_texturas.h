@@ -45,6 +45,8 @@ private:
 
     std::unordered_map<std::string, SDL2pp::Rect> coords_armas;
 
+    std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_balas;
+
 public:
     explicit LectorTexturas(SDL2pp::Renderer& renderer);
 
@@ -99,6 +101,8 @@ public:
     const SDL2pp::Rect& obtener_coords_icono(const std::string& nombre_icono) const;
 
     const std::unordered_map<std::string, SDL2pp::Rect>& obtener_coords_armas() const;
+
+    const std::vector<SDL2pp::Rect>& obtener_coords_bala(const std::string& nombre_arma) const;
 
     ~LectorTexturas();
 

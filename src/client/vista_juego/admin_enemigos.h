@@ -1,7 +1,6 @@
 #ifndef ADMIN_ENEMIGOS_H
 #define ADMIN_ENEMIGOS_H
 
-#include <vector>
 #include <unordered_map>
 
 #include <SDL2pp/SDL2pp.hh>
@@ -24,7 +23,7 @@ private:
     SDL2pp::Rect corregir_desfase_sprite(uint32_t id_enemigo, const SDL2pp::Rect& dimensiones, bool invertido) const;
 
 public:
-    explicit AdminEnemigos(SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas, Camara& camara);
+    AdminEnemigos(SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas, Camara& camara);
 
     AdminEnemigos(const AdminEnemigos&) = delete;
 

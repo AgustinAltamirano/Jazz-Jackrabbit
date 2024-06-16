@@ -25,7 +25,9 @@ add_library(vista_juego
         ../../common/tipo_enemigo.h
         ../../common/tipo_recogible.h
         admin_enemigos.cpp
-        admin_enemigos.h)
+        admin_enemigos.h
+        admin_balas.cpp
+        admin_balas.h)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
