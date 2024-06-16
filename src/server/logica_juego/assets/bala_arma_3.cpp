@@ -2,7 +2,7 @@
 
 balaArma3::balaArma3(const int32_t id, int32_t const pos_x_in, int32_t const pos_y_in,
                      bool const invertido):
-        id_dueno(id), pos_x(pos_x_in), pos_y(pos_y_in), choco(false) {
+        id_dueno(id), pos_x(pos_x_in), pos_y(pos_y_in), choco(false), tipo(ARMA3) {
     const ConfigAdmin& configurador = ConfigAdmin::getInstance();
     this->vel_x = configurador.get(VEL_ARMA3);
     if (invertido) {
@@ -34,4 +34,9 @@ int32_t balaArma3::get_id() const { return this->id_dueno; }
 int32_t balaArma3::disparar() {
     this->mover();
     return this->tiempo_recarga;
+}
+
+BalaDTO balaArma3::crear_dto() {
+    const BalaDTO bala(pos_x, pos_y, tipo);
+    return bala;
 }

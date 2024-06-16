@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "../../common/snapshot_dto.h"
 #include "../../common/tipo_enemigo.h"
 
 typedef enum {
@@ -43,7 +44,7 @@ public:
     bool hacer_dano(int32_t puntos_dano);
     void revivir();
 
-    // virtual EnemigoDTO crear_dto() const = 0;
+    EnemigoDTO crear_dto() const;
 };
 
 #endif  // ENEMIGO_H

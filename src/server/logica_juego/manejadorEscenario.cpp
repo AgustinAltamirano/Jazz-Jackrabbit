@@ -242,6 +242,21 @@ std::shared_ptr<SnapshotDTO> manejadorEscenario::crear_snapshot() {
     return snapshot;
 }
 
+std::shared_ptr<SnapshotDTO> manejadorEscenario::crear_snapshot_partida() {
+    auto snapshot = std::make_shared<SnapshotDTO>(clase_escenario);
+    for (const auto& bala: balas) {
+        snapshot->agregar_bala(bala->crear_dto());
+    }
+    for (const auto& enemigo: enemigos) {
+        snapshot->agregar_enemigo(enemigo.crear_dto());
+    }
+    for (const auto& recogible: objetos) {
+        snapshot->agregar_recogible(recogible.crear_dto());
+    }
+    return snapshot;
+}
+
+// seccion de manejo de balas
 void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
     const std::vector<int32_t> posicion = jugador.get_pos_actual();
     int32_t punto_x = posicion[0];

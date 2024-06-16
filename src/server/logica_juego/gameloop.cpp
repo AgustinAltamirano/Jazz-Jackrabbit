@@ -68,7 +68,7 @@ void Gameloop::run() {
         escenario.hacer_tick_enemigos();
 
         // enviar dto vuelta
-        auto snapshot_juego = std::make_shared<SnapshotDTO>(escenario.get_escenario());
+        auto snapshot_juego = escenario.crear_snapshot_partida();
         for (const auto& entidad: personajes) {
             ClienteDTO jugador_dto = entidad.second.crear_dto();
             snapshot_juego->agregar_cliente(std::move(jugador_dto));

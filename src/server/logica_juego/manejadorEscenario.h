@@ -57,6 +57,7 @@ public:
 
     // crear snapshots
     std::shared_ptr<SnapshotDTO> crear_snapshot();
+    std::shared_ptr<SnapshotDTO> crear_snapshot_partida();
 };
 
 

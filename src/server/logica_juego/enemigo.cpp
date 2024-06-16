@@ -99,3 +99,8 @@ void enemigo::revivir() {
             break;
     }
 }
+
+EnemigoDTO enemigo::crear_dto() const {
+    const EnemigoDTO enem(id, pos_x, pos_y, alto, ancho, tipo, de_espaldas);
+    return enem;
+}
