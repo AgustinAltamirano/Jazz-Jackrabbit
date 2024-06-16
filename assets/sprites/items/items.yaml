@@ -27,3 +27,62 @@ armas:
     y: 422
     ancho: 28
     alto: 19
+
+balas:
+  - nombre: infinita
+    x: 141
+    y: 152
+    ancho: 13
+    alto: 13
+  - nombre: arma1
+    x: 142
+    y: 135
+    ancho: 13
+    alto: 13
+  - nombre: arma2
+    x: 152
+    y: 378
+    ancho: 13
+    alto: 13
+  - nombre: arma3
+    x: 152
+    y: 362
+    ancho: 13
+    alto: 13
+
+recogibles:
+  - nombre: moneda
+    x: 484
+    y: 1220
+    ancho: 23
+    alto: 23
+  - nombre: gema
+    x: 176
+    y: 1428
+    ancho: 23
+    alto: 21
+  - nombre: municion_arma1
+    x: 71
+    y: 137
+    ancho: 14
+    alto: 9
+  - nombre: municion_arma2
+    x: 108
+    y: 325
+    ancho: 12
+    alto: 11
+  - nombre: municion_arma3
+    x: 108
+    y: 343
+    ancho: 12
+    alto: 11
+  - nombre: bebida_podrida
+    x: 690
+    y: 889
+    ancho: 15
+    alto: 27
+  - nombre: zanahoria
+    x: 939
+    y: 1174
+    ancho: 25
+    alto: 23

@@ -1,6 +1,7 @@
 #ifndef ADMIN_RECOGIBLES_H
 #define ADMIN_RECOGIBLES_H
 
+#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -23,7 +24,7 @@ private:
     std::vector<ObjetoAnimado> recogibles;
 
     [[nodiscard]] static SDL2pp::Rect corregir_desfase_sprite(const SDL2pp::Rect& coords_sprite,
-                                                       const SDL2pp::Rect& dimensiones);
+                                                              const SDL2pp::Rect& dimensiones);
 
 public:
     AdminRecogibles(SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas, Camara& camara);
@@ -40,4 +41,4 @@ public:
     ~AdminRecogibles();
 };
 
-#endif //ADMIN_RECOGIBLES_H
+#endif  // ADMIN_RECOGIBLES_H

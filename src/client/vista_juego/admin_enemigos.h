@@ -1,6 +1,7 @@
 #ifndef ADMIN_ENEMIGOS_H
 #define ADMIN_ENEMIGOS_H
 
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -8,9 +9,9 @@
 
 #include "../../common/tipo_enemigo.h"
 
+#include "camara.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
-#include "camara.h"
 
 class AdminEnemigos {
 private:
@@ -26,7 +27,8 @@ private:
      */
     std::unordered_set<uint32_t> ids_enemigos_a_eliminar;
 
-    SDL2pp::Rect corregir_desfase_sprite(uint32_t id_enemigo, const SDL2pp::Rect& dimensiones, bool invertido) const;
+    SDL2pp::Rect corregir_desfase_sprite(uint32_t id_enemigo, const SDL2pp::Rect& dimensiones,
+                                         bool invertido) const;
 
 public:
     AdminEnemigos(SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas, Camara& camara);
@@ -41,13 +43,11 @@ public:
                          bool invertido);
 
     void actualizar_animacion(uint32_t id_enemigo, uint32_t iteraciones_actuales,
-                                     const SDL2pp::Rect& dimensiones, bool invertido);
+                              const SDL2pp::Rect& dimensiones, bool invertido);
 
     void dibujar_enemigos();
 
     ~AdminEnemigos();
 };
 
-
-
-#endif //ADMIN_ENEMIGOS_H
+#endif  // ADMIN_ENEMIGOS_H

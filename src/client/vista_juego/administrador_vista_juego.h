@@ -14,14 +14,17 @@
 #include "../../common/estado_personaje.h"
 #include "../../common/queue.h"
 #include "../../common/snapshot_dto.h"
+#include "../../common/tipo_arma.h"
 #include "../../common/tipo_bloque_escenario.h"
+#include "../../common/tipo_enemigo.h"
 #include "../../common/tipo_escenario.h"
 #include "../../common/tipo_personaje.h"
-#include "../../common/tipo_enemigo.h"
-#include "../../common/tipo_arma.h"
 #include "../../common/tipo_recogible.h"
 #include "../juego/cliente.h"
 
+#include "admin_balas.h"
+#include "admin_enemigos.h"
+#include "admin_recogibles.h"
 #include "bloque_escenario.h"
 #include "camara.h"
 #include "entrada_juego.h"
@@ -31,9 +34,6 @@
 #include "objeto_animado.h"
 #include "pantalla_carga.h"
 #include "personaje.h"
-#include "admin_enemigos.h"
-#include "admin_balas.h"
-#include "admin_recogibles.h"
 #include "vista_juego_defs.h"
 
 /**
@@ -88,7 +88,8 @@ private:
 
     void actualizar_vista_camara_y_hud(const std::vector<ClienteDTO>& clientes_recibidos);
 
-    void actualizar_vista_bloques_escenario(const std::vector<BloqueEscenarioDTO>& bloques_recibidos);
+    void actualizar_vista_bloques_escenario(
+            const std::vector<BloqueEscenarioDTO>& bloques_recibidos);
 
     void actualizar_vista_personajes(const std::vector<ClienteDTO>& clientes_recibidos);
 

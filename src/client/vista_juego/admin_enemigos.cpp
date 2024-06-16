@@ -1,4 +1,8 @@
 #include "admin_enemigos.h"
+
+#include <string>
+#include <utility>
+
 #include "vista_juego_defs.h"
 
 const std::unordered_map<TipoEnemigo, const std::string> AdminEnemigos::MAPA_TIPO_ENEMIGO{
@@ -7,20 +11,21 @@ const std::unordered_map<TipoEnemigo, const std::string> AdminEnemigos::MAPA_TIP
         {MURCIELAGO, "murcielago"},
 };
 
-SDL2pp::Rect AdminEnemigos::corregir_desfase_sprite(const uint32_t id_enemigo, const SDL2pp::Rect& dimensiones,
+SDL2pp::Rect AdminEnemigos::corregir_desfase_sprite(const uint32_t id_enemigo,
+                                                    const SDL2pp::Rect& dimensiones,
                                                     const bool invertido) const {
-    const SDL2pp::Rect& coords_sprite =
-            enemigos.at(id_enemigo).obtener_coords_sprite_actual();
+    const SDL2pp::Rect& coords_sprite = enemigos.at(id_enemigo).obtener_coords_sprite_actual();
     if (invertido) {
         return {dimensiones.GetX() - (coords_sprite.GetW() - dimensiones.GetW()),
-                dimensiones.GetY() - (coords_sprite.GetH() - dimensiones.GetH()), dimensiones.GetW(),
-                dimensiones.GetH()};
+                dimensiones.GetY() - (coords_sprite.GetH() - dimensiones.GetH()),
+                dimensiones.GetW(), dimensiones.GetH()};
     }
     return {dimensiones.GetX(), dimensiones.GetY() - (coords_sprite.GetH() - dimensiones.GetH()),
             dimensiones.GetW(), dimensiones.GetH()};
 }
 
-AdminEnemigos::AdminEnemigos(SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas, Camara& camara):
+AdminEnemigos::AdminEnemigos(SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas,
+                             Camara& camara):
         renderer(renderer), lector_texturas(lector_texturas), camara(camara) {}
 
 bool AdminEnemigos::existe_enemigo(const uint32_t id_enemigo) const {
@@ -63,7 +68,7 @@ void AdminEnemigos::actualizar_animacion(const uint32_t id_enemigo,
 }
 
 void AdminEnemigos::dibujar_enemigos() {
-    for (const auto& enem_eliminar : ids_enemigos_a_eliminar) {
+    for (const auto& enem_eliminar: ids_enemigos_a_eliminar) {
         enemigos.erase(enem_eliminar);
     }
 

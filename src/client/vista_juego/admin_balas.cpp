@@ -1,5 +1,7 @@
 #include "admin_balas.h"
 
+#include <string>
+#include <utility>
 #include <vector>
 
 const std::unordered_map<TipoArma, const std::string> AdminBalas::MAPA_TIPO_ARMA{
@@ -32,7 +34,7 @@ void AdminBalas::agregar_bala(const TipoArma tipo_arma, const int32_t pos_x, con
 }
 
 void AdminBalas::dibujar_balas() const {
-    for (auto& bala: balas) {
+    for (const auto& bala: balas) {
         bala.dibujar();
     }
 }

@@ -1,6 +1,7 @@
 #ifndef ADMIN_BALAS_H
 #define ADMIN_BALAS_H
 
+#include <string>
 #include <unordered_map>
 #include <vector>
 

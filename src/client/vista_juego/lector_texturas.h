@@ -106,7 +106,8 @@ public:
 
     const std::vector<SDL2pp::Rect>& obtener_coords_bala(const std::string& nombre_arma) const;
 
-    const std::vector<SDL2pp::Rect>& obtener_coords_recogible(const std::string& nombre_recogible) const;
+    const std::vector<SDL2pp::Rect>& obtener_coords_recogible(
+            const std::string& nombre_recogible) const;
 
     ~LectorTexturas();
 

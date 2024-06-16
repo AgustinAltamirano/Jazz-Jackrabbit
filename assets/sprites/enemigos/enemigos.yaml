@@ -50,3 +50,101 @@ enemigos:
         y: 20
         ancho: 72
         alto: 51
+
+  - nombre: murcielago
+    sprites:
+      - x: 19
+        y: 392
+        ancho: 62
+        alto: 39
+      - x: 89
+        y: 392
+        ancho: 58
+        alto: 39
+      - x: 153
+        y: 392
+        ancho: 64
+        alto: 39
+      - x: 222
+        y: 392
+        ancho: 64
+        alto: 39
+      - x: 291
+        y: 401
+        ancho: 60
+        alto: 30
+      - x: 356
+        y: 392
+        ancho: 46
+        alto: 39
+      - x: 403
+        y: 392
+        ancho: 25
+        alto: 39
+      - x: 439
+        y: 392
+        ancho: 60
+        alto: 39
+
+  - nombre: esqueleto
+    sprites:
+      - x: 42
+        y: 971
+        ancho: 47
+        alto: 45
+      - x: 100
+        y: 971
+        ancho: 36
+        alto: 46
+      - x: 144
+        y: 971
+        ancho: 36
+        alto: 47
+      - x: 188
+        y: 971
+        ancho: 47
+        alto: 47
+      - x: 242
+        y: 971
+        ancho: 55
+        alto: 46
+      - x: 304
+        y: 971
+        ancho: 37
+        alto: 47
+      - x: 348
+        y: 971
+        ancho: 25
+        alto: 49
+      - x: 433
+        y: 971
+        ancho: 47
+        alto: 48
+      - x: 489
+        y: 971
+        ancho: 35
+        alto: 50
+      - x: 530
+        y: 971
+        ancho: 35
+        alto: 51
+      - x: 571
+        y: 971
+        ancho: 47
+        alto: 52
+      - x: 623
+        y: 971
+        ancho: 56
+        alto: 49
+      - x: 688
+        y: 971
+        ancho: 37
+        alto: 51
+      - x: 736
+        y: 971
+        ancho: 24
+        alto: 53
+      - x: 769
+        y: 971
+        ancho: 39
+        alto: 53
