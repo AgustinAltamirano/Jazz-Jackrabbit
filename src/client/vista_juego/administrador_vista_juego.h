@@ -72,6 +72,14 @@ private:
     bool primera_snapshot_recibida;
     bool fin_juego;
 
+    void actualizar_vista_fondo_escenario(TipoEscenario tipo_escenario);
+
+    void actualizar_vista_camara_y_hud(const std::vector<ClienteDTO>& clientes_recibidos);
+
+    void actualizar_vista_bloques_escenario(const std::vector<BloqueEscenarioDTO>& bloques_recibidos);
+
+    void actualizar_vista_personajes(const std::vector<ClienteDTO>& clientes_recibidos);
+
     void actualizar_vista();
 
     int64_t sincronizar_vista(int64_t ticks_transcurridos);
