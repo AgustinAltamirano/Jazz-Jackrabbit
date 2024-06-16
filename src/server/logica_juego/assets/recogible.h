@@ -4,16 +4,7 @@
 #include <cstdint>
 
 #include "../../../common/constantes.h"
-
-typedef enum {
-    MONEDA_AGARRABLE = 0,
-    GEMA_AGARRABLE,
-    MUNICION_ARMA_1,
-    MUNICION_ARMA_2,
-    MUNICION_ARMA_3,
-    FRUTA_PODRIDA,
-    FRUTA_BUENA,
-} TipoRecogible;
+#include "../../../common/tipo_recogible.h"
 
 class recogible {
 private:
