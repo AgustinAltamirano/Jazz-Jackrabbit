@@ -41,12 +41,17 @@ add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/ser
         src/server/logica_juego/assets/bala_arma_2.h
         src/server/logica_juego/assets/bala_arma_3.cpp
         src/server/logica_juego/assets/bala_arma_3.h
-        src/server/logica_juego/enemigo.cpp
         src/server/logica_juego/enemigo.h
         src/common/validador_de_mapas.cpp
         src/common/validador_de_mapas.h
         src/common/tipo_enemigo.h
         src/common/tipo_recogible.h
+        src/server/logica_juego/lagarto.cpp
+        src/server/logica_juego/lagarto.h
+        src/server/logica_juego/murcielago.cpp
+        src/server/logica_juego/murcielago.h
+        src/server/logica_juego/esqueleto.cpp
+        src/server/logica_juego/esqueleto.h
 )
 
 add_subdirectory(src/client/vista_juego)
