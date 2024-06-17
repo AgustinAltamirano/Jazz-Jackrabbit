@@ -17,7 +17,6 @@ Partida::Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t cod
         nombre_escenario(nombre_escenario),
         codigo_partida(codigo_partida),
         sigo_jugando(true),
-        admite_jugadores(true),
         capacidad_partida(capacidad_partida) {
     mapa_clientes_juego[id_cliente] = personaje;
     cola_snapshots[id_cliente] = cola_enviador;
@@ -38,18 +37,15 @@ void Partida::run() {
     std::cout << "arranca el juego" << std::endl;
     Gameloop gameloop(nombre_escenario, mapa_clientes_juego, cola_comandos, cola_snapshots);
     gameloop.run();
-//    cola_comandos.close();
+    //    cola_comandos.close();
 }
 
 Queue<ComandoDTO*>* Partida::obtener_comandos() { return &cola_comandos; }
 
-void Partida::agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, const int32_t& id_cliente,
-                              const TipoPersonaje& personaje) {
+void Partida::agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
+                              const int32_t& id_cliente, const TipoPersonaje& personaje) {
     mapa_clientes_juego[id_cliente] = personaje;
     cola_snapshots[id_cliente] = cola_enviador;
-    if (cola_snapshots.size() == capacidad_partida) {
-        admite_jugadores = false;
-    }
 }
 
 bool Partida::comparar_codigo_partida(const int32_t& codigo_a_comparar) {

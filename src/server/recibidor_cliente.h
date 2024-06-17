@@ -21,8 +21,6 @@ private:
 
     std::atomic<bool>& sigo_en_partida;
 
-    std::atomic<bool>& sigo_jugando;
-
     ServidorDeserializador servidor_deserializador;
 
     Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador;
@@ -30,8 +28,7 @@ private:
     int32_t id_cliente;
 
 public:
-    RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_partida,
-                     std::atomic<bool>& sigo_jugando, int32_t& id_cliente,
+    RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_partida, int32_t& id_cliente,
                      Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador);
 
     void run() override;

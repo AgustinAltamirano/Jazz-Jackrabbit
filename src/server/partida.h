@@ -24,8 +24,6 @@ private:
 
     bool sigo_jugando;
 
-    bool admite_jugadores;
-
     int8_t capacidad_partida;
 
     bool borrar_cliente_mapa(int32_t& id_cliente);
