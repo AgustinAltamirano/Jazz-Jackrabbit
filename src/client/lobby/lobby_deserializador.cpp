@@ -51,3 +51,11 @@ ComandoValidarDTO* LobbyDeserializador::deserializar_validar_escenario(bool* cer
     ComandoValidarDTO* validar_dto = new ComandoValidarDTO(es_valida);
     return validar_dto;
 }
+
+int32_t LobbyDeserializador::obtener_id_cliente() {
+    int32_t id_cliente;
+    bool cerrado = false;
+    socket->recvall(&id_cliente, sizeof(int), &cerrado);
+    id_cliente = ntohl(id_cliente);
+    return id_cliente;
+}

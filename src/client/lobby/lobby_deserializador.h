@@ -19,12 +19,13 @@ public:
 
     ComandoDTO* obtener_comando(bool* cerrado);
 
+    int32_t obtener_id_cliente();
+
     ComandoCrearDTO* deserializar_crear_partida(bool* cerrado);
 
     ComandoUnirDTO* deserializar_unir_partida(bool* cerrado);
 
     ComandoValidarDTO* deserializar_validar_escenario(bool* cerrado);
-
 };
 
 #endif

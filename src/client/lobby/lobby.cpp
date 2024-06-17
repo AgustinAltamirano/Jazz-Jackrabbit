@@ -16,10 +16,9 @@ Lobby::Lobby(const std::string& hostname, const std::string& servname):
         cola_recibidor(1000000),
         sigo_hablando(true),
         lobby_enviador(&socket, std::ref(sigo_hablando), &cola_enviador),
-        lobby_recibidor(&socket, std::ref(sigo_hablando), &cola_recibidor) {
-    bool cerrado = false;
-    socket.recvall(&id_cliente, sizeof(int), &cerrado);
-    id_cliente = ntohl(id_cliente);
+        lobby_recibidor(&socket, std::ref(sigo_hablando), &cola_recibidor),
+        lobby_deserializador(&socket){
+    id_cliente = lobby_deserializador.obtener_id_cliente();
     lobby_enviador.start();
     lobby_recibidor.start();
 }
