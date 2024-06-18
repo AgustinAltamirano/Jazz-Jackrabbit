@@ -14,11 +14,17 @@
 #include "../../common/estado_personaje.h"
 #include "../../common/queue.h"
 #include "../../common/snapshot_dto.h"
+#include "../../common/tipo_arma.h"
 #include "../../common/tipo_bloque_escenario.h"
+#include "../../common/tipo_enemigo.h"
 #include "../../common/tipo_escenario.h"
 #include "../../common/tipo_personaje.h"
+#include "../../common/tipo_recogible.h"
 #include "../juego/cliente.h"
 
+#include "admin_balas.h"
+#include "admin_enemigos.h"
+#include "admin_recogibles.h"
 #include "bloque_escenario.h"
 #include "camara.h"
 #include "entrada_juego.h"
@@ -66,11 +72,32 @@ private:
     /** Mapa con todos los objetos asociados a bloques del escenario. */
     std::unordered_map<uint32_t, std::unique_ptr<BloqueEscenario>> bloques_escenario;
 
-    /** Mapa con todos los objetos asociados a enemigos. */
-    std::unordered_map<uint32_t, ObjetoAnimado> enemigos;
+    /** Clase que administra la vista de todos los enemigos. */
+    AdminEnemigos enemigos;
+
+    /** Clase que administra la vista de todas las balas */
+    AdminBalas balas;
+
+    /** Clase que administra la vista de todos los objetos recogibles */
+    AdminRecogibles recogibles;
 
     bool primera_snapshot_recibida;
     bool fin_juego;
+
+    void actualizar_vista_fondo_escenario(TipoEscenario tipo_escenario);
+
+    void actualizar_vista_camara_y_hud(const std::vector<ClienteDTO>& clientes_recibidos);
+
+    void actualizar_vista_bloques_escenario(
+            const std::vector<BloqueEscenarioDTO>& bloques_recibidos);
+
+    void actualizar_vista_personajes(const std::vector<ClienteDTO>& clientes_recibidos);
+
+    void actualizar_vista_enemigos(const std::vector<EnemigoDTO>& enemigos_recibidos);
+
+    void actualizar_vista_balas(const std::vector<BalaDTO>& balas_recibidas);
+
+    void actualizar_vista_recogibles(const std::vector<RecogibleDTO>& recogibles_recibidos);
 
     void actualizar_vista();
 

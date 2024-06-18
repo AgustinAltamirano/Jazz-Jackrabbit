@@ -29,7 +29,14 @@ typedef enum {
 class Personaje {
 private:
     static const std::unordered_map<EstadoVisualPersonaje, const std::string>
-            mapa_estados_personaje;
+            MAPA_ESTADOS_PERSONAJE;
+
+    /** Mapa que indica si la animación debe repetirse una vez finalizada */
+    static const std::unordered_map<EstadoVisualPersonaje, bool> MAPA_REPETIR_ANIMACION;
+
+    /** Mapa que indica si el sprite debe centrarse horizontalmente con las dimensiones del
+     * personaje */
+    static const std::unordered_map<EstadoVisualPersonaje, bool> MAPA_CENTRAR_SPRITE;
     const uint32_t id;
     const std::string nombre_personaje;
     EstadoVisualPersonaje estado_actual;
@@ -39,7 +46,8 @@ private:
 
     std::unordered_map<EstadoVisualPersonaje, ObjetoAnimado> animaciones;
 
-    SDL2pp::Rect corregir_desfase_sprite(const SDL2pp::Rect& dimensiones) const;
+    SDL2pp::Rect corregir_desfase_sprite(EstadoVisualPersonaje estado,
+                                         const SDL2pp::Rect& dimensiones) const;
 
 public:
     Personaje(uint32_t id, std::string nombre_personaje, SDL2pp::Renderer& renderer,

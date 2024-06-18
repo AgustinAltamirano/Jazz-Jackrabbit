@@ -6,7 +6,7 @@
 #include "../../common/constantes.h"
 
 const std::unordered_map<EstadoVisualPersonaje, const std::string>
-        Personaje::mapa_estados_personaje{{ESTADO_STAND, "stand"},
+        Personaje::MAPA_ESTADOS_PERSONAJE{{ESTADO_STAND, "stand"},
                                           {ESTADO_CORRER, "correr"},
                                           {ESTADO_DASH, "dash"},
                                           {ESTADO_DISPARAR, "disparar"},
@@ -20,10 +20,47 @@ const std::unordered_map<EstadoVisualPersonaje, const std::string>
                                           {ESTADO_DANIO, "danio"},
                                           {ESTADO_MUERTE, "muerte"}};
 
+const std::unordered_map<EstadoVisualPersonaje, bool> Personaje::MAPA_REPETIR_ANIMACION{
+        {ESTADO_STAND, true},
+        {ESTADO_CORRER, true},
+        {ESTADO_DASH, true},
+        {ESTADO_DISPARAR, true},
+        {ESTADO_SALTAR_ARRIBA, true},
+        {ESTADO_CAER_ABAJO, true},
+        {ESTADO_SALTAR_ADELANTE, false},
+        {ESTADO_CAER_ADELANTE, true},
+        {ESTADO_ATAQUE_ESPECIAL, false},
+        {ESTADO_INTOXICADO_IDLE, true},
+        {ESTADO_INTOXICADO_CAMINAR, true},
+        {ESTADO_DANIO, false},
+        {ESTADO_MUERTE, false}};
 
-SDL2pp::Rect Personaje::corregir_desfase_sprite(const SDL2pp::Rect& dimensiones) const {
+const std::unordered_map<EstadoVisualPersonaje, bool> Personaje::MAPA_CENTRAR_SPRITE{
+        {ESTADO_STAND, false},
+        {ESTADO_CORRER, false},
+        {ESTADO_DASH, false},
+        {ESTADO_DISPARAR, false},
+        {ESTADO_SALTAR_ARRIBA, false},
+        {ESTADO_CAER_ABAJO, false},
+        {ESTADO_SALTAR_ADELANTE, false},
+        {ESTADO_CAER_ADELANTE, false},
+        {ESTADO_ATAQUE_ESPECIAL, false},
+        {ESTADO_INTOXICADO_IDLE, false},
+        {ESTADO_INTOXICADO_CAMINAR, false},
+        {ESTADO_DANIO, true},
+        {ESTADO_MUERTE, true}};
+
+SDL2pp::Rect Personaje::corregir_desfase_sprite(const EstadoVisualPersonaje estado,
+                                                const SDL2pp::Rect& dimensiones) const {
     const SDL2pp::Rect& coords_sprite =
             animaciones.at(estado_actual).obtener_coords_sprite_actual();
+
+    if (MAPA_CENTRAR_SPRITE.at(estado)) {
+        return {dimensiones.GetX() - (coords_sprite.GetW() - ANCHO_INICIAL) / 2,
+                dimensiones.GetY() - (coords_sprite.GetH() - ALTO_INICIAL), dimensiones.GetW(),
+                dimensiones.GetH()};
+    }
+
     if (invertido) {
         return {dimensiones.GetX() - (coords_sprite.GetW() - ANCHO_INICIAL),
                 dimensiones.GetY() - (coords_sprite.GetH() - ALTO_INICIAL), dimensiones.GetW(),
@@ -44,15 +81,16 @@ Personaje::Personaje(const uint32_t id, std::string nombre_personaje, SDL2pp::Re
         angulo(angulo),
         invertido(false),
         iteraciones_por_sprite(iteraciones_por_sprite) {
-    for (const auto& [first, second]: mapa_estados_personaje) {
+    for (const auto& [estado, nombre_estado]: MAPA_ESTADOS_PERSONAJE) {
         const std::vector<SDL2pp::Rect>& coords_animacion =
-                lector_texturas.obtener_coords_personaje(this->nombre_personaje, second);
+                lector_texturas.obtener_coords_personaje(this->nombre_personaje, nombre_estado);
         SDL2pp::Rect dimensiones_iniciales(pos_x, pos_y, coords_animacion.at(0).GetW() * 2,
                                            coords_animacion.at(0).GetH() * 2);
         ObjetoAnimado objeto_animacion(
-                first, renderer, lector_texturas.obtener_textura_personaje(this->nombre_personaje),
-                coords_animacion, camara, dimensiones_iniciales, angulo, iteraciones_por_sprite);
-        animaciones.emplace(first, std::move(objeto_animacion));
+                estado, renderer, lector_texturas.obtener_textura_personaje(this->nombre_personaje),
+                coords_animacion, camara, dimensiones_iniciales, angulo, iteraciones_por_sprite,
+                MAPA_REPETIR_ANIMACION.at(estado));
+        animaciones.emplace(estado, std::move(objeto_animacion));
     }
 }
 Personaje::Personaje(Personaje&& otro) noexcept:
@@ -86,7 +124,7 @@ void Personaje::actualizar_animacion(const EstadoVisualPersonaje estado,
     }
     animaciones.at(estado_actual).actualizar_iteracion(iteraciones_actuales);
 
-    const SDL2pp::Rect dimensiones_corregidas = corregir_desfase_sprite(dimensiones);
+    const SDL2pp::Rect dimensiones_corregidas = corregir_desfase_sprite(estado, dimensiones);
 
     animaciones.at(estado_actual).actualizar_animacion(dimensiones_corregidas, angulo, invertido);
 }
