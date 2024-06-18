@@ -43,6 +43,8 @@ private:
     /** Índice del sprite actual en @code sprite_coords@endcode. */
     uint16_t sprite_actual;
 
+    uint32_t iteraciones_inicio_animacion;
+
     const uint32_t iteraciones_por_sprite;
 
 public:

@@ -18,6 +18,7 @@ ObjetoAnimado::ObjetoAnimado(const uint32_t id, SDL2pp::Renderer& renderer,
         reseteado(true),
         repetir(repetir),
         sprite_actual(0),
+        iteraciones_inicio_animacion(0),
         iteraciones_por_sprite(iteraciones_por_sprite) {}
 
 ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
@@ -32,6 +33,7 @@ ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
         reseteado(otro.reseteado),
         repetir(otro.repetir),
         sprite_actual(otro.sprite_actual),
+        iteraciones_inicio_animacion(otro.iteraciones_inicio_animacion),
         iteraciones_por_sprite(otro.iteraciones_por_sprite) {
     // La otra instancia de ObjetoAnimado se deja con valores válidos
     otro.render_coords = SDL2pp::Rect(0, 0, 0, 0);
@@ -39,29 +41,36 @@ ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
     otro.invertido = false;
     otro.reseteado = true;
     otro.sprite_actual = 0;
+    otro.iteraciones_inicio_animacion = 0;
 }
 
 const SDL2pp::Rect& ObjetoAnimado::obtener_coords_sprite_actual() const {
     return sprite_coords.at(sprite_actual);
 }
 
-void ObjetoAnimado::resetear_animacion() { reseteado = true; }
+void ObjetoAnimado::resetear_animacion() {
+    reseteado = true;
+    sprite_actual = 0;
+}
 
 void ObjetoAnimado::actualizar_iteracion(const uint32_t iteraciones_actuales) {
     if (reseteado) {
-        sprite_actual = 0;
+        iteraciones_inicio_animacion = iteraciones_actuales;
+    }
+
+    if (repetir) {
+        sprite_actual = (iteraciones_actuales / iteraciones_por_sprite) % sprite_coords.size();
         reseteado = false;
         return;
     }
 
-    if (const uint16_t sprite_actual_aux = iteraciones_actuales / iteraciones_por_sprite;
+    if (const uint16_t sprite_actual_aux =
+                (iteraciones_actuales - iteraciones_inicio_animacion) / iteraciones_por_sprite;
         sprite_actual_aux >= sprite_coords.size()) {
-        sprite_actual =
-                repetir ? sprite_actual_aux % sprite_coords.size() : sprite_coords.size() - 1;
+        sprite_actual = sprite_coords.size() - 1;
     } else {
         sprite_actual = sprite_actual_aux;
     }
-
     reseteado = false;
 }
 
