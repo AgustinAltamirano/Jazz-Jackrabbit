@@ -70,8 +70,8 @@ void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
         personajes.at(jugador->id_cliente).actualizar_camara();
 
         // Actualizar HUD en base a los datos del jugador
-        hud.actualizar(jugador->puntos, jugador->vida, jugador->arma_actual,
-                       jugador->balas_restantes);
+        hud.actualizar(jugador->tipo_personaje, jugador->puntos, jugador->vida,
+                       jugador->arma_actual, jugador->balas_restantes);
     }
 }
 
@@ -225,7 +225,7 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         pantalla_carga(renderer),
         lector_texturas(renderer),
         entrada_juego(cliente),
-        hud(renderer, lector_texturas),
+        hud(id_cliente, renderer, lector_texturas),
         cliente(cliente),
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),

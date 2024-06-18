@@ -68,5 +68,9 @@
 #define POS_ARMA_ACTUAL_X 10
 #define POS_ARMA_ACTUAL_Y (ALTO_VENTANA - 30)
 
+// Posición de la esquina superior derecha del id de jugador en el HUD
+#define POS_ID_JUGADOR_X (ANCHO_VENTANA - 10)
+#define POS_ID_JUGADOR_Y 10
+
 
 #endif  // VISTA_JUEGO_DEFS_H
