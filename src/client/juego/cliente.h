@@ -21,7 +21,7 @@ private:
 
     ClienteRecibidor cliente_recibidor;
 
-    ClienteSerializador client_serializador;
+    ClienteProtocolo cliente_protocolo;
 
     Queue<std::vector<char>> cola_enviador;
 

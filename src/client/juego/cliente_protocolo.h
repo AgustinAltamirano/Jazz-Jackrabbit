@@ -7,8 +7,8 @@
 #include <vector>
 
 #include "../../common/tipo_comando.h"
-#include "src/common/snapshot_dto.h"
-#include "src/common/socket.h"
+#include "../../common/snapshot_dto.h"
+#include "../../common/socket.h"
 
 class ClienteProtocolo {
 private:

@@ -10,13 +10,13 @@ Cliente::Cliente(Socket&& socket):
         hablando(true),
         cliente_enviador(&skt_cliente, std::ref(hablando), &cola_enviador),
         cliente_recibidor(&skt_cliente, std::ref(hablando), &cola_recibidor),
-        client_serializador(&skt_cliente) {
+        cliente_protocolo(&skt_cliente) {
     cliente_enviador.start();
     cliente_recibidor.start();
 }
 
 bool Cliente::realizar_accion(const TipoComando& comando) {
-    return cola_enviador.try_push(client_serializador.serializar_comando(comando));
+    return cola_enviador.try_push(cliente_protocolo.serializar_comando(comando));
 }
 
 bool Cliente::obtener_snapshot(std::shared_ptr<SnapshotDTO>& snapshot) {
