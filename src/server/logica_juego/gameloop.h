@@ -23,7 +23,7 @@
 
 class Gameloop: public Thread {
 private:
-    std::atomic<bool> keep_talking;
+    std::atomic<bool>& keep_talking;
     std::atomic<bool> is_alive;
 
     Queue<ComandoDTO*>& cola_entrada;
@@ -48,7 +48,8 @@ public:
     explicit Gameloop(const std::string& archivo_escenario,
                       const std::map<int32_t, TipoPersonaje>& mapa,
                       Queue<ComandoDTO*>& cola_entrada,
-                      std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida);
+                      std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida,
+                      std::atomic<bool>& sigo_jugando);
     void stop() override;
 };
 

@@ -9,6 +9,8 @@
 #include "../../common/socket.h"
 #include "../../common/thread.h"
 
+#include "lobby_protocolo.h"
+
 class LobbyEnviador: public Thread {
 private:
     Socket* socket;
@@ -16,6 +18,8 @@ private:
     Queue<std::vector<char>>* cola_enviador;
 
     std::atomic<bool>& sigo_hablando;
+
+    LobbyProtocolo lobby_protocolo;
 
 public:
     LobbyEnviador(Socket* socket, std::atomic<bool>& sigo_hablando,

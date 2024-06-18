@@ -13,24 +13,30 @@
 #include "gestor_partidas.h"
 #include "recibidor_cliente.h"
 
-class ComunicadorCliente: public Thread {
+class ComunicadorCliente {
 private:
     int32_t id_cliente;
 
     Socket skt_cliente;
 
+    Queue<std::shared_ptr<SnapshotDTO>> cola_cliente;
+
+    GestorPartidas* gestor_partidas;
+
     EnviadorCliente enviador_cliente;
+
+    RecibidorCliente recibidor_cliente;
 
     std::atomic<bool> sigo_en_partida;
 
 public:
     ComunicadorCliente(Socket socket, GestorPartidas* gestor_partidas, int32_t id_cliente);
 
-    void stop() override;
+    void limpiar_cliente();
 
-    void join();
+    void matar_cliente();
 
-    void run() override;
+    bool sigue_en_partida();
 };
 
 #endif

@@ -9,10 +9,9 @@
 #include "../../common/tipo_escenario.h"
 #include "../../common/tipo_personaje.h"
 
-#include "lobby_deserializador.h"
 #include "lobby_enviador.h"
+#include "lobby_protocolo.h"
 #include "lobby_recibidor.h"
-#include "lobby_serializador.h"
 
 class Lobby {
 private:
@@ -26,7 +25,7 @@ private:
 
     LobbyRecibidor lobby_recibidor;
 
-    LobbySerializador lobby_serializador;
+    LobbyProtocolo lobby_protocolo;
 
     Queue<std::vector<char>> cola_enviador;
 
@@ -35,7 +34,8 @@ private:
 public:
     Lobby(const std::string& hostname, const std::string& servname);
 
-    bool crear_partida(const std::string& nombre_escenario, const TipoPersonaje& personaje, const int8_t& capacidad_partida);
+    bool crear_partida(const std::string& nombre_escenario, const TipoPersonaje& personaje,
+                       const int8_t& capacidad_partida);
 
     bool unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje);
 

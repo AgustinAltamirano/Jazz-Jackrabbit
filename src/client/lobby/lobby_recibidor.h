@@ -10,7 +10,7 @@
 #include "../../common/socket.h"
 #include "../../common/thread.h"
 
-#include "lobby_deserializador.h"
+#include "lobby_protocolo.h"
 
 class LobbyRecibidor: public Thread {
 private:
@@ -18,7 +18,7 @@ private:
 
     std::atomic<bool>& sigo_hablando;
 
-    LobbyDeserializador lobby_deserializador;
+    LobbyProtocolo lobby_protocolo;
 
 public:
     LobbyRecibidor(Socket* socket, std::atomic<bool>& sigo_hablando,

@@ -8,8 +8,8 @@
 #include "../../common/snapshot_dto.h"
 
 #include "cliente_enviador.h"
+#include "cliente_protocolo.h"
 #include "cliente_recibidor.h"
-#include "cliente_serializador.h"
 
 class Cliente {
 private:
@@ -21,7 +21,7 @@ private:
 
     ClienteRecibidor cliente_recibidor;
 
-    ClienteSerializador client_serializador;
+    ClienteProtocolo cliente_protocolo;
 
     Queue<std::vector<char>> cola_enviador;
 
