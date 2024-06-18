@@ -111,23 +111,29 @@ public:
 
     void establecer_tipo_escenario(TipoEscenario tipo_escenario);
 
-    TipoEscenario obtener_tipo_escenario();
+    [[nodiscard]] TipoEscenario obtener_tipo_escenario() const;
 
     void agregar_cliente(ClienteDTO cliente);
 
+    std::vector<ClienteDTO>& obtener_clientes();
+
     void agregar_bala(BalaDTO bala);
+
+    std::vector<BalaDTO>& obtener_balas();
 
     void agregar_enemigo(EnemigoDTO enemigo);
 
+    std::vector<EnemigoDTO>& obtener_enemigos();
+
     void agregar_recogible(RecogibleDTO recogible);
 
-    std::vector<ClienteDTO>& obtener_clientes();
+    std::vector<RecogibleDTO>& obtener_recogibles();
 
     void agregar_bloque_escenario(BloqueEscenarioDTO bloque_escenario);
 
     std::vector<BloqueEscenarioDTO>& obtener_bloques_escenario();
 
-    bool es_fin_juego();
+    [[nodiscard]] bool es_fin_juego() const;
 
     void establecer_fin_juego(bool fin_juego);
 };

@@ -19,11 +19,10 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         auto imagen_escenario = ruta_escenarios + escenario["imagen"].as<std::string>();
 
         SDL2pp::Surface surface(imagen_escenario);
-        uint32_t color_key = SDL_MapRGB(surface.Get()->format, COLOR_KEY_ESCENARIOS_RED, COLOR_KEY_ESCENARIOS_GREEN, COLOR_KEY_ESCENARIOS_BLUE);
+        uint32_t color_key = SDL_MapRGB(surface.Get()->format, COLOR_KEY_ESCENARIOS_RED,
+                                        COLOR_KEY_ESCENARIOS_GREEN, COLOR_KEY_ESCENARIOS_BLUE);
         surface.SetColorKey(true, color_key);
-        SDL2pp::Texture textura(
-                renderer,
-                surface);
+        SDL2pp::Texture textura(renderer, surface);
         textura.SetBlendMode(SDL_BLENDMODE_BLEND);
         texturas_escenarios.emplace(nombre_escenario, std::move(textura));
         auto coords = escenario["fondo_coords"][0];
@@ -51,11 +50,10 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         auto imagen_personaje = ruta_personajes + personaje["imagen"].as<std::string>();
 
         SDL2pp::Surface surface(imagen_personaje);
-        uint32_t color_key = SDL_MapRGB(surface.Get()->format, COLOR_KEY_PERSONAJES_RED, COLOR_KEY_PERSONAJES_GREEN, COLOR_KEY_PERSONAJES_BLUE);
+        uint32_t color_key = SDL_MapRGB(surface.Get()->format, COLOR_KEY_PERSONAJES_RED,
+                                        COLOR_KEY_PERSONAJES_GREEN, COLOR_KEY_PERSONAJES_BLUE);
         surface.SetColorKey(true, color_key);
-        SDL2pp::Texture textura(
-                renderer,
-                surface);
+        SDL2pp::Texture textura(renderer, surface);
         textura.SetBlendMode(SDL_BLENDMODE_BLEND);
         std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_personaje;
 
@@ -82,10 +80,10 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
     auto imagen_enemigos = std::string(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS) +
                            enemigos_config["imagen"].as<std::string>();
     SDL2pp::Surface surface_enemigos(imagen_enemigos);
-    uint32_t color_key_enemigos = SDL_MapRGB(surface_enemigos.Get()->format, COLOR_KEY_ENEMIGOS_RED, COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    uint32_t color_key_enemigos = SDL_MapRGB(surface_enemigos.Get()->format, COLOR_KEY_ENEMIGOS_RED,
+                                             COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
     surface_enemigos.SetColorKey(true, color_key_enemigos);
-    textura_enemigos = std::make_unique<SDL2pp::Texture>(
-            renderer, surface_enemigos);
+    textura_enemigos = std::make_unique<SDL2pp::Texture>(renderer, surface_enemigos);
     textura_enemigos->SetBlendMode(SDL_BLENDMODE_BLEND);
 
     for (const auto& enemigo: enemigos_config["enemigos"]) {
@@ -105,10 +103,10 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
     auto imagen_fuente = std::string(ASSETS_PATH RUTA_SPRITES DIR_FUENTE) +
                          fuente_config["imagen"].as<std::string>();
     SDL2pp::Surface surface_fuente(imagen_fuente);
-    uint32_t color_key_fuente = SDL_MapRGB(surface_fuente.Get()->format, COLOR_KEY_ENEMIGOS_RED, COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    uint32_t color_key_fuente = SDL_MapRGB(surface_fuente.Get()->format, COLOR_KEY_ENEMIGOS_RED,
+                                           COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
     surface_fuente.SetColorKey(true, color_key_fuente);
-    textura_fuente = std::make_unique<SDL2pp::Texture>(
-            renderer, surface_fuente);
+    textura_fuente = std::make_unique<SDL2pp::Texture>(renderer, surface_fuente);
     textura_fuente->SetBlendMode(SDL_BLENDMODE_BLEND);
 
     for (const auto& numero_coords: fuente_config["numeros"]) {
@@ -128,10 +126,10 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
     auto imagen_items = std::string(ASSETS_PATH RUTA_SPRITES DIR_ITEMS) +
                         items_config["imagen"].as<std::string>();
     SDL2pp::Surface surface_items(imagen_items);
-    uint32_t color_key_items = SDL_MapRGB(surface_items.Get()->format, COLOR_KEY_ENEMIGOS_RED, COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    uint32_t color_key_items = SDL_MapRGB(surface_items.Get()->format, COLOR_KEY_ENEMIGOS_RED,
+                                          COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
     surface_items.SetColorKey(true, color_key_items);
-    textura_items = std::make_unique<SDL2pp::Texture>(
-            renderer, surface_items);
+    textura_items = std::make_unique<SDL2pp::Texture>(renderer, surface_items);
     textura_items->SetBlendMode(SDL_BLENDMODE_BLEND);
 
     for (const auto& icono_coords: items_config["iconos"]) {
@@ -144,6 +142,24 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         SDL2pp::Rect sprite(arma_coords["x"].as<int>(), arma_coords["y"].as<int>(),
                             arma_coords["ancho"].as<int>(), arma_coords["alto"].as<int>());
         coords_armas.emplace(arma_coords["nombre"].as<std::string>(), sprite);
+    }
+
+    for (const auto& bala_coords: items_config["balas"]) {
+        std::vector<SDL2pp::Rect> sprites_balas;
+        coords_balas.emplace(bala_coords["nombre"].as<std::string>(), std::move(sprites_balas));
+        SDL2pp::Rect sprite(bala_coords["x"].as<int>(), bala_coords["y"].as<int>(),
+                            bala_coords["ancho"].as<int>(), bala_coords["alto"].as<int>());
+        coords_balas.at(bala_coords["nombre"].as<std::string>()).emplace_back(sprite);
+    }
+
+    for (const auto& recogible_coords: items_config["recogibles"]) {
+        std::vector<SDL2pp::Rect> sprites_recogibles;
+        coords_balas.emplace(recogible_coords["nombre"].as<std::string>(),
+                             std::move(sprites_recogibles));
+        SDL2pp::Rect sprite(recogible_coords["x"].as<int>(), recogible_coords["y"].as<int>(),
+                            recogible_coords["ancho"].as<int>(),
+                            recogible_coords["alto"].as<int>());
+        coords_balas.at(recogible_coords["nombre"].as<std::string>()).emplace_back(sprite);
     }
 }
 
@@ -201,6 +217,16 @@ const SDL2pp::Rect& LectorTexturas::obtener_coords_icono(const std::string& nomb
 
 const std::unordered_map<std::string, SDL2pp::Rect>& LectorTexturas::obtener_coords_armas() const {
     return coords_armas;
+}
+
+const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_bala(
+        const std::string& nombre_arma) const {
+    return coords_balas.at(nombre_arma);
+}
+
+const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_recogible(
+        const std::string& nombre_recogible) const {
+    return coords_recogibles.at(nombre_recogible);
 }
 
 

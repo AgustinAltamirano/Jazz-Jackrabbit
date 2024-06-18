@@ -6,7 +6,7 @@ ObjetoAnimado::ObjetoAnimado(const uint32_t id, SDL2pp::Renderer& renderer,
                              SDL2pp::Texture& textura,
                              const std::vector<SDL2pp::Rect>& sprite_coords, Camara& camara,
                              const SDL2pp::Rect& dimensiones_iniciales, const int angulo,
-                             const uint32_t iteraciones_por_sprite):
+                             const uint32_t iteraciones_por_sprite, const bool repetir):
         id(id),
         renderer(renderer),
         textura(textura),
@@ -16,6 +16,7 @@ ObjetoAnimado::ObjetoAnimado(const uint32_t id, SDL2pp::Renderer& renderer,
         render_angulo(angulo),
         invertido(false),
         reseteado(true),
+        repetir(repetir),
         sprite_actual(0),
         iteraciones_por_sprite(iteraciones_por_sprite) {}
 
@@ -29,6 +30,7 @@ ObjetoAnimado::ObjetoAnimado(ObjetoAnimado&& otro) noexcept:
         render_angulo(otro.render_angulo),
         invertido(otro.invertido),
         reseteado(otro.reseteado),
+        repetir(otro.repetir),
         sprite_actual(otro.sprite_actual),
         iteraciones_por_sprite(otro.iteraciones_por_sprite) {
     // La otra instancia de ObjetoAnimado se deja con valores válidos
@@ -46,8 +48,20 @@ const SDL2pp::Rect& ObjetoAnimado::obtener_coords_sprite_actual() const {
 void ObjetoAnimado::resetear_animacion() { reseteado = true; }
 
 void ObjetoAnimado::actualizar_iteracion(const uint32_t iteraciones_actuales) {
-    sprite_actual =
-            !reseteado ? (iteraciones_actuales / iteraciones_por_sprite) % sprite_coords.size() : 0;
+    if (reseteado) {
+        sprite_actual = 0;
+        reseteado = false;
+        return;
+    }
+
+    if (const uint16_t sprite_actual_aux = iteraciones_actuales / iteraciones_por_sprite;
+        sprite_actual_aux >= sprite_coords.size()) {
+        sprite_actual =
+                repetir ? sprite_actual_aux % sprite_coords.size() : sprite_coords.size() - 1;
+    } else {
+        sprite_actual = sprite_actual_aux;
+    }
+
     reseteado = false;
 }
 

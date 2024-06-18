@@ -5,6 +5,8 @@
 
 #include "../../../common/config.h"
 #include "../../../common/constantes.h"
+#include "../../../common/snapshot_dto.h"
+#include "../../../common/tipo_arma.h"
 
 #include "bala.h"
 
@@ -17,6 +19,7 @@ private:
     int32_t dano;
     int32_t tiempo_recarga;  // frames hasta poder volver a disparar
     int32_t rebotes;
+    const TipoArma tipo;
 
 public:
     balaArma1(int32_t id, int32_t pos_x_in, int32_t pos_y_in, bool invertido);
@@ -25,6 +28,7 @@ public:
     int32_t impactar() override;
     [[nodiscard]] int32_t get_id() const override;
     [[nodiscard]] int32_t disparar() override;
+    [[nodiscard]] BalaDTO crear_dto() override;
 };
 
 #endif  // BALA_ARMA_1_H

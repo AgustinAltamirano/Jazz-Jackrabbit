@@ -17,6 +17,26 @@ escenarios:
         y: 32
         ancho: 32
         alto: 32
+      - nombre: diagonal
+        x: 128
+        y: 192
+        ancho: 32
+        alto: 32
+      - nombre: diagonal_invertido
+        x: 32
+        y: 192
+        ancho: 32
+        alto: 32
+      - nombre: soporte_diagonal
+        x: 128
+        y: 224
+        ancho: 32
+        alto: 32
+      - nombre: soporte_diagonal_invertido
+        x: 32
+        y: 224
+        ancho: 32
+        alto: 32
 
   - nombre: castle
     imagen: castle.png
@@ -34,5 +54,25 @@ escenarios:
       - nombre: pared
         x: 160
         y: 160
+        ancho: 32
+        alto: 32
+      - nombre: diagonal
+        x: 64
+        y: 192
+        ancho: 32
+        alto: 32
+      - nombre: diagonal_invertido
+        x: 96
+        y: 192
+        ancho: 32
+        alto: 32
+      - nombre: soporte_diagonal
+        x: 64
+        y: 32
+        ancho: 32
+        alto: 32
+      - nombre: soporte_diagonal_invertido
+        x: 224
+        y: 32
         ancho: 32
         alto: 32

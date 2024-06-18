@@ -17,6 +17,10 @@ const std::unordered_map<TipoBloqueEscenario, std::string>
         AdministradorVistaJuego::MAPA_TIPO_BLOQUE{
                 {PARED, "pared"},
                 {PISO, "piso"},
+                {DIAGONAL, "diagonal"},
+                {DIAGONAL_INVERTIDO, "diagonal_invertido"},
+                {SOPORTE_DIAGONAL, "soporte_diagonal"},
+                {SOPORTE_DIAGONAL_INVERTIDO, "soporte_diagonal_invertido"},
         };
 
 const std::unordered_map<TipoPersonaje, std::string> AdministradorVistaJuego::MAPA_TIPO_PERSONAJE{
@@ -39,31 +43,19 @@ const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
                                                         {IMPACTADO, ESTADO_DANIO},
                                                         {MUERTE, ESTADO_MUERTE}};
 
-void AdministradorVistaJuego::actualizar_vista() {
-    std::shared_ptr<SnapshotDTO> snapshot;
-    if (!cliente.obtener_snapshot(snapshot)) {
-        return;
-    }
-
-    primera_snapshot_recibida = true;
-
-    if (snapshot->es_fin_juego()) {
-        fin_juego = true;
-        return;
-    }
-
+void AdministradorVistaJuego::actualizar_vista_fondo_escenario(TipoEscenario tipo_escenario) {
     if (!fondo_escenario) {
-        tipo_escenario = snapshot->obtener_tipo_escenario();
+        this->tipo_escenario = tipo_escenario;
         SDL2pp::Texture& textura_fondo = lector_texturas.obtener_textura_fondo_escenario(
                 MAPA_TIPO_ESCENARIO.at(tipo_escenario));
         const SDL2pp::Rect& coords_fondo = lector_texturas.obtener_coords_fondo_escenario(
                 MAPA_TIPO_ESCENARIO.at(tipo_escenario));
         fondo_escenario.emplace(ANCHO_VENTANA, ALTO_VENTANA, renderer, textura_fondo, coords_fondo);
     }
+}
 
-    const std::vector<ClienteDTO> clientes_recibidos = snapshot->obtener_clientes();
-
-    // Actualizar posición de la cámara
+void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
+        const std::vector<ClienteDTO>& clientes_recibidos) {
     if (const auto jugador = std::find_if(
                 clientes_recibidos.begin(), clientes_recibidos.end(),
                 [this](const auto& cliente) { return cliente.id_cliente == this->id_jugador; });
@@ -81,10 +73,11 @@ void AdministradorVistaJuego::actualizar_vista() {
         hud.actualizar(jugador->puntos, jugador->vida, jugador->arma_actual,
                        jugador->balas_restantes);
     }
+}
 
-    if (const std::vector<BloqueEscenarioDTO> bloques_recibidos =
-                snapshot->obtener_bloques_escenario();
-        !bloques_recibidos.empty()) {
+void AdministradorVistaJuego::actualizar_vista_bloques_escenario(
+        const std::vector<BloqueEscenarioDTO>& bloques_recibidos) {
+    if (!bloques_recibidos.empty()) {
         for (auto bloque: bloques_recibidos) {
             SDL2pp::Texture& textura_bloque =
                     lector_texturas.obtener_textura_bloque(MAPA_TIPO_ESCENARIO.at(tipo_escenario));
@@ -104,7 +97,10 @@ void AdministradorVistaJuego::actualizar_vista() {
     for (auto& [fst, snd]: bloques_escenario) {
         snd->actualizar_vista();
     }
+}
 
+void AdministradorVistaJuego::actualizar_vista_personajes(
+        const std::vector<ClienteDTO>& clientes_recibidos) {
     std::unordered_set<uint32_t> ids_clientes_recibidos;
     for (auto c: clientes_recibidos) {
         ids_clientes_recibidos.insert(c.id_cliente);
@@ -133,6 +129,72 @@ void AdministradorVistaJuego::actualizar_vista() {
     }
 }
 
+void AdministradorVistaJuego::actualizar_vista_enemigos(
+        const std::vector<EnemigoDTO>& enemigos_recibidos) {
+    for (const auto& enemigo: enemigos_recibidos) {
+        if (!enemigos.existe_enemigo(enemigo.id)) {
+            enemigos.agregar_enemigo(enemigo.id, enemigo.tipo, {enemigo.pos_x, enemigo.pos_y, 1, 1},
+                                     enemigo.invertido);
+        }
+        enemigos.actualizar_animacion(enemigo.id, iteraciones_actuales,
+                                      {enemigo.pos_x, enemigo.pos_y, enemigo.ancho, enemigo.alto},
+                                      enemigo.invertido);
+    }
+}
+
+void AdministradorVistaJuego::actualizar_vista_balas(const std::vector<BalaDTO>& balas_recibidas) {
+    balas.eliminar_balas();
+    for (const auto& bala: balas_recibidas) {
+        balas.agregar_bala(bala.tipo, bala.pos_x, bala.pos_y);
+    }
+}
+
+void AdministradorVistaJuego::actualizar_vista_recogibles(
+        const std::vector<RecogibleDTO>& recogibles_recibidos) {
+    recogibles.eliminar_recogibles();
+    for (const auto& recogible: recogibles_recibidos) {
+        recogibles.agregar_recogible(recogible.tipo, {recogible.pos_x, recogible.pos_y,
+                                                      recogible.ancho, recogible.alto});
+    }
+}
+
+void AdministradorVistaJuego::actualizar_vista() {
+    std::shared_ptr<SnapshotDTO> snapshot;
+    if (!cliente.obtener_snapshot(snapshot)) {
+        return;
+    }
+
+    bool quedan_snapshots = true;
+
+    // Se procesan todas las snapshots restantes, a menos que sea la primera snapshot recibida o
+    // se haya llegado al fin del juego
+    while (!primera_snapshot_recibida && quedan_snapshots) {
+        if (!cliente.obtener_snapshot(snapshot)) {
+            quedan_snapshots = false;
+            continue;
+        }
+        if (snapshot->es_fin_juego()) {
+            break;
+        }
+    }
+
+    primera_snapshot_recibida = true;
+
+    if (snapshot->es_fin_juego()) {
+        fin_juego = true;
+        return;
+    }
+
+    const std::vector<ClienteDTO> clientes_recibidos = snapshot->obtener_clientes();
+
+    actualizar_vista_fondo_escenario(snapshot->obtener_tipo_escenario());
+    actualizar_vista_camara_y_hud(clientes_recibidos);
+    actualizar_vista_bloques_escenario(snapshot->obtener_bloques_escenario());
+    actualizar_vista_enemigos(snapshot->obtener_enemigos());
+    actualizar_vista_balas(snapshot->obtener_balas());
+    actualizar_vista_recogibles(snapshot->obtener_recogibles());
+}
+
 int64_t AdministradorVistaJuego::sincronizar_vista(const int64_t ticks_transcurridos) {
     int64_t ajuste_tiempo_anterior = 0;
     int64_t tiempo_rest = MILISEGUNDOS_POR_FRAME - ticks_transcurridos;
@@ -141,13 +203,6 @@ int64_t AdministradorVistaJuego::sincronizar_vista(const int64_t ticks_transcurr
         tiempo_rest = MILISEGUNDOS_POR_FRAME - tiempo_atrasado % MILISEGUNDOS_POR_FRAME;
         ajuste_tiempo_anterior += tiempo_rest + tiempo_atrasado;
         iteraciones_actuales += ajuste_tiempo_anterior / MILISEGUNDOS_POR_FRAME;
-
-        // Debemos droppear frames de animación, algunas snapshots se pierden
-        for (int i = 0; i < tiempo_atrasado / MILISEGUNDOS_POR_FRAME; i++) {
-            if (std::shared_ptr<SnapshotDTO> snapshot; !cliente.obtener_snapshot(snapshot)) {
-                break;
-            }
-        }
     }
     const auto tiempo_rest_final = static_cast<uint32_t>(tiempo_rest);
     SDL_Delay(tiempo_rest_final);
@@ -173,6 +228,9 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         cliente(cliente),
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
+        enemigos(renderer, lector_texturas, camara),
+        balas(renderer, lector_texturas, camara),
+        recogibles(renderer, lector_texturas, camara),
         primera_snapshot_recibida(false),
         fin_juego(false) {
     lector_texturas.cargar_texturas_y_coordenadas();
@@ -189,6 +247,10 @@ void AdministradorVistaJuego::run() {
         for (auto& [fst, snd]: bloques_escenario) {
             snd->dibujar();
         }
+        recogibles.dibujar_recogibles();
+        balas.dibujar_balas();
+        enemigos.dibujar_enemigos();
+
         for (auto& [fst, snd]: personajes) {
             snd.dibujar();
         }
