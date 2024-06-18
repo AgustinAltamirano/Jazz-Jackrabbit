@@ -124,56 +124,6 @@ personajes:
             ancho: 44
             alto: 43
 
-      - nombre: parar_disparar
-        sprites:
-          - x: 98
-            y: 558
-            ancho: 39
-            alto: 55
-          - x: 144
-            y: 558
-            ancho: 35
-            alto: 55
-          - x: 183
-            y: 558
-            ancho: 37
-            alto: 55
-          - x: 223
-            y: 558
-            ancho: 38
-            alto: 55
-
-      - nombre: cargar_uppercut
-        sprites:
-          - x: 2
-            y: 720
-            ancho: 55
-            alto: 46
-          - x: 59
-            y: 720
-            ancho: 51
-            alto: 46
-          - x: 114
-            y: 720
-            ancho: 42
-            alto: 48
-          - x: 161
-            y: 720
-            ancho: 38
-            alto: 50
-          - x: 204
-            y: 720
-            ancho: 33
-            alto: 52
-          - x: 240
-            y: 720
-            ancho: 29
-            alto: 52
-          - x: 272
-            y: 720
-            ancho: 24
-            alto: 51
-
       - nombre: ataque_especial
         sprites:
           - x: 303
@@ -188,17 +138,6 @@ personajes:
             y: 717
             ancho: 23
             alto: 55
-
-      - nombre: parar_uppercut
-        sprites:
-          - x: 388
-            y: 721
-            ancho: 39
-            alto: 51
-          - x: 430
-            y: 71
-            ancho: 50
-            alto: 51
 
       - nombre: correr
         sprites:
@@ -254,21 +193,6 @@ personajes:
             ancho: 63
             alto: 40
 
-      - nombre: cargar_saltar_arriba
-        sprites:
-          - x: 7
-            y: 1123
-            ancho: 38
-            alto: 49
-          - x: 50
-            y: 1128
-            ancho: 47
-            alto: 47
-          - x: 102
-            y: 1130
-            ancho: 47
-            alto: 47
-
       - nombre: saltar_arriba
         sprites:
           - x: 154
@@ -283,21 +207,6 @@ personajes:
             y: 1130
             ancho: 37
             alto: 49
-
-      - nombre: parar_saltar_arriba
-        sprites:
-          - x: 283
-            y: 1129
-            ancho: 45
-            alto: 47
-          - x: 333
-            y: 1129
-            ancho: 51
-            alto: 47
-          - x: 388
-            y: 1129
-            ancho: 54
-            alto: 47
 
       - nombre: caer_abajo
         sprites:
@@ -1037,4 +946,507 @@ personajes:
             y: 3091
             ancho: 44
             alto: 81
+
+  - nombre: lori
+    imagen: lori_jackrabbit.png
+    animaciones:
+      - nombre: stand
+        sprites:
+          - x: 3
+            y: 11
+            ancho: 38
+            alto: 54
+          - x: 47
+            y: 11
+            ancho: 38
+            alto: 54
+          - x: 93
+            y: 11
+            ancho: 38
+            alto: 54
+          - x: 137
+            y: 11
+            ancho: 38
+            alto: 54
+          - x: 180
+            y: 11
+            ancho: 38
+            alto: 54
+          - x: 224
+            y: 11
+            ancho: 38
+            alto: 54
+          - x: 267
+            y: 11
+            ancho: 38
+            alto: 54
+          - x: 310
+            y: 11
+            ancho: 38
+            alto: 54
+
+      - nombre: disparar
+        sprites:
+          - x: 7
+            y: 350
+            ancho: 37
+            alto: 47
+          - x: 54
+            y: 350
+            ancho: 35
+            alto: 47
+
+      - nombre: ataque_especial
+        sprites:
+          - x: 6
+            y: 502
+            ancho: 41
+            alto: 38
+          - x: 55
+            y: 513
+            ancho: 37
+            alto: 27
+          - x: 103
+            y: 492
+            ancho: 36
+            alto: 51
+          - x: 148
+            y: 487
+            ancho: 38
+            alto: 49
+          - x: 194
+            y: 488
+            ancho: 39
+            alto: 47
+          - x: 245
+            y: 487
+            ancho: 39
+            alto: 55
+          - x: 300
+            y: 497
+            ancho: 43
+            alto: 46
+          - x: 358
+            y: 495
+            ancho: 56
+            alto: 48
+          - x: 422
+            y: 489
+            ancho: 59
+            alto: 51
+          - x: 494
+            y: 495
+            ancho: 56
+            alto: 43
+
+      - nombre: correr
+        sprites:
+          - x: 5
+            y: 630
+            ancho: 45
+            alto: 37
+          - x: 56
+            y: 630
+            ancho: 50
+            alto: 37
+          - x: 115
+            y: 630
+            ancho: 45
+            alto: 37
+          - x: 169
+            y: 630
+            ancho: 44
+            alto: 37
+          - x: 223
+            y: 630
+            ancho: 45
+            alto: 37
+          - x: 275
+            y: 630
+            ancho: 50
+            alto: 37
+          - x: 333
+            y: 630
+            ancho: 45
+            alto: 37
+          - x: 388
+            y: 630
+            ancho: 45
+            alto: 37
+
+      - nombre: dash
+        sprites:
+          - x: 3
+            y: 764
+            ancho: 58
+            alto: 39
+          - x: 69
+            y: 764
+            ancho: 59
+            alto: 39
+          - x: 132
+            y: 764
+            ancho: 60
+            alto: 39
+          - x: 197
+            y: 764
+            ancho: 60
+            alto: 39
+          - x: 265
+            y: 764
+            ancho: 58
+            alto: 39
+          - x: 331
+            y: 764
+            ancho: 59
+            alto: 39
+          - x: 395
+            y: 764
+            ancho: 60
+            alto: 39
+          - x: 459
+            y: 764
+            ancho: 61
+            alto: 39
+
+      - nombre: saltar_arriba
+        sprites:
+          - x: 122
+            y: 898
+            ancho: 36
+            alto: 48
+          - x: 163
+            y: 898
+            ancho: 39
+            alto: 48
+          - x: 206
+            y: 898
+            ancho: 41
+            alto: 48
+
+      - nombre: caer_abajo
+        sprites:
+          - x: 385
+            y: 890
+            ancho: 30
+            alto: 52
+          - x: 421
+            y: 890
+            ancho: 30
+            alto: 52
+          - x: 458
+            y: 890
+            ancho: 30
+            alto: 52
+
+      - nombre: saltar_adelante
+        sprites:
+          - x: 10
+            y: 978
+            ancho: 36
+            alto: 54
+          - x: 58
+            y: 978
+            ancho: 35
+            alto: 54
+          - x: 102
+            y: 978
+            ancho: 38
+            alto: 54
+          - x: 147
+            y: 978
+            ancho: 40
+            alto: 54
+          - x: 193
+            y: 978
+            ancho: 43
+            alto: 54
+          - x: 240
+            y: 978
+            ancho: 45
+            alto: 54
+          - x: 290
+            y: 978
+            ancho: 47
+            alto: 54
+          - x: 342
+            y: 978
+            ancho: 49
+            alto: 54
+          - x: 394
+            y: 978
+            ancho: 49
+            alto: 54
+
+      - nombre: caer_adelante
+        sprites:
+          - x: 446
+            y: 966
+            ancho: 36
+            alto: 52
+          - x: 488
+            y: 966
+            ancho: 34
+            alto: 52
+          - x: 528
+            y: 966
+            ancho: 34
+            alto: 52
+          - x: 568
+            y: 966
+            ancho: 34
+            alto: 52
+
+      - nombre: intoxicado_idle
+        sprites:
+          - x: 6
+            y: 1902
+            ancho: 47
+            alto: 48
+          - x: 65
+            y: 1902
+            ancho: 48
+            alto: 48
+          - x: 124
+            y: 1902
+            ancho: 49
+            alto: 48
+          - x: 185
+            y: 1902
+            ancho: 50
+            alto: 48
+          - x: 249
+            y: 1902
+            ancho: 50
+            alto: 48
+          - x: 316
+            y: 1902
+            ancho: 50
+            alto: 48
+          - x: 366
+            y: 1902
+            ancho: 49
+            alto: 48
+          - x: 419
+            y: 1902
+            ancho: 48
+            alto: 48
+          - x: 470
+            y: 1902
+            ancho: 46
+            alto: 48
+          - x: 523
+            y: 1902
+            ancho: 47
+            alto: 47
+          - x: 579
+            y: 1902
+            ancho: 47
+            alto: 47
+          - x: 634
+            y: 1902
+            ancho: 46
+            alto: 47
+
+      - nombre: intoxicado_caminar
+        sprites:
+          - x: 4
+            y: 1968
+            ancho: 44
+            alto: 49
+          - x: 56
+            y: 1968
+            ancho: 45
+            alto: 49
+          - x: 110
+            y: 1968
+            ancho: 44
+            alto: 49
+          - x: 164
+            y: 1968
+            ancho: 44
+            alto: 49
+          - x: 217
+            y: 1968
+            ancho: 44
+            alto: 49
+          - x: 271
+            y: 1968
+            ancho: 44
+            alto: 49
+          - x: 323
+            y: 1968
+            ancho: 43
+            alto: 49
+          - x: 375
+            y: 1968
+            ancho: 42
+            alto: 49
+          - x: 426
+            y: 1968
+            ancho: 41
+            alto: 49
+          - x: 477
+            y: 1968
+            ancho: 42
+            alto: 49
+          - x: 527
+            y: 1968
+            ancho: 43
+            alto: 49
+          - x: 580
+            y: 1968
+            ancho: 47
+            alto: 49
+
+      - nombre: danio
+        sprites:
+          - x: 4
+            y: 2659
+            ancho: 45
+            alto: 54
+          - x: 55
+            y: 2659
+            ancho: 40
+            alto: 54
+          - x: 102
+            y: 2659
+            ancho: 30
+            alto: 54
+          - x: 141
+            y: 2659
+            ancho: 39
+            alto: 54
+          - x: 186
+            y: 2659
+            ancho: 47
+            alto: 54
+          - x: 240
+            y: 2659
+            ancho: 54
+            alto: 54
+          - x: 300
+            y: 2659
+            ancho: 48
+            alto: 51
+          - x: 355
+            y: 2659
+            ancho: 48
+            alto: 51
+          - x: 409
+            y: 2659
+            ancho: 40
+            alto: 51
+          - x: 456
+            y: 2659
+            ancho: 38
+            alto: 51
+          - x: 456
+            y: 2659
+            ancho: 38
+            alto: 51
+          - x: 503
+            y: 2659
+            ancho: 35
+            alto: 51
+
+      - nombre: muerte
+        sprites:
+          - x: 7
+            y: 2781
+            ancho: 38
+            alto: 52
+          - x: 63
+            y: 2763
+            ancho: 31
+            alto: 41
+          - x: 105
+            y: 2756
+            ancho: 59
+            alto: 43
+          - x: 177
+            y: 2740
+            ancho: 122
+            alto: 71
+          - x: 310
+            y: 2732
+            ancho: 179
+            alto: 86
+          - x: 497
+            y: 2731
+            ancho: 190
+            alto: 87
+          - x: 697
+            y: 2731
+            ancho: 193
+            alto: 87
+          - x: 4
+            y: 2832
+            ancho: 63
+            alto: 56
+          - x: 76
+            y: 2832
+            ancho: 60
+            alto: 56
+          - x: 149
+            y: 2832
+            ancho: 60
+            alto: 56
+          - x: 225
+            y: 2832
+            ancho: 63
+            alto: 56
+          - x: 307
+            y: 2832
+            ancho: 36
+            alto: 56
+          - x: 360
+            y: 2832
+            ancho: 36
+            alto: 56
+          - x: 406
+            y: 2832
+            ancho: 38
+            alto: 56
+          - x: 453
+            y: 2832
+            ancho: 28
+            alto: 56
+          - x: 490
+            y: 2832
+            ancho: 42
+            alto: 56
+          - x: 537
+            y: 2832
+            ancho: 38
+            alto: 56
+          - x: 585
+            y: 2832
+            ancho: 39
+            alto: 56
+          - x: 633
+            y: 2832
+            ancho: 28
+            alto: 56
+          - x: 668
+            y: 2832
+            ancho: 34
+            alto: 56
+          - x: 708
+            y: 2832
+            ancho: 37
+            alto: 56
+          - x: 754
+            y: 2832
+            ancho: 40
+            alto: 56
+          - x: 800
+            y: 2832
+            ancho: 41
+            alto: 56
+          - x: 849
+            y: 2832
+            ancho: 42
+            alto: 56
+
 
