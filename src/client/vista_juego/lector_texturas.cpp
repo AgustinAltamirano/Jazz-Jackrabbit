@@ -60,6 +60,12 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         texturas_personajes.emplace(nombre_personaje, std::move(textura));
         coords_personajes.emplace(nombre_personaje, std::move(coords_personaje));
 
+        // Icono del HUD del personaje
+        auto icono_coords = personaje["icono"];
+        SDL2pp::Rect coords_icono(icono_coords["x"].as<int>(), icono_coords["y"].as<int>(),
+                                  icono_coords["ancho"].as<int>(), icono_coords["alto"].as<int>());
+        coords_iconos.emplace(nombre_personaje, coords_icono);
+
         for (const auto& animacion: personaje["animaciones"]) {
             auto nombre_animacion = animacion["nombre"].as<std::string>();
             std::vector<SDL2pp::Rect> sprites;
@@ -119,6 +125,12 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         SDL2pp::Rect sprite(simbolo_coords["x"].as<int>(), simbolo_coords["y"].as<int>(),
                             simbolo_coords["ancho"].as<int>(), simbolo_coords["alto"].as<int>());
         coords_simbolos.emplace(simbolo_coords["nombre"].as<std::string>(), sprite);
+    }
+
+    for (const auto& letra_coords: fuente_config["letras"]) {
+        SDL2pp::Rect sprite(letra_coords["x"].as<int>(), letra_coords["y"].as<int>(),
+                            letra_coords["ancho"].as<int>(), letra_coords["alto"].as<int>());
+        coords_letras.emplace(letra_coords["nombre"].as<char>(), sprite);
     }
 
     // Lectura de íconos/ítems
@@ -208,6 +220,9 @@ const SDL2pp::Rect& LectorTexturas::obtener_coords_simbolo(
     return coords_simbolos.at(nombre_simbolo);
 }
 
+const SDL2pp::Rect& LectorTexturas::obtener_coords_letra(char letra) const {
+    return coords_letras.at(letra);
+}
 
 SDL2pp::Texture& LectorTexturas::obtener_textura_items() const { return *textura_items; }
 

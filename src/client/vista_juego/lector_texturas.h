@@ -39,6 +39,8 @@ private:
 
     std::unordered_map<std::string, SDL2pp::Rect> coords_simbolos;
 
+    std::unordered_map<char, SDL2pp::Rect> coords_letras;
+
     std::unique_ptr<SDL2pp::Texture> textura_items;
 
     std::unordered_map<std::string, SDL2pp::Rect> coords_iconos;
@@ -97,6 +99,8 @@ public:
     const std::vector<SDL2pp::Rect>& obtener_coords_numeros() const;
 
     const SDL2pp::Rect& obtener_coords_simbolo(const std::string& nombre_simbolo) const;
+
+    const SDL2pp::Rect& obtener_coords_letra(char letra) const;
 
     SDL2pp::Texture& obtener_textura_items() const;
 

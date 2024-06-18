@@ -168,7 +168,7 @@ void AdministradorVistaJuego::actualizar_vista() {
 
     // Se procesan todas las snapshots restantes, a menos que sea la primera snapshot recibida o
     // se haya llegado al fin del juego
-    while (!primera_snapshot_recibida && quedan_snapshots) {
+    while (primera_snapshot_recibida && quedan_snapshots) {
         if (!cliente.obtener_snapshot(snapshot)) {
             quedan_snapshots = false;
             continue;
@@ -190,6 +190,7 @@ void AdministradorVistaJuego::actualizar_vista() {
     actualizar_vista_fondo_escenario(snapshot->obtener_tipo_escenario());
     actualizar_vista_camara_y_hud(clientes_recibidos);
     actualizar_vista_bloques_escenario(snapshot->obtener_bloques_escenario());
+    actualizar_vista_personajes(clientes_recibidos);
     actualizar_vista_enemigos(snapshot->obtener_enemigos());
     actualizar_vista_balas(snapshot->obtener_balas());
     actualizar_vista_recogibles(snapshot->obtener_recogibles());
