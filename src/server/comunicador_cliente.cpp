@@ -17,14 +17,18 @@ ComunicadorCliente::ComunicadorCliente(Socket socket, GestorPartidas* gestor_par
     recibidor_cliente.inicio_recibidor_cliente();
 }
 
-void ComunicadorCliente::matar_cliente() {
+void ComunicadorCliente::limpiar_cliente() {
     sigo_en_partida = false;
     enviador_cliente.cerrar_cola();
     enviador_cliente.join();
-    skt_cliente.shutdown(SHUT_RDWR);
     skt_cliente.close();
     recibidor_cliente.join();
     gestor_partidas->borrar_cliente(id_cliente);
+}
+
+void ComunicadorCliente::matar_cliente() {
+    skt_cliente.shutdown(SHUT_RDWR);
+    limpiar_cliente();
 }
 
 bool ComunicadorCliente::sigue_en_partida() {

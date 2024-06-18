@@ -13,9 +13,7 @@ void Aceptador::run() {
         while (sigo_jugando) {
             Socket skt_aceptado = skt_servidor->accept();
             std::cout << "Nuevo jugador" << std::endl;
-            ComunicadorCliente* nuevo_cliente = new ComunicadorCliente(
-                    std::move(skt_aceptado), &gestor_partidas, int32_t(clientes.size()));
-            clientes.push_back(nuevo_cliente);
+            clientes.emplace_back(std::move(skt_aceptado), &gestor_partidas, int32_t(clientes.size()));
             limpiar_clientes();
         }
     } catch (const std::exception& err) {
@@ -29,10 +27,9 @@ void Aceptador::run() {
 }
 
 void Aceptador::limpiar_clientes() {
-    clientes.remove_if([](ComunicadorCliente* cliente) {
-        if (!cliente->sigue_en_partida()) {
-            cliente->matar_cliente();
-            delete cliente;
+    clientes.remove_if([](ComunicadorCliente& cliente) {
+        if (!cliente.sigue_en_partida()) {
+            cliente.limpiar_cliente();
             return true;
         }
         return false;
@@ -40,9 +37,8 @@ void Aceptador::limpiar_clientes() {
 }
 
 void Aceptador::eliminar_todos_clientes() {
-    for (ComunicadorCliente* cliente: clientes) {
-        cliente->matar_cliente();
-        delete cliente;
+    for (ComunicadorCliente& cliente: clientes) {
+        cliente.matar_cliente();
     }
     clientes.clear();
 }

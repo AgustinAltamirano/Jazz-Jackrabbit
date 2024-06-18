@@ -32,6 +32,8 @@ private:
 public:
     ComunicadorCliente(Socket socket, GestorPartidas* gestor_partidas, int32_t id_cliente);
 
+    void limpiar_cliente();
+
     void matar_cliente();
 
     bool sigue_en_partida();
