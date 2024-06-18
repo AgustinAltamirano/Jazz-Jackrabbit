@@ -37,6 +37,6 @@ int32_t balaInfinita::disparar() {
 }
 
 BalaDTO balaInfinita::crear_dto() {
-    const BalaDTO bala(pos_x, pos_y, tipo);
+    const BalaDTO bala(pos_x, pos_y, tipo, choco);
     return bala;
 }

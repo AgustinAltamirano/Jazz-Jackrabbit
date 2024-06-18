@@ -18,10 +18,11 @@ private:
 
 public:
     recogible(int32_t x, int32_t y, int32_t ancho, int32_t alto, TipoRecogible tipo);
-    [[nodiscard]] int32_t chequear_colision(int32_t pos_x, int32_t pos_y, int32_t ancho,
-                                            int32_t alto) const;
+    [[nodiscard]] bool chequear_colision(int32_t pos_x, int32_t pos_y, int32_t ancho,
+                                         int32_t alto) const;
     [[nodiscard]] TipoRecogible get_objeto() const;
     [[nodiscard]] RecogibleDTO crear_dto() const;
+    [[nodiscard]] int32_t get_valor() const;
 };
 
 
