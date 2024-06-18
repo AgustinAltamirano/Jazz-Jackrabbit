@@ -3,6 +3,8 @@
 max_jugadores_por_partida: 4
 max_partidas: 5
 
+segundos_duracion_partida: 60
+
 vida_inicial: 5
 
 aceleracion_gravedad: 1

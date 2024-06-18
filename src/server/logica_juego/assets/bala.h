@@ -4,6 +4,9 @@
 #include <cstdint>
 #include <vector>
 
+#include "../../../common/snapshot_dto.h"
+#include "../../../common/tipo_arma.h"
+
 class bala {
 public:
     virtual ~bala() = default;
@@ -13,6 +16,7 @@ public:
     virtual int32_t impactar() = 0;
     [[nodiscard]] virtual int32_t get_id() const = 0;
     [[nodiscard]] virtual int32_t disparar() = 0;
+    [[nodiscard]] virtual BalaDTO crear_dto() = 0;
 };
 
 #endif  // BALA_H

@@ -22,7 +22,6 @@ add_library(logica_juego
         assets/recogible.h
         assets/spawnpoint.h
         enemigo.h
-        enemigo.cpp
         ../../common/config.h
         ../../common/config.cpp
         ../../common/constantes.h

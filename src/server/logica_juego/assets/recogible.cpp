@@ -35,3 +35,8 @@ int32_t recogible::chequear_colision(const int32_t pos_x, const int32_t pos_y, c
 }
 
 TipoRecogible recogible::get_objeto() const { return tipo; }
+
+RecogibleDTO recogible::crear_dto() const {
+    RecogibleDTO objeto(pos_x, pos_y, alto, ancho, tipo);
+    return objeto;
+}
