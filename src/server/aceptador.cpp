@@ -16,7 +16,7 @@ void Aceptador::run() {
             ComunicadorCliente* nuevo_cliente = new ComunicadorCliente(
                     std::move(skt_aceptado), &gestor_partidas, int32_t(clientes.size()));
             clientes.push_back(nuevo_cliente);
-//            limpiar_clientes();
+            limpiar_clientes();
         }
     } catch (const std::exception& err) {
         if (sigo_jugando) {
@@ -29,10 +29,10 @@ void Aceptador::run() {
 }
 
 void Aceptador::limpiar_clientes() {
-    clientes.remove_if([](ComunicadorCliente* c) {
-        if (!c->is_alive()) {
-            c->join();
-            delete c;
+    clientes.remove_if([](ComunicadorCliente* cliente) {
+        if (!cliente->sigue_en_partida()) {
+            cliente->matar_cliente();
+            delete cliente;
             return true;
         }
         return false;
@@ -41,8 +41,7 @@ void Aceptador::limpiar_clientes() {
 
 void Aceptador::eliminar_todos_clientes() {
     for (ComunicadorCliente* cliente: clientes) {
-        cliente->stop();
-        cliente->join();
+        cliente->matar_cliente();
         delete cliente;
     }
     clientes.clear();
