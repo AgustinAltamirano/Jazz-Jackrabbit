@@ -17,6 +17,10 @@ const std::unordered_map<TipoBloqueEscenario, std::string>
         AdministradorVistaJuego::MAPA_TIPO_BLOQUE{
                 {PARED, "pared"},
                 {PISO, "piso"},
+                {DIAGONAL, "diagonal"},
+                {DIAGONAL_INVERTIDO, "diagonal_invertido"},
+                {SOPORTE_DIAGONAL, "soporte_diagonal"},
+                {SOPORTE_DIAGONAL_INVERTIDO, "soporte_diagonal_invertido"},
         };
 
 const std::unordered_map<TipoPersonaje, std::string> AdministradorVistaJuego::MAPA_TIPO_PERSONAJE{
