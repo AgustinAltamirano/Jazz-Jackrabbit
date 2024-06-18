@@ -21,6 +21,7 @@ void ComunicadorCliente::matar_cliente() {
     sigo_en_partida = false;
     enviador_cliente.cerrar_cola();
     enviador_cliente.join();
+    skt_cliente.shutdown(SHUT_RDWR);
     skt_cliente.close();
     recibidor_cliente.join();
     gestor_partidas->borrar_cliente(id_cliente);

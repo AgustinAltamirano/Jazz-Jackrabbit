@@ -10,7 +10,6 @@ Servidor::Servidor(char* servname): skt_servidor(servname), aceptador(&skt_servi
 
 void Servidor::run() {
     while (std::cin.get() != 'q') {}
-    skt_servidor.shutdown(SHUT_RDWR);
-    skt_servidor.close();
+    aceptador.stop();
     aceptador.join();
 }
