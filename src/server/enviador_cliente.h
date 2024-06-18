@@ -14,12 +14,10 @@
 
 #include "gestor_partidas.h"
 #include "recibidor_cliente.h"
-#include "servidor_deserializador.h"
-#include "servidor_serializador.h"
 
 class EnviadorCliente: public Thread {
 private:
-    ServidorSerializador servidor_serializador;
+    ServidorProtocolo servidor_protocolo;
 
     std::atomic<bool>& sigo_en_partida;
 

@@ -10,9 +10,8 @@ RecibidorCliente::RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_pa
                                    Queue<std::shared_ptr<SnapshotDTO>>& cola_cliente):
         id_cliente(id_cliente),
         sigo_en_partida(sigo_en_partida),
-        servidor_deserializador(socket),
+        servidor_protocolo(socket),
         gestor_partidas(gestor_partidas),
-        servidor_serializador(socket),
         cola_enviador(cola_cliente) {
     cola_recibidor = nullptr;
 }
@@ -20,7 +19,7 @@ RecibidorCliente::RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_pa
 void RecibidorCliente::inicio_recibidor_cliente() {
     try {
         int32_t codigo_partida;
-        ComandoDTO* comando = servidor_deserializador.obtener_comando(&cerrado, id_cliente);
+        ComandoDTO* comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
         if (comando->obtener_comando() == CREAR) {
             ComandoCrearDTO* crear_dto = dynamic_cast<ComandoCrearDTO*>(comando);
             std::string nombre_escenario = crear_dto->obtener_nombre_escenario();
@@ -31,9 +30,9 @@ void RecibidorCliente::inicio_recibidor_cliente() {
                                                    codigo_partida, personaje, capacidad_partida);
             // Si me devuelve un puntero nulo significa que no se pudo crear la partida
             if (cola_recibidor == nullptr) {
-                servidor_serializador.enviar_error_crear_partida(&cerrado);
+                servidor_protocolo.enviar_error_crear_partida(&cerrado);
             } else {
-                servidor_serializador.enviar_crear_partida(codigo_partida, &cerrado);
+                servidor_protocolo.enviar_crear_partida(codigo_partida, &cerrado);
             }
 
         } else if (comando->obtener_comando() == UNIR) {
@@ -42,12 +41,12 @@ void RecibidorCliente::inicio_recibidor_cliente() {
             TipoPersonaje personaje = unir_dto->obtener_personaje();
             cola_recibidor = gestor_partidas->unir_partida(&cola_enviador, codigo_partida,
                                                            id_cliente, personaje);
-            servidor_serializador.enviar_unir_partida((cola_recibidor != nullptr), &cerrado);
+            servidor_protocolo.enviar_unir_partida((cola_recibidor != nullptr), &cerrado);
         } else if (comando->obtener_comando() == VALIDAR_ESCENARIO) {
             ComandoValidarDTO* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando);
             const std::string nombre_escenario = validar_dto->obtener_nombre_escenario();
             bool es_valido = validador_de_mapas::validar_mapa_custom(nombre_escenario);
-            servidor_serializador.enviar_validar_escenario(es_valido, &cerrado);
+            servidor_protocolo.enviar_validar_escenario(es_valido, &cerrado);
         }
         delete comando;
     } catch (const std::runtime_error& e) {
@@ -56,15 +55,14 @@ void RecibidorCliente::inicio_recibidor_cliente() {
         return;
     }
     establecer_cola_recibidor(cola_recibidor);
-    start();
+    this->start();
 }
 
 void RecibidorCliente::run() {
     bool cerrado = false;
     while (sigo_en_partida && !cerrado) {
         try {
-            ComandoDTO* nuevo_comando =
-                    servidor_deserializador.obtener_comando(&cerrado, id_cliente);
+            ComandoDTO* nuevo_comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
             try {
                 cola_recibidor->push(nuevo_comando);
             } catch (const ClosedQueue& e) {

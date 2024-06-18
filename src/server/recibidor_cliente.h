@@ -11,9 +11,7 @@
 #include "../common/thread.h"
 
 #include "gestor_partidas.h"
-#include "servidor_deserializador.h"
-#include "servidor_serializador.h"
-
+#include "servidor_protocolo.h"
 class Cliente;
 
 
@@ -23,11 +21,9 @@ private:
 
     std::atomic<bool>& sigo_en_partida;
 
-    ServidorDeserializador servidor_deserializador;
+    ServidorProtocolo servidor_protocolo;
 
     GestorPartidas* gestor_partidas;
-
-    ServidorSerializador servidor_serializador;
 
     Queue<ComandoDTO*>* cola_recibidor;
 
