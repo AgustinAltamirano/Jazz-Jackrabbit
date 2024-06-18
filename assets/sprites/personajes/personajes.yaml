@@ -1,6 +1,11 @@
 personajes:
   - nombre: jazz
     imagen: jazz_jackrabbit.png
+    icono:
+      - x: 1
+        y: 3249
+        ancho: 36
+        alto: 38
     animaciones:
       - nombre: stand
         sprites:
@@ -487,6 +492,11 @@ personajes:
 
   - nombre: spaz
     imagen: spaz_jackrabbit.png
+    icono:
+      - x: 4
+        y: 3206
+        ancho: 33
+        alto: 37
     animaciones:
       - nombre: stand
         sprites:
@@ -949,6 +959,11 @@ personajes:
 
   - nombre: lori
     imagen: lori_jackrabbit.png
+    icono:
+      - x: 2
+        y: 2908
+        ancho: 39
+        alto: 45
     animaciones:
       - nombre: stand
         sprites:
