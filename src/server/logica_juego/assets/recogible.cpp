@@ -28,7 +28,8 @@ bool recogible::chequear_colision(const int32_t pos_x, const int32_t pos_y, cons
                                   const int32_t alto) const {
     const int32_t punto_x = this->pos_x + this->ancho / 2;
     const int32_t punto_y = this->pos_y + this->alto / 2;
-    if ((pos_x < punto_x < pos_x + ancho) && (pos_y < punto_y < pos_y + alto)) {
+    if ((pos_x < punto_x) && (punto_x < pos_x + ancho) && (pos_y < punto_y) &&
+        (punto_y < pos_y + alto)) {
         return true;
     }
     return false;
