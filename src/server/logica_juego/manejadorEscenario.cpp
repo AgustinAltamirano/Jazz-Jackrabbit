@@ -73,25 +73,38 @@ void manejadorEscenario::cargar_escenario() {
     this->limite_mapa_y = alto_mapa + 50;
 }
 
+bool spawn_en_piso(const int32_t x, const int32_t y,
+                   const std::vector<bloqueEscenario>& bloques_rectos) {
+    return std::any_of(bloques_rectos.begin(), bloques_rectos.end(),
+                       [&](const bloqueEscenario& bloque) {
+                           return ((x == bloque.pos_x) && (y + TAMANO_BLOQUE == bloque.pos_y));
+                       });
+}
+
 int enemigo_aleatorio(const int semilla) {
     std::srand(semilla * 100);
-    return std::rand() % 3;
+    return std::rand() % 2;
 }
 
 void manejadorEscenario::cargar_enemigos() {
     int32_t id = 0;
     for (auto& spawn: spawnpoints_enemigos) {
-        switch (enemigo_aleatorio(id)) {
-            case 0:  // creo un lagarto
-                enemigos.emplace_back(std::make_unique<Lagarto>(id, spawn.pos_x, spawn.pos_y));
-                break;
-            case 1:  // creo un esqueleto
-                enemigos.emplace_back(std::make_unique<Esqueleto>(id, spawn.pos_x, spawn.pos_y));
-                break;
-            case 2:   // creo un murcielago
-            default:  // si el generador de numeros falla, creo un murcielago
-                enemigos.emplace_back(std::make_unique<Murcielago>(id, spawn.pos_x, spawn.pos_y));
-                break;
+        if (spawn_en_piso(spawn.pos_x, spawn.pos_y,
+                          bloques_rectos)) {  // si el spawn esta en el piso
+            switch (enemigo_aleatorio(id)) {
+                case 0:  // creo un lagarto
+                    enemigos.emplace_back(std::make_unique<Lagarto>(
+                            id, spawn.pos_x, spawn.pos_y - ALTURA_ENEMIGO + TAMANO_BLOQUE - 1));
+                    break;
+                case 1:  // creo un esqueleto
+                default:
+                    enemigos.emplace_back(std::make_unique<Esqueleto>(
+                            id, spawn.pos_x, spawn.pos_y - ALTURA_ENEMIGO + TAMANO_BLOQUE - 1));
+                    break;
+            }     // NOTA:  - ALTURA_ENEMIGO + TAMANO_BLOQUE - 1 es para que spawnee en el piso
+                  // directamente ya que no hay ajuste de colisiones verticales para los enemigos
+        } else {  // si el spawn no esta en el piso entonces creo un murcielago
+            enemigos.emplace_back(std::make_unique<Murcielago>(id, spawn.pos_x, spawn.pos_y));
         }
         ++id;
     }
