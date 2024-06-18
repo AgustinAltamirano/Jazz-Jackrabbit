@@ -10,7 +10,7 @@
 #include "../../common/socket.h"
 #include "../../common/thread.h"
 
-#include "cliente_deserializador.h"
+#include "cliente_protocolo.h"
 
 class ClienteRecibidor: public Thread {
 private:
@@ -18,7 +18,7 @@ private:
 
     std::atomic<bool>& hablando;
 
-    ClienteDeserializador cliente_deserializador;
+    ClienteProtocolo cliente_protocolo;
 
     Socket* skt_cliente;
 

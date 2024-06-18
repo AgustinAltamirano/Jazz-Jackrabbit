@@ -17,26 +17,26 @@ Lobby::Lobby(const std::string& hostname, const std::string& servname):
         sigo_hablando(true),
         lobby_enviador(&socket, std::ref(sigo_hablando), &cola_enviador),
         lobby_recibidor(&socket, std::ref(sigo_hablando), &cola_recibidor),
-        lobby_deserializador(&socket){
-    id_cliente = lobby_deserializador.obtener_id_cliente();
+        lobby_protocolo(&socket){
+    id_cliente = lobby_protocolo.obtener_id_cliente();
     lobby_enviador.start();
     lobby_recibidor.start();
 }
 
 bool Lobby::crear_partida(const std::string& nombre_escenario, const TipoPersonaje& personaje,
                           const int8_t& capacidad_partida) {
-    return (cola_enviador.try_push(lobby_serializador.serializar_crear_partida(
+    return (cola_enviador.try_push(lobby_protocolo.serializar_crear_partida(
             nombre_escenario, personaje, capacidad_partida)));
 }
 
 bool Lobby::unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje) {
     return (cola_enviador.try_push(
-            lobby_serializador.serializar_unir_partida(codigo_partida, personaje)));
+            lobby_protocolo.serializar_unir_partida(codigo_partida, personaje)));
 }
 
 bool Lobby::validar_escenario(const std::string& nombre_escenario) {
     return (cola_enviador.try_push(
-            lobby_serializador.serializar_validar_escenario(nombre_escenario)));
+            lobby_protocolo.serializar_validar_escenario(nombre_escenario)));
 }
 
 void Lobby::cerrar() {

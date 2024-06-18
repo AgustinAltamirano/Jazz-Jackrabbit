@@ -8,15 +8,13 @@ ClienteEnviador::ClienteEnviador(Socket* socket, std::atomic<bool>& hablando,
         socket(socket),
         hablando(hablando),
         cola_enviador(cola_enviador),
-        cliente_serializador(socket) {}
+        cliente_protocolo(socket) {}
 
 void ClienteEnviador::run() {
     bool cerrado = false;
-    std::vector<char> bytes;
     try {
         while (!cerrado && hablando) {
-            bytes = cola_enviador->pop();
-            cliente_serializador.enviar_comando(cola_enviador->pop(), &cerrado);
+            cliente_protocolo.enviar_comando(cola_enviador->pop(), &cerrado);
         }
     } catch (const ClosedQueue& e) {
         std::cout << "Se cerro la cola correctamente" << std::endl;

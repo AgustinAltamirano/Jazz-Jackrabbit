@@ -9,7 +9,7 @@
 #include "../../common/socket.h"
 #include "../../common/thread.h"
 
-#include "cliente_serializador.h"
+#include "cliente_protocolo.h"
 
 class ClienteEnviador: public Thread {
 private:
@@ -17,7 +17,7 @@ private:
 
     Queue<std::vector<char>>* cola_enviador;
 
-    ClienteSerializador cliente_serializador;
+    ClienteProtocolo cliente_protocolo;
 
     std::atomic<bool>& hablando;
 

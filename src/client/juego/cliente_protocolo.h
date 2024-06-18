@@ -1,21 +1,27 @@
-#ifndef CLIENTE_SERIALIZADOR_H
-#define CLIENTE_SERIALIZADOR_H
+#ifndef CLIENTE_PROTOCOLO_H
+#define CLIENTE_PROTOCOLO_H
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "../../common/tipo_comando.h"
+#include "src/common/snapshot_dto.h"
 #include "src/common/socket.h"
 
-class ClienteSerializador {
+class ClienteProtocolo {
 private:
     Socket* socket;
 
 public:
-    explicit ClienteSerializador(Socket* socket);
+    explicit ClienteProtocolo(Socket* socket);
+
     std::vector<char> serializar_comando(const TipoComando& comando);
+
     void enviar_comando(std::vector<char> bytes, bool* cerrado);
+
+    std::shared_ptr<SnapshotDTO> recibir_snapshot_dto(bool* cerrado);
 };
 
 #endif

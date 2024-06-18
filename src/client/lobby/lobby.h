@@ -9,10 +9,9 @@
 #include "../../common/tipo_escenario.h"
 #include "../../common/tipo_personaje.h"
 
-#include "lobby_deserializador.h"
 #include "lobby_enviador.h"
+#include "lobby_protocolo.h"
 #include "lobby_recibidor.h"
-#include "lobby_serializador.h"
 
 class Lobby {
 private:
@@ -26,9 +25,7 @@ private:
 
     LobbyRecibidor lobby_recibidor;
 
-    LobbySerializador lobby_serializador;
-
-    LobbyDeserializador lobby_deserializador;
+    LobbyProtocolo lobby_protocolo;
 
     Queue<std::vector<char>> cola_enviador;
 
