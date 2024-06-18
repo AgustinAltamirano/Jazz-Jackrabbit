@@ -14,6 +14,13 @@ typedef enum {
     MUERTO,
 } EstadoEnemigo;
 
+inline bool colision_horizontal(const int32_t jug_x, const int32_t jug_ancho,
+                                const bloqueEscenario& bloque) {
+    return ((jug_x + jug_ancho > bloque.pos_x && jug_x < bloque.pos_x) ||
+            (jug_x < bloque.pos_x + bloque.ancho &&
+             jug_x + jug_ancho > bloque.pos_x + bloque.ancho));
+}
+
 class enemigo {
 public:
     virtual ~enemigo() = default;

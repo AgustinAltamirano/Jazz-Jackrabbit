@@ -73,12 +73,6 @@ int32_t Murcielago::get_alto() { return ancho; }
 
 int32_t Murcielago::get_ancho() { return alto; }
 
-bool hay_colision_recta(const int32_t jug_x, const int32_t jug_y, const int32_t alto,
-                        const int32_t ancho, const bloqueEscenario& bloque) {
-    return (jug_x < bloque.pos_x + bloque.ancho && jug_x + ancho > bloque.pos_x &&
-            jug_y < bloque.pos_y + bloque.alto && jug_y + alto > bloque.pos_y);
-}
-
 void Murcielago::chequear_colisiones(std::vector<bloqueEscenario>& bloques,
                                      std::vector<bloqueEscenario>& angulos) {
     if (estado == MUERTO) {

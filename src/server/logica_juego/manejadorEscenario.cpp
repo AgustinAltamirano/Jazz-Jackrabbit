@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <iostream>
 #include <utility>
 
 #include <yaml-cpp/yaml.h>
@@ -82,20 +83,14 @@ void manejadorEscenario::cargar_enemigos() {
     for (auto& spawn: spawnpoints_enemigos) {
         switch (enemigo_aleatorio(id)) {
             case 0:  // creo un lagarto
-                std::unique_ptr<enemigo> lagarto =
-                        std::make_unique<Lagarto>(id, spawn.pos_x, spawn.pos_y);
-                enemigos.push_back(lagarto);
+                enemigos.emplace_back(std::make_unique<Lagarto>(id, spawn.pos_x, spawn.pos_y));
                 break;
             case 1:  // creo un esqueleto
-                std::unique_ptr<enemigo> esqueleto =
-                        std::make_unique<Esqueleto>(id, spawn.pos_x, spawn.pos_y);
-                enemigos.push_back(esqueleto);
+                enemigos.emplace_back(std::make_unique<Esqueleto>(id, spawn.pos_x, spawn.pos_y));
                 break;
             case 2:   // creo un murcielago
             default:  // si el generador de numeros falla, creo un murcielago
-                std::unique_ptr<enemigo> murcielago =
-                        std::make_unique<Murcielago>(id, spawn.pos_x, spawn.pos_y);
-                enemigos.push_back(murcielago);
+                enemigos.emplace_back(std::make_unique<Murcielago>(id, spawn.pos_x, spawn.pos_y));
                 break;
         }
         ++id;
@@ -139,13 +134,6 @@ int32_t definir_punto_medio(const int32_t pos_org_jug, const int32_t jug_largo,
         return (pos_bloque - jug_largo - 1);
     }
     return (pos_bloque + bloque_largo + 1);
-}
-
-bool colision_horizontal(const int32_t jug_x, const int32_t jug_ancho,
-                         const bloqueEscenario& bloque) {
-    return ((jug_x + jug_ancho > bloque.pos_x && jug_x < bloque.pos_x) ||
-            (jug_x < bloque.pos_x + bloque.ancho &&
-             jug_x + jug_ancho > bloque.pos_x + bloque.ancho));
 }
 
 void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jugadores) const {

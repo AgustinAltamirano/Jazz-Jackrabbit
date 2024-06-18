@@ -73,11 +73,6 @@ int32_t Esqueleto::get_alto() { return ancho; }
 
 int32_t Esqueleto::get_ancho() { return alto; }
 
-bool colision_horizontal(const int32_t x, const int32_t anch, const bloqueEscenario& bloque) {
-    return ((x + anch > bloque.pos_x && x < bloque.pos_x) ||
-            (x < bloque.pos_x + bloque.ancho && x + anch > bloque.pos_x + bloque.ancho));
-}
-
 void Esqueleto::chequear_colisiones(std::vector<bloqueEscenario>& bloques,
                                     std::vector<bloqueEscenario>& angulos) {
     if (estado == MUERTO) {
