@@ -58,10 +58,12 @@ void manejadorEscenario::cargar_escenario() {
                 spawnpoints_enemigos.emplace_back(pos_x, pos_y);
                 break;
             case GEMA:
-                objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, GEMA_AGARRABLE);
+                objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                                 TAMANO_BLOQUE, GEMA_AGARRABLE));
                 break;
             case MONEDA:
-                objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MONEDA_AGARRABLE);
+                objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                                 TAMANO_BLOQUE, MONEDA_AGARRABLE));
                 break;
             default:
                 continue;
@@ -210,9 +212,9 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
                 });
         jugador.cambiar_estado(cae);
         for (auto it = objetos.begin(); it != objetos.end();) {
-            if ((*it).chequear_colision(punto_x, punto_y, jugador.get_ancho(),
-                                        jugador.get_alto())) {
-                jugador.recoger_objeto((*it).get_valor(), (*it).get_objeto());
+            if ((*it)->chequear_colision(punto_x, punto_y, jugador.get_ancho(),
+                                         jugador.get_alto())) {
+                jugador.recoger_objeto((*it)->get_valor(), (*it)->get_objeto());
                 it = objetos.erase(it);
                 continue;
             }
@@ -249,7 +251,7 @@ std::shared_ptr<SnapshotDTO> manejadorEscenario::crear_snapshot_partida() {
         }
     }
     for (const auto& recogible: objetos) {
-        snapshot->agregar_recogible(recogible.crear_dto());
+        snapshot->agregar_recogible(recogible->crear_dto());
     }
     return snapshot;
 }
@@ -312,20 +314,25 @@ void manejadorEscenario::generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y) 
         int prob_buena = configurador.get(PROB_COM_BUENA);
         int prob_mala = configurador.get(PROB_COM_MALA);
         if (rand() % (prob_buena + prob_mala) < prob_buena) {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, FRUTA_BUENA);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, FRUTA_BUENA));
         } else {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, FRUTA_PODRIDA);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, FRUTA_PODRIDA));
         }
     } else {  // si el objeto es municion
         int prob_1 = configurador.get(PROB_MUN_1);
         int prob_2 = configurador.get(PROB_MUN_2);
         int prob_3 = configurador.get(PROB_MUN_3);
         if (const int num = rand() % (prob_1 + prob_2 + prob_3) < prob_1) {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MUNICION_ARMA_1);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, MUNICION_ARMA_1));
         } else if (num < prob_1 + prob_2) {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MUNICION_ARMA_2);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, MUNICION_ARMA_2));
         } else {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MUNICION_ARMA_3);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, MUNICION_ARMA_3));
         }
     }
 }
