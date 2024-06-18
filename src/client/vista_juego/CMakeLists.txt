@@ -29,7 +29,9 @@ add_library(vista_juego
         admin_balas.cpp
         admin_balas.h
         admin_recogibles.cpp
-        admin_recogibles.h)
+        admin_recogibles.h
+        top_jugadores.cpp
+        top_jugadores.h)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support

@@ -240,6 +240,10 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
 void AdministradorVistaJuego::run() {
     int64_t ticks_anteriores = 0;
     while (!fin_juego) {
+        if (!entrada_juego.procesar_entrada()) {
+            fin_juego = true;
+        }
+
         actualizar_vista();
         renderer.Clear();
         if (fondo_escenario) {
@@ -262,10 +266,6 @@ void AdministradorVistaJuego::run() {
         }
 
         renderer.Present();
-
-        if (!entrada_juego.procesar_entrada()) {
-            fin_juego = true;
-        }
 
         const int64_t ticks_actuales = SDL_GetTicks();
         ticks_anteriores += sincronizar_vista(ticks_actuales - ticks_anteriores);

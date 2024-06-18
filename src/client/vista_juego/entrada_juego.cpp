@@ -12,15 +12,24 @@ const std::unordered_map<SDL_Keycode, const TipoComando> EntradaJuego::MAPA_ACCI
         {SDLK_o, TRUCO2},
         {SDLK_p, TRUCO3}};
 
-EntradaJuego::EntradaJuego(Cliente& cliente): cliente(cliente) {}
+EntradaJuego::EntradaJuego(Cliente& cliente): cliente(cliente), top_activo(false) {}
 
-bool EntradaJuego::procesar_entrada() const {
+bool EntradaJuego::procesar_entrada() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT ||
             (event.type == SDL_KEYDOWN && event.key.keysym.sym == SALIR)) {
             return false;
         }
+
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == MOSTRAR_TOP) {
+            top_activo = true;
+        }
+
+        if (event.type == SDL_KEYUP && event.key.keysym.sym == MOSTRAR_TOP) {
+            top_activo = false;
+        }
+
         if (event.type != SDL_KEYDOWN || !MAPA_ACCIONES.count(event.key.keysym.sym)) {
             continue;
         }
@@ -29,3 +38,7 @@ bool EntradaJuego::procesar_entrada() const {
     }
     return true;
 }
+
+bool EntradaJuego::mostrar_top() const { return top_activo; }
+
+EntradaJuego::~EntradaJuego() = default;
