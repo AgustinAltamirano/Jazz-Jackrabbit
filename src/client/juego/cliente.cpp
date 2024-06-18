@@ -9,7 +9,8 @@ Cliente::Cliente(Socket&& socket):
         cola_recibidor(1000000),
         hablando(true),
         cliente_enviador(&skt_cliente, std::ref(hablando), &cola_enviador),
-        cliente_recibidor(&skt_cliente, std::ref(hablando), &cola_recibidor) {
+        cliente_recibidor(&skt_cliente, std::ref(hablando), &cola_recibidor),
+        client_serializador(&skt_cliente) {
     cliente_enviador.start();
     cliente_recibidor.start();
 }

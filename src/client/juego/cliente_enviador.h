@@ -9,11 +9,15 @@
 #include "../../common/socket.h"
 #include "../../common/thread.h"
 
+#include "cliente_serializador.h"
+
 class ClienteEnviador: public Thread {
 private:
     Socket* socket;
 
     Queue<std::vector<char>>* cola_enviador;
+
+    ClienteSerializador cliente_serializador;
 
     std::atomic<bool>& hablando;
 
