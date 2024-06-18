@@ -71,13 +71,7 @@ void GestorPartidas::borrar_cliente(int32_t& id_cliente) {
         auto codigo_partida = par.first;
         auto partida = par.second;
         if (partida->borrar_cliente(id_cliente)) {
-            if (partida->esta_vacia()) {
-                partida->join();
-                delete partida;
-                partidas.erase(codigo_partida);
-                contador_partidas--;
-                return;
-            }
+            partida->detener_partida();
             break;
         }
     }
@@ -85,11 +79,19 @@ void GestorPartidas::borrar_cliente(int32_t& id_cliente) {
 
 void GestorPartidas::borrar_partidas_finalizadas() {
     std::lock_guard<std::mutex> lock(m);
+    std::vector<int> codigos_a_eliminar;
+
     for (const auto& par : partidas) {
+        auto codigo_partida = par.first;
         auto partida = par.second;
         if (!partida->esta_jugando()) {
             partida->join();
             delete partida;
+            codigos_a_eliminar.push_back(codigo_partida);
         }
+    }
+
+    for (const auto& codigo : codigos_a_eliminar) {
+        partidas.erase(codigo);
     }
 }

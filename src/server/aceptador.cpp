@@ -15,6 +15,7 @@ void Aceptador::run() {
             std::cout << "Nuevo jugador" << std::endl;
             clientes.emplace_back(std::move(skt_aceptado), &gestor_partidas, int32_t(clientes.size()));
             limpiar_clientes();
+            gestor_partidas.borrar_partidas_finalizadas();
         }
     } catch (const std::exception& err) {
         if (sigo_jugando) {
