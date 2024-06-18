@@ -1,5 +1,6 @@
 #ifndef OBJETO_ANIMADO_H
 #define OBJETO_ANIMADO_H
+
 #include <cstdint>
 #include <vector>
 
@@ -33,7 +34,11 @@ private:
     /** Determina si el objeto se debe renderizar invertido horizontalmente o no */
     bool invertido;
 
+    /** Indica si la animación se ha reseteado */
     bool reseteado;
+
+    /** Indica si la animación debe repetirse una vez finalizada */
+    const bool repetir;
 
     /** Índice del sprite actual en @code sprite_coords@endcode. */
     uint16_t sprite_actual;
@@ -44,7 +49,7 @@ public:
     ObjetoAnimado(uint32_t id, SDL2pp::Renderer& renderer, SDL2pp::Texture& textura,
                   const std::vector<SDL2pp::Rect>& sprite_coords, Camara& camara,
                   const SDL2pp::Rect& dimensiones_iniciales, int angulo,
-                  uint32_t iteraciones_por_sprite);
+                  uint32_t iteraciones_por_sprite, bool repetir = true);
 
     ObjetoAnimado(const ObjetoAnimado&) = delete;
 
