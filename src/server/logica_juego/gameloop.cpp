@@ -27,6 +27,8 @@ Gameloop::Gameloop(const std::string& archivo_escenario,
             index_spawns = 0;
         }
     }
+    const ConfigAdmin& configurador = ConfigAdmin::getInstance();
+    this->segundos_partida = configurador.get(TIEMP_PART);
 }
 
 void Gameloop::run() {
@@ -35,7 +37,7 @@ void Gameloop::run() {
     for (auto& cola_salida: colas_salida) {
         cola_salida.second->try_push(snapshot_escenario);
     }
-
+    auto tiempo_inicio_partida = std::chrono::high_resolution_clock::now();
     while (this->keep_talking) {
         // comienzo el cronómetro
         auto tiempo_inicio = std::chrono::high_resolution_clock::now();
@@ -67,7 +69,18 @@ void Gameloop::run() {
         escenario.manejar_balas(personajes);
         escenario.hacer_tick_enemigos();
 
-        // enviar dto vuelta
+        // seccion4 calcular el tiempo desde que comienza la partida
+        auto tiempo_final = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> tiempo_cpu = tiempo_final - tiempo_inicio;
+        std::chrono::duration<double, std::milli> tiempo_jue = tiempo_final - tiempo_inicio_partida;
+
+        int tiempo_jue_segundos = tiempo_jue.count() / 1000;
+        int tiempo_restante_juego = segundos_partida - tiempo_jue_segundos;  // para DTO
+        if (tiempo_jue_segundos > segundos_partida) {
+            this->keep_talking = false;
+        }
+
+        // seccion5 enviar dto vuelta
         auto snapshot_juego = escenario.crear_snapshot_partida();
         for (const auto& entidad: personajes) {
             ClienteDTO jugador_dto = entidad.second.crear_dto();
@@ -77,9 +90,7 @@ void Gameloop::run() {
             cola_salida.second->try_push(snapshot_juego);
         }
 
-        // freno el cronometro y pongo a dormir por los milisegundos por frame menos la diferencia
-        auto tiempo_final = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::milli> tiempo_cpu = tiempo_final - tiempo_inicio;
+        // pongo a dormir por los milisegundos por frame menos la diferencia
         int tiempo_sleep = TIEMPO_FRAME - static_cast<int>(tiempo_cpu.count());
         if (tiempo_sleep > 0) {
             hacer_tick(tiempo_sleep);

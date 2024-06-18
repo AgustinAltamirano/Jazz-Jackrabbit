@@ -65,6 +65,8 @@ ConfigAdmin::ConfigAdmin() {
     configuracion[PROB_MUN_1] = config[PROB_MUN_1].as<int>();
     configuracion[PROB_MUN_2] = config[PROB_MUN_2].as<int>();
     configuracion[PROB_MUN_3] = config[PROB_MUN_3].as<int>();
+
+    configuracion[TIEMP_PART] = config[TIEMP_PART].as<int>();
 }
 
 int ConfigAdmin::get(const std::string& clave_config) const {

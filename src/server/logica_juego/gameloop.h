@@ -35,6 +35,8 @@ private:
     std::map<int32_t, personaje> personajes;
     manejadorEscenario escenario;
 
+    int segundos_partida;
+
 public:
     void run() override;
     /*CONSTRUCTOR VA A NECESITAR
