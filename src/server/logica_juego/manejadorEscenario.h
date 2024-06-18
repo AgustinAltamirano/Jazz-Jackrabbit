@@ -34,7 +34,7 @@ private:
     std::vector<spawnpoint> spawnpoints;
     std::vector<spawnpoint> spawnpoints_enemigos;
     std::list<std::unique_ptr<enemigo>> enemigos;
-    std::list<recogible> objetos;
+    std::list<std::unique_ptr<recogible>> objetos;
     std::list<std::unique_ptr<bala>> balas;
     int32_t limite_mapa_x;
     int32_t limite_mapa_y;

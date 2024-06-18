@@ -4,6 +4,9 @@ items:
       - tipo: 1
         x: 0
         y: 160
+      - tipo: 7
+        x: 96
+        y: 160
       - tipo: 1
         x: 608
         y: 160
@@ -13,11 +16,17 @@ items:
       - tipo: 1
         x: 0
         y: 192
+      - tipo: 7
+        x: 512
+        y: 192
       - tipo: 1
         x: 608
         y: 192
       - tipo: 1
         x: 0
+        y: 224
+      - tipo: 9
+        x: 192
         y: 224
       - tipo: 0
         x: 224
@@ -34,11 +43,20 @@ items:
       - tipo: 0
         x: 352
         y: 224
+      - tipo: 9
+        x: 384
+        y: 224
       - tipo: 1
         x: 608
         y: 224
       - tipo: 1
         x: 0
+        y: 256
+      - tipo: 7
+        x: 64
+        y: 256
+      - tipo: 7
+        x: 512
         y: 256
       - tipo: 1
         x: 608
@@ -57,6 +75,9 @@ items:
         y: 288
       - tipo: 0
         x: 128
+        y: 288
+      - tipo: 8
+        x: 288
         y: 288
       - tipo: 0
         x: 448

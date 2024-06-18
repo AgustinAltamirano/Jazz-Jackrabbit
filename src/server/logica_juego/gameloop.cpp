@@ -75,14 +75,16 @@ void Gameloop::run() {
         std::chrono::duration<double, std::milli> tiempo_cpu = tiempo_final - tiempo_inicio;
         std::chrono::duration<double, std::milli> tiempo_jue = tiempo_final - tiempo_inicio_partida;
 
+        auto snapshot_juego = escenario.crear_snapshot_partida();
         int tiempo_jue_segundos = tiempo_jue.count() / 1000;
         int tiempo_restante_juego = segundos_partida - tiempo_jue_segundos;  // para DTO
         if (tiempo_jue_segundos > segundos_partida) {
             this->keep_talking = false;
+            snapshot_juego->establecer_fin_juego(true);
         }
+        snapshot_juego->agregar_tiempo_restante(tiempo_restante_juego);
 
         // seccion5 enviar dto vuelta
-        auto snapshot_juego = escenario.crear_snapshot_partida();
         for (const auto& entidad: personajes) {
             ClienteDTO jugador_dto = entidad.second.crear_dto();
             snapshot_juego->agregar_cliente(std::move(jugador_dto));
