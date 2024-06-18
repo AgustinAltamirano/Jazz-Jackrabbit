@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
-#include <iostream>
 #include <utility>
 
 #include <yaml-cpp/yaml.h>
@@ -11,7 +10,6 @@
 #include "../../common/constantes.h"
 #include "../../common/snapshot_dto.h"
 #include "../../common/tipo_bloque_escenario.h"
-#include "../../common/tipo_enemigo.h"
 #include "../../common/tipo_recogible.h"
 
 manejadorEscenario::manejadorEscenario(std::string path):
@@ -217,6 +215,7 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
                 jugador.recoger_objeto(valor, (*it).get_objeto());
                 it = objetos.erase(it);
             }
+            ++it;
         }
     }
 }
