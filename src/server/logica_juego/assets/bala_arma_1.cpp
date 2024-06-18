@@ -42,6 +42,6 @@ int32_t balaArma1::disparar() {
 }
 
 BalaDTO balaArma1::crear_dto() {
-    const BalaDTO bala(pos_x, pos_y, tipo);
+    const BalaDTO bala(pos_x, pos_y, tipo, choco);
     return bala;
 }

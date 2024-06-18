@@ -63,8 +63,10 @@ struct BloqueEscenarioDTO {
 struct BalaDTO {
     int32_t pos_x, pos_y;
     TipoArma tipo;
-    BalaDTO(int32_t pos_x, int32_t pos_y, TipoArma tipo): pos_x(pos_x), pos_y(pos_y), tipo(tipo) {}
-    BalaDTO(): pos_x(), pos_y(), tipo() {}
+    bool choco;
+    BalaDTO(int32_t pos_x, int32_t pos_y, TipoArma tipo, bool choco):
+            pos_x(pos_x), pos_y(pos_y), tipo(tipo), choco(choco) {}
+    BalaDTO(): pos_x(), pos_y(), tipo(), choco(false) {}
 } __attribute__((packed));
 
 struct EnemigoDTO {
@@ -99,6 +101,7 @@ private:
     std::vector<BalaDTO> balas;
     std::vector<EnemigoDTO> enemigos;
     std::vector<RecogibleDTO> recogibles;
+    int tiempo_restante;
     bool fin_juego;
 
 public:
@@ -132,6 +135,10 @@ public:
     void agregar_bloque_escenario(BloqueEscenarioDTO bloque_escenario);
 
     std::vector<BloqueEscenarioDTO>& obtener_bloques_escenario();
+
+    void agregar_tiempo_restante(int tiempo);
+
+    [[nodiscard]] int obtener_tiempo_restante() const;
 
     [[nodiscard]] bool es_fin_juego() const;
 
