@@ -22,7 +22,7 @@ private:
 
     Queue<ComandoDTO*> cola_comandos;
 
-    bool sigo_jugando;
+    std::atomic<bool> sigo_jugando;
 
     int8_t capacidad_partida;
 
@@ -48,7 +48,7 @@ public:
 
     int32_t obtener_codigo_partida();
 
-    bool comparar_nombre_escenario(const std::string& nombre_escenario);
+//    bool comparar_nombre_escenario(const std::string& nombre_escenario);
 
     bool borrar_cliente(int32_t& id_cliente);
 

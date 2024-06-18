@@ -10,8 +10,9 @@ void Gameloop::stop() { this->keep_talking = false; }
 
 Gameloop::Gameloop(const std::string& archivo_escenario,
                    const std::map<int32_t, TipoPersonaje>& mapa, Queue<ComandoDTO*>& cola_entrada,
-                   std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida):
-        keep_talking(true),
+                   std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida,
+                   std::atomic<bool>& sigo_jugando):
+        keep_talking(sigo_jugando),
         is_alive(true),
         cola_entrada(cola_entrada),
         colas_salida(colas_salida),
