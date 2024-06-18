@@ -175,7 +175,8 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
         }
         jugador.cambiar_posicion(nueva_pos_x, nueva_pos_y);
         for (auto en = enemigos.begin(); en != enemigos.end();) {
-            if (hay_colision_enemigo(nueva_pos_x, nueva_pos_y, jugador.get_alto(),
+            if ((*en)->get_estado() == ACTIVO &&
+                hay_colision_enemigo(nueva_pos_x, nueva_pos_y, jugador.get_alto(),
                                      jugador.get_ancho(), (*en))) {
                 const int32_t dano = (*en)->atacar();
                 jugador.efectuar_dano(dano);
@@ -209,11 +210,11 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
                 });
         jugador.cambiar_estado(cae);
         for (auto it = objetos.begin(); it != objetos.end();) {
-            int32_t valor = (*it).chequear_colision(punto_x, punto_y, jugador.get_ancho(),
-                                                    jugador.get_alto());
-            if (valor != 0) {
-                jugador.recoger_objeto(valor, (*it).get_objeto());
+            if ((*it).chequear_colision(punto_x, punto_y, jugador.get_ancho(),
+                                        jugador.get_alto())) {
+                jugador.recoger_objeto((*it).get_valor(), (*it).get_objeto());
                 it = objetos.erase(it);
+                continue;
             }
             ++it;
         }
