@@ -181,11 +181,12 @@ void manejadorEscenario::colisiones_bloques(std::map<int, personaje>& jugadores)
                 int pos_x_relativa = nueva_pos_x - bloque.pos_x;
                 int pos_y_relativa;
                 if (bloque.tipo == DIAGONAL) {
-                    pos_y_relativa = bloque.alto - pos_x_relativa;
+                    pos_y_relativa = -pos_x_relativa;
                 } else {
                     pos_y_relativa = pos_x_relativa;
                 }
                 nueva_pos_y = bloque.pos_y + pos_y_relativa - jugador.get_alto();
+                jugador.dejar_de_caer();
             }
         }
         jugador.cambiar_posicion(nueva_pos_x, nueva_pos_y);
