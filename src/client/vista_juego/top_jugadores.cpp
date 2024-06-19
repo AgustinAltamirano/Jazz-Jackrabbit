@@ -10,7 +10,7 @@ bool comparar_puntajes_heap(const std::tuple<int32_t, uint32_t, TipoPersonaje>& 
     return std::get<1>(a) < std::get<1>(b);
 }
 
-TopJugadores::TopJugadores() {}
+TopJugadores::TopJugadores() = default;
 
 std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> TopJugadores::obtener_top_jugadores(
         const bool obtener_todos) {
