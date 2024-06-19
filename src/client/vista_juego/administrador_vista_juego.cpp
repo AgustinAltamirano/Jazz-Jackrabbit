@@ -1,5 +1,7 @@
 #include "administrador_vista_juego.h"
 
+#include <algorithm>
+#include <tuple>
 #include <unordered_set>
 
 #include <SDL2/SDL_render.h>
@@ -43,7 +45,7 @@ const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
                                                         {IMPACTADO, ESTADO_DANIO},
                                                         {MUERTE, ESTADO_MUERTE}};
 
-void AdministradorVistaJuego::actualizar_vista_fondo_escenario(TipoEscenario tipo_escenario) {
+void AdministradorVistaJuego::actualizar_vista_fondo_escenario(const TipoEscenario tipo_escenario) {
     if (!fondo_escenario) {
         this->tipo_escenario = tipo_escenario;
         SDL2pp::Texture& textura_fondo = lector_texturas.obtener_textura_fondo_escenario(
@@ -70,9 +72,17 @@ void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
         personajes.at(jugador->id_cliente).actualizar_camara();
 
         // Actualizar HUD en base a los datos del jugador
-        hud.actualizar(jugador->puntos, jugador->vida, jugador->arma_actual,
-                       jugador->balas_restantes);
+        hud.actualizar(jugador->tipo_personaje, jugador->puntos, jugador->vida,
+                       jugador->arma_actual, jugador->balas_restantes);
     }
+
+    std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> datos_jugadores(
+            clientes_recibidos.size());
+    std::transform(clientes_recibidos.begin(), clientes_recibidos.end(), datos_jugadores.begin(),
+                   [](const ClienteDTO& p) {
+                       return std::make_tuple(p.id_cliente, p.puntos, p.tipo_personaje);
+                   });
+    hud.actualizar_top_jugadores(std::move(datos_jugadores));
 }
 
 void AdministradorVistaJuego::actualizar_vista_bloques_escenario(
@@ -191,6 +201,7 @@ void AdministradorVistaJuego::actualizar_vista() {
     actualizar_vista_camara_y_hud(clientes_recibidos);
     actualizar_vista_personajes(clientes_recibidos);
     actualizar_vista_bloques_escenario(snapshot->obtener_bloques_escenario());
+    actualizar_vista_personajes(clientes_recibidos);
     actualizar_vista_enemigos(snapshot->obtener_enemigos());
     actualizar_vista_balas(snapshot->obtener_balas());
     actualizar_vista_recogibles(snapshot->obtener_recogibles());
@@ -225,7 +236,7 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         pantalla_carga(renderer),
         lector_texturas(renderer),
         entrada_juego(cliente),
-        hud(renderer, lector_texturas),
+        hud(id_cliente, renderer, lector_texturas),
         cliente(cliente),
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
@@ -240,6 +251,10 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
 void AdministradorVistaJuego::run() {
     int64_t ticks_anteriores = 0;
     while (!fin_juego) {
+        if (!entrada_juego.procesar_entrada()) {
+            fin_juego = true;
+        }
+
         actualizar_vista();
         renderer.Clear();
         if (fondo_escenario) {
@@ -256,16 +271,12 @@ void AdministradorVistaJuego::run() {
             snd.dibujar();
         }
         if (primera_snapshot_recibida) {
-            hud.dibujar();
+            hud.dibujar(entrada_juego.mostrar_top());
         } else {
             pantalla_carga.dibujar();
         }
 
         renderer.Present();
-
-        if (!entrada_juego.procesar_entrada()) {
-            fin_juego = true;
-        }
 
         const int64_t ticks_actuales = SDL_GetTicks();
         ticks_anteriores += sincronizar_vista(ticks_actuales - ticks_anteriores);

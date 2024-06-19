@@ -58,3 +58,140 @@ simbolos:
     ancho: 26
     alto: 14
 
+letras:
+  - nombre: A
+    x: 290
+    y: 46
+    ancho: 19
+    alto: 20
+  - nombre: B
+    x: 323
+    y: 46
+    ancho: 19
+    alto: 20
+  - nombre: C
+    x: 359
+    y: 46
+    ancho: 16
+    alto: 20
+  - nombre: D
+    x: 389
+    y: 46
+    ancho: 19
+    alto: 20
+  - nombre: E
+    x: 421
+    y: 46
+    ancho: 19
+    alto: 20
+  - nombre: F
+    x: 456
+    y: 46
+    ancho: 14
+    alto: 20
+  - nombre: G
+    x: 487
+    y: 46
+    ancho: 18
+    alto: 20
+  - nombre: H
+    x: 522
+    y: 46
+    ancho: 15
+    alto: 20
+  - nombre: I
+    x: 555
+    y: 46
+    ancho: 15
+    alto: 20
+  - nombre: J
+    x: 587
+    y: 46
+    ancho: 17
+    alto: 20
+  - nombre: K
+    x: 619
+    y: 46
+    ancho: 18
+    alto: 20
+  - nombre: L
+    x: 653
+    y: 46
+    ancho: 15
+    alto: 20
+  - nombre: M
+    x: 683
+    y: 46
+    ancho: 20
+    alto: 20
+  - nombre: N
+    x: 716
+    y: 46
+    ancho: 20
+    alto: 20
+  - nombre: O
+    x: 750
+    y: 46
+    ancho: 19
+    alto: 20
+  - nombre: P
+    x: 784
+    y: 46
+    ancho: 16
+    alto: 20
+  - nombre: Q
+    x: 815
+    y: 46
+    ancho: 18
+    alto: 20
+  - nombre: R
+    x: 27
+    y: 81
+    ancho: 20
+    alto: 20
+  - nombre: S
+    x: 62
+    y: 81
+    ancho: 15
+    alto: 20
+  - nombre: T
+    x: 94
+    y: 81
+    ancho: 17
+    alto: 20
+  - nombre: U
+    x: 127
+    y: 81
+    ancho: 16
+    alto: 20
+  - nombre: V
+    x: 160
+    y: 81
+    ancho: 15
+    alto: 20
+  - nombre: W
+    x: 191
+    y: 81
+    ancho: 20
+    alto: 20
+  - nombre: X
+    x: 226
+    y: 81
+    ancho: 15
+    alto: 20
+  - nombre: Y
+    x: 259
+    y: 81
+    ancho: 15
+    alto: 20
+  - nombre: Z
+    x: 290
+    y: 81
+    ancho: 18
+    alto: 20
+  - nombre: ' '
+    x: 315
+    y: 81
+    ancho: 18
+    alto: 20
+
