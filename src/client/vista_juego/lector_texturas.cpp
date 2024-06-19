@@ -166,12 +166,12 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
 
     for (const auto& recogible_coords: items_config["recogibles"]) {
         std::vector<SDL2pp::Rect> sprites_recogibles;
-        coords_balas.emplace(recogible_coords["nombre"].as<std::string>(),
-                             std::move(sprites_recogibles));
+        coords_recogibles.emplace(recogible_coords["nombre"].as<std::string>(),
+                                  std::move(sprites_recogibles));
         SDL2pp::Rect sprite(recogible_coords["x"].as<int>(), recogible_coords["y"].as<int>(),
                             recogible_coords["ancho"].as<int>(),
                             recogible_coords["alto"].as<int>());
-        coords_balas.at(recogible_coords["nombre"].as<std::string>()).emplace_back(sprite);
+        coords_recogibles.at(recogible_coords["nombre"].as<std::string>()).emplace_back(sprite);
     }
 }
 
