@@ -78,7 +78,7 @@ void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
 
     std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> datos_jugadores(
             clientes_recibidos.size());
-    std::transform(personajes.begin(), personajes.end(), datos_jugadores.begin(),
+    std::transform(clientes_recibidos.begin(), clientes_recibidos.end(), datos_jugadores.begin(),
                    [](const ClienteDTO& p) {
                        return std::make_tuple(p.id_cliente, p.puntos, p.tipo_personaje);
                    });
