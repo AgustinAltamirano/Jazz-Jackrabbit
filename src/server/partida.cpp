@@ -19,22 +19,12 @@ Partida::Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t cod
         sigo_jugando(true),
         capacidad_partida(capacidad_partida),
         mapa_clientes_juego(),
-        cola_snapshots()
-{
+        cola_snapshots() {
     mapa_clientes_juego[id_cliente] = personaje;
     cola_snapshots[id_cliente] = cola_enviador;
 }
 
 void Partida::run() {
-    while (cola_snapshots.size() < capacidad_partida && sigo_jugando) {
-        try {
-            std::this_thread::sleep_for(std::chrono::duration<double>(frecuencia));
-        } catch (const ClosedQueue& e) {
-            std::cout << "Partida finalizada" << std::endl;
-            sigo_jugando = false;
-            return;
-        }
-    }
     Gameloop gameloop(nombre_escenario, mapa_clientes_juego, cola_comandos, cola_snapshots,
                       sigo_jugando);
     gameloop.run();
