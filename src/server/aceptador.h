@@ -15,7 +15,7 @@
 class Aceptador: public Thread {
 private:
     Socket* skt_servidor;
-    std::list<ComunicadorCliente*> clientes;
+    std::list<ComunicadorCliente> clientes;
     GestorPartidas gestor_partidas;
     std::atomic<bool> sigo_jugando{true};
 

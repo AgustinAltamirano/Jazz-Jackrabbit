@@ -24,14 +24,23 @@ recogible::recogible(int32_t x, int32_t y, int32_t ancho, int32_t alto, TipoReco
     }
 }
 
-int32_t recogible::chequear_colision(const int32_t pos_x, const int32_t pos_y, const int32_t ancho,
-                                     const int32_t alto) const {
+bool recogible::chequear_colision(const int32_t pos_x, const int32_t pos_y, const int32_t ancho,
+                                  const int32_t alto) const {
     const int32_t punto_x = this->pos_x + this->ancho / 2;
     const int32_t punto_y = this->pos_y + this->alto / 2;
-    if ((pos_x < punto_x < pos_x + ancho) && (pos_y < punto_y < pos_y + alto)) {
-        return this->valor;
+    if ((pos_x < punto_x) && (punto_x < pos_x + ancho) && (pos_y < punto_y) &&
+        (punto_y < pos_y + alto)) {
+        return true;
     }
-    return 0;
+    return false;
 }
 
+int32_t recogible::get_valor() const { return valor; }
+
+
 TipoRecogible recogible::get_objeto() const { return tipo; }
+
+RecogibleDTO recogible::crear_dto() const {
+    RecogibleDTO objeto(pos_x, pos_y, alto, ancho, tipo);
+    return objeto;
+}

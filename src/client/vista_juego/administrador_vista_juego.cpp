@@ -199,6 +199,7 @@ void AdministradorVistaJuego::actualizar_vista() {
 
     actualizar_vista_fondo_escenario(snapshot->obtener_tipo_escenario());
     actualizar_vista_camara_y_hud(clientes_recibidos);
+    actualizar_vista_personajes(clientes_recibidos);
     actualizar_vista_bloques_escenario(snapshot->obtener_bloques_escenario());
     actualizar_vista_personajes(clientes_recibidos);
     actualizar_vista_enemigos(snapshot->obtener_enemigos());

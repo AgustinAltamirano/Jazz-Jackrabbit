@@ -2,7 +2,7 @@
 
 balaInfinita::balaInfinita(const int32_t id, int32_t const pos_x_in, int32_t const pos_y_in,
                            bool const invertido):
-        id_dueno(id), pos_x(pos_x_in), pos_y(pos_y_in), choco(false) {
+        id_dueno(id), pos_x(pos_x_in), pos_y(pos_y_in), choco(false), tipo(INFINITA) {
     const ConfigAdmin& configurador = ConfigAdmin::getInstance();
     this->vel_x = configurador.get(VEL_ARMA_INF);
     if (invertido) {
@@ -34,4 +34,9 @@ int32_t balaInfinita::get_id() const { return this->id_dueno; }
 int32_t balaInfinita::disparar() {
     this->mover();
     return this->tiempo_recarga;
+}
+
+BalaDTO balaInfinita::crear_dto() {
+    const BalaDTO bala(pos_x, pos_y, tipo, choco);
+    return bala;
 }

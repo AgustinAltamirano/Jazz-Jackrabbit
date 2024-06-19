@@ -3,6 +3,8 @@
 max_jugadores_por_partida: 4
 max_partidas: 5
 
+segundos_duracion_partida: 60
+
 vida_inicial: 5
 
 aceleracion_gravedad: 1
@@ -53,6 +55,6 @@ puntos_lagarto: 250
 puntos_murcielago: 500
 puntos_esqueleto: 1000
 
-frames_hasta_revivir_lagarto: 100
-frames_hasta_revivir_murcielago: 150
-frames_hasta_revivir_esqueleto: 300
+frames_hasta_revivir_lagarto: 200
+frames_hasta_revivir_murcielago: 300
+frames_hasta_revivir_esqueleto: 600

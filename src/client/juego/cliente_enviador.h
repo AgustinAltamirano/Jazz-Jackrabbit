@@ -9,11 +9,15 @@
 #include "../../common/socket.h"
 #include "../../common/thread.h"
 
+#include "cliente_protocolo.h"
+
 class ClienteEnviador: public Thread {
 private:
     Socket* socket;
 
     Queue<std::vector<char>>* cola_enviador;
+
+    ClienteProtocolo cliente_protocolo;
 
     std::atomic<bool>& hablando;
 

@@ -14,44 +14,26 @@
 
 #include "gestor_partidas.h"
 #include "recibidor_cliente.h"
-#include "servidor_deserializador.h"
-#include "servidor_serializador.h"
 
 class EnviadorCliente: public Thread {
 private:
-    ServidorSerializador servidor_serializador;
-
-    ServidorDeserializador servidor_deserializador;
-
-    Socket* skt_cliente;
+    ServidorProtocolo servidor_protocolo;
 
     std::atomic<bool>& sigo_en_partida;
 
     bool cerrado = false;
 
-    Queue<std::shared_ptr<SnapshotDTO>> cola_enviador;
-
-    // El EnviadorCliente se encargara de lanzarlo y manejarlo debido a que al principio tenemos una
-    // parte sincronica.
-    RecibidorCliente recibidor_cliente;
-
-    Queue<ComandoDTO*>* cola_recibidor;
-
-    GestorPartidas* gestor_partidas;
+    Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador;
 
     int32_t id_cliente;
 
 public:
-    EnviadorCliente(Socket* skt_cliente, std::atomic<bool>& sigo_en_partida,
-                    GestorPartidas* gestor_partidas, int32_t& id_cliente);
+    EnviadorCliente(Socket* skt_cliente, std::atomic<bool>& sigo_en_partida, int32_t& id_cliente,
+                    Queue<std::shared_ptr<SnapshotDTO>>& cola_cliente);
 
     void run() override;
 
     void stop() override;
-
-    void join_recibidor_cliente();
-
-    void inicio_recibidor_cliente();
 
     void cerrar_cola();
 };

@@ -20,6 +20,9 @@
 #include "assets/spawnpoint.h"
 
 #include "enemigo.h"
+#include "esqueleto.h"
+#include "lagarto.h"
+#include "murcielago.h"
 #include "personaje.h"
 
 class manejadorEscenario {
@@ -30,9 +33,11 @@ private:
     std::vector<bloqueEscenario> bloques_angulados;
     std::vector<spawnpoint> spawnpoints;
     std::vector<spawnpoint> spawnpoints_enemigos;
-    std::vector<enemigo> enemigos;
-    std::list<recogible> objetos;
+    std::list<std::unique_ptr<enemigo>> enemigos;
+    std::list<std::unique_ptr<recogible>> objetos;
     std::list<std::unique_ptr<bala>> balas;
+    int32_t limite_mapa_x;
+    int32_t limite_mapa_y;
 
 public:
     // creacion, cargar escenario y ayudar a gameloop
@@ -57,6 +62,7 @@ public:
 
     // crear snapshots
     std::shared_ptr<SnapshotDTO> crear_snapshot();
+    std::shared_ptr<SnapshotDTO> crear_snapshot_partida();
 };
 
 

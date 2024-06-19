@@ -6,15 +6,16 @@
 
 LobbyEnviador::LobbyEnviador(Socket* socket, std::atomic<bool>& sigo_hablando,
                              Queue<std::vector<char>>* cola_enviador):
-        socket(socket), sigo_hablando(sigo_hablando), cola_enviador(cola_enviador) {}
+        socket(socket),
+        sigo_hablando(sigo_hablando),
+        cola_enviador(cola_enviador),
+        lobby_protocolo(socket) {}
 
 void LobbyEnviador::run() {
     bool cerrado = false;
-    std::vector<char> bytes;
     try {
         while (!cerrado && sigo_hablando) {
-            bytes = cola_enviador->pop();
-            socket->sendall(bytes.data(), bytes.size(), &cerrado);
+            lobby_protocolo.enviar_comando(cola_enviador->pop(), &cerrado);
         }
     } catch (const ClosedQueue& e) {
         std::cout << "Se cerro la cola correctamente" << std::endl;

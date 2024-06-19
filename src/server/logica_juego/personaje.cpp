@@ -33,7 +33,7 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
 }
 
 bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
-    if (ataque_especial || this->estado == MUERTE || this->estado == IMPACTADO) {
+    if (ataque_especial || this->estado == MUERTE) {
         return false;
     }
     bool disparo = false;
@@ -41,7 +41,7 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
         // verificar si el estado permite hacer acciones
         switch (tecla) {
             case SALTAR:
-                if (!en_aire && (this->estado != INTOXICADO)) {
+                if (!en_aire && (this->estado != INTOXICADO) && (this->estado != IMPACTADO)) {
                     this->vel_y = -16;
                     this->en_aire = true;
                 }
@@ -55,11 +55,13 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 this->de_espaldas = true;
                 break;
             case ACTIVAR_DASH:
-                // por hacer
+                if (!en_aire && (this->estado != INTOXICADO) && (this->estado != IMPACTADO)) {
+                    this->vel_y *= 2;
+                }
                 break;
             case DISPARAR_ACCION:
                 if (this->estado != INTOXICADO && this->tiempo_recarga == 0 &&
-                    inventario_balas[arma_actual] != 0) {
+                    inventario_balas[arma_actual] != 0 && this->estado != IMPACTADO) {
                     this->estado = DISPARAR_QUIETO;
                     disparo = true;
                 }
@@ -83,9 +85,14 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 por haacer
             */
             case TRUCO1:
-            case TRUCO2:
-            case TRUCO3:
-            default:  // si no es ningun caso que conozco lo ignoro
+                // aca agrego balas de arma a todas las armas del personaje
+                inventario_balas[ARMA1] += 20;
+                inventario_balas[ARMA2] += 20;
+                inventario_balas[ARMA3] += 20;
+                break;
+            case TRUCO2:  // vida infinita
+            case TRUCO3:  // termina la partida, es irrelevante que el jugador lo procese
+            default:      // si no es ningun caso que conozco lo ignoro
                 break;
         }
     }
@@ -189,19 +196,19 @@ void personaje::pasar_tick() {
     }
     switch (estado) {
         case INTOXICADO:
-            if (tiempo_estado == FRAMES_POR_SEGUNDO * 3) {
+            if (tiempo_estado >= FRAMES_POR_SEGUNDO * 3) {
                 this->estado = IDLE;
             }
             break;
         case MUERTE:
-            if (tiempo_estado == FRAMES_POR_SEGUNDO * 5) {
+            if (tiempo_estado >= FRAMES_POR_SEGUNDO * 5) {
                 const ConfigAdmin& configurador = ConfigAdmin::getInstance();
                 this->estado = IDLE;
                 this->vida = configurador.get(VIDA_INICIAL);
             }
             break;
         case IMPACTADO:
-            if (tiempo_estado == FRAMES_POR_SEGUNDO) {
+            if (tiempo_estado >= FRAMES_POR_SEGUNDO) {
                 this->estado = IDLE;
             }
             break;

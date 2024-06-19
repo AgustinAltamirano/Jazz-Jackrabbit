@@ -10,11 +10,13 @@
 #include "../../common/constantes.h"
 #include "../../common/snapshot_dto.h"
 #include "../../common/tipo_bloque_escenario.h"
-#include "../../common/tipo_enemigo.h"
 #include "../../common/tipo_recogible.h"
 
 manejadorEscenario::manejadorEscenario(std::string path):
-        path(std::move(path)), clase_escenario(ESCENARIO_INDEFINIDO) {
+        path(std::move(path)),
+        clase_escenario(ESCENARIO_INDEFINIDO),
+        limite_mapa_x(),
+        limite_mapa_y() {
     this->cargar_escenario();
     this->cargar_enemigos();
 }
@@ -56,36 +58,53 @@ void manejadorEscenario::cargar_escenario() {
                 spawnpoints_enemigos.emplace_back(pos_x, pos_y);
                 break;
             case GEMA:
-                objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, GEMA_AGARRABLE);
+                objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                                 TAMANO_BLOQUE, GEMA_AGARRABLE));
                 break;
             case MONEDA:
-                objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MONEDA_AGARRABLE);
+                objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                                 TAMANO_BLOQUE, MONEDA_AGARRABLE));
                 break;
             default:
                 continue;
         }
     }
+    this->limite_mapa_x = ancho_mapa + 50;
+    this->limite_mapa_y = alto_mapa + 50;
+}
+
+bool spawn_en_piso(const int32_t x, const int32_t y,
+                   const std::vector<bloqueEscenario>& bloques_rectos) {
+    return std::any_of(bloques_rectos.begin(), bloques_rectos.end(),
+                       [&](const bloqueEscenario& bloque) {
+                           return ((x == bloque.pos_x) && (y + TAMANO_BLOQUE == bloque.pos_y));
+                       });
 }
 
 int enemigo_aleatorio(const int semilla) {
     std::srand(semilla * 100);
-    return std::rand() % 3;
+    return std::rand() % 2;
 }
 
 void manejadorEscenario::cargar_enemigos() {
     int32_t id = 0;
     for (auto& spawn: spawnpoints_enemigos) {
-        switch (enemigo_aleatorio(id)) {
-            case 0:  // creo un lagarto
-                enemigos.emplace_back(id, spawn.pos_x, spawn.pos_y, LAGARTO);
-                break;
-            case 1:  // creo un esqueleto
-                enemigos.emplace_back(id, spawn.pos_x, spawn.pos_y, ESQUELETO);
-                break;
-            case 2:   // creo un murcielago
-            default:  // si el generador de numeros falla, creo un murcielago
-                enemigos.emplace_back(id, spawn.pos_x, spawn.pos_y, MURCIELAGO);
-                break;
+        if (spawn_en_piso(spawn.pos_x, spawn.pos_y,
+                          bloques_rectos)) {  // si el spawn esta en el piso
+            switch (enemigo_aleatorio(id)) {
+                case 0:  // creo un lagarto
+                    enemigos.emplace_back(std::make_unique<Lagarto>(
+                            id, spawn.pos_x, spawn.pos_y - ALTURA_ENEMIGO + TAMANO_BLOQUE - 1));
+                    break;
+                case 1:  // creo un esqueleto
+                default:
+                    enemigos.emplace_back(std::make_unique<Esqueleto>(
+                            id, spawn.pos_x, spawn.pos_y - ALTURA_ENEMIGO + TAMANO_BLOQUE - 1));
+                    break;
+            }     // NOTA:  - ALTURA_ENEMIGO + TAMANO_BLOQUE - 1 es para que spawnee en el piso
+                  // directamente ya que no hay ajuste de colisiones verticales para los enemigos
+        } else {  // si el spawn no esta en el piso entonces creo un murcielago
+            enemigos.emplace_back(std::make_unique<Murcielago>(id, spawn.pos_x, spawn.pos_y));
         }
         ++id;
     }
@@ -102,10 +121,9 @@ bool hay_colision_recta(const int32_t jug_x, const int32_t jug_y, const int32_t 
 }
 
 bool hay_colision_enemigo(const int32_t jug_x, const int32_t jug_y, const int32_t alto,
-                          const int32_t ancho, const enemigo& enemigo) {
-    return (jug_x < enemigo.get_pos_x() + enemigo.get_ancho() &&
-            jug_x + ancho > enemigo.get_pos_x() &&
-            jug_y < enemigo.get_pos_y() + enemigo.get_alto() && jug_y + alto > enemigo.get_pos_y());
+                          const int32_t ancho, const std::unique_ptr<enemigo>& en) {
+    return (jug_x < en->get_pos_x() + en->get_ancho() && jug_x + ancho > en->get_pos_x() &&
+            jug_y < en->get_pos_y() + en->get_alto() && jug_y + alto > en->get_pos_y());
 }
 
 std::vector<bloqueEscenario> chequeo_recto_individual(const personaje& jugador,
@@ -129,13 +147,6 @@ int32_t definir_punto_medio(const int32_t pos_org_jug, const int32_t jug_largo,
         return (pos_bloque - jug_largo - 1);
     }
     return (pos_bloque + bloque_largo + 1);
-}
-
-bool colision_horizontal(const int32_t jug_x, const int32_t jug_ancho,
-                         const bloqueEscenario& bloque) {
-    return ((jug_x + jug_ancho > bloque.pos_x && jug_x < bloque.pos_x) ||
-            (jug_x < bloque.pos_x + bloque.ancho &&
-             jug_x + jug_ancho > bloque.pos_x + bloque.ancho));
 }
 
 void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jugadores) const {
@@ -165,36 +176,22 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
             }
         }
         jugador.cambiar_posicion(nueva_pos_x, nueva_pos_y);
-        for (const auto& enemigo: enemigos) {
-            if (hay_colision_enemigo(nueva_pos_x, nueva_pos_y, jugador.get_alto(),
-                                     jugador.get_ancho(), enemigo)) {
-                int32_t dano = enemigo.atacar();
+        for (auto en = enemigos.begin(); en != enemigos.end();) {
+            if ((*en)->get_estado() == ACTIVO &&
+                hay_colision_enemigo(nueva_pos_x, nueva_pos_y, jugador.get_alto(),
+                                     jugador.get_ancho(), (*en))) {
+                const int32_t dano = (*en)->atacar();
                 jugador.efectuar_dano(dano);
             }
+            ++en;
         }
     }
 }
 
 void manejadorEscenario::hacer_tick_enemigos() {
-    for (auto& en: enemigos) {
-        int32_t prox_pos_x = en.get_prox_pos_x();
-        int32_t pos_y = en.get_pos_y();
-        int32_t ancho = en.get_ancho();
-        int32_t alto = en.get_alto();
-        for (const auto& bloque: bloques_rectos) {
-            if (hay_colision_recta(prox_pos_x, pos_y, alto, ancho, bloque)) {
-                en.chocar_pared();
-            }
-        }
-        const bool caeria = !std::any_of(bloques_rectos.begin(), bloques_rectos.end(),
-                                         [&](const bloqueEscenario& bloque) {
-                                             return bloque.pos_y == (pos_y + alto + 1) &&
-                                                    colision_horizontal(prox_pos_x, ancho, bloque);
-                                         });
-        if (caeria) {
-            en.chocar_pared();
-        }
-        en.mover();
+    for (auto en = enemigos.begin(); en != enemigos.end();) {
+        (*en)->chequear_colisiones(bloques_rectos, bloques_angulados);
+        ++en;
     }
 }
 
@@ -215,12 +212,13 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
                 });
         jugador.cambiar_estado(cae);
         for (auto it = objetos.begin(); it != objetos.end();) {
-            int32_t valor = (*it).chequear_colision(punto_x, punto_y, jugador.get_ancho(),
-                                                    jugador.get_alto());
-            if (valor != 0) {
-                jugador.recoger_objeto(valor, (*it).get_objeto());
+            if ((*it)->chequear_colision(punto_x, punto_y, jugador.get_ancho(),
+                                         jugador.get_alto())) {
+                jugador.recoger_objeto((*it)->get_valor(), (*it)->get_objeto());
                 it = objetos.erase(it);
+                continue;
             }
+            ++it;
         }
     }
 }
@@ -242,6 +240,23 @@ std::shared_ptr<SnapshotDTO> manejadorEscenario::crear_snapshot() {
     return snapshot;
 }
 
+std::shared_ptr<SnapshotDTO> manejadorEscenario::crear_snapshot_partida() {
+    auto snapshot = std::make_shared<SnapshotDTO>(clase_escenario);
+    for (const auto& bala: balas) {
+        snapshot->agregar_bala(bala->crear_dto());
+    }
+    for (const auto& enemigo: enemigos) {
+        if (enemigo->get_estado() != MUERTO) {
+            snapshot->agregar_enemigo(enemigo->crear_dto());
+        }
+    }
+    for (const auto& recogible: objetos) {
+        snapshot->agregar_recogible(recogible->crear_dto());
+    }
+    return snapshot;
+}
+
+// seccion de manejo de balas
 void manejadorEscenario::jugador_dispara(int32_t id, personaje& jugador) {
     const std::vector<int32_t> posicion = jugador.get_pos_actual();
     int32_t punto_x = posicion[0];
@@ -299,20 +314,25 @@ void manejadorEscenario::generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y) 
         int prob_buena = configurador.get(PROB_COM_BUENA);
         int prob_mala = configurador.get(PROB_COM_MALA);
         if (rand() % (prob_buena + prob_mala) < prob_buena) {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, FRUTA_BUENA);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, FRUTA_BUENA));
         } else {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, FRUTA_PODRIDA);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, FRUTA_PODRIDA));
         }
     } else {  // si el objeto es municion
         int prob_1 = configurador.get(PROB_MUN_1);
         int prob_2 = configurador.get(PROB_MUN_2);
         int prob_3 = configurador.get(PROB_MUN_3);
         if (const int num = rand() % (prob_1 + prob_2 + prob_3) < prob_1) {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MUNICION_ARMA_1);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, MUNICION_ARMA_1));
         } else if (num < prob_1 + prob_2) {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MUNICION_ARMA_2);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, MUNICION_ARMA_2));
         } else {
-            objetos.emplace_back(pos_x, pos_y, TAMANO_BLOQUE, TAMANO_BLOQUE, MUNICION_ARMA_3);
+            objetos.emplace_back(std::make_unique<recogible>(pos_x, pos_y, TAMANO_BLOQUE,
+                                                             TAMANO_BLOQUE, MUNICION_ARMA_3));
         }
     }
 }
@@ -338,12 +358,12 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
             }
         }
         for (auto& en: enemigos) {
-            if (en.get_estado() != MUERTO &&
-                hay_colision_bala(bala_x, bala_y, en.get_pos_x(), en.get_pos_y(), en.get_ancho(),
-                                  en.get_alto())) {
+            if (en->get_estado() != MUERTO &&
+                hay_colision_bala(bala_x, bala_y, en->get_pos_x(), en->get_pos_y(), en->get_ancho(),
+                                  en->get_alto())) {
                 int32_t dano = (*it)->impactar();
-                if (en.hacer_dano(dano)) {
-                    jugadores.at((*it)->get_id()).dar_puntos(en.get_puntos());
+                if (en->hacer_dano(dano)) {
+                    jugadores.at((*it)->get_id()).dar_puntos(en->get_puntos());
                 }
             }
         }

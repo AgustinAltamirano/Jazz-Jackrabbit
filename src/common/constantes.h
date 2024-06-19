@@ -55,6 +55,8 @@
 #define PROB_MUN_2 "probabilidad_municion_2"
 #define PROB_MUN_3 "probabilidad_municion_3"
 
+#define TIEMP_PART "segundos_duracion_partida"
+
 // CONFIGURACION PERSONAJE
 #define ANCHO_INICIAL 40
 #define ALTO_INICIAL 50

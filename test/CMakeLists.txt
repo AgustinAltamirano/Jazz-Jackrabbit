@@ -5,19 +5,19 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 
 add_executable(test_protocolo_lobby
         protocolo/test_protocolo_lobby.cpp
-        ../src/client/lobby/lobby_serializador.cpp
+        ../src/client/lobby/lobby_protocolo.cpp
 )
 target_link_libraries(test_protocolo_lobby -lyaml-cpp)
 
 add_executable(test_protocolo_cliente
         protocolo/test_protocolo_cliente.cpp
-        ../src/client/juego/cliente_serializador.cpp
+        ../src/client/juego/cliente_protocolo.cpp
 )
 target_link_libraries(test_protocolo_cliente -lyaml-cpp)
 
 add_executable(test_protocolo_servidor
         protocolo/test_protocolo_servidor.cpp
-        ../src/server/servidor_serializador.cpp
+        ../src/server/servidor_protocolo.cpp
         ../src/common/snapshot_dto.cpp
         ../src/common/socket.cpp
         ../src/common/resolver.cpp
