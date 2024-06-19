@@ -24,7 +24,7 @@ void EscenaEditor::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 
 void EscenaEditor::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
     if (event->buttons() & Qt::LeftButton) {
-        dibujar_bloque_item(event);
+        dibujar_bloque_item(event, false);
     } else if (event->buttons() & Qt::RightButton) {
         borrar_bloque_item(event);
     }
@@ -54,14 +54,14 @@ void EscenaEditor::wheelEvent(QGraphicsSceneWheelEvent* event) {
 }
 
 
-void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event) {
+void EscenaEditor::dibujar_bloque_item(QGraphicsSceneMouseEvent* event, bool editor) {
     auto item = lista_botones.obtener_item_seleccionado();
 
     auto x = obtener_coordenada_bloque(event->scenePos().x());
     auto y = obtener_coordenada_bloque(event->scenePos().y());
 
     QRectF rect_viewport = vista_escena.mapToScene(vista_escena.viewport()->rect()).boundingRect();
-    if (!rect_viewport.contains(x, y)) {
+    if (!rect_viewport.contains(x, y) && not editor) {
         return;
     }
 
@@ -95,7 +95,7 @@ void EscenaEditor::dibujar_bloque(int x, int y, TipoItemEditor tipo,
     lista_botones.actualizar_item_seleccionado(tipo, texturas);
     QGraphicsSceneMouseEvent event;
     event.setScenePos(QPointF(x, y));
-    dibujar_bloque_item(&event);
+    dibujar_bloque_item(&event, true);
 }
 
 
