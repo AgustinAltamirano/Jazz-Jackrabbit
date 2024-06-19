@@ -15,7 +15,6 @@ class TopJugadores {
 private:
     std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> jugadores;
     std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> top_jugadores;
-    bool top_actualizado;
 
 public:
     TopJugadores();

@@ -124,7 +124,6 @@ void HUD::dibujar_top_jugadores() {
     pos_x = POS_TOP_JUGADORES_X;
     pos_y = POS_TOP_JUGADORES_Y;
 
-
     const auto jugadores = top_jugadores.obtener_top_jugadores(false);
 
     for (const auto& [id, puntaje, tipo]: jugadores) {

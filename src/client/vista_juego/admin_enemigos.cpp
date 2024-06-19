@@ -63,7 +63,9 @@ void AdminEnemigos::actualizar_animacion(const uint32_t id_enemigo,
             corregir_desfase_sprite(id_enemigo, dimensiones, invertido);
 
     enemigos.at(id_enemigo)
-            .actualizar_animacion({dimensiones.GetX(), dimensiones.GetY(), 1, 1}, 0, invertido);
+            .actualizar_animacion(
+                    {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), 1, 1}, 0,
+                    invertido);
 
     if (ids_enemigos_a_eliminar.count(id_enemigo) > 0) {
         ids_enemigos_a_eliminar.erase(id_enemigo);
