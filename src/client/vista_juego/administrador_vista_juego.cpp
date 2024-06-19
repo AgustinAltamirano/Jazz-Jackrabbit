@@ -32,18 +32,20 @@ const std::unordered_map<TipoPersonaje, std::string> AdministradorVistaJuego::MA
 };
 
 const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
-        AdministradorVistaJuego::MAPA_ESTADOS_PERSONAJE{{IDLE, ESTADO_STAND},
-                                                        {CORRER, ESTADO_CORRER},
-                                                        {DASH, ESTADO_DASH},
-                                                        {DISPARAR_QUIETO, ESTADO_DISPARAR},
-                                                        {SALTAR_ARRIBA, ESTADO_SALTAR_ARRIBA},
-                                                        {SALTAR_ADELANTE, ESTADO_SALTAR_ADELANTE},
-                                                        {CAER_ABAJO, ESTADO_CAER_ABAJO},
-                                                        {CAER_ADELANTE, ESTADO_CAER_ADELANTE},
-                                                        {ATAQUE_ESPECIAL, ESTADO_ATAQUE_ESPECIAL},
-                                                        {INTOXICADO, ESTADO_INTOXICADO_IDLE},
-                                                        {IMPACTADO, ESTADO_DANIO},
-                                                        {MUERTE, ESTADO_MUERTE}};
+        AdministradorVistaJuego::MAPA_ESTADOS_PERSONAJE{
+                {IDLE, ESTADO_STAND},
+                {CORRER, ESTADO_CORRER},
+                {DASH, ESTADO_DASH},
+                {DISPARAR_QUIETO, ESTADO_DISPARAR},
+                {SALTAR_ARRIBA, ESTADO_SALTAR_ARRIBA},
+                {SALTAR_ADELANTE, ESTADO_SALTAR_ADELANTE},
+                {CAER_ABAJO, ESTADO_CAER_ABAJO},
+                {CAER_ADELANTE, ESTADO_CAER_ADELANTE},
+                {ATAQUE_ESPECIAL, ESTADO_ATAQUE_ESPECIAL},
+                {INTOXICADO, ESTADO_INTOXICADO_IDLE},
+                {INTOXICADO_MOVIMIENTO, ESTADO_INTOXICADO_CAMINAR},
+                {IMPACTADO, ESTADO_DANIO},
+                {MUERTE, ESTADO_MUERTE}};
 
 void AdministradorVistaJuego::actualizar_vista_fondo_escenario(const TipoEscenario tipo_escenario) {
     if (!fondo_escenario) {
