@@ -3,7 +3,7 @@
 max_jugadores_por_partida: 4
 max_partidas: 5
 
-segundos_duracion_partida: 60
+segundos_duracion_partida: 180
 
 vida_inicial: 5
 
@@ -39,9 +39,9 @@ probabilidad_municion_2: 1
 probabilidad_municion_3: 1
 
 #estadisticas de los enemigos
-vida_lagarto: 6
-vida_murcielago: 3
-vida_esqueleto: 9
+vida_lagarto: 4
+vida_murcielago: 2
+vida_esqueleto: 6
 
 dano_lagarto: 1
 dano_murcielago: 2
@@ -57,4 +57,4 @@ puntos_esqueleto: 1000
 
 frames_hasta_revivir_lagarto: 200
 frames_hasta_revivir_murcielago: 300
-frames_hasta_revivir_esqueleto: 600
+frames_hasta_revivir_esqueleto: 100

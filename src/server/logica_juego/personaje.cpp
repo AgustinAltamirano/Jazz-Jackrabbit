@@ -147,12 +147,12 @@ void personaje::cambiar_estado(const bool cae) {
         this->vel_x = 0;  // reseteo la velocidad
         return;
     }
-    if (tiempo_recarga > 0) {
-        this->estado = DISPARAR_QUIETO;
-    } else if (estado == INTOXICADO) {
+    if (estado == INTOXICADO) {
         if (vel_x != 0) {
             this->estado = INTOXICADO_MOVIMIENTO;
         }
+    } else if (tiempo_recarga > 0) {
+        this->estado = DISPARAR_QUIETO;
     } else if (cae) {
         if (this->vel_x != 0) {
             if (this->vel_y < 0) {
