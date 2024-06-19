@@ -8,6 +8,7 @@ const std::unordered_map<SDL_Keycode, const TipoComando>
                                                     {SDLK_SPACE, DISPARAR_ACCION},
                                                     {SDLK_q, ARMA_ANTERIOR},
                                                     {SDLK_e, ARMA_SIGUIENTE},
+                                                    {SDLK_h, ACTIVAR_ATAQUE_ESPECIAL},
                                                     {SDLK_i, TRUCO1},
                                                     {SDLK_o, TRUCO2},
                                                     {SDLK_p, TRUCO3}};
