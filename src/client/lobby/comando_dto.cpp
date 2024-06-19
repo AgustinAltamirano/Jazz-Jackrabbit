@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "estado_personaje.h"
+#include "src/common/estado_personaje.h"
 
 ComandoDTO::ComandoDTO() {
     id_cliente = -1;

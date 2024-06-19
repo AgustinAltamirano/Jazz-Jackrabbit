@@ -5,12 +5,12 @@
 #include <vector>
 
 #include "../client/juego/cliente_recibidor.h"
-#include "../common/comando_dto.h"
 #include "../common/queue.h"
 #include "../common/snapshot_dto.h"
 #include "../common/socket.h"
 #include "../common/thread.h"
 #include "../common/tipo_comando.h"
+#include "src/client/lobby/comando_dto.h"
 
 #include "gestor_partidas.h"
 #include "recibidor_cliente.h"

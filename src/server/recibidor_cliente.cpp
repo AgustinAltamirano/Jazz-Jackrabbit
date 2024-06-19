@@ -5,6 +5,10 @@
 #include "src/common/liberror.h"
 #include "src/common/validador_de_mapas.h"
 
+#include "comando_server_crear.h"
+#include "comando_server_unir.h"
+#include "comando_server_validar.h"
+
 RecibidorCliente::RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_partida,
                                    int32_t& id_cliente, GestorPartidas* gestor_partidas,
                                    Queue<std::shared_ptr<SnapshotDTO>>& cola_cliente):
@@ -17,42 +21,23 @@ RecibidorCliente::RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_pa
 }
 
 void RecibidorCliente::inicio_recibidor_cliente() {
-    try {
-        int32_t codigo_partida;
-        ComandoDTO* comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
-        if (comando->obtener_comando() == CREAR) {
-            ComandoCrearDTO* crear_dto = dynamic_cast<ComandoCrearDTO*>(comando);
-            std::string nombre_escenario = crear_dto->obtener_nombre_escenario();
-            TipoPersonaje personaje = crear_dto->obtener_personaje();
-            int8_t capacidad_partida = crear_dto->obtener_capacidad_partida();
-            cola_recibidor =
-                    gestor_partidas->crear_partida(&cola_enviador, nombre_escenario, id_cliente,
-                                                   codigo_partida, personaje, capacidad_partida);
-            // Si me devuelve un puntero nulo significa que no se pudo crear la partida
-            if (cola_recibidor == nullptr) {
-                servidor_protocolo.enviar_error_crear_partida(&cerrado);
-            } else {
-                servidor_protocolo.enviar_crear_partida(codigo_partida, &cerrado);
-            }
+    bool sigo_en_el_lobby = true;
+    while (sigo_en_el_lobby) {
+        try {
+            int32_t codigo_partida;
+            auto comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
 
-        } else if (comando->obtener_comando() == UNIR) {
-            ComandoUnirDTO* unir_dto = dynamic_cast<ComandoUnirDTO*>(comando);
-            codigo_partida = unir_dto->obtener_codigo_partida();
-            TipoPersonaje personaje = unir_dto->obtener_personaje();
-            cola_recibidor = gestor_partidas->unir_partida(&cola_enviador, codigo_partida,
-                                                           id_cliente, personaje);
-            servidor_protocolo.enviar_unir_partida((cola_recibidor != nullptr), &cerrado);
-        } else if (comando->obtener_comando() == VALIDAR_ESCENARIO) {
-            ComandoValidarDTO* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando);
-            const std::string nombre_escenario = validar_dto->obtener_nombre_escenario();
-            bool es_valido = validador_de_mapas::validar_mapa_custom(nombre_escenario);
-            servidor_protocolo.enviar_validar_escenario(es_valido, &cerrado);
+            cola_recibidor =
+                    comando->ejecutar(gestor_partidas, cola_enviador, cerrado, servidor_protocolo);
+
+            if (cola_recibidor != nullptr) {
+                sigo_en_el_lobby = false;
+            }
+        } catch (const std::runtime_error& e) {
+            std::cout << e.what() << std::endl;
+            sigo_en_partida = false;
+            return;
         }
-        delete comando;
-    } catch (const std::runtime_error& e) {
-        std::cout << e.what() << std::endl;
-        sigo_en_partida = false;
-        return;
     }
     establecer_cola_recibidor(cola_recibidor);
     this->start();
@@ -62,11 +47,11 @@ void RecibidorCliente::run() {
     bool cerrado = false;
     while (sigo_en_partida && !cerrado) {
         try {
-            ComandoDTO* nuevo_comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
+            auto nuevo_comando =
+                    servidor_protocolo.obtener_comando(&cerrado, id_cliente);
             try {
-                cola_recibidor->push(nuevo_comando);
+                    cola_recibidor->push(nuevo_comando.release());
             } catch (const ClosedQueue& e) {
-                delete nuevo_comando;
                 std::cout << "Juego finalizado" << std::endl;
                 break;
             }
@@ -80,6 +65,6 @@ void RecibidorCliente::run() {
     cola_recibidor->close();
 }
 
-void RecibidorCliente::establecer_cola_recibidor(Queue<ComandoDTO*>* cola_recibidor) {
+void RecibidorCliente::establecer_cola_recibidor(Queue<ComandoServer*>* cola_recibidor) {
     this->cola_recibidor = cola_recibidor;
 }

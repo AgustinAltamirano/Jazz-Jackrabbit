@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "tipo_comando.h"
+#include "../../common/tipo_comando.h"
 
 class ComandoDTO {
 private:

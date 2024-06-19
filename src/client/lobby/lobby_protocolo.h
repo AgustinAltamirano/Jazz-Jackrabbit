@@ -6,11 +6,12 @@
 
 #include "../../common/tipo_escenario.h"
 #include "../../common/tipo_personaje.h"
-#include "src/common/comando_crear_dto.h"
-#include "src/common/comando_dto.h"
-#include "src/common/comando_unir_dto.h"
-#include "src/common/comando_validar_dto.h"
 #include "src/common/socket.h"
+
+#include "comando_crear_dto.h"
+#include "comando_dto.h"
+#include "comando_unir_dto.h"
+#include "comando_validar_dto.h"
 
 class LobbyProtocolo {
 private:
