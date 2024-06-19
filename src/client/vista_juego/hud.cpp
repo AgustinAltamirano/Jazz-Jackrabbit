@@ -174,7 +174,7 @@ void HUD::dibujar_top_jugadores(const bool dibujar_todos, int pos_y) {
                 lector_texturas.obtener_coords_icono(MAPA_TIPO_PERSONAJE.at(tipo));
         renderer.Copy(textura_jugadores, coords_icono,
                       SDL2pp::Rect(pos_x, pos_y, coords_icono.GetW(), coords_icono.GetH()));
-        pos_x += coords_icono.GetW() + SEPARACION_ENTRE_NUMEROS;
+        pos_x = POS_ID_TOP_JUGADORES_X;
         dibujar_numero(id + 1, pos_x, pos_y);
         pos_x = POS_PUNTAJES_JUGADORES_X;
         dibujar_numero(puntaje, pos_x, pos_y);

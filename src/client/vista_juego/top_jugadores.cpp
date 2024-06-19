@@ -5,11 +5,6 @@ bool comparar_puntajes(const std::tuple<int32_t, uint32_t, TipoPersonaje>& a,
     return std::get<1>(a) > std::get<1>(b);
 }
 
-bool comparar_puntajes_heap(const std::tuple<int32_t, uint32_t, TipoPersonaje>& a,
-                            const std::tuple<int32_t, uint32_t, TipoPersonaje>& b) {
-    return std::get<1>(a) < std::get<1>(b);
-}
-
 TopJugadores::TopJugadores() = default;
 
 std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> TopJugadores::obtener_top_jugadores(
@@ -22,9 +17,9 @@ std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> TopJugadores::obtener_
     top_jugadores.clear();
     for (const auto& jugador: jugadores) {
         top_jugadores.push_back(jugador);
-        std::push_heap(top_jugadores.begin(), top_jugadores.end(), comparar_puntajes_heap);
+        std::push_heap(top_jugadores.begin(), top_jugadores.end(), comparar_puntajes);
         if (top_jugadores.size() > CANTIDAD_TOP_JUGADORES) {
-            std::pop_heap(top_jugadores.begin(), top_jugadores.end(), comparar_puntajes_heap);
+            std::pop_heap(top_jugadores.begin(), top_jugadores.end(), comparar_puntajes);
             top_jugadores.pop_back();
         }
     }
