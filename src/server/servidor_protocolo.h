@@ -6,21 +6,23 @@
 
 #include "../common/snapshot_dto.h"
 #include "../common/socket.h"
-#include "src/common/comando_crear_dto.h"
-#include "src/common/comando_unir_dto.h"
-#include "src/common/comando_validar_dto.h"
-
 #include "partida.h"
+
+#define TAM_TIPO_COMANDO 1
+class ComandoLobbyCrear;
+class ComandoLobbyUnir;
+class ComandoLobbyValidar;
+
 
 class ServidorProtocolo {
 private:
     Socket* socket;
 
-    ComandoCrearDTO* deserializar_crear(bool* cerrado, int32_t& id_cliente);
+    std::unique_ptr<ComandoLobbyCrear> deserializar_crear(bool* cerrado, int32_t& id_cliente);
 
-    ComandoUnirDTO* deserializar_unir(bool* cerrado, const int32_t& id_cliente);
+    std::unique_ptr<ComandoLobbyUnir> deserializar_unir(bool* cerrado, const int32_t& id_cliente);
 
-    ComandoValidarDTO* deserializar_validar(bool* cerrado, int32_t& id_cliente);
+    std::unique_ptr<ComandoLobbyValidar> deserializar_validar(bool* cerrado, int32_t& id_cliente);
 
 public:
     ServidorProtocolo();  // Solo para testing
@@ -51,7 +53,7 @@ public:
 
     std::vector<char> serializar_id_cliente(const int32_t& id_cliente);
 
-    ComandoDTO* obtener_comando(bool* cerrado, int32_t& id_cliente);
+    std::unique_ptr<ComandoServer> obtener_comando(bool* cerrado, int32_t& id_cliente);
 };
 
 #endif

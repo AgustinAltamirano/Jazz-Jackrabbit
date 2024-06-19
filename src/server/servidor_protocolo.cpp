@@ -2,6 +2,10 @@
 
 #include <arpa/inet.h>
 
+#include "comando_server_crear.h"
+#include "comando_server_unir.h"
+#include "comando_server_validar.h"
+
 
 ServidorProtocolo::ServidorProtocolo() {}
 
@@ -122,28 +126,26 @@ std::vector<char> ServidorProtocolo::serializar_id_cliente(const int32_t& id_cli
     return buffer;
 }
 
-ComandoDTO* ServidorProtocolo::obtener_comando(bool* cerrado, int32_t& id_cliente) {
+std::unique_ptr<ComandoServer> ServidorProtocolo::obtener_comando(bool* cerrado, int32_t& id_cliente) {
     char code = 0;
-    socket->recvall(&code, 1, cerrado);
+    socket->recvall(&code, TAM_TIPO_COMANDO, cerrado);
     if (*cerrado) {
         throw std::runtime_error("Se cerro el socket esperando una instruccion");
     }
     TipoComando comando = static_cast<TipoComando>(code);
     switch (comando) {
         case CREAR:
-            return (deserializar_crear(cerrado, id_cliente));
-            break;
+            return deserializar_crear(cerrado, id_cliente);
         case UNIR:
-            return (deserializar_unir(cerrado, id_cliente));
-            break;
+            return deserializar_unir(cerrado, id_cliente);
         case VALIDAR_ESCENARIO:
-            return (deserializar_validar(cerrado, id_cliente));
+            return deserializar_validar(cerrado, id_cliente);
         default:
-            return new ComandoDTO(id_cliente, comando);
+            return std::make_unique<ComandoServer>(id_cliente, comando);
     }
 }
 
-ComandoCrearDTO* ServidorProtocolo::deserializar_crear(bool* cerrado, int32_t& id_cliente) {
+std::unique_ptr<ComandoLobbyCrear> ServidorProtocolo::deserializar_crear(bool* cerrado, int32_t& id_cliente) {
     uint8_t len_nombre = 0;
     socket->recvall(&len_nombre, 1, cerrado);
     std::vector<char> buffer(len_nombre);
@@ -152,27 +154,34 @@ ComandoCrearDTO* ServidorProtocolo::deserializar_crear(bool* cerrado, int32_t& i
     int8_t capacidad_partida;
     socket->recvall(&personaje, 1, cerrado);
     socket->recvall(&capacidad_partida, 1, cerrado);
-    ComandoCrearDTO* crear_dto = new ComandoCrearDTO(
+
+    auto crear_dto = std::make_unique<ComandoLobbyCrear>(
             id_cliente, std::string(buffer.begin(), buffer.end()), personaje, capacidad_partida);
+
     return crear_dto;
 }
 
-ComandoUnirDTO* ServidorProtocolo::deserializar_unir(bool* cerrado, const int32_t& id_cliente) {
+std::unique_ptr<ComandoLobbyUnir> ServidorProtocolo::deserializar_unir(bool* cerrado,
+                                                          const int32_t& id_cliente) {
     TipoPersonaje personaje;
     socket->recvall(&personaje, 1, cerrado);
     int32_t codigo_partida;
     socket->recvall(&codigo_partida, sizeof(int32_t), cerrado);
     codigo_partida = ntohl(codigo_partida);
-    ComandoUnirDTO* unir_dto = new ComandoUnirDTO(id_cliente, codigo_partida, personaje);
+
+    auto unir_dto = std::make_unique<ComandoLobbyUnir>(id_cliente, codigo_partida, personaje);
+
     return unir_dto;
 }
 
-ComandoValidarDTO* ServidorProtocolo::deserializar_validar(bool* cerrado, int32_t& id_cliente) {
+std::unique_ptr<ComandoLobbyValidar> ServidorProtocolo::deserializar_validar(bool* cerrado, int32_t& id_cliente){
     uint8_t len_nombre = 0;
     socket->recvall(&len_nombre, 1, cerrado);
     std::vector<char> buffer(len_nombre);
     socket->recvall(buffer.data(), len_nombre, cerrado);
-    ComandoValidarDTO* validar_dto =
-            new ComandoValidarDTO(id_cliente, std::string(buffer.begin(), buffer.end()));
+
+    auto validar_dto = std::make_unique<ComandoLobbyValidar>(
+            id_cliente, std::string(buffer.begin(), buffer.end()));
+
     return validar_dto;
 }

@@ -7,8 +7,8 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
-#include "../../common/comando_crear_dto.h"
-#include "../../common/comando_unir_dto.h"
+#include "comando_crear_dto.h"
+#include "comando_unir_dto.h"
 
 Lobby::Lobby(const std::string& hostname, const std::string& servname):
         socket(hostname.c_str(), servname.c_str()),

@@ -1,15 +1,15 @@
 #include "gameloop.h"
 
-#include "../../common/comando_dto.h"
 #include "../../common/constantes.h"
 #include "../../common/snapshot_dto.h"
+#include "src/client/lobby/comando_dto.h"
 
 void hacer_tick(int tiempo) { std::this_thread::sleep_for(std::chrono::milliseconds(tiempo)); }
 
 void Gameloop::stop() { this->keep_talking = false; }
 
 Gameloop::Gameloop(const std::string& archivo_escenario,
-                   const std::map<int32_t, TipoPersonaje>& mapa, Queue<ComandoDTO*>& cola_entrada,
+                   const std::map<int32_t, TipoPersonaje>& mapa, Queue<ComandoServer*>& cola_entrada,
                    std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida,
                    std::atomic<bool>& sigo_jugando):
         keep_talking(sigo_jugando),
@@ -46,7 +46,7 @@ void Gameloop::run() {
         // seccion1 se encarga de leer la cola de entrada y efectuar los movimientos en los
         // jugadores
         std::map<int32_t, std::vector<TipoComando>> acciones;
-        ComandoDTO* comando;
+        ComandoServer* comando;
         while (cola_entrada.try_pop(comando)) {
             // asumo que el dto ya puede implementar conseguir el id y la accion que trae
             acciones[comando->obtener_id_cliente()].push_back(comando->obtener_comando());

@@ -25,7 +25,7 @@ private:
 
     GestorPartidas* gestor_partidas;
 
-    Queue<ComandoDTO*>* cola_recibidor;
+    Queue<ComandoServer*>* cola_recibidor;
 
     Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador;
 
@@ -38,7 +38,7 @@ public:
 
     void run() override;
 
-    void establecer_cola_recibidor(Queue<ComandoDTO*>* cola_recibidor);
+    void establecer_cola_recibidor(Queue<ComandoServer*>* cola_recibidor);
 
     void inicio_recibidor_cliente();
 };

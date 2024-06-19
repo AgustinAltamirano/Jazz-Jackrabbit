@@ -5,11 +5,11 @@
 #include <list>
 #include <vector>
 
-#include "../../common/comando_dto.h"
 #include "../../common/queue.h"
 #include "../../common/socket.h"
 #include "../../common/thread.h"
 
+#include "comando_dto.h"
 #include "lobby_protocolo.h"
 
 class LobbyRecibidor: public Thread {

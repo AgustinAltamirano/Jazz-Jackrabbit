@@ -32,7 +32,7 @@ void Partida::run() {
     gameloop.run();
 }
 
-Queue<ComandoDTO*>* Partida::obtener_comandos() { return &cola_comandos; }
+Queue<ComandoServer*>* Partida::obtener_comandos() { return &cola_comandos; }
 
 void Partida::agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
                               const int32_t& id_cliente, const TipoPersonaje& personaje) {

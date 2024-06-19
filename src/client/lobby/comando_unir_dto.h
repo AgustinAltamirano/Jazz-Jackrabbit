@@ -3,8 +3,9 @@
 
 #include <stdint.h>
 
+#include "src/common/tipo_personaje.h"
+
 #include "comando_dto.h"
-#include "tipo_personaje.h"
 
 class ComandoUnirDTO: public ComandoDTO {
 private:

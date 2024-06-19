@@ -5,10 +5,12 @@
 #include <map>
 #include <string>
 
-#include "../common/comando_dto.h"
 #include "../common/queue.h"
 #include "../common/snapshot_dto.h"
 #include "../common/thread.h"
+
+class ComandoServer;
+
 
 class Partida: public Thread {
 private:
@@ -20,7 +22,7 @@ private:
 
     std::string nombre_escenario;
 
-    Queue<ComandoDTO*> cola_comandos;
+    Queue<ComandoServer*> cola_comandos;
 
     std::atomic<bool> sigo_jugando;
 
@@ -43,7 +45,7 @@ public:
 
     void stop() override;
 
-    Queue<ComandoDTO*>* obtener_comandos();
+    Queue<ComandoServer*>* obtener_comandos();
 
     void agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
                          const int32_t& id_cliente, const TipoPersonaje& personaje);

@@ -10,7 +10,6 @@
 
 #include <SDL2/SDL.h>
 
-#include "../../common/comando_dto.h"
 #include "../../common/estado_personaje.h"
 #include "../../common/queue.h"
 #include "../../common/snapshot_dto.h"
@@ -21,6 +20,7 @@
 #include "../../common/tipo_personaje.h"
 #include "../../common/tipo_recogible.h"
 #include "../juego/cliente.h"
+#include "../lobby/comando_dto.h"
 
 #include "admin_balas.h"
 #include "admin_enemigos.h"
