@@ -75,10 +75,10 @@ int32_t Esqueleto::get_ancho() { return alto; }
 
 void Esqueleto::chequear_colisiones(std::vector<bloqueEscenario>& bloques,
                                     std::vector<bloqueEscenario>& angulos) {
+    this->mover();
     if (estado == MUERTO) {
         return;
     }
-    this->mover();
     for (const auto& bloque: bloques) {
         if (pos_x < bloque.pos_x + bloque.ancho && pos_x + ancho > bloque.pos_x &&
             pos_y < bloque.pos_y + bloque.alto && pos_y + alto > bloque.pos_y) {

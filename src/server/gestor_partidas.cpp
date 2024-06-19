@@ -5,11 +5,10 @@
 
 GestorPartidas::GestorPartidas() { contador_partidas = 1; }
 
-Queue<ComandoDTO*>* GestorPartidas::crear_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
-                                                  std::string& nombre_escenario,
-                                                  int32_t& id_cliente, int32_t& codigo_partida,
-                                                  TipoPersonaje& personaje,
-                                                  int8_t& capacidad_partidas) {
+Queue<ComandoDTO*>* GestorPartidas::crear_partida(
+        Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, std::string& nombre_escenario,
+        int32_t& id_cliente, int32_t& codigo_partida, TipoPersonaje& personaje,
+        int8_t& capacidad_partidas) {
     std::lock_guard<std::mutex> lock(m);
     codigo_partida = contador_partidas;
     Partida* nueva_partida = new Partida(cola_enviador, codigo_partida, nombre_escenario,
@@ -18,7 +17,6 @@ Queue<ComandoDTO*>* GestorPartidas::crear_partida(Queue<std::shared_ptr<Snapshot
     std::cout << codigo_partida << std::endl;
     contador_partidas++;
     Queue<ComandoDTO*>* aux = nueva_partida->obtener_comandos();
-    nueva_partida->start();
     return (aux);
 }
 
@@ -32,8 +30,8 @@ Partida* GestorPartidas::obtener_partida_por_codigo(int codigo) {
     return partida_encontrada->second;
 }
 
-Queue<ComandoDTO*>* GestorPartidas::unir_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t& codigo,
-                                                 const int32_t& id_cliente,
+Queue<ComandoDTO*>* GestorPartidas::unir_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
+                                                 int32_t& codigo, const int32_t& id_cliente,
                                                  const TipoPersonaje& personaje) {
     std::lock_guard<std::mutex> lock(m);
 
@@ -48,6 +46,9 @@ Queue<ComandoDTO*>* GestorPartidas::unir_partida(Queue<std::shared_ptr<SnapshotD
     if (partida && partida->puedo_unir()) {
         std::cout << "agregue cliente a la partida" << std::endl;
         partida->agregar_cliente(cola_enviador, id_cliente, personaje);
+        if (!partida->puedo_unir()) {
+            partida->start();
+        }
         return partida->obtener_comandos();
     }
     return nullptr;
@@ -55,7 +56,7 @@ Queue<ComandoDTO*>* GestorPartidas::unir_partida(Queue<std::shared_ptr<SnapshotD
 
 void GestorPartidas::join_partidas() {
     std::lock_guard<std::mutex> lock(m);
-    for (const auto& par : partidas) {
+    for (const auto& par: partidas) {
         auto partida = par.second;
         partida->detener_partida();
         partida->join();
@@ -67,7 +68,7 @@ void GestorPartidas::join_partidas() {
 void GestorPartidas::borrar_cliente(int32_t& id_cliente) {
     // Si al elimintar me quede sin clientes elimino la partida
     std::lock_guard<std::mutex> lock(m);
-    for (const auto& par : partidas) {
+    for (const auto& par: partidas) {
         auto codigo_partida = par.first;
         auto partida = par.second;
         if (partida->borrar_cliente(id_cliente)) {
@@ -81,7 +82,7 @@ void GestorPartidas::borrar_partidas_finalizadas() {
     std::lock_guard<std::mutex> lock(m);
     std::vector<int> codigos_a_eliminar;
 
-    for (const auto& par : partidas) {
+    for (const auto& par: partidas) {
         auto codigo_partida = par.first;
         auto partida = par.second;
         if (!partida->esta_jugando()) {
@@ -91,7 +92,7 @@ void GestorPartidas::borrar_partidas_finalizadas() {
         }
     }
 
-    for (const auto& codigo : codigos_a_eliminar) {
+    for (const auto& codigo: codigos_a_eliminar) {
         partidas.erase(codigo);
     }
 }

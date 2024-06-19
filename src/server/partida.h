@@ -24,6 +24,10 @@ private:
 
     std::atomic<bool> sigo_jugando;
 
+    int cantidad_jugadores;
+
+    std::atomic<bool> comenzada;
+
     int8_t capacidad_partida;
 
     bool borrar_cliente_mapa(int32_t& id_cliente);
@@ -41,14 +45,12 @@ public:
 
     Queue<ComandoDTO*>* obtener_comandos();
 
-    void agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, const int32_t& id_cliente,
-                         const TipoPersonaje& personaje);
+    void agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
+                         const int32_t& id_cliente, const TipoPersonaje& personaje);
 
     bool comparar_codigo_partida(const int32_t& codigo_a_comparar);
 
     int32_t obtener_codigo_partida();
-
-//    bool comparar_nombre_escenario(const std::string& nombre_escenario);
 
     bool borrar_cliente(int32_t& id_cliente);
 
