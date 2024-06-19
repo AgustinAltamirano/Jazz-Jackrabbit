@@ -42,7 +42,7 @@ private:
 
     QGraphicsView vista_escena;
 
-    void dibujar_bloque_item(QGraphicsSceneMouseEvent* event);
+    void dibujar_bloque_item(QGraphicsSceneMouseEvent* event, bool editor);
 
     void borrar_bloque_item(QGraphicsSceneMouseEvent* event);
 
