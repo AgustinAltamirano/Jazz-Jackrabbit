@@ -181,7 +181,7 @@ void manejadorEscenario::colisiones_bloques(std::map<int, personaje>& jugadores)
                 int pos_x_relativa = nueva_pos_x - bloque.pos_x;
                 int pos_y_relativa;
                 if (bloque.tipo == DIAGONAL) {
-                    pos_y_relativa = -pos_x_relativa;
+                    pos_y_relativa = -pos_x_relativa - 6;
                 } else {
                     pos_y_relativa = pos_x_relativa;
                 }
