@@ -33,6 +33,8 @@ void AdminRecogibles::agregar_recogible(const TipoRecogible tipo_recogible,
     ObjetoAnimado nuevo_recogible(0, renderer, lector_texturas.obtener_textura_items(),
                                   coords_sprite, camara, dimensiones_corregidas, 0,
                                   ITERACIONES_POR_SPRITE);
+    nuevo_recogible.actualizar_animacion(
+            {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), 1, 1}, 0, false);
     recogibles.push_back(std::move(nuevo_recogible));
 }
 

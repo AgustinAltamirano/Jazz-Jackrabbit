@@ -30,6 +30,8 @@ void AdminBalas::agregar_bala(const TipoArma tipo_arma, const int32_t pos_x, con
 
     ObjetoAnimado nueva_bala(0, renderer, lector_texturas.obtener_textura_items(), coords_sprite,
                              camara, dimensiones_corregidas, 0, ITERACIONES_POR_SPRITE);
+    nueva_bala.actualizar_animacion(
+            {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), 1, 1}, 0, false);
     balas.push_back(std::move(nueva_bala));
 }
 
