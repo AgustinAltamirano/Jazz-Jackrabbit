@@ -14,7 +14,6 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
         aceleracion_x(0),
         pos_y(pos_y_inicial),
         vel_y(0),
-        sobre_rampa(false),
         dash(false),
         de_espaldas(false),
         en_aire(false),
@@ -129,12 +128,6 @@ std::vector<int> personaje::get_pos_actual() const {
 
 std::vector<int> personaje::get_pos_a_ir() const {
     std::vector<int> pos_prox;
-    if (sobre_rampa) {
-        // esto solo contempla angulos de 45 grados (y 135)
-        pos_prox.push_back(this->pos_x + this->vel_x * 707 / 1000);
-        pos_prox.push_back(this->pos_y + this->vel_x * 707 / 1000);
-        return pos_prox;
-    }
     pos_prox.push_back(this->pos_x + this->vel_x);
     if (en_aire) {
         pos_prox.push_back(this->pos_y + this->vel_y);

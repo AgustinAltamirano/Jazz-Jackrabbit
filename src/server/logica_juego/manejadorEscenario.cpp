@@ -149,7 +149,7 @@ int32_t definir_punto_medio(const int32_t pos_org_jug, const int32_t jug_largo,
     return (pos_bloque + bloque_largo + 1);
 }
 
-void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jugadores) const {
+void manejadorEscenario::colisiones_bloques(std::map<int, personaje>& jugadores) const {
     for (auto& entidad: jugadores) {
         personaje& jugador = entidad.second;
         std::vector<bloqueEscenario> colisiones = chequeo_recto_individual(jugador, bloques_rectos);
@@ -175,6 +175,19 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
                                                   bloque.ancho);
             }
         }
+        for (const auto& bloque: bloques_angulados) {
+            if (hay_colision_recta(nueva_pos_x, nueva_pos_y, jugador.get_alto(),
+                                   jugador.get_ancho(), bloque)) {
+                int pos_x_relativa = nueva_pos_x - bloque.pos_x;
+                int pos_y_relativa;
+                if (bloque.tipo == DIAGONAL) {
+                    pos_y_relativa = bloque.alto - pos_x_relativa;
+                } else {
+                    pos_y_relativa = pos_x_relativa;
+                }
+                nueva_pos_y = bloque.pos_y + pos_y_relativa - jugador.get_alto();
+            }
+        }
         jugador.cambiar_posicion(nueva_pos_x, nueva_pos_y);
         for (auto en = enemigos.begin(); en != enemigos.end();) {
             if ((*en)->get_estado() == ACTIVO &&
@@ -184,6 +197,11 @@ void manejadorEscenario::colisiones_bloques_rectos(std::map<int, personaje>& jug
                 jugador.efectuar_dano(dano);
             }
             ++en;
+        }
+        if (nueva_pos_x > limite_mapa_x || nueva_pos_y > limite_mapa_y) {
+            spawnpoint spawn = spawnpoints[0];
+            jugador.cambiar_posicion(spawn.pos_x, spawn.pos_y);
+            jugador.efectuar_dano(1000000000);  // castigo por salirte del mapa >:(
         }
     }
 }
@@ -195,9 +213,6 @@ void manejadorEscenario::hacer_tick_enemigos() {
     }
 }
 
-void manejadorEscenario::colisiones_bloques_angulo(std::map<int, personaje>& jugadores) const {}
-
-
 void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& jugadores) {
     for (auto& entidad: jugadores) {
         personaje& jugador = entidad.second;
@@ -205,11 +220,18 @@ void manejadorEscenario::chequear_caida_y_objetos(std::map<int, personaje>& juga
         const int32_t punto_x = posicion[0];
         const int32_t punto_y = posicion[1];
         const int32_t punto_y_pisando = punto_y + jugador.get_alto() + 1;
-        const bool cae = !std::any_of(
+        const bool sobre_bloque_recto = std::any_of(
                 bloques_rectos.begin(), bloques_rectos.end(), [&](const bloqueEscenario& bloque) {
                     return bloque.pos_y == punto_y_pisando &&
                            colision_horizontal(punto_x, jugador.get_ancho(), bloque);
                 });
+        const bool sobre_rampa =
+                std::any_of(bloques_angulados.begin(), bloques_angulados.end(),
+                            [&](const bloqueEscenario& bloque) {
+                                return hay_colision_recta(punto_x, punto_y, jugador.get_alto(),
+                                                          jugador.get_ancho(), bloque);
+                            });
+        const bool cae = !sobre_bloque_recto && !sobre_rampa;
         jugador.cambiar_estado(cae);
         for (auto it = objetos.begin(); it != objetos.end();) {
             if ((*it)->chequear_colision(punto_x, punto_y, jugador.get_ancho(),

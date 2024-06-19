@@ -28,8 +28,6 @@ private:
     int vel_y;
     int aceleracion_y;  // gravedad
 
-    bool sobre_rampa;
-
     bool dash;
     bool de_espaldas;      // invertido en eje x
     bool en_aire;          // define si la aceleracion vertical y horizontal afecta o no

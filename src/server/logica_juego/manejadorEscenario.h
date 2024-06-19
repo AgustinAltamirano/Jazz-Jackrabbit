@@ -48,8 +48,7 @@ public:
     TipoEscenario get_escenario();
 
     // chequeo colision con bloques
-    void colisiones_bloques_rectos(std::map<int, personaje>& jugadores) const;
-    void colisiones_bloques_angulo(std::map<int, personaje>& jugadores) const;
+    void colisiones_bloques(std::map<int, personaje>& jugadores) const;
     void chequear_caida_y_objetos(std::map<int, personaje>& jugadores);
 
     // personaje disparo bala
