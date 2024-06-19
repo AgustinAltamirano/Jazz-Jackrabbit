@@ -364,6 +364,7 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
                 int32_t dano = (*it)->impactar();
                 if (en->hacer_dano(dano)) {
                     jugadores.at((*it)->get_id()).dar_puntos(en->get_puntos());
+                    this->generar_objeto_aleatorio(en->get_pos_x(), en->get_pos_y());
                 }
             }
         }
