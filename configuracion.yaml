@@ -28,11 +28,11 @@ frames_recarga_arma3: 132
 
 # probabilidad de los objetos que sueltan los enemigos
 # probabilidades. Aumentar un numero aumenta la probabilidad de ese caso
-probabilidad_comida: 2
+probabilidad_comida: 200
 probabilidad_municion: 3
 # si la probabilidad anterior salio comida, puede salir uno de estos dos
 probabilidad_comida_buena: 1
-probabilidad_comida_mala: 1
+probabilidad_comida_mala: 1000
 # si la probabilidad anterior salio muncion, puede salir uno de estos tres
 probabilidad_municion_1: 1
 probabilidad_municion_2: 1
