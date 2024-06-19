@@ -87,6 +87,9 @@
 #define SEPARACION_HORIZONTAL_TOP 30
 #define SEPARACION_VERTICAL_TOP 10
 
+#define POS_TIEMPO_RESTANTE_X (ANCHO_VENTANA * 3 / 4)
+#define POS_TIEMPO_RESTANTE_Y (ALTO_VENTANA - 30)
+
 // Constantes de la pantalla de carga
 
 #define POS_TEXTO_CARGA_X 38

@@ -84,7 +84,8 @@ private:
 
     void actualizar_vista_fondo_escenario(TipoEscenario tipo_escenario);
 
-    void actualizar_vista_camara_y_hud(const std::vector<ClienteDTO>& clientes_recibidos);
+    void actualizar_vista_camara_y_hud(const std::vector<ClienteDTO>& clientes_recibidos,
+                                       int tiempo_restante);
 
     void actualizar_vista_bloques_escenario(
             const std::vector<BloqueEscenarioDTO>& bloques_recibidos);

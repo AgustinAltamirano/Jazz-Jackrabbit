@@ -59,7 +59,7 @@ void AdministradorVistaJuego::actualizar_vista_fondo_escenario(const TipoEscenar
 }
 
 void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
-        const std::vector<ClienteDTO>& clientes_recibidos) {
+        const std::vector<ClienteDTO>& clientes_recibidos, const int tiempo_restante) {
     if (const auto jugador = std::find_if(
                 clientes_recibidos.begin(), clientes_recibidos.end(),
                 [this](const auto& cliente) { return cliente.id_cliente == this->id_jugador; });
@@ -75,7 +75,7 @@ void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
 
         // Actualizar HUD en base a los datos del jugador
         hud.actualizar(jugador->tipo_personaje, jugador->puntos, jugador->vida,
-                       jugador->arma_actual, jugador->balas_restantes);
+                       jugador->arma_actual, jugador->balas_restantes, tiempo_restante);
     }
 
     std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> datos_jugadores(
@@ -200,7 +200,7 @@ void AdministradorVistaJuego::actualizar_vista() {
     const std::vector<ClienteDTO> clientes_recibidos = snapshot->obtener_clientes();
 
     actualizar_vista_fondo_escenario(snapshot->obtener_tipo_escenario());
-    actualizar_vista_camara_y_hud(clientes_recibidos);
+    actualizar_vista_camara_y_hud(clientes_recibidos, snapshot->obtener_tiempo_restante());
     actualizar_vista_personajes(clientes_recibidos);
     actualizar_vista_bloques_escenario(snapshot->obtener_bloques_escenario());
     actualizar_vista_personajes(clientes_recibidos);

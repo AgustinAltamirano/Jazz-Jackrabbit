@@ -117,6 +117,16 @@ void HUD::dibujar_id_jugador() const {
     dibujar_numero(id_jugador + 1, posicion_actual, POS_ID_JUGADOR_Y, true);
 }
 
+void HUD::dibujar_tiempo_restante() const {
+    int pos_x = POS_TIEMPO_RESTANTE_X;
+    dibujar_numero(tiempo_restante / 60, pos_x, POS_TIEMPO_RESTANTE_Y);
+    dibujar_texto(":", pos_x, POS_TIEMPO_RESTANTE_Y);
+    if (tiempo_restante % 60 < 10) {
+        dibujar_numero(0, pos_x, POS_TIEMPO_RESTANTE_Y);
+    }
+    dibujar_numero(tiempo_restante % 60, pos_x, POS_TIEMPO_RESTANTE_Y);
+}
+
 HUD::HUD(const int32_t id_jugador, SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas):
         renderer(renderer),
         lector_texturas(lector_texturas),
@@ -125,15 +135,18 @@ HUD::HUD(const int32_t id_jugador, SDL2pp::Renderer& renderer, LectorTexturas& l
         puntos(0),
         vida(0),
         arma_actual(INFINITA),
-        balas_restantes(-1) {}
+        balas_restantes(-1),
+        tiempo_restante(0) {}
 
 void HUD::actualizar(const TipoPersonaje tipo_personaje, const uint32_t puntos, const uint32_t vida,
-                     const TipoArma arma_actual, const int32_t balas_restantes) {
+                     const TipoArma arma_actual, const int32_t balas_restantes,
+                     const int tiempo_restante) {
     this->tipo_personaje = tipo_personaje;
     this->puntos = puntos;
     this->vida = vida;
     this->arma_actual = arma_actual;
     this->balas_restantes = balas_restantes;
+    this->tiempo_restante = tiempo_restante;
 }
 
 void HUD::actualizar_top_jugadores(
@@ -146,6 +159,7 @@ void HUD::dibujar() const {
     dibujar_vida();
     dibujar_arma();
     dibujar_id_jugador();
+    dibujar_tiempo_restante();
 }
 
 void HUD::dibujar_pantalla_carga() const {
