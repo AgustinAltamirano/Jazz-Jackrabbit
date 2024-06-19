@@ -147,9 +147,11 @@ void personaje::cambiar_estado(const bool cae) {
         this->vel_x = 0;  // reseteo la velocidad
         return;
     }
-    if (estado == INTOXICADO) {
+    if (estado == INTOXICADO || estado == INTOXICADO_MOVIMIENTO) {
         if (vel_x != 0) {
             this->estado = INTOXICADO_MOVIMIENTO;
+        } else {
+            this->estado = INTOXICADO;
         }
     } else if (tiempo_recarga > 0) {
         this->estado = DISPARAR_QUIETO;
@@ -196,6 +198,7 @@ void personaje::pasar_tick() {
     }
     switch (estado) {
         case INTOXICADO:
+        case INTOXICADO_MOVIMIENTO:
             if (tiempo_estado >= FRAMES_POR_SEGUNDO * 3) {
                 this->estado = IDLE;
             }
