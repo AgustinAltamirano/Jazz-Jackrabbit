@@ -3,15 +3,18 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <tuple>
 #include <utility>
 #include <vector>
+
+#include "../../common/tipo_personaje.h"
 
 #define CANTIDAD_TOP_JUGADORES 3
 
 class TopJugadores {
 private:
-    std::vector<std::pair<int32_t, uint32_t>> jugadores;
-    std::vector<std::pair<int32_t, uint32_t>> top_jugadores;
+    std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> jugadores;
+    std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> top_jugadores;
     bool top_actualizado;
 
 public:
@@ -20,9 +23,11 @@ public:
     TopJugadores(const TopJugadores&) = delete;
     TopJugadores& operator=(const TopJugadores&) = delete;
 
-    std::vector<std::pair<int32_t, uint32_t>> obtener_top_jugadores(bool obtener_todos);
+    std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> obtener_top_jugadores(
+            bool obtener_todos);
 
-    void actualizar_jugadores(std::vector<std::pair<int32_t, uint32_t>>&& jugadores);
+    void actualizar_jugadores(
+            std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>>&& jugadores);
 
     ~TopJugadores();
 };

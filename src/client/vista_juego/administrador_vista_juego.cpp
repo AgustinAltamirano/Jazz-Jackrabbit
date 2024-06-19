@@ -1,5 +1,7 @@
 #include "administrador_vista_juego.h"
 
+#include <algorithm>
+#include <tuple>
 #include <unordered_set>
 
 #include <SDL2/SDL_render.h>
@@ -43,7 +45,7 @@ const std::unordered_map<EstadoPersonaje, EstadoVisualPersonaje>
                                                         {IMPACTADO, ESTADO_DANIO},
                                                         {MUERTE, ESTADO_MUERTE}};
 
-void AdministradorVistaJuego::actualizar_vista_fondo_escenario(TipoEscenario tipo_escenario) {
+void AdministradorVistaJuego::actualizar_vista_fondo_escenario(const TipoEscenario tipo_escenario) {
     if (!fondo_escenario) {
         this->tipo_escenario = tipo_escenario;
         SDL2pp::Texture& textura_fondo = lector_texturas.obtener_textura_fondo_escenario(
@@ -73,6 +75,14 @@ void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
         hud.actualizar(jugador->tipo_personaje, jugador->puntos, jugador->vida,
                        jugador->arma_actual, jugador->balas_restantes);
     }
+
+    std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> datos_jugadores(
+            clientes_recibidos.size());
+    std::transform(personajes.begin(), personajes.end(), datos_jugadores.begin(),
+                   [](const ClienteDTO& p) {
+                       return std::make_tuple(p.id_cliente, p.puntos, p.tipo_personaje);
+                   });
+    hud.actualizar_top_jugadores(std::move(datos_jugadores));
 }
 
 void AdministradorVistaJuego::actualizar_vista_bloques_escenario(
@@ -260,7 +270,7 @@ void AdministradorVistaJuego::run() {
             snd.dibujar();
         }
         if (primera_snapshot_recibida) {
-            hud.dibujar();
+            hud.dibujar(entrada_juego.mostrar_top());
         } else {
             pantalla_carga.dibujar();
         }

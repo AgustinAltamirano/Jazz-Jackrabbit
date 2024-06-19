@@ -1,13 +1,14 @@
 #include "top_jugadores.h"
 
-bool comparar_puntajes(const std::pair<int32_t, uint32_t>& a,
-                       const std::pair<int32_t, uint32_t>& b) {
-    return a.second < b.second;
+bool comparar_puntajes(const std::tuple<int32_t, uint32_t, TipoPersonaje>& a,
+                       const std::tuple<int32_t, uint32_t, TipoPersonaje>& b) {
+    return std::get<1>(a) < std::get<1>(b);
 }
 
 TopJugadores::TopJugadores(): top_actualizado(false) {}
 
-std::vector<std::pair<int32_t, uint32_t>> TopJugadores::obtener_top_jugadores(bool obtener_todos) {
+std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> TopJugadores::obtener_top_jugadores(
+        const bool obtener_todos) {
     if (obtener_todos) {
         std::sort(jugadores.begin(), jugadores.end(), comparar_puntajes);
         return jugadores;
@@ -31,7 +32,8 @@ std::vector<std::pair<int32_t, uint32_t>> TopJugadores::obtener_top_jugadores(bo
     return top_jugadores;
 }
 
-void TopJugadores::actualizar_jugadores(std::vector<std::pair<int32_t, uint32_t>>&& jugadores) {
+void TopJugadores::actualizar_jugadores(
+        std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>>&& jugadores) {
     this->jugadores = std::move(jugadores);
 }
 

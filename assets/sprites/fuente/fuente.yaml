@@ -189,4 +189,9 @@ letras:
     y: 81
     ancho: 18
     alto: 20
+  - nombre: ' '
+    x: 315
+    y: 81
+    ancho: 18
+    alto: 20
 
