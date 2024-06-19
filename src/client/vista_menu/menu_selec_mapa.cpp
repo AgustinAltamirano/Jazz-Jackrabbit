@@ -58,7 +58,8 @@ void MenuSeleccionMapa::desplegar_popup() {
 
 
 void MenuSeleccionMapa::validar_seleccion_mapa() {
-    bool mapa_es_valido = true;
+    auto mapa_elegido = popup_nombre_mapa.obtener_seleccion_mapa();
+    bool mapa_es_valido = juego.validar_mapa_elegido(mapa_elegido);
     if (mapa_es_valido) {
         definir_mapa_custom();
     } else {

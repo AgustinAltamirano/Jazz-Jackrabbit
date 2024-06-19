@@ -21,6 +21,8 @@ public:
 
     void definir_codigo_partida(int cod_partida);
 
+    bool validar_mapa_elegido(const std::string& mapa);
+
 private:
     Lobby& lobby;
 

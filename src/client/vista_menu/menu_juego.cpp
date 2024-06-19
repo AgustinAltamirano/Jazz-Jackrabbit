@@ -40,3 +40,8 @@ void MenuJuego::unir_partida() {
 void MenuJuego::definir_codigo_partida(int cod_partida) {
     codigo_partida = cod_partida;
 }
+
+
+bool MenuJuego::validar_mapa_elegido(const std::string& mapa) {
+    return lobby.validar_escenario(mapa);
+}

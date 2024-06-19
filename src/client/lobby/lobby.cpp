@@ -35,8 +35,8 @@ bool Lobby::unir_partida(const int32_t& codigo_partida, const TipoPersonaje& per
 }
 
 bool Lobby::validar_escenario(const std::string& nombre_escenario) {
-    return (cola_enviador.try_push(
-            lobby_protocolo.serializar_validar_escenario(nombre_escenario)));
+    cola_enviador.try_push(lobby_protocolo.serializar_validar_escenario(nombre_escenario));
+    return obtener_validar_escenario();
 }
 
 void Lobby::cerrar() {
