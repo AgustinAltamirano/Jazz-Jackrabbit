@@ -56,7 +56,9 @@ public:
 
     void dibujar_pantalla_carga() const;
 
-    void dibujar_top_jugadores();
+    void dibujar_top_jugadores(bool dibujar_todos, int pos_y = POS_TOP_JUGADORES_Y);
+
+    void dibujar_pantalla_fin_juego();
 
     ~HUD();
 };

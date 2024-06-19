@@ -79,7 +79,7 @@
 #define POS_TITULO_TOP_JUGADORES_Y 60
 
 #define POS_TOP_JUGADORES_X 80
-#define POS_TOP_JUGADORES_Y 100
+#define POS_TOP_JUGADORES_Y 80
 
 #define POS_ID_TOP_JUGADORES_X 120
 #define POS_PUNTAJES_JUGADORES_X 190
@@ -91,6 +91,13 @@
 
 #define POS_TEXTO_CARGA_X 38
 #define POS_TEXTO_CARGA_Y 220
+
+// Constantes de la pantalla de fin de juego
+
+#define POS_TITULO_FIN_JUEGO_X (ANCHO_VENTANA / 2)
+#define POS_TITULO_FIN_JUEGO_Y 40
+
+#define POS_TOP_JUGADORES_FIN_JUEGO_Y 130
 
 
 #endif  // VISTA_JUEGO_DEFS_H

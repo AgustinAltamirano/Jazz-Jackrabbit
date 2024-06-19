@@ -9,6 +9,7 @@
 
 #define TITULO_PANTALLA_CARGA "ESPERANDO OTROS JUGADORES"
 #define TITULO_TOP "TOP JUGADORES"
+#define TITULO_FIN_JUEGO "FIN DEL JUEGO"
 
 const std::unordered_map<TipoArma, std::string> HUD::MAPA_TIPO_ARMA{
         {INFINITA, "infinita"},
@@ -156,16 +157,15 @@ void HUD::dibujar_pantalla_carga() const {
 }
 
 
-void HUD::dibujar_top_jugadores() {
+void HUD::dibujar_top_jugadores(const bool dibujar_todos, int pos_y) {
     int pos_x = POS_TITULO_TOP_JUGADORES_X;
-    int pos_y = POS_TITULO_TOP_JUGADORES_Y;
 
     dibujar_texto(TITULO_TOP, pos_x, pos_y);
 
     pos_x = POS_TOP_JUGADORES_X;
-    pos_y = POS_TOP_JUGADORES_Y;
+    pos_y += SEPARACION_VERTICAL_TOP * 4;
 
-    const auto jugadores = top_jugadores.obtener_top_jugadores(false);
+    const auto jugadores = top_jugadores.obtener_top_jugadores(dibujar_todos);
 
     for (const auto& [id, puntaje, tipo]: jugadores) {
         SDL2pp::Texture& textura_jugadores =
@@ -181,6 +181,14 @@ void HUD::dibujar_top_jugadores() {
         pos_x = POS_TOP_JUGADORES_X;
         pos_y += coords_icono.GetH() + SEPARACION_VERTICAL_TOP;
     }
+}
+void HUD::dibujar_pantalla_fin_juego() {
+    SDL2pp::Texture& fondo_pantalla_fin_juego = lector_texturas.obtener_textura_pantalla_carga();
+    renderer.Copy(fondo_pantalla_fin_juego, SDL2pp::Rect(0, 0, ANCHO_VENTANA, ALTO_VENTANA),
+                  SDL2pp::Rect(0, 0, ANCHO_VENTANA, ALTO_VENTANA));
+    int pos_x = POS_TITULO_FIN_JUEGO_X;
+    dibujar_texto(TITULO_FIN_JUEGO, pos_x, POS_TITULO_FIN_JUEGO_Y);
+    dibujar_top_jugadores(true, POS_TOP_JUGADORES_FIN_JUEGO_Y);
 }
 
 HUD::~HUD() = default;

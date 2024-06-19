@@ -254,3 +254,5 @@ const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_recogible(
         const std::string& nombre_recogible) const {
     return coords_recogibles.at(nombre_recogible);
 }
+
+LectorTexturas::~LectorTexturas() = default;

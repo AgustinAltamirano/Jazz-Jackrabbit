@@ -251,13 +251,25 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
 
 void AdministradorVistaJuego::run() {
     int64_t ticks_anteriores = 0;
-    while (!fin_juego) {
-        if (!entrada_juego.procesar_entrada()) {
+    bool cerrar_juego = false;
+    while (!cerrar_juego) {
+        cerrar_juego = !entrada_juego.procesar_entrada();
+        if (cerrar_juego) {
             fin_juego = true;
         }
 
         actualizar_vista();
         renderer.Clear();
+
+        if (fin_juego) {
+            hud.dibujar_pantalla_fin_juego();
+            renderer.Present();
+
+            const int64_t ticks_actuales = SDL_GetTicks();
+            ticks_anteriores += sincronizar_vista(ticks_actuales - ticks_anteriores);
+            continue;
+        }
+
         if (fondo_escenario) {
             fondo_escenario->dibujar();
         }
@@ -274,7 +286,7 @@ void AdministradorVistaJuego::run() {
         if (primera_snapshot_recibida) {
             hud.dibujar();
             if (entrada_juego.mostrar_top()) {
-                hud.dibujar_top_jugadores();
+                hud.dibujar_top_jugadores(false);
             }
         } else {
             hud.dibujar_pantalla_carga();
