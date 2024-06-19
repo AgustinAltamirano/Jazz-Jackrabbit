@@ -7,6 +7,7 @@
 #define CORAZON "corazon"
 #define INFINITO "infinito"
 
+#define TITULO_PANTALLA_CARGA "ESPERANDO OTROS JUGADORES"
 #define TITULO_TOP "TOP JUGADORES"
 
 const std::unordered_map<TipoArma, std::string> HUD::MAPA_TIPO_ARMA{
@@ -115,33 +116,6 @@ void HUD::dibujar_id_jugador() const {
     dibujar_numero(id_jugador + 1, posicion_actual, POS_ID_JUGADOR_Y, true);
 }
 
-void HUD::dibujar_top_jugadores() {
-    int pos_x = POS_TITULO_TOP_JUGADORES_X;
-    int pos_y = POS_TITULO_TOP_JUGADORES_Y;
-
-    dibujar_texto(TITULO_TOP, pos_x, pos_y);
-
-    pos_x = POS_TOP_JUGADORES_X;
-    pos_y = POS_TOP_JUGADORES_Y;
-
-    const auto jugadores = top_jugadores.obtener_top_jugadores(false);
-
-    for (const auto& [id, puntaje, tipo]: jugadores) {
-        SDL2pp::Texture& textura_jugadores =
-                lector_texturas.obtener_textura_personaje(MAPA_TIPO_PERSONAJE.at(tipo));
-        const SDL2pp::Rect& coords_icono =
-                lector_texturas.obtener_coords_icono(MAPA_TIPO_PERSONAJE.at(tipo));
-        renderer.Copy(textura_jugadores, coords_icono,
-                      SDL2pp::Rect(pos_x, pos_y, coords_icono.GetW(), coords_icono.GetH()));
-        pos_x += coords_icono.GetW() + SEPARACION_ENTRE_NUMEROS;
-        dibujar_numero(id + 1, pos_x, pos_y);
-        pos_x = POS_PUNTAJES_JUGADORES_X;
-        dibujar_numero(puntaje, pos_x, pos_y);
-        pos_x = POS_TOP_JUGADORES_X;
-        pos_y += coords_icono.GetH() + SEPARACION_VERTICAL_TOP;
-    }
-}
-
 HUD::HUD(const int32_t id_jugador, SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas):
         renderer(renderer),
         lector_texturas(lector_texturas),
@@ -166,13 +140,46 @@ void HUD::actualizar_top_jugadores(
     top_jugadores.actualizar_jugadores(std::move(jugadores));
 }
 
-void HUD::dibujar(const bool mostrar_top) {
+void HUD::dibujar() const {
     dibujar_puntos();
     dibujar_vida();
     dibujar_arma();
     dibujar_id_jugador();
-    if (mostrar_top) {
-        dibujar_top_jugadores();
+}
+
+void HUD::dibujar_pantalla_carga() const {
+    SDL2pp::Texture& fondo_pantalla_carga = lector_texturas.obtener_textura_pantalla_carga();
+    renderer.Copy(fondo_pantalla_carga, SDL2pp::Rect(0, 0, ANCHO_VENTANA, ALTO_VENTANA),
+                  SDL2pp::Rect(0, 0, ANCHO_VENTANA, ALTO_VENTANA));
+    int pos_x = POS_TEXTO_CARGA_X;
+    dibujar_texto(TITULO_PANTALLA_CARGA, pos_x, POS_TEXTO_CARGA_Y);
+}
+
+
+void HUD::dibujar_top_jugadores() {
+    int pos_x = POS_TITULO_TOP_JUGADORES_X;
+    int pos_y = POS_TITULO_TOP_JUGADORES_Y;
+
+    dibujar_texto(TITULO_TOP, pos_x, pos_y);
+
+    pos_x = POS_TOP_JUGADORES_X;
+    pos_y = POS_TOP_JUGADORES_Y;
+
+    const auto jugadores = top_jugadores.obtener_top_jugadores(false);
+
+    for (const auto& [id, puntaje, tipo]: jugadores) {
+        SDL2pp::Texture& textura_jugadores =
+                lector_texturas.obtener_textura_personaje(MAPA_TIPO_PERSONAJE.at(tipo));
+        const SDL2pp::Rect& coords_icono =
+                lector_texturas.obtener_coords_icono(MAPA_TIPO_PERSONAJE.at(tipo));
+        renderer.Copy(textura_jugadores, coords_icono,
+                      SDL2pp::Rect(pos_x, pos_y, coords_icono.GetW(), coords_icono.GetH()));
+        pos_x += coords_icono.GetW() + SEPARACION_ENTRE_NUMEROS;
+        dibujar_numero(id + 1, pos_x, pos_y);
+        pos_x = POS_PUNTAJES_JUGADORES_X;
+        dibujar_numero(puntaje, pos_x, pos_y);
+        pos_x = POS_TOP_JUGADORES_X;
+        pos_y += coords_icono.GetH() + SEPARACION_VERTICAL_TOP;
     }
 }
 

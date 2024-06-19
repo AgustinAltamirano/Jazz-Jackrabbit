@@ -10,6 +10,13 @@
 LectorTexturas::LectorTexturas(SDL2pp::Renderer& renderer): renderer(renderer) {}
 
 void LectorTexturas::cargar_texturas_y_coordenadas() {
+    // Lectura de la imagen de la pantalla de carga
+    const std::string ruta_pantalla_carga(
+            ASSETS_PATH RUTA_SPRITES DIR_PANTALLA_CARGA IMG_PANTALLA_CARGA);
+    SDL2pp::Surface surface_pantalla_carga(ruta_pantalla_carga);
+    textura_pantalla_carga = std::make_unique<SDL2pp::Texture>(renderer, ruta_pantalla_carga);
+    textura_pantalla_carga->SetBlendMode(SDL_BLENDMODE_BLEND);
+
     // Lectura de fondos de escenario y bloques
     const std::string ruta_escenarios(ASSETS_PATH RUTA_SPRITES DIR_ESCENARIOS);
     YAML::Node escenarios = YAML::LoadFile(ruta_escenarios + std::string(ESCENARIOS_CONFIG));
@@ -175,6 +182,10 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
     }
 }
 
+SDL2pp::Texture& LectorTexturas::obtener_textura_pantalla_carga() const {
+    return *textura_pantalla_carga;
+}
+
 SDL2pp::Texture& LectorTexturas::obtener_textura_personaje(const std::string& personaje) {
     return texturas_personajes.at(personaje);
 }
@@ -220,7 +231,7 @@ const SDL2pp::Rect& LectorTexturas::obtener_coords_simbolo(
     return coords_simbolos.at(nombre_simbolo);
 }
 
-const SDL2pp::Rect& LectorTexturas::obtener_coords_letra(char letra) const {
+const SDL2pp::Rect& LectorTexturas::obtener_coords_letra(const char letra) const {
     return coords_letras.at(letra);
 }
 
@@ -242,140 +253,4 @@ const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_bala(
 const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_recogible(
         const std::string& nombre_recogible) const {
     return coords_recogibles.at(nombre_recogible);
-}
-
-
-LectorTexturas::IteradorTexturas LectorTexturas::begin_personajes() {
-    const auto iterador_texturas = texturas_personajes.begin();
-    return {texturas_personajes, coords_personajes, iterador_texturas,
-            coords_personajes.at(iterador_texturas->first).begin()};
-}
-
-LectorTexturas::IteradorTexturas LectorTexturas::end_personajes() {
-    // Se considera que IteradorTexturas se encuentra al final si su atributo iterador_texturas
-    // se encuentra al final, sin importar el estado de iterador_animaciones.
-    return {texturas_personajes, coords_personajes, texturas_personajes.end(),
-            coords_personajes.at(texturas_personajes.begin()->first).begin()};
-}
-
-LectorTexturas::IteradorAnimaciones LectorTexturas::begin_animaciones_personaje(
-        const std::string& nombre_personaje) {
-    if (!coords_personajes.count(nombre_personaje)) {
-        throw VistaJuegoException("Personaje no encontrado");
-    }
-    std::unordered_map<std::string, std::vector<SDL2pp::Rect>>& coords_per =
-            coords_personajes.at(nombre_personaje);
-    return {coords_per, coords_per.begin()};
-}
-
-LectorTexturas::IteradorAnimaciones LectorTexturas::end_animaciones_personaje(
-        const std::string& nombre_personaje) {
-    if (!coords_personajes.count(nombre_personaje)) {
-        throw VistaJuegoException("Personaje no encontrado");
-    }
-    std::unordered_map<std::string, std::vector<SDL2pp::Rect>>& coords_per =
-            coords_personajes.at(nombre_personaje);
-    return {coords_per, coords_per.end()};
-}
-
-LectorTexturas::~LectorTexturas() = default;
-
-
-/** Iterador del LectorTexturas */
-
-LectorTexturas::IteradorTexturas::IteradorTexturas(
-        std::unordered_map<std::string, SDL2pp::Texture>& texturas,
-        std::unordered_map<std::string, std::unordered_map<std::string, std::vector<SDL2pp::Rect>>>&
-                coords,
-        const std::unordered_map<std::string, SDL2pp::Texture>::iterator iterador_texturas,
-        const std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
-                iterador_animaciones):
-        texturas(texturas),
-        coords(coords),
-        iterador_texturas(iterador_texturas),
-        iterador_animaciones(iterador_animaciones) {}
-
-LectorTexturas::IteradorTexturas& LectorTexturas::IteradorTexturas::operator++() {
-    // Se pasa a la siguiente animación
-    ++iterador_animaciones;
-
-    // Si todavía quedan animaciones por recorrer, el iterador ya se encuentra en el estado deseado
-    if (iterador_animaciones != coords.at(iterador_texturas->first).end()) {
-        return *this;
-    }
-
-    // Caso contrario, se pasa a la siguiente textura
-    ++iterador_texturas;
-
-    // Si quedan texturas por recorrer, se selecciona la primera animación
-    // de la nueva textura actual.
-    if (iterador_texturas != texturas.end()) {
-        iterador_animaciones = coords.at(iterador_texturas->first).begin();
-    }
-
-    // Llegado este punto, el iterador ya se encuentra en el estado deseado
-    return *this;
-}
-
-bool LectorTexturas::IteradorTexturas::operator==(const IteradorTexturas& otro) const {
-    // Se considera que IteradorTexturas se encuentra al final si su atributo iterador_texturas
-    // se encuentra al final, sin importar el estado de iterador_animaciones.
-    if (this->iterador_texturas == this->texturas.end() &&
-        otro.iterador_texturas == otro.texturas.end()) {
-        // Ambas instancias de IteradorTexturas se encuentran al final. Por lo tanto, son iguales.
-        return true;
-    }
-    return this->iterador_texturas == otro.iterador_texturas &&
-           this->iterador_animaciones == otro.iterador_animaciones;
-}
-
-bool LectorTexturas::IteradorTexturas::operator!=(const IteradorTexturas& otro) const {
-    return !(*this == otro);
-}
-
-const std::string& LectorTexturas::IteradorTexturas::obtener_nombre_objeto_actual() const {
-    return iterador_texturas->first;
-}
-
-SDL2pp::Texture& LectorTexturas::IteradorTexturas::obtener_textura_actual() const {
-    return iterador_texturas->second;
-}
-
-const std::string& LectorTexturas::IteradorTexturas::obtener_nombre_animacion_actual() const {
-    return iterador_animaciones->first;
-}
-
-const std::vector<SDL2pp::Rect>& LectorTexturas::IteradorTexturas::obtener_coordenadas_actuales()
-        const {
-    return iterador_animaciones->second;
-}
-
-
-/** Iterador de animaciones de un solo objeto */
-
-LectorTexturas::IteradorAnimaciones::IteradorAnimaciones(
-        std::unordered_map<std::string, std::vector<SDL2pp::Rect>>& animaciones,
-        std::unordered_map<std::string, std::vector<SDL2pp::Rect>>::const_iterator
-                iterador_animaciones):
-        coords(animaciones), iterador_animaciones(iterador_animaciones) {}
-
-LectorTexturas::IteradorAnimaciones& LectorTexturas::IteradorAnimaciones::operator++() {
-    ++iterador_animaciones;
-    return *this;
-}
-
-bool LectorTexturas::IteradorAnimaciones::operator==(const IteradorAnimaciones& otro) const {
-    return this->iterador_animaciones == otro.iterador_animaciones;
-}
-
-bool LectorTexturas::IteradorAnimaciones::operator!=(const IteradorAnimaciones& otro) const {
-    return !(*this == otro);
-}
-
-const std::string& LectorTexturas::IteradorAnimaciones::obtener_nombre_animacion_actual() const {
-    return iterador_animaciones->first;
-}
-const std::vector<SDL2pp::Rect>& LectorTexturas::IteradorAnimaciones::obtener_coordenadas_actuales()
-        const {
-    return iterador_animaciones->second;
 }

@@ -39,7 +39,6 @@ private:
     void dibujar_vida() const;
     void dibujar_arma() const;
     void dibujar_id_jugador() const;
-    void dibujar_top_jugadores();
 
 public:
     HUD(int32_t id_jugador, SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas);
@@ -53,7 +52,11 @@ public:
     void actualizar_top_jugadores(
             std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>>&& jugadores);
 
-    void dibujar(bool mostrar_top);
+    void dibujar() const;
+
+    void dibujar_pantalla_carga() const;
+
+    void dibujar_top_jugadores();
 
     ~HUD();
 };

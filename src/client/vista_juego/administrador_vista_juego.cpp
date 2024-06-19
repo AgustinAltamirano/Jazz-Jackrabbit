@@ -235,7 +235,6 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         ventana(titulo_ventana, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA,
                 ALTO_VENTANA, 0),
         renderer(ventana, -1, SDL_RENDERER_ACCELERATED),
-        pantalla_carga(renderer),
         lector_texturas(renderer),
         entrada_juego(cliente),
         hud(id_cliente, renderer, lector_texturas),
@@ -273,9 +272,12 @@ void AdministradorVistaJuego::run() {
             snd.dibujar();
         }
         if (primera_snapshot_recibida) {
-            hud.dibujar(entrada_juego.mostrar_top());
+            hud.dibujar();
+            if (entrada_juego.mostrar_top()) {
+                hud.dibujar_top_jugadores();
+            }
         } else {
-            pantalla_carga.dibujar();
+            hud.dibujar_pantalla_carga();
         }
 
         renderer.Present();

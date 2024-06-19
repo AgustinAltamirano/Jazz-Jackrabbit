@@ -32,7 +32,6 @@
 #include "hud.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
-#include "pantalla_carga.h"
 #include "personaje.h"
 #include "vista_juego_defs.h"
 
@@ -56,7 +55,6 @@ private:
 
     SDL2pp::Window ventana;
     SDL2pp::Renderer renderer;
-    PantallaCarga pantalla_carga;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
     HUD hud;

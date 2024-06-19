@@ -27,6 +27,9 @@
  * Rutas usadas para cargar los sprites y las coordenadas de cada uno en sus respectivas imágenes.
  */
 #define RUTA_SPRITES "/sprites"
+#define DIR_PANTALLA_CARGA "/pantalla/"
+#define IMG_PANTALLA_CARGA "/pantalla_carga.png"
+
 #define DIR_PERSONAJES "/personajes/"
 #define PERSONAJES_CONFIG "/personajes.yaml"
 
@@ -83,6 +86,11 @@
 
 #define SEPARACION_HORIZONTAL_TOP 30
 #define SEPARACION_VERTICAL_TOP 10
+
+// Constantes de la pantalla de carga
+
+#define POS_TEXTO_CARGA_X 38
+#define POS_TEXTO_CARGA_Y 220
 
 
 #endif  // VISTA_JUEGO_DEFS_H

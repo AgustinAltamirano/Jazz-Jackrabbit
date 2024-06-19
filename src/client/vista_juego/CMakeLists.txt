@@ -18,8 +18,6 @@ add_library(vista_juego
         camara.cpp
         camara.h
         vista_juego_defs.h
-        pantalla_carga.cpp
-        pantalla_carga.h
         hud.cpp
         hud.h
         ../../common/tipo_enemigo.h
