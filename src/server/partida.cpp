@@ -22,6 +22,8 @@ Partida::Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t cod
         cola_snapshots() {
     mapa_clientes_juego[id_cliente] = personaje;
     cola_snapshots[id_cliente] = cola_enviador;
+    cantidad_jugadores = 1;
+    comenzada = false;
 }
 
 void Partida::run() {
@@ -36,6 +38,10 @@ void Partida::agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador
                               const int32_t& id_cliente, const TipoPersonaje& personaje) {
     mapa_clientes_juego[id_cliente] = personaje;
     cola_snapshots[id_cliente] = cola_enviador;
+    cantidad_jugadores++;
+    if (cantidad_jugadores == capacidad_partida) {
+        comenzada = true;
+    }
 }
 
 bool Partida::comparar_codigo_partida(const int32_t& codigo_a_comparar) {
@@ -76,7 +82,7 @@ void Partida::detener_partida() { sigo_jugando = false; }
 
 int32_t Partida::obtener_codigo_partida() { return codigo_partida; }
 
-bool Partida::puedo_unir() { return cola_snapshots.size() < capacidad_partida; }
+bool Partida::puedo_unir() { return !comenzada; }
 
 bool Partida::esta_jugando() { return sigo_jugando; }
 
