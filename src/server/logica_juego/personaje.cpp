@@ -15,6 +15,7 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
         pos_y(pos_y_inicial),
         vel_y(0),
         sobre_rampa(false),
+        dash(false),
         de_espaldas(false),
         en_aire(false),
         ataque_especial(false),
@@ -48,15 +49,21 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 break;
             case MOVER_DER:
                 this->vel_x = 5;
+                if (dash) {
+                    this->vel_x *= 2;
+                }
                 this->de_espaldas = false;
                 break;
             case MOVER_IZQ:
                 this->vel_x = -5;
+                if (dash) {
+                    this->vel_x *= 2;
+                }
                 this->de_espaldas = true;
                 break;
             case ACTIVAR_DASH:
                 if (!en_aire && (this->estado != INTOXICADO) && (this->estado != IMPACTADO)) {
-                    this->vel_y *= 2;
+                    this->dash = true;
                 }
                 break;
             case DISPARAR_ACCION:
@@ -171,7 +178,11 @@ void personaje::cambiar_estado(const bool cae) {
         }
     } else {
         if (this->vel_x != 0) {
-            this->estado = CORRER;
+            if (dash) {
+                this->estado = DASH;
+            } else {
+                this->estado = CORRER;
+            }
         } else {
             this->estado = IDLE;
         }
@@ -181,11 +192,13 @@ void personaje::cambiar_estado(const bool cae) {
             this->vel_x -= 1;
             if (this->vel_x <= 0) {
                 this->vel_x = 0;
+                this->dash = false;
             }
         } else if (this->vel_x < 0) {
             this->vel_x += 1;
             if (this->vel_x >= 0) {
                 this->vel_x = 0;
+                this->dash = false;
             }
         }
     }
@@ -211,7 +224,7 @@ void personaje::pasar_tick() {
             }
             break;
         case IMPACTADO:
-            if (tiempo_estado >= FRAMES_POR_SEGUNDO) {
+            if (tiempo_estado >= FRAMES_POR_SEGUNDO * 2) {
                 this->estado = IDLE;
             }
             break;

@@ -30,6 +30,7 @@ private:
 
     bool sobre_rampa;
 
+    bool dash;
     bool de_espaldas;      // invertido en eje x
     bool en_aire;          // define si la aceleracion vertical y horizontal afecta o no
     bool ataque_especial;  // si está realizando un ataque especial las hitboxes hacen daño a los
