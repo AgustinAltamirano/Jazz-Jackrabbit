@@ -13,7 +13,9 @@
 /** Clase encargada de leer la entrada del jugador y enviarla al hilo transmisor. */
 class EntradaJuego {
 private:
-    static const std::unordered_map<SDL_Keycode, const TipoComando> MAPA_ACCIONES;
+    static const std::unordered_map<SDL_Keycode, const TipoComando> MAPA_ACCIONES_PRESIONAR_TECLA;
+
+    static const std::unordered_map<SDL_Keycode, const TipoComando> MAPA_ACCIONES_SOLTAR_TECLA;
 
     Cliente& cliente;
     bool top_activo;
