@@ -27,11 +27,11 @@ public:
     TipoComando obtener_comando();
 
     virtual Queue<ComandoServer*>* ejecutar(GestorPartidas* gestor_partidas,
-                                   Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
-                                   int32_t id_cliente, bool& cerrado,
-                                   ServidorProtocolo& servidor_serializador);
+                                            Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
+                                            bool& cerrado,
+                                            ServidorProtocolo& servidor_serializador) = 0;
 
-    int32_t obtener_id_cliente();
+    [[nodiscard]] int32_t obtener_id_cliente() const;
 
     virtual ~ComandoServer() = default;
 };

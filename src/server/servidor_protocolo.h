@@ -9,20 +9,20 @@
 #include "partida.h"
 
 #define TAM_TIPO_COMANDO 1
-class ComandoLobbyCrear;
-class ComandoLobbyUnir;
-class ComandoLobbyValidar;
+class ComandoServerCrear;
+class ComandoServerUnir;
+class ComandoServerValidar;
 
 
 class ServidorProtocolo {
 private:
     Socket* socket;
 
-    std::unique_ptr<ComandoLobbyCrear> deserializar_crear(bool* cerrado, int32_t& id_cliente);
+    std::unique_ptr<ComandoServerCrear> deserializar_crear(bool* cerrado, int32_t& id_cliente);
 
-    std::unique_ptr<ComandoLobbyUnir> deserializar_unir(bool* cerrado, const int32_t& id_cliente);
+    std::unique_ptr<ComandoServerUnir> deserializar_unir(bool* cerrado, const int32_t& id_cliente);
 
-    std::unique_ptr<ComandoLobbyValidar> deserializar_validar(bool* cerrado, int32_t& id_cliente);
+    std::unique_ptr<ComandoServerValidar> deserializar_validar(bool* cerrado, int32_t& id_cliente);
 
 public:
     ServidorProtocolo();  // Solo para testing

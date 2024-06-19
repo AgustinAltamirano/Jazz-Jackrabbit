@@ -14,11 +14,11 @@ ComandoServer::ComandoServer(int32_t& id_cliente, TipoComando comando):
 
 TipoComando ComandoServer::obtener_comando() { return comando; }
 
-int32_t ComandoServer::obtener_id_cliente() { return id_cliente; }
+int32_t ComandoServer::obtener_id_cliente() const { return id_cliente; }
 
 Queue<ComandoServer*>* ComandoServer::ejecutar(GestorPartidas* gestor_partidas,
-                                             Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
-                                             int32_t id_cliente, bool& cerrado,
-                                             ServidorProtocolo& servidor_serializador) {
+                                               Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
+                                               bool& cerrado,
+                                               ServidorProtocolo& servidor_serializador) {
     return nullptr;
 }

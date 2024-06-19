@@ -27,8 +27,8 @@ void RecibidorCliente::inicio_recibidor_cliente() {
             int32_t codigo_partida;
             auto comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
 
-            cola_recibidor = comando->ejecutar(gestor_partidas, cola_enviador, id_cliente, cerrado,
-                                               servidor_protocolo);
+            cola_recibidor =
+                    comando->ejecutar(gestor_partidas, cola_enviador, cerrado, servidor_protocolo);
 
             if (cola_recibidor != nullptr) {
                 sigo_en_el_lobby = false;

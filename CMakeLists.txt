@@ -61,6 +61,8 @@ add_executable(Server src/server/servidor_main.cpp src/server/servidor.h src/ser
         src/server/comando_server.cpp
         src/server/comando_server_unir.cpp
         src/server/comando_server_validar.cpp
+        src/server/comando_server_generico.h
+        src/server/comando_server_generico.cpp
 )
 
 add_subdirectory(src/client/vista_juego)

@@ -8,8 +8,10 @@
 #include "comando_server.h"
 
 
-class ComandoLobbyCrear: public ComandoServer {
+class ComandoServerCrear: public ComandoServer {
 private:
+    int32_t id_cliente;
+
     std::string nombre_escenario;
 
     int32_t codigo_partida;
@@ -19,19 +21,13 @@ private:
     int8_t capacidad_partida{};
 
 public:
-    ComandoLobbyCrear(int32_t& id_cliente, std::string nombre_escenario, TipoPersonaje personaje,
+    ComandoServerCrear(int32_t id_cliente, std::string nombre_escenario, TipoPersonaje personaje,
                     int8_t capacidad_partida);
 
-    explicit ComandoLobbyCrear(int32_t codigo_partida);
-
-    [[nodiscard]] int32_t obtener_codigo_partida() const;
-
     Queue<ComandoServer*>* ejecutar(GestorPartidas* gestor_partidas,
-                  Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
-                  int32_t id_cliente, bool& cerrado,
-                  ServidorProtocolo& servidor_serializador) override;
-
-    ~ComandoLobbyCrear() override = default;
+                                    Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
+                                    bool& cerrado,
+                                    ServidorProtocolo& servidor_serializador) override;
 };
 
 #endif

@@ -7,29 +7,21 @@
 
 #include "comando_server.h"
 
-class ComandoLobbyUnir: public ComandoServer {
+class ComandoServerUnir: public ComandoServer {
 private:
+    int32_t id_cliente;
+
     int32_t codigo_partida;
 
     TipoPersonaje personaje;
 
-    bool unio;
-
 public:
-    ComandoLobbyUnir(int32_t id_cliente, int32_t codigo_partida, TipoPersonaje personaje);
-
-    explicit ComandoLobbyUnir(bool unio);
-
-    [[nodiscard]] int32_t obtener_codigo_partida() const;
-
-    TipoPersonaje obtener_personaje();
-
-    [[nodiscard]] bool obtener_unio() const;
+    ComandoServerUnir(int32_t id_cliente, int32_t codigo_partida, TipoPersonaje personaje);
 
     Queue<ComandoServer*>* ejecutar(GestorPartidas* gestor_partidas,
-                  Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
-                  int32_t id_cliente, bool& cerrado,
-                  ServidorProtocolo& servidor_serializador) override;
+                                    Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
+                                    bool& cerrado,
+                                    ServidorProtocolo& servidor_serializador) override;
 };
 
 #endif
