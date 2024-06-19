@@ -12,19 +12,28 @@ void ClienteProtocolo::enviar_comando(std::vector<char> bytes, bool* cerrado) {
     socket->sendall(bytes.data(), bytes.size(), cerrado);
 }
 
-std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrado){
+std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrado) {
     std::shared_ptr<SnapshotDTO> snapshot_dto = std::make_shared<SnapshotDTO>();
     uint8_t cantidad_clientes;
     uint8_t cantidad_bloques;
+    uint8_t cantidad_balas;
+    uint8_t cantidad_enemigos;
+    uint8_t cantidad_recogibles;
     uint8_t tipo_escenario;
+    uint8_t tiempo_restante;
     bool fin_juego;
 
     socket->recvall(&cantidad_clientes, sizeof(cantidad_clientes), cerrado);
     socket->recvall(&cantidad_bloques, sizeof(cantidad_bloques), cerrado);
+    socket->recvall(&cantidad_balas, sizeof(cantidad_balas), cerrado);
+    socket->recvall(&cantidad_enemigos, sizeof(cantidad_enemigos), cerrado);
+    socket->recvall(&cantidad_recogibles, sizeof(cantidad_recogibles), cerrado);
     socket->recvall(&tipo_escenario, sizeof(tipo_escenario), cerrado);
+    socket->recvall(&tiempo_restante, sizeof(tiempo_restante), cerrado);
     socket->recvall(&fin_juego, sizeof(fin_juego), cerrado);
 
     snapshot_dto->establecer_tipo_escenario(static_cast<TipoEscenario>(tipo_escenario));
+    snapshot_dto->agregar_tiempo_restante(tiempo_restante);
     snapshot_dto->establecer_fin_juego(static_cast<bool>(fin_juego));
 
     for (int i = 0; i < cantidad_clientes; i++) {
@@ -38,5 +47,24 @@ std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrad
         socket->recvall(&bloque, sizeof(BloqueEscenarioDTO), cerrado);
         snapshot_dto->agregar_bloque_escenario(bloque);
     }
+
+    for (int i = 0; i < cantidad_balas; i++) {
+        BalaDTO bala;
+        socket->recvall(&bala, sizeof(BalaDTO), cerrado);
+        snapshot_dto->agregar_bala(bala);
+    }
+
+    for (int i = 0; i < cantidad_enemigos; i++) {
+        EnemigoDTO enemigo;
+        socket->recvall(&enemigo, sizeof(EnemigoDTO), cerrado);
+        snapshot_dto->agregar_enemigo(enemigo);
+    }
+
+    for (int i = 0; i < cantidad_recogibles; i++) {
+        RecogibleDTO recogible;
+        socket->recvall(&recogible, sizeof(RecogibleDTO), cerrado);
+        snapshot_dto->agregar_recogible(recogible);
+    }
+
     return snapshot_dto;
 }
