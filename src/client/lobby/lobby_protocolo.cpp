@@ -75,7 +75,7 @@ ComandoUnirDTO* LobbyProtocolo::deserializar_unir_partida(bool* cerrado) {
     bool unio;
     socket->recvall(&unio, 1, cerrado);
     ComandoUnirDTO* unir_dto = new ComandoUnirDTO(unio);
-    *cerrado = true;
+    *cerrado = unio;
     return unir_dto;
 }
 

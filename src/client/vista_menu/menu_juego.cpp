@@ -32,8 +32,8 @@ void MenuJuego::crear_partida() {
 }
 
 
-void MenuJuego::unir_partida() {
-    lobby.unir_partida(codigo_partida, personaje_elegido);
+bool MenuJuego::unir_partida() {
+    return lobby.unir_partida(codigo_partida, personaje_elegido);
 }
 
 

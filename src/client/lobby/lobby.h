@@ -31,6 +31,10 @@ private:
 
     Queue<ComandoDTO*> cola_recibidor;
 
+    bool obtener_unir();
+
+    bool obtener_validar_escenario();
+
 public:
     Lobby(const std::string& hostname, const std::string& servname);
 
@@ -41,17 +45,11 @@ public:
 
     bool validar_escenario(const std::string& nombre_escenario);
 
-    void cerrar();
-
     void salir_lobby();
 
     Socket move_socket();
 
     int32_t obtener_crear();
-
-    bool obtener_unir();
-
-    bool obtener_validar_escenario();
 
     int obtener_id_cliente();
 };

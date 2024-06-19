@@ -15,10 +15,7 @@ MenuSeleccion::MenuSeleccion(QMainWindow* parent):
 
 void MenuSeleccion::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Escape) {
-        desenfocar_boton();
-        menu_previo->move(this->pos());
-        menu_previo->show();
-        hide();
+        volver_menu_previo();
     } else {
         QMainWindow::keyPressEvent(event);
     }
@@ -46,6 +43,14 @@ void MenuSeleccion::conectar_botones(const std::vector<QPushButton*>& botones,
 
         layout.addWidget(boton);
     }
+}
+
+
+void MenuSeleccion::volver_menu_previo() {
+    desenfocar_boton();
+    menu_previo->move(this->pos());
+    menu_previo->show();
+    hide();
 }
 
 

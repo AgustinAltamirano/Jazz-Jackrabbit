@@ -17,7 +17,7 @@ public:
 
     void crear_partida();
 
-    void unir_partida();
+    bool unir_partida();
 
     void definir_codigo_partida(int cod_partida);
 

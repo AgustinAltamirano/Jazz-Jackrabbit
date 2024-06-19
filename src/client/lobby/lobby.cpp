@@ -1,10 +1,8 @@
 #include "lobby.h"
 
-#include <cstring>
 #include <string>
 #include <utility>
 
-#include <arpa/inet.h>
 #include <sys/socket.h>
 
 #include "comando_crear_dto.h"
@@ -30,23 +28,13 @@ bool Lobby::crear_partida(const std::string& nombre_escenario, const TipoPersona
 }
 
 bool Lobby::unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje) {
-    return (cola_enviador.try_push(
-            lobby_protocolo.serializar_unir_partida(codigo_partida, personaje)));
+    cola_enviador.try_push(lobby_protocolo.serializar_unir_partida(codigo_partida, personaje));
+    return obtener_unir();
 }
 
 bool Lobby::validar_escenario(const std::string& nombre_escenario) {
     cola_enviador.try_push(lobby_protocolo.serializar_validar_escenario(nombre_escenario));
     return obtener_validar_escenario();
-}
-
-void Lobby::cerrar() {
-    sigo_hablando = false;
-    socket.shutdown(SHUT_RDWR);
-    socket.close();
-    cola_enviador.close();
-    lobby_enviador.join();
-    cola_recibidor.close();
-    lobby_recibidor.join();
 }
 
 void Lobby::salir_lobby() {

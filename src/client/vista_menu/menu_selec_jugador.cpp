@@ -1,4 +1,7 @@
 #include "menu_selec_jugador.h"
+
+#include <QMessageBox>
+
 #include "constantes_menu.h"
 
 
@@ -34,7 +37,14 @@ void MenuSeleccionJugador::realizar_accion_menu(QPushButton* boton_seleccionado)
     if (es_de_creacion) {
         juego.crear_partida();
     } else {
-        juego.unir_partida();
+        auto se_unio_correctamente = juego.unir_partida();
+        if (!se_unio_correctamente) {
+            QMessageBox msgBox(this);
+            msgBox.setText(MSJ_BOX_FALLO_PARTIDA);
+            msgBox.exec();
+            volver_menu_previo();
+            return;
+        }
     }
 
     close();
