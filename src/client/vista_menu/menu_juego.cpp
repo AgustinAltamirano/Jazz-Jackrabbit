@@ -27,8 +27,8 @@ void MenuJuego::definir_mapa_elegido(const std::string& mapa) {
 void MenuJuego::definir_cant_jugadores(int cant_jug) { cant_jugadores = cant_jug; }
 
 
-void MenuJuego::crear_partida() {
-    lobby.crear_partida(mapa_elegido, personaje_elegido, cant_jugadores);
+int32_t MenuJuego::crear_partida() {
+    return lobby.crear_partida(mapa_elegido, personaje_elegido, cant_jugadores);
 }
 
 

@@ -15,7 +15,7 @@ public:
 
     void definir_cant_jugadores(int cant_jug);
 
-    void crear_partida();
+    int32_t crear_partida();
 
     bool unir_partida();
 

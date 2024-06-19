@@ -18,7 +18,10 @@
 #define M_TOP 150
 #define M_RIGHT 50
 #define M_BOTTOM 0
+#define MSJ_BOX_CREACION_PARTIDA "Código de partida: "
 #define MSJ_BOX_FALLO_PARTIDA "La partida está llena o no existe"
+#define TITULO_CREACION_PARTIDA "Partida creada"
+#define TITULO_FALLO_PARTIDA "No se pudo unir a la partida"
 
 
 class MenuSeleccionJugador: public MenuSeleccion {

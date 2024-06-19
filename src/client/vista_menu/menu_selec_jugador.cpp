@@ -35,12 +35,18 @@ void MenuSeleccionJugador::realizar_accion_menu(QPushButton* boton_seleccionado)
     juego.definir_personaje_elegido(opcion_seleccionada);
 
     if (es_de_creacion) {
-        juego.crear_partida();
+        auto codigo_partida = juego.crear_partida();
+        std::string codigo_partida_str = std::to_string(codigo_partida);
+        QMessageBox msgBox(this);
+        msgBox.setText(QString::fromStdString(MSJ_BOX_CREACION_PARTIDA + codigo_partida_str));
+        msgBox.setWindowTitle(TITULO_CREACION_PARTIDA);
+        msgBox.exec();
     } else {
         auto se_unio_correctamente = juego.unir_partida();
         if (!se_unio_correctamente) {
             QMessageBox msgBox(this);
             msgBox.setText(MSJ_BOX_FALLO_PARTIDA);
+            msgBox.setWindowTitle(TITULO_FALLO_PARTIDA);
             msgBox.exec();
             volver_menu_previo();
             return;
