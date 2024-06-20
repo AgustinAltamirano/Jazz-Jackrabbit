@@ -5,6 +5,8 @@
 
 personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t pos_x_inicial,
                      const int32_t pos_y_inicial):
+        spawn_x(pos_x_inicial),
+        spawn_y(pos_y_inicial),
         id(id),
         tipo_de_personaje(tipo),
         alto(ALTO_INICIAL),
@@ -266,6 +268,8 @@ void personaje::pasar_tick() {
                 const ConfigAdmin& configurador = ConfigAdmin::getInstance();
                 this->estado = IDLE;
                 this->vida = configurador.get(VIDA_INICIAL);
+                this->pos_x = spawn_x;
+                this->pos_y = spawn_y;
             }
             break;
         case IMPACTADO:
@@ -325,16 +329,17 @@ void personaje::disparar(const int32_t frames_recarga) {
     }
 }
 
-void personaje::efectuar_dano(int32_t const dano) {
+bool personaje::efectuar_dano(int32_t const dano) {
     if (this->estado != IMPACTADO && this->estado != MUERTE && !ataque_especial) {
         this->vida -= dano;
         if (vida <= 0) {
             this->vida = 0;
             this->estado = MUERTE;
-        } else {
-            this->estado = IMPACTADO;
+            return true;
         }
+        this->estado = IMPACTADO;
     }
+    return false;
 }
 
 void personaje::dar_puntos(int32_t const puntos) { this->puntos += puntos; }

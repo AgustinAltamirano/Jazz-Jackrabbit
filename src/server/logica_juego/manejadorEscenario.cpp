@@ -149,7 +149,11 @@ int32_t definir_punto_medio(const int32_t pos_org_jug, const int32_t jug_largo,
     return (pos_bloque + bloque_largo + 1);
 }
 
-void manejadorEscenario::colisiones_bloques_y_enemigos(std::map<int, personaje>& jugadores) {
+std::vector<bool> manejadorEscenario::colisiones_bloques_y_enemigos(
+        std::map<int, personaje>& jugadores) {
+    bool jugador_herido = false;
+    bool jugador_murio = false;
+
     for (auto& entidad: jugadores) {
         personaje& jugador = entidad.second;
         std::vector<bloqueEscenario> colisiones = chequeo_recto_individual(jugador, bloques_rectos);
@@ -200,7 +204,11 @@ void manejadorEscenario::colisiones_bloques_y_enemigos(std::map<int, personaje>&
                     this->generar_objeto_aleatorio((*en)->get_pos_x(), (*en)->get_pos_y());
                 } else {
                     const int32_t dano = (*en)->atacar();
-                    jugador.efectuar_dano(dano);
+                    const bool murio = jugador.efectuar_dano(dano);
+                    jugador_herido = true;
+                    if (murio) {
+                        jugador_murio = true;
+                    }
                 }
             }
             ++en;
@@ -209,8 +217,10 @@ void manejadorEscenario::colisiones_bloques_y_enemigos(std::map<int, personaje>&
             spawnpoint spawn = spawnpoints[0];
             jugador.cambiar_posicion(spawn.pos_x, spawn.pos_y);
             jugador.efectuar_dano(1000000000);  // castigo por salirte del mapa >:(
+            jugador_murio = true;
         }
     }
+    return {jugador_herido, jugador_murio};
 }
 
 void manejadorEscenario::hacer_tick_enemigos() {
@@ -366,7 +376,8 @@ void manejadorEscenario::generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y) 
     }
 }
 
-void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
+std::vector<bool> manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores,
+                                                    std::vector<bool> cambios) {
     for (auto it = balas.begin(); it != balas.end();) {
         if ((*it)->mover()) {
             it = balas.erase(it);
@@ -382,8 +393,12 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
             const int32_t jug_y = posicion[1];
             if (((*it)->get_id() != jugador.first) && !jug.en_ataque_especial() &&
                 hay_colision_bala(bala_x, bala_y, jug_x, jug_y, jug.get_ancho(), jug.get_alto())) {
-                int32_t dano = (*it)->impactar();
-                jug.efectuar_dano(dano);
+                const int32_t dano = (*it)->impactar();
+                const bool murio = jug.efectuar_dano(dano);
+                cambios[0] = true;
+                if (murio) {
+                    cambios[1] = true;
+                }
             }
         }
         for (auto& en: enemigos) {
@@ -411,6 +426,7 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
         }
         ++it;
     }
+    return cambios;
 }
 
 void manejadorEscenario::matar_enemigos() const {

@@ -48,12 +48,12 @@ public:
     TipoEscenario get_escenario();
 
     // chequeo colision con bloques
-    void colisiones_bloques_y_enemigos(std::map<int, personaje>& jugadores);
+    std::vector<bool> colisiones_bloques_y_enemigos(std::map<int, personaje>& jugadores);
     void chequear_caida_y_objetos(std::map<int, personaje>& jugadores);
 
     // personaje disparo bala
     void jugador_dispara(int32_t id, personaje& jugador);
-    void manejar_balas(std::map<int, personaje>& jugadores);
+    std::vector<bool> manejar_balas(std::map<int, personaje>& jugadores, std::vector<bool> cambios);
 
     // manejo enemigos
     void hacer_tick_enemigos();
@@ -64,6 +64,5 @@ public:
     std::shared_ptr<SnapshotDTO> crear_snapshot();
     std::shared_ptr<SnapshotDTO> crear_snapshot_partida();
 };
-
 
 #endif  // MANEJADORESCENARIO_H
