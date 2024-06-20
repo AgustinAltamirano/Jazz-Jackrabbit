@@ -18,10 +18,16 @@
 #define RENDER_CAMARA_X (ANCHO_VENTANA / 2)
 #define RENDER_CAMARA_Y (ALTO_VENTANA * 3 / 4)
 
+/**
+ * Rutas usadas para cargar los efectos de sonido.
+ */
+#define VOLUMEN_MUSICA 16
+#define VOLUMEN_MUSICA_FIN_JUEGO 32
 
-#define COLOR_PANTALLA_CARGA_RED 122
-#define COLOR_PANTALLA_CARGA_GREEN 69
-#define COLOR_PANTALLA_CARGA_BLUE 255
+#define RUTA_MUSICA "/musica"
+#define MUSICA_CARROTUS "/carrotus.mp3"
+#define MUSICA_CASTLE "/castle.mp3"
+#define MUSICA_FIN_JUEGO "/fin_juego.mp3"
 
 /**
  * Rutas usadas para cargar los sprites y las coordenadas de cada uno en sus respectivas imágenes.

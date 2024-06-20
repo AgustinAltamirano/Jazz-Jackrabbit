@@ -11,8 +11,8 @@
 #include "../../common/tipo_bloque_escenario.h"
 
 const std::unordered_map<TipoEscenario, std::string> AdministradorVistaJuego::MAPA_TIPO_ESCENARIO{
-        {ESCENARIO1, "castle"},
-        {ESCENARIO2, "carrotus"},
+        {ESCENARIO_CASTLE, "castle"},
+        {ESCENARIO_CARROTUS, "carrotus"},
 };
 
 const std::unordered_map<TipoBloqueEscenario, std::string>
@@ -231,10 +231,11 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
                                                  Cliente& cliente):
         id_jugador(static_cast<uint32_t>(id_cliente)),
         proximo_id(0),
-        sdl(SDL_INIT_VIDEO),
+        sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO),
         ventana(titulo_ventana, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA,
                 ALTO_VENTANA, 0),
         renderer(ventana, -1, SDL_RENDERER_ACCELERATED),
+        mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096),
         lector_texturas(renderer),
         entrada_juego(cliente),
         hud(id_cliente, renderer, lector_texturas),
@@ -245,17 +246,19 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         balas(renderer, lector_texturas, camara),
         recogibles(renderer, lector_texturas, camara),
         primera_snapshot_recibida(false),
-        fin_juego(false) {
+        fin_juego(false),
+        reproductor_musica(mixer) {
     lector_texturas.cargar_texturas_y_coordenadas();
 }
 
 void AdministradorVistaJuego::run() {
     int64_t ticks_anteriores = 0;
     bool cerrar_juego = false;
+
     while (!cerrar_juego) {
         cerrar_juego = !entrada_juego.procesar_entrada();
         if (cerrar_juego) {
-            fin_juego = true;
+            continue;
         }
 
         actualizar_vista();
@@ -264,6 +267,11 @@ void AdministradorVistaJuego::run() {
         if (fin_juego) {
             hud.dibujar_pantalla_fin_juego();
             renderer.Present();
+
+            if (reproductor_musica.esta_reproduciendo_musica_ambiente()) {
+                reproductor_musica.detener_musica_ambiente();
+                reproductor_musica.reproducir_musica_fin_juego();
+            }
 
             const int64_t ticks_actuales = SDL_GetTicks();
             ticks_anteriores += sincronizar_vista(ticks_actuales - ticks_anteriores);
@@ -287,6 +295,9 @@ void AdministradorVistaJuego::run() {
             hud.dibujar();
             if (entrada_juego.mostrar_top()) {
                 hud.dibujar_top_jugadores(false);
+            }
+            if (!reproductor_musica.esta_reproduciendo_musica_ambiente()) {
+                reproductor_musica.reproducir_musica_ambiente(tipo_escenario);
             }
         } else {
             hud.dibujar_pantalla_carga();

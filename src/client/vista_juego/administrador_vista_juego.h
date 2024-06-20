@@ -33,6 +33,7 @@
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 #include "personaje.h"
+#include "reproductor_musica.h"
 #include "vista_juego_defs.h"
 
 /**
@@ -55,6 +56,7 @@ private:
 
     SDL2pp::Window ventana;
     SDL2pp::Renderer renderer;
+    SDL2pp::Mixer mixer;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
     HUD hud;
@@ -78,6 +80,8 @@ private:
 
     /** Clase que administra la vista de todos los objetos recogibles */
     AdminRecogibles recogibles;
+
+    ReproductorMusica reproductor_musica;
 
     bool primera_snapshot_recibida;
     bool fin_juego;

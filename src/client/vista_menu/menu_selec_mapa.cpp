@@ -1,16 +1,15 @@
 #include "menu_selec_mapa.h"
 
 #include <QMessageBox>
+#include <string>
+#include <unordered_map>
 
 #include "constantes_menu.h"
 #include "menu_principal.h"
 
 
-const std::unordered_map<TipoEscenario, std::string> MenuSeleccionMapa::MAPA_TIPO_ESCENARIO {
-        {ESCENARIO1, "castle"},
-        {ESCENARIO2, "carrotus"},
-        {ESCENARIO_INDEFINIDO, ""}
-};
+const std::unordered_map<TipoEscenario, std::string> MenuSeleccionMapa::MAPA_TIPO_ESCENARIO{
+        {ESCENARIO_CASTLE, "castle"}, {ESCENARIO_CARROTUS, "carrotus"}, {ESCENARIO_INDEFINIDO, ""}};
 
 
 MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
@@ -23,8 +22,7 @@ MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
         vertical_layout(&vertical_layout_widget),
         opcion_mapa_1(this, &central_widget, NUM_MAPA_1, ANCHO_BTN_MAPA, ALTO_BTN_MAPA),
         opcion_mapa_2(this, &central_widget, NUM_MAPA_2, ANCHO_BTN_MAPA, ALTO_BTN_MAPA),
-        opcion_mapa_custom(this, &central_widget, NUM_MAPA_CUST, ANCHO_BTN_MAPA, ALTO_BTN_MAPA)
-{
+        opcion_mapa_custom(this, &central_widget, NUM_MAPA_CUST, ANCHO_BTN_MAPA, ALTO_BTN_MAPA) {
     setCentralWidget(&central_widget);
 
     vertical_layout_widget.setGeometry(
@@ -33,11 +31,10 @@ MenuSeleccionMapa::MenuSeleccionMapa(QMainWindow* parent, MenuJuego& juego):
     vertical_layout.setSpacing(ESPACIADO_ENTRE_MAPAS);
     vertical_layout.setContentsMargins(M_LEFT_MAPA, M_TOP_MAPA, M_RIGHT_MAPA, M_BOTTOM_MAPA);
 
-    connect(&opcion_mapa_custom, &QPushButton::clicked, this,
-            &MenuSeleccionMapa::desplegar_popup);
+    connect(&opcion_mapa_custom, &QPushButton::clicked, this, &MenuSeleccionMapa::desplegar_popup);
 
-    conectar_botones({&opcion_mapa_1, &opcion_mapa_2},
-                     {ESCENARIO1, ESCENARIO2}, vertical_layout);
+    conectar_botones({&opcion_mapa_1, &opcion_mapa_2}, {ESCENARIO_CASTLE, ESCENARIO_CARROTUS},
+                     vertical_layout);
 
     vertical_layout.addWidget(&opcion_mapa_custom);
 }
@@ -52,13 +49,12 @@ void MenuSeleccionMapa::realizar_accion_menu(QPushButton* boton_seleccionado) {
 }
 
 
-void MenuSeleccionMapa::desplegar_popup() {
-    popup_nombre_mapa.exec();
-}
+void MenuSeleccionMapa::desplegar_popup() { popup_nombre_mapa.exec(); }
 
 
 void MenuSeleccionMapa::validar_seleccion_mapa() {
     bool mapa_es_valido = true;
+    // cppcheck-suppress knownConditionTrueFalse
     if (mapa_es_valido) {
         definir_mapa_custom();
     } else {

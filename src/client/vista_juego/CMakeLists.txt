@@ -29,7 +29,9 @@ add_library(vista_juego
         admin_recogibles.cpp
         admin_recogibles.h
         top_jugadores.cpp
-        top_jugadores.h)
+        top_jugadores.h
+        reproductor_musica.cpp
+        reproductor_musica.h)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
