@@ -11,7 +11,8 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
         ancho(ANCHO_INICIAL),
         pos_x(pos_x_inicial),
         vel_x(0),
-        aceleracion_x(0),
+        mover_izq(false),
+        mover_der(false),
         pos_y(pos_y_inicial),
         vel_y(0),
         dash(false),
@@ -47,23 +48,26 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 }
                 break;
             case MOVER_DER:
-                this->vel_x = 5;
-                if (dash) {
-                    this->vel_x *= 2;
-                }
-                this->de_espaldas = false;
+                this->mover_der = true;
+                this->mover_izq = false;
+                break;
+            case PARAR_MOVER_DER:
+                this->mover_der = false;
                 break;
             case MOVER_IZQ:
-                this->vel_x = -5;
-                if (dash) {
-                    this->vel_x *= 2;
-                }
-                this->de_espaldas = true;
+                this->mover_izq = true;
+                this->mover_der = false;
+                break;
+            case PARAR_MOVER_IZQ:
+                this->mover_izq = false;
                 break;
             case ACTIVAR_DASH:
                 if (!en_aire && (this->estado != INTOXICADO) && (this->estado != IMPACTADO)) {
                     this->dash = true;
                 }
+                break;
+            case DESACTIVAR_DASH:
+                this->dash = false;
                 break;
             case DISPARAR_ACCION:
                 if (this->estado != INTOXICADO && this->tiempo_recarga == 0 &&
@@ -102,6 +106,19 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 break;
         }
     }
+    if (mover_der) {
+        this->vel_x = 5;
+        if (dash) {
+            this->vel_x *= 2;
+        }
+        this->de_espaldas = false;
+    } else if (mover_izq) {
+        this->vel_x = -5;
+        if (dash) {
+            this->vel_x *= 2;
+        }
+        this->de_espaldas = true;
+    }
     return disparo;
 }
 
@@ -111,7 +128,10 @@ void personaje::efectuar_gravedad() {
     }
 }
 
-void personaje::dejar_de_caer() { this->en_aire = false; }
+void personaje::dejar_de_caer() {
+    this->en_aire = false;
+    this->vel_y = 0;  // hago reset a la velocidad para reducir riesgos de bugs
+}
 
 
 void personaje::cambiar_posicion(const int32_t x, const int32_t y) {

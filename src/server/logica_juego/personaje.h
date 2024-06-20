@@ -22,7 +22,9 @@ private:
 
     int32_t pos_x;
     int vel_x;
-    int aceleracion_x;
+
+    bool mover_izq;
+    bool mover_der;
 
     int32_t pos_y;
     int vel_y;
