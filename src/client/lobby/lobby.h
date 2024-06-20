@@ -39,7 +39,7 @@ public:
     Lobby(const std::string& hostname, const std::string& servname);
 
     int32_t crear_partida(const std::string& nombre_escenario, const TipoPersonaje& personaje,
-                       const int8_t& capacidad_partida);
+                          const int8_t& capacidad_partida);
 
     bool unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje);
 
@@ -51,7 +51,7 @@ public:
 
     int32_t obtener_crear();
 
-    int obtener_id_cliente();
+    [[nodiscard]] int obtener_id_cliente() const;
 
     void cerrar();
 };

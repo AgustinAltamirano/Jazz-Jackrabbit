@@ -22,19 +22,21 @@ Lobby::Lobby(const std::string& hostname, const std::string& servname):
 }
 
 int32_t Lobby::crear_partida(const std::string& nombre_escenario, const TipoPersonaje& personaje,
-                          const int8_t& capacidad_partida) {
-    cola_enviador.try_push(lobby_protocolo.serializar_crear_partida(
-            nombre_escenario, personaje, capacidad_partida));
+                             const int8_t& capacidad_partida) {
+    auto* comando_crear = new ComandoCrearDTO(nombre_escenario, personaje, capacidad_partida);
+    cola_enviador.try_push(comando_crear);
     return obtener_crear();
 }
 
 bool Lobby::unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje) {
-    cola_enviador.try_push(lobby_protocolo.serializar_unir_partida(codigo_partida, personaje));
+    auto* comando_unir = new ComandoUnirDTO(codigo_partida, personaje);
+    cola_enviador.try_push(comando_unir);
     return obtener_unir();
 }
 
 bool Lobby::validar_escenario(const std::string& nombre_escenario) {
-    cola_enviador.try_push(lobby_protocolo.serializar_validar_escenario(nombre_escenario));
+    auto* comando_validar = new ComandoValidarDTO(nombre_escenario);
+    cola_enviador.try_push(comando_validar);
     return obtener_validar_escenario();
 }
 
@@ -60,7 +62,7 @@ Socket Lobby::move_socket() { return std::move(socket); }
 
 int32_t Lobby::obtener_crear() {
     ComandoDTO* comando_dto = cola_recibidor.pop();
-    ComandoCrearDTO* crear_dto = dynamic_cast<ComandoCrearDTO*>(comando_dto);
+    auto* crear_dto = dynamic_cast<ComandoCrearDTO*>(comando_dto);
     int32_t codigo_partida = crear_dto->obtener_codigo_partida();
     delete comando_dto;
     return codigo_partida;
@@ -68,7 +70,7 @@ int32_t Lobby::obtener_crear() {
 
 bool Lobby::obtener_unir() {
     ComandoDTO* comando_dto = cola_recibidor.pop();
-    ComandoUnirDTO* unir_dto = dynamic_cast<ComandoUnirDTO*>(comando_dto);
+    auto* unir_dto = dynamic_cast<ComandoUnirDTO*>(comando_dto);
     bool unio = unir_dto->obtener_unio();
     delete comando_dto;
     return unio;
@@ -76,10 +78,10 @@ bool Lobby::obtener_unir() {
 
 bool Lobby::obtener_validar_escenario() {
     ComandoDTO* comando_dto = cola_recibidor.pop();
-    ComandoValidarDTO* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando_dto);
+    auto* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando_dto);
     bool es_valida = validar_dto->obtener_es_valida();
     delete comando_dto;
     return es_valida;
 }
 
-int Lobby::obtener_id_cliente() { return id_cliente; }
+int Lobby::obtener_id_cliente() const { return id_cliente; }
