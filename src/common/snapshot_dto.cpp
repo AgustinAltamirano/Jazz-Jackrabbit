@@ -3,14 +3,22 @@
 #include <utility>
 
 SnapshotDTO::SnapshotDTO():
-        tipo_escenario(), bloques_escenario(), clientes(), fin_juego(false), tiempo_restante(0) {}
-
-SnapshotDTO::SnapshotDTO(const TipoEscenario tipo_escenario):
-        tipo_escenario(tipo_escenario),
+        tipo_escenario(),
         bloques_escenario(),
         clientes(),
         fin_juego(false),
-        tiempo_restante(0) {}
+        tiempo_restante(0),
+        hubo_disparo(false),
+        alguien_fue_herido(false),
+        alguien_murio(false) {}
+
+SnapshotDTO::SnapshotDTO(const TipoEscenario tipo_escenario):
+        tipo_escenario(tipo_escenario),
+        fin_juego(false),
+        tiempo_restante(0),
+        hubo_disparo(false),
+        alguien_fue_herido(false),
+        alguien_murio(false) {}
 
 SnapshotDTO::SnapshotDTO(std::vector<ClienteDTO> clientes, std::vector<BloqueEscenarioDTO> bloques,
                          const TipoEscenario tipo_escenario):
@@ -18,7 +26,10 @@ SnapshotDTO::SnapshotDTO(std::vector<ClienteDTO> clientes, std::vector<BloqueEsc
         bloques_escenario(std::move(bloques)),
         clientes(std::move(clientes)),
         fin_juego(false),
-        tiempo_restante(0) {}
+        tiempo_restante(0),
+        hubo_disparo(false),
+        alguien_fue_herido(false),
+        alguien_murio(false) {}
 
 void SnapshotDTO::establecer_tipo_escenario(TipoEscenario tipo_escenario) {
     this->tipo_escenario = tipo_escenario;
@@ -57,3 +68,15 @@ void SnapshotDTO::establecer_fin_juego(const bool fin_juego) { this->fin_juego =
 void SnapshotDTO::agregar_tiempo_restante(int tiempo) { this->tiempo_restante = tiempo; }
 
 int SnapshotDTO::obtener_tiempo_restante() const { return this->tiempo_restante; }
+
+void SnapshotDTO::establecer_hubo_disparo(bool disparo) { this->hubo_disparo = disparo; }
+
+void SnapshotDTO::establecer_hubo_herido(bool herido) { this->alguien_fue_herido = herido; }
+
+void SnapshotDTO::establecer_hubo_muerte(bool muerte) { this->alguien_murio = muerte; }
+
+bool SnapshotDTO::obtener_hubo_disparo() const { return hubo_disparo; }
+
+bool SnapshotDTO::obtener_hubo_herido() const { return alguien_fue_herido; }
+
+bool SnapshotDTO::obtener_hubo_muerte() const { return alguien_murio; }
