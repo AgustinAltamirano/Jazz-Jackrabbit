@@ -103,6 +103,9 @@ private:
     std::vector<RecogibleDTO> recogibles;
     int tiempo_restante;
     bool fin_juego;
+    bool hubo_disparo;
+    bool alguien_fue_herido;
+    bool alguien_murio;
 
 public:
     SnapshotDTO();
@@ -143,6 +146,18 @@ public:
     [[nodiscard]] bool es_fin_juego() const;
 
     void establecer_fin_juego(bool fin_juego);
+
+    void establecer_hubo_disparo(bool disparo);
+
+    void establecer_hubo_herido(bool herido);
+
+    void establecer_hubo_muerte(bool muerte);
+
+    [[nodiscard]] bool obtener_hubo_disparo() const;
+
+    [[nodiscard]] bool obtener_hubo_herido() const;
+
+    [[nodiscard]] bool obtener_hubo_muerte() const;
 };
 
 #endif
