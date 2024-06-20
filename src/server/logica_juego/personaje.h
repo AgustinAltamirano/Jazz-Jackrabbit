@@ -72,7 +72,7 @@ public:
     [[nodiscard]] TipoArma get_arma() const;
     [[nodiscard]] bool get_invertido() const;
     void disparar(int32_t frames_recarga);
-    void efectuar_dano(int32_t dano);
+    bool efectuar_dano(int32_t dano);
     void dar_puntos(int32_t puntos);
 
     // funcion para la construccion del dto

@@ -45,6 +45,8 @@ void Gameloop::run() {
         // comienzo el cronómetro
         auto tiempo_inicio = std::chrono::high_resolution_clock::now();
 
+        bool jugador_disparo = false;
+
         // seccion1 se encarga de leer la cola de entrada y efectuar los movimientos en los
         // jugadores
         std::map<int32_t, std::vector<TipoComando>> acciones;
@@ -65,15 +67,16 @@ void Gameloop::run() {
         for (const auto& accion: acciones) {
             if (personajes.at(accion.first).ejecutar_accion(accion.second)) {
                 escenario.jugador_dispara(accion.first, personajes.at(accion.first));
+                jugador_disparo = true;
             }
         }
 
         // seccion2 chequea colisiones con el entorno y los cambios de estado de los personajes
-        escenario.colisiones_bloques_y_enemigos(personajes);
+        std::vector<bool> cambios_estado = escenario.colisiones_bloques_y_enemigos(personajes);
         escenario.chequear_caida_y_objetos(personajes);
 
         // seccion3 chequea colisiones con los puntos, municiones y enemigos
-        escenario.manejar_balas(personajes);
+        cambios_estado = escenario.manejar_balas(personajes, cambios_estado);
         escenario.hacer_tick_enemigos();
 
         // seccion4 calcular el tiempo desde que comienza la partida
@@ -89,6 +92,11 @@ void Gameloop::run() {
             terminar_partida = true;
         }
         snapshot_juego->agregar_tiempo_restante(tiempo_restante_juego);
+        snapshot_juego->establecer_hubo_disparo(jugador_disparo);
+        bool jugador_herido = cambios_estado[0];
+        bool jugador_murio = cambios_estado[1];
+        snapshot_juego->establecer_hubo_herido(jugador_herido);
+        snapshot_juego->establecer_hubo_muerte(jugador_murio);
         snapshot_juego->establecer_fin_juego(terminar_partida);
 
         // seccion5 enviar dto vuelta
