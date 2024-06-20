@@ -20,7 +20,7 @@ RecibidorCliente::RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_pa
     cola_recibidor = nullptr;
 }
 
-void RecibidorCliente::inicio_recibidor_cliente() {
+bool RecibidorCliente::inicio_recibidor_cliente() {
     bool sigo_en_el_lobby = true;
     while (sigo_en_el_lobby) {
         try {
@@ -36,11 +36,12 @@ void RecibidorCliente::inicio_recibidor_cliente() {
         } catch (const std::runtime_error& e) {
             std::cout << e.what() << std::endl;
             sigo_en_partida = false;
-            return;
+            return false;
         }
     }
     establecer_cola_recibidor(cola_recibidor);
     this->start();
+    return true;
 }
 
 void RecibidorCliente::run() {

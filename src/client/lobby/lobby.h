@@ -52,6 +52,8 @@ public:
     int32_t obtener_crear();
 
     int obtener_id_cliente();
+
+    void cerrar();
 };
 
 #endif

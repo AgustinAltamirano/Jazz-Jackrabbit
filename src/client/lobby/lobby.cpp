@@ -38,6 +38,16 @@ bool Lobby::validar_escenario(const std::string& nombre_escenario) {
     return obtener_validar_escenario();
 }
 
+void Lobby::cerrar() {
+    sigo_hablando = false;
+    socket.shutdown(SHUT_RDWR);
+    socket.close();
+    cola_enviador.close();
+    cola_recibidor.close();
+    lobby_enviador.join();
+    lobby_recibidor.join();
+}
+
 void Lobby::salir_lobby() {
     sigo_hablando = false;
     cola_enviador.close();

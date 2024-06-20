@@ -3,6 +3,9 @@
 #include <utility>
 
 #include <sys/socket.h>
+#include <syslog.h>
+
+#include "src/common/liberror.h"
 
 ComunicadorCliente::ComunicadorCliente(Socket socket, GestorPartidas* gestor_partidas,
                                        int32_t id_cliente):
@@ -10,11 +13,21 @@ ComunicadorCliente::ComunicadorCliente(Socket socket, GestorPartidas* gestor_par
         skt_cliente(std::move(socket)),
         cola_cliente(10000),
         gestor_partidas(gestor_partidas),
+        recibidor_fue_iniciado(false),
         enviador_cliente(&skt_cliente, std::ref(sigo_en_partida), id_cliente, cola_cliente),
         recibidor_cliente(&skt_cliente, std::ref(sigo_en_partida), id_cliente, gestor_partidas,cola_cliente),
         sigo_en_partida(true) {
-    enviador_cliente.start();
-    recibidor_cliente.inicio_recibidor_cliente();
+    iniciar_cliente();
+}
+
+void ComunicadorCliente::iniciar_cliente() {
+    try {
+        enviador_cliente.start();
+        recibidor_fue_iniciado = recibidor_cliente.inicio_recibidor_cliente();
+    } catch (const LibError& err) {
+        syslog(LOG_ERR, "Salida prematura de usuario: %s", err.what());
+        return;
+    }
 }
 
 void ComunicadorCliente::limpiar_cliente() {
@@ -22,7 +35,9 @@ void ComunicadorCliente::limpiar_cliente() {
     enviador_cliente.cerrar_cola();
     enviador_cliente.join();
     skt_cliente.close();
-    recibidor_cliente.join();
+    if (recibidor_fue_iniciado) {
+        recibidor_cliente.join();
+    }
     gestor_partidas->borrar_cliente(id_cliente);
 }
 

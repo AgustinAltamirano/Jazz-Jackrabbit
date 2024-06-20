@@ -40,7 +40,7 @@ public:
 
     void establecer_cola_recibidor(Queue<ComandoServer*>* cola_recibidor);
 
-    void inicio_recibidor_cliente();
+    bool inicio_recibidor_cliente();
 };
 
 
