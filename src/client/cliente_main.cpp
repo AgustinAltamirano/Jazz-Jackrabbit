@@ -2,7 +2,6 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-
 #include "juego/cliente.h"
 #include "lobby/lobby.h"
 #include "vista_juego/administrador_vista_juego.h"
@@ -19,6 +18,12 @@ int main(int argc, char* argv[]) {
         Lobby lobby(hostname, servname);
         int32_t id_cliente = lobby.obtener_id_cliente();
         MenuJuego menu(argc, argv, lobby);
+
+        if (not menu.finalizo_correctamente()) {
+            lobby.cerrar();
+            return 0;
+        }
+
         std::cout << "Cliente ID: " << id_cliente << "\n";
         Socket socket = lobby.move_socket();
         lobby.salir_lobby();

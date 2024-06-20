@@ -28,12 +28,14 @@ void MenuJuego::definir_cant_jugadores(int cant_jug) { cant_jugadores = cant_jug
 
 
 int32_t MenuJuego::crear_partida() {
+    ultima_accion_correcta = true;
     return lobby.crear_partida(mapa_elegido, personaje_elegido, cant_jugadores);
 }
 
 
 bool MenuJuego::unir_partida() {
-    return lobby.unir_partida(codigo_partida, personaje_elegido);
+    ultima_accion_correcta = lobby.unir_partida(codigo_partida, personaje_elegido);
+    return ultima_accion_correcta;
 }
 
 
@@ -45,3 +47,6 @@ void MenuJuego::definir_codigo_partida(int cod_partida) {
 bool MenuJuego::validar_mapa_elegido(const std::string& mapa) {
     return lobby.validar_escenario(mapa);
 }
+
+
+bool MenuJuego::finalizo_correctamente() const { return ultima_accion_correcta; }

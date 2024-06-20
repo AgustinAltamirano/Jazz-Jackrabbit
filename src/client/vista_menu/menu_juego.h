@@ -23,6 +23,8 @@ public:
 
     bool validar_mapa_elegido(const std::string& mapa);
 
+    [[nodiscard]] bool finalizo_correctamente() const;
+
 private:
     Lobby& lobby;
 
@@ -33,6 +35,8 @@ private:
     int cant_jugadores;
 
     int codigo_partida;
+
+    bool ultima_accion_correcta;
 };
 
 
