@@ -22,6 +22,9 @@ std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrad
     uint8_t tipo_escenario;
     uint8_t tiempo_restante;
     bool fin_juego;
+    bool hubo_disparo;
+    bool alguien_fue_herido;
+    bool alguien_murio;
 
     socket->recvall(&cantidad_clientes, sizeof(cantidad_clientes), cerrado);
     socket->recvall(&cantidad_bloques, sizeof(cantidad_bloques), cerrado);
@@ -31,10 +34,16 @@ std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrad
     socket->recvall(&tipo_escenario, sizeof(tipo_escenario), cerrado);
     socket->recvall(&tiempo_restante, sizeof(tiempo_restante), cerrado);
     socket->recvall(&fin_juego, sizeof(fin_juego), cerrado);
+    socket->recvall(&hubo_disparo, sizeof(hubo_disparo), cerrado);
+    socket->recvall(&alguien_fue_herido, sizeof(alguien_fue_herido), cerrado);
+    socket->recvall(&alguien_murio, sizeof(alguien_murio), cerrado);
 
     snapshot_dto->establecer_tipo_escenario(static_cast<TipoEscenario>(tipo_escenario));
     snapshot_dto->agregar_tiempo_restante(tiempo_restante);
-    snapshot_dto->establecer_fin_juego(static_cast<bool>(fin_juego));
+    snapshot_dto->establecer_fin_juego((fin_juego));
+    snapshot_dto->establecer_hubo_disparo(hubo_disparo);
+    snapshot_dto->establecer_hubo_herido(alguien_fue_herido);
+    snapshot_dto->establecer_hubo_muerte(alguien_murio);
 
     for (int i = 0; i < cantidad_clientes; i++) {
         ClienteDTO cliente;

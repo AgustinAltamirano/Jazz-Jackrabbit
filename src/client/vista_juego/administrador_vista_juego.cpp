@@ -3,14 +3,17 @@
 #include <algorithm>
 #include <tuple>
 #include <unordered_set>
+#include <utility>
 
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
 #include "../../common/snapshot_dto.h"
+#include "../../common/tipo_arma.h"
 #include "../../common/tipo_bloque_escenario.h"
 
 #include "tipo_sonido.h"
+#include "vista_juego_defs.h"
 
 const std::unordered_map<TipoEscenario, std::string> AdministradorVistaJuego::MAPA_TIPO_ESCENARIO{
         {ESCENARIO_CASTLE, "castle"},
@@ -175,6 +178,18 @@ void AdministradorVistaJuego::actualizar_vista_recogibles(
     }
 }
 
+void AdministradorVistaJuego::actualizar_sonidos(const std::shared_ptr<SnapshotDTO>& snapshot) {
+    if (snapshot->obtener_hubo_disparo()) {
+        admin_sonidos.preparar_sonido(SONIDO_DISPARO, iteraciones_actuales);
+    }
+    if (snapshot->obtener_hubo_herido()) {
+        admin_sonidos.preparar_sonido(SONIDO_DANIO, iteraciones_actuales);
+    }
+    if (snapshot->obtener_hubo_muerte()) {
+        admin_sonidos.preparar_sonido(SONIDO_MUERTE, iteraciones_actuales);
+    }
+}
+
 void AdministradorVistaJuego::actualizar_vista() {
     std::shared_ptr<SnapshotDTO> snapshot;
     if (!cliente.obtener_snapshot(snapshot)) {
@@ -186,6 +201,8 @@ void AdministradorVistaJuego::actualizar_vista() {
     // Se procesan todas las snapshots restantes, a menos que sea la primera snapshot recibida o
     // se haya llegado al fin del juego
     while (primera_snapshot_recibida && quedan_snapshots) {
+        // Se procesan los sonidos de todas las snapshots, incluso las descartadas
+        actualizar_sonidos(snapshot);
         if (!cliente.obtener_snapshot(snapshot)) {
             quedan_snapshots = false;
             continue;
@@ -212,6 +229,7 @@ void AdministradorVistaJuego::actualizar_vista() {
     actualizar_vista_enemigos(snapshot->obtener_enemigos());
     actualizar_vista_balas(snapshot->obtener_balas());
     actualizar_vista_recogibles(snapshot->obtener_recogibles());
+    actualizar_sonidos(snapshot);
 }
 
 int64_t AdministradorVistaJuego::sincronizar_vista(const int64_t ticks_transcurridos) {

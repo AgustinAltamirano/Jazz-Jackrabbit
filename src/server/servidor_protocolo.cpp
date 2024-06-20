@@ -1,11 +1,13 @@
 #include "servidor_protocolo.h"
 
+#include <memory>
+
 #include <arpa/inet.h>
 
 #include "comando_server_crear.h"
+#include "comando_server_generico.h"
 #include "comando_server_unir.h"
 #include "comando_server_validar.h"
-#include "comando_server_generico.h"
 
 
 ServidorProtocolo::ServidorProtocolo() {}
@@ -53,37 +55,40 @@ void ServidorProtocolo::enviar_snapshot(std::shared_ptr<SnapshotDTO>& snapshot_d
     auto tipo_escenario = static_cast<uint8_t>(snapshot_dto->obtener_tipo_escenario());
     auto tiempo_restante = static_cast<uint8_t>(snapshot_dto->obtener_tiempo_restante());
     auto fin_juego = snapshot_dto->es_fin_juego();
+    auto hubo_disparo = snapshot_dto->obtener_hubo_disparo();
+    auto alguien_fue_herido = snapshot_dto->obtener_hubo_herido();
+    auto alguien_murio = snapshot_dto->obtener_hubo_muerte();
 
-
-    bool skt_cerrado;
-
-    socket->sendall(&num_clientes, sizeof(uint8_t), &skt_cerrado);
-    socket->sendall(&num_bloques, sizeof(uint8_t), &skt_cerrado);
-    socket->sendall(&num_balas, sizeof(uint8_t), &skt_cerrado);
-    socket->sendall(&num_enemigos, sizeof(uint8_t), &skt_cerrado);
-    socket->sendall(&num_recogibles, sizeof(uint8_t), &skt_cerrado);
-    socket->sendall(&tipo_escenario, sizeof(uint8_t), &skt_cerrado);
-    socket->sendall(&tiempo_restante, sizeof(uint8_t), &skt_cerrado);
-    socket->sendall(&fin_juego, sizeof(bool), &skt_cerrado);
+    socket->sendall(&num_clientes, sizeof(uint8_t), cerrado);
+    socket->sendall(&num_bloques, sizeof(uint8_t), cerrado);
+    socket->sendall(&num_balas, sizeof(uint8_t), cerrado);
+    socket->sendall(&num_enemigos, sizeof(uint8_t), cerrado);
+    socket->sendall(&num_recogibles, sizeof(uint8_t), cerrado);
+    socket->sendall(&tipo_escenario, sizeof(uint8_t), cerrado);
+    socket->sendall(&tiempo_restante, sizeof(uint8_t), cerrado);
+    socket->sendall(&fin_juego, sizeof(bool), cerrado);
+    socket->sendall(&hubo_disparo, sizeof(bool), cerrado);
+    socket->sendall(&alguien_fue_herido, sizeof(bool), cerrado);
+    socket->sendall(&alguien_murio, sizeof(bool), cerrado);
 
     for (const auto& cliente_dto: clientes_dto) {
-        socket->sendall(&cliente_dto, sizeof(cliente_dto), &skt_cerrado);
+        socket->sendall(&cliente_dto, sizeof(cliente_dto), cerrado);
     }
 
     for (const auto& bloque_dto: bloques_dto) {
-        socket->sendall(&bloque_dto, sizeof(bloque_dto), &skt_cerrado);
+        socket->sendall(&bloque_dto, sizeof(bloque_dto), cerrado);
     }
 
     for (const auto& bala_dto: balas_dto) {
-        socket->sendall(&bala_dto, sizeof(bala_dto), &skt_cerrado);
+        socket->sendall(&bala_dto, sizeof(bala_dto), cerrado);
     }
 
     for (const auto& enemigo_dto: enemigos_dto) {
-        socket->sendall(&enemigo_dto, sizeof(enemigo_dto), &skt_cerrado);
+        socket->sendall(&enemigo_dto, sizeof(enemigo_dto), cerrado);
     }
 
     for (const auto& recogible_dto: recogibles_dto) {
-        socket->sendall(&recogible_dto, sizeof(recogible_dto), &skt_cerrado);
+        socket->sendall(&recogible_dto, sizeof(recogible_dto), cerrado);
     }
 }
 
@@ -127,7 +132,8 @@ std::vector<char> ServidorProtocolo::serializar_id_cliente(const int32_t& id_cli
     return buffer;
 }
 
-std::unique_ptr<ComandoServer> ServidorProtocolo::obtener_comando(bool* cerrado, int32_t& id_cliente) {
+std::unique_ptr<ComandoServer> ServidorProtocolo::obtener_comando(bool* cerrado,
+                                                                  int32_t& id_cliente) {
     char code = 0;
     socket->recvall(&code, TAM_TIPO_COMANDO, cerrado);
     if (*cerrado) {
@@ -146,7 +152,8 @@ std::unique_ptr<ComandoServer> ServidorProtocolo::obtener_comando(bool* cerrado,
     }
 }
 
-std::unique_ptr<ComandoServerCrear> ServidorProtocolo::deserializar_crear(bool* cerrado, int32_t& id_cliente) {
+std::unique_ptr<ComandoServerCrear> ServidorProtocolo::deserializar_crear(bool* cerrado,
+                                                                          int32_t& id_cliente) {
     uint8_t len_nombre = 0;
     socket->recvall(&len_nombre, 1, cerrado);
     std::vector<char> buffer(len_nombre);
@@ -163,7 +170,7 @@ std::unique_ptr<ComandoServerCrear> ServidorProtocolo::deserializar_crear(bool* 
 }
 
 std::unique_ptr<ComandoServerUnir> ServidorProtocolo::deserializar_unir(bool* cerrado,
-                                                          const int32_t& id_cliente) {
+                                                                        const int32_t& id_cliente) {
     TipoPersonaje personaje;
     socket->recvall(&personaje, 1, cerrado);
     int32_t codigo_partida;
@@ -175,7 +182,8 @@ std::unique_ptr<ComandoServerUnir> ServidorProtocolo::deserializar_unir(bool* ce
     return unir_dto;
 }
 
-std::unique_ptr<ComandoServerValidar> ServidorProtocolo::deserializar_validar(bool* cerrado, int32_t& id_cliente){
+std::unique_ptr<ComandoServerValidar> ServidorProtocolo::deserializar_validar(bool* cerrado,
+                                                                              int32_t& id_cliente) {
     uint8_t len_nombre = 0;
     socket->recvall(&len_nombre, 1, cerrado);
     std::vector<char> buffer(len_nombre);

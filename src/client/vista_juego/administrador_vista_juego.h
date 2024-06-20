@@ -5,7 +5,6 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
-#include <utility>
 #include <vector>
 
 #include <SDL2/SDL.h>
@@ -13,14 +12,10 @@
 #include "../../common/estado_personaje.h"
 #include "../../common/queue.h"
 #include "../../common/snapshot_dto.h"
-#include "../../common/tipo_arma.h"
 #include "../../common/tipo_bloque_escenario.h"
-#include "../../common/tipo_enemigo.h"
 #include "../../common/tipo_escenario.h"
 #include "../../common/tipo_personaje.h"
-#include "../../common/tipo_recogible.h"
 #include "../juego/cliente.h"
-#include "../lobby/comando_dto.h"
 
 #include "admin_balas.h"
 #include "admin_enemigos.h"
@@ -32,10 +27,9 @@
 #include "fondo_escenario.h"
 #include "hud.h"
 #include "lector_texturas.h"
-#include "objeto_animado.h"
 #include "personaje.h"
 #include "reproductor_musica.h"
-#include "vista_juego_defs.h"
+
 
 /**
  * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones
@@ -103,6 +97,8 @@ private:
     void actualizar_vista_balas(const std::vector<BalaDTO>& balas_recibidas);
 
     void actualizar_vista_recogibles(const std::vector<RecogibleDTO>& recogibles_recibidos);
+
+    void actualizar_sonidos(const std::shared_ptr<SnapshotDTO>& snapshot);
 
     void actualizar_vista();
 
