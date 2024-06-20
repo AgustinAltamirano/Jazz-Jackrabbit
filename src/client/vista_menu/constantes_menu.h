@@ -100,4 +100,6 @@ Q_DECLARE_METATYPE(TipoEscenario)
 #define CANT_MIN_JUG 2
 #define TEXTO_LABEL_JUG "Jugadores:"
 
+#define COD_PARTIDA_INCORRECTA (-1)
+
 #endif  // CONSTANTES_MENU_H

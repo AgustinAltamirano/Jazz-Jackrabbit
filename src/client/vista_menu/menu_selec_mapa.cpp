@@ -53,12 +53,14 @@ void MenuSeleccionMapa::desplegar_popup() { popup_nombre_mapa.exec(); }
 
 
 void MenuSeleccionMapa::validar_seleccion_mapa() {
-    bool mapa_es_valido = true;
-    // cppcheck-suppress knownConditionTrueFalse
+    auto mapa_elegido = popup_nombre_mapa.obtener_seleccion_mapa();
+    bool mapa_es_valido = juego.validar_mapa_elegido(mapa_elegido);
+
     if (mapa_es_valido) {
         definir_mapa_custom();
     } else {
         QMessageBox::critical(this, "Mapa erróneo", "El mapa indicado no existe");
+        popup_nombre_mapa.limpiar_seleccion();
     }
 }
 

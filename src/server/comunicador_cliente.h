@@ -23,6 +23,8 @@ private:
 
     GestorPartidas* gestor_partidas;
 
+    bool recibidor_fue_iniciado;
+
     EnviadorCliente enviador_cliente;
 
     RecibidorCliente recibidor_cliente;
@@ -37,6 +39,8 @@ public:
     void matar_cliente();
 
     bool sigue_en_partida();
+
+    void iniciar_cliente();
 };
 
 #endif

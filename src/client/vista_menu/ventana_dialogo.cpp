@@ -40,7 +40,7 @@ VentanaDialogo::VentanaDialogo(MenuSeleccionMapa* parent) :
     inicializar_ventana("Ingresar mapa", "Nombre del mapa:");
     inicializar_line_edit();
     connect(&button_box, &QDialogButtonBox::accepted, parent, &MenuSeleccionMapa::validar_seleccion_mapa);
-    connect(&button_box, &QDialogButtonBox::clicked, &input_mapa, &QLineEdit::clear);
+    connect(&button_box, &QDialogButtonBox::rejected, &input_mapa, &QLineEdit::clear);
 }
 
 
@@ -78,9 +78,14 @@ int VentanaDialogo::obtener_seleccion() {
 
 
 std::string VentanaDialogo::obtener_seleccion_mapa() {
-    return input_mapa.text().toStdString();
+    auto mapa = input_mapa.text().toStdString();
+    return mapa;
 }
 
+
+void VentanaDialogo::limpiar_seleccion() {
+    input_mapa.clear();
+}
 
 int VentanaDialogo::obtener_max_rango(const std::string& clave) {
     const std::string ruta_yaml = std::string(PROJECT_DIR) + RUTA_CONFIG_YAML;

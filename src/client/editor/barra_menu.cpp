@@ -30,7 +30,7 @@ void BarraMenu::guardar_como_mapa() {
     dialog.setNameFilter(FILTRO_ARCHIVOS);
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setWindowTitle(TITULO_DIALOG_GUARDAR);
-    dialog.setDirectory(CARPETA_MAPAS);
+    dialog.setDirectory(MAPAS_PATH);
     dialog.setGeometry(OFFSET_X_DIALOG, OFFSET_Y_DIALOG, ANCHO_DIALOG, ALTO_DIALOG);
 
     if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {
@@ -46,7 +46,7 @@ void BarraMenu::cargar_mapa() {
     dialog.setNameFilter(FILTRO_ARCHIVOS);
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     dialog.setWindowTitle(TITULO_DIALOG_CARGAR);
-    dialog.setDirectory(CARPETA_MAPAS);
+    dialog.setDirectory(MAPAS_PATH);
     dialog.setGeometry(OFFSET_X_DIALOG, OFFSET_Y_DIALOG, ANCHO_DIALOG, ALTO_DIALOG);
 
     if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty()) {

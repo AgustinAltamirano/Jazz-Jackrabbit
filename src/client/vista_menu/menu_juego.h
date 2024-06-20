@@ -15,11 +15,15 @@ public:
 
     void definir_cant_jugadores(int cant_jug);
 
-    void crear_partida();
+    int32_t crear_partida();
 
-    void unir_partida();
+    bool unir_partida();
 
     void definir_codigo_partida(int cod_partida);
+
+    bool validar_mapa_elegido(const std::string& mapa);
+
+    [[nodiscard]] bool finalizo_correctamente() const;
 
 private:
     Lobby& lobby;
@@ -31,6 +35,8 @@ private:
     int cant_jugadores;
 
     int codigo_partida;
+
+    bool ultima_accion_correcta;
 };
 
 

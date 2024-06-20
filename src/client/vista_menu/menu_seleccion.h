@@ -26,6 +26,8 @@ protected:
     void conectar_botones(const std::vector<QPushButton*>& botones, const std::vector<int>& props,
                           QBoxLayout& layout);
 
+    void volver_menu_previo();
+
 private:
     QMainWindow* menu_previo;
 
