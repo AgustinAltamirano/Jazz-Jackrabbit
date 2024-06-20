@@ -23,11 +23,18 @@
  */
 #define VOLUMEN_MUSICA 16
 #define VOLUMEN_MUSICA_FIN_JUEGO 32
+#define VOLUMEN_SONIDOS 64
+
+// Cantidad mínima de iteraciones que deben transcurrir entre sonidos del mismo tipo.
+#define ITERACIONES_ENTRE_SONIDOS 10
 
 #define RUTA_MUSICA "/musica"
 #define MUSICA_CARROTUS "/carrotus.mp3"
 #define MUSICA_CASTLE "/castle.mp3"
 #define MUSICA_FIN_JUEGO "/fin_juego.mp3"
+
+#define RUTA_SONIDOS "/sonidos"
+#define SONIDO_IMPACTO_BALA "/impacto_bala.mp3"
 
 /**
  * Rutas usadas para cargar los sprites y las coordenadas de cada uno en sus respectivas imágenes.

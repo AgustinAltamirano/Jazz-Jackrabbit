@@ -31,7 +31,9 @@ add_library(vista_juego
         top_jugadores.cpp
         top_jugadores.h
         reproductor_musica.cpp
-        reproductor_musica.h)
+        reproductor_musica.h
+        reproductor_sonido.cpp
+        reproductor_sonido.h)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support

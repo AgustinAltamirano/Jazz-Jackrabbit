@@ -17,8 +17,14 @@ SDL2pp::Rect AdminBalas::corregir_desfase_sprite(const SDL2pp::Rect& coords_spri
             coords_sprite.GetW(), coords_sprite.GetH()};
 }
 
-AdminBalas::AdminBalas(SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas, Camara& camara):
-        renderer(renderer), lector_texturas(lector_texturas), camara(camara) {}
+AdminBalas::AdminBalas(SDL2pp::Renderer& renderer, LectorTexturas& lector_texturas, Camara& camara,
+                       SDL2pp::Mixer& mixer):
+        renderer(renderer),
+        lector_texturas(lector_texturas),
+        camara(camara),
+        reproductor_sonido_impacto_bala(mixer, ASSETS_PATH RUTA_SONIDOS SONIDO_IMPACTO_BALA),
+        iteraciones_ultimo_sonido_impacto_bala(0),
+        reproducir_sonido(false) {}
 
 void AdminBalas::eliminar_balas() { balas.clear(); }
 
@@ -34,11 +40,26 @@ void AdminBalas::agregar_bala(const TipoArma tipo_arma, const int32_t pos_x, con
             {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), 1, 1}, 0, false);
     balas.push_back(std::move(nueva_bala));
 }
+void AdminBalas::preparar_sonido_impacto_bala(const uint32_t iteraciones_actuales) {
+    if (iteraciones_actuales - iteraciones_ultimo_sonido_impacto_bala < ITERACIONES_ENTRE_SONIDOS) {
+        return;
+    }
+    iteraciones_ultimo_sonido_impacto_bala = iteraciones_actuales;
+    reproducir_sonido = true;
+}
 
 void AdminBalas::dibujar_balas() const {
     for (const auto& bala: balas) {
         bala.dibujar();
     }
+}
+
+void AdminBalas::reproducir_sonido_pendiente() {
+    if (!reproducir_sonido) {
+        return;
+    }
+    reproductor_sonido_impacto_bala.reproducir_sonido();
+    reproducir_sonido = false;
 }
 
 AdminBalas::~AdminBalas() = default;

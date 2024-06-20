@@ -158,6 +158,9 @@ void AdministradorVistaJuego::actualizar_vista_balas(const std::vector<BalaDTO>&
     balas.eliminar_balas();
     for (const auto& bala: balas_recibidas) {
         balas.agregar_bala(bala.tipo, bala.pos_x, bala.pos_y);
+        if (bala.choco) {
+            balas.preparar_sonido_impacto_bala(iteraciones_actuales);
+        }
     }
 }
 
@@ -243,12 +246,13 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
         enemigos(renderer, lector_texturas, camara),
-        balas(renderer, lector_texturas, camara),
+        balas(renderer, lector_texturas, camara, mixer),
         recogibles(renderer, lector_texturas, camara),
         primera_snapshot_recibida(false),
         fin_juego(false),
         reproductor_musica(mixer) {
     lector_texturas.cargar_texturas_y_coordenadas();
+    mixer.SetVolume(-1, VOLUMEN_SONIDOS);
 }
 
 void AdministradorVistaJuego::run() {
@@ -291,6 +295,9 @@ void AdministradorVistaJuego::run() {
         for (auto& [fst, snd]: personajes) {
             snd.dibujar();
         }
+
+        balas.reproducir_sonido_pendiente();
+
         if (primera_snapshot_recibida) {
             hud.dibujar();
             if (entrada_juego.mostrar_top()) {
