@@ -86,6 +86,7 @@ void Gameloop::run() {
         int tiempo_restante_juego = segundos_partida - tiempo_jue_segundos;  // para DTO
         if (tiempo_jue_segundos > segundos_partida) {
             this->keep_talking = false;
+            terminar_partida = true;
         }
         snapshot_juego->agregar_tiempo_restante(tiempo_restante_juego);
         snapshot_juego->establecer_fin_juego(terminar_partida);
