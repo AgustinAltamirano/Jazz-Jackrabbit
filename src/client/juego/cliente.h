@@ -23,7 +23,7 @@ private:
 
     ClienteProtocolo cliente_protocolo;
 
-    Queue<std::vector<char>> cola_enviador;
+    Queue<TipoComando> cola_enviador;
 
     Queue<std::shared_ptr<SnapshotDTO>> cola_recibidor;
 

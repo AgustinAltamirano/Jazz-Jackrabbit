@@ -5,7 +5,7 @@
 
 
 LobbyEnviador::LobbyEnviador(Socket* socket, std::atomic<bool>& sigo_hablando,
-                             Queue<std::vector<char>>* cola_enviador):
+                             Queue<ComandoDTO*>* cola_enviador):
         socket(socket),
         sigo_hablando(sigo_hablando),
         cola_enviador(cola_enviador),

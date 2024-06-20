@@ -27,7 +27,7 @@ private:
 
     LobbyProtocolo lobby_protocolo;
 
-    Queue<std::vector<char>> cola_enviador;
+    Queue<ComandoDTO*> cola_enviador;
 
     Queue<ComandoDTO*> cola_recibidor;
 

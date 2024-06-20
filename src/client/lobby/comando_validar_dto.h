@@ -18,6 +18,8 @@ public:
 
     explicit ComandoValidarDTO(bool es_valida);
 
+    explicit ComandoValidarDTO(std::string nombre_escenario);
+
     std::string obtener_nombre_escenario();
 
     bool obtener_es_valida();

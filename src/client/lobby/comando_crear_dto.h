@@ -23,6 +23,9 @@ public:
 
     explicit ComandoCrearDTO(int32_t codigo_partida);
 
+    explicit ComandoCrearDTO(std::string nombre_escenario, TipoPersonaje personaje,
+                             int8_t capacidad_partida);
+
     std::string obtener_nombre_escenario();
 
     int8_t obtener_capacidad_partida();
