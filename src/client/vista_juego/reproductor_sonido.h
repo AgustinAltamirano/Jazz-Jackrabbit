@@ -17,6 +17,8 @@ public:
 
     ReproductorSonido& operator=(const ReproductorSonido&) = delete;
 
+    ReproductorSonido(ReproductorSonido&&) noexcept = default;
+
     void reproducir_sonido() const;
 
     ~ReproductorSonido();

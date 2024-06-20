@@ -1,0 +1,12 @@
+#ifndef TIPO_SONIDO_H
+#define TIPO_SONIDO_H
+
+enum TipoSonido : char {
+    SONIDO_IMPACTO_BALA,
+    SONIDO_DISPARO,
+    SONIDO_DANIO,
+    SONIDO_MUERTE,
+    SONIDO_EXPLOSION
+};
+
+#endif  // TIPO_SONIDO_H

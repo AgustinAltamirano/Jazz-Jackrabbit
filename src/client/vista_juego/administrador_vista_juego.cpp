@@ -10,6 +10,8 @@
 #include "../../common/snapshot_dto.h"
 #include "../../common/tipo_bloque_escenario.h"
 
+#include "tipo_sonido.h"
+
 const std::unordered_map<TipoEscenario, std::string> AdministradorVistaJuego::MAPA_TIPO_ESCENARIO{
         {ESCENARIO_CASTLE, "castle"},
         {ESCENARIO_CARROTUS, "carrotus"},
@@ -159,7 +161,7 @@ void AdministradorVistaJuego::actualizar_vista_balas(const std::vector<BalaDTO>&
     for (const auto& bala: balas_recibidas) {
         balas.agregar_bala(bala.tipo, bala.pos_x, bala.pos_y);
         if (bala.choco) {
-            balas.preparar_sonido_impacto_bala(iteraciones_actuales);
+            admin_sonidos.preparar_sonido(SONIDO_IMPACTO_BALA, iteraciones_actuales);
         }
     }
 }
@@ -246,11 +248,12 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
         enemigos(renderer, lector_texturas, camara),
-        balas(renderer, lector_texturas, camara, mixer),
+        balas(renderer, lector_texturas, camara),
         recogibles(renderer, lector_texturas, camara),
+        reproductor_musica(mixer),
+        admin_sonidos(mixer),
         primera_snapshot_recibida(false),
-        fin_juego(false),
-        reproductor_musica(mixer) {
+        fin_juego(false) {
     lector_texturas.cargar_texturas_y_coordenadas();
     mixer.SetVolume(-1, VOLUMEN_SONIDOS);
 }
@@ -296,7 +299,7 @@ void AdministradorVistaJuego::run() {
             snd.dibujar();
         }
 
-        balas.reproducir_sonido_pendiente();
+        admin_sonidos.reproducir_sonidos();
 
         if (primera_snapshot_recibida) {
             hud.dibujar();

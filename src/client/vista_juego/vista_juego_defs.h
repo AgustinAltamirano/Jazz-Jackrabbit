@@ -34,7 +34,11 @@
 #define MUSICA_FIN_JUEGO "/fin_juego.mp3"
 
 #define RUTA_SONIDOS "/sonidos"
-#define SONIDO_IMPACTO_BALA "/impacto_bala.mp3"
+#define ARCHIVO_SONIDO_IMPACTO_BALA "/impacto_bala.mp3"
+#define ARCHIVO_SONIDO_DISPARO "/disparo.mp3"
+#define ARCHIVO_SONIDO_DANIO "/danio.mp3"
+#define ARCHIVO_SONIDO_MUERTE "/muerte.mp3"
+#define ARCHIVO_SONIDO_EXPLOSION "/explosion.mp3"
 
 /**
  * Rutas usadas para cargar los sprites y las coordenadas de cada uno en sus respectivas imágenes.

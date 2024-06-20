@@ -25,6 +25,7 @@
 #include "admin_balas.h"
 #include "admin_enemigos.h"
 #include "admin_recogibles.h"
+#include "admin_sonidos.h"
 #include "bloque_escenario.h"
 #include "camara.h"
 #include "entrada_juego.h"
@@ -82,6 +83,7 @@ private:
     AdminRecogibles recogibles;
 
     ReproductorMusica reproductor_musica;
+    AdminSonidos admin_sonidos;
 
     bool primera_snapshot_recibida;
     bool fin_juego;
