@@ -35,6 +35,7 @@ public:
     [[nodiscard]] virtual int32_t atacar() const = 0;
     virtual bool hacer_dano(int32_t puntos_dano) = 0;
     virtual void revivir() = 0;
+    virtual void matar() = 0;
 
     virtual int32_t get_pos_x() = 0;
     virtual int32_t get_pos_y() = 0;

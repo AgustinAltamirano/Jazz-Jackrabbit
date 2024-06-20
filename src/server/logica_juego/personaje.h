@@ -22,7 +22,9 @@ private:
 
     int32_t pos_x;
     int vel_x;
-    int aceleracion_x;
+
+    bool mover_izq;
+    bool mover_der;
 
     int32_t pos_y;
     int vel_y;
@@ -54,6 +56,7 @@ public:
     void cambiar_estado(bool cae);
     void pasar_tick();
     void recoger_objeto(int32_t valor, TipoRecogible tipo);
+    [[nodiscard]] bool en_ataque_especial() const;
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.

@@ -11,7 +11,8 @@ personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t p
         ancho(ANCHO_INICIAL),
         pos_x(pos_x_inicial),
         vel_x(0),
-        aceleracion_x(0),
+        mover_izq(false),
+        mover_der(false),
         pos_y(pos_y_inicial),
         vel_y(0),
         dash(false),
@@ -47,23 +48,26 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 }
                 break;
             case MOVER_DER:
-                this->vel_x = 5;
-                if (dash) {
-                    this->vel_x *= 2;
-                }
-                this->de_espaldas = false;
+                this->mover_der = true;
+                this->mover_izq = false;
+                break;
+            case PARAR_MOVER_DER:
+                this->mover_der = false;
                 break;
             case MOVER_IZQ:
-                this->vel_x = -5;
-                if (dash) {
-                    this->vel_x *= 2;
-                }
-                this->de_espaldas = true;
+                this->mover_izq = true;
+                this->mover_der = false;
+                break;
+            case PARAR_MOVER_IZQ:
+                this->mover_izq = false;
                 break;
             case ACTIVAR_DASH:
                 if (!en_aire && (this->estado != INTOXICADO) && (this->estado != IMPACTADO)) {
                     this->dash = true;
                 }
+                break;
+            case DESACTIVAR_DASH:
+                this->dash = false;
                 break;
             case DISPARAR_ACCION:
                 if (this->estado != INTOXICADO && this->tiempo_recarga == 0 &&
@@ -86,21 +90,59 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                     this->arma_actual = static_cast<TipoArma>(arma_actual + 1);
                 }
                 break;
-            /*
-            case ATAQUE_ESPECIAL:
-                por haacer
-            */
+            case ACTIVAR_ATAQUE_ESPECIAL:
+                switch (tipo_de_personaje) {
+                    case JAZZ:
+                        if (!en_aire && (this->estado != INTOXICADO) &&
+                            (this->estado != IMPACTADO)) {
+                            this->vel_y = -24;
+                            this->en_aire = true;
+                            this->ataque_especial = true;
+                        }
+                        break;
+                    case LORI:
+                        if (en_aire && (this->estado != INTOXICADO) &&
+                            (this->estado != IMPACTADO)) {
+                            this->ataque_especial = true;
+                        }
+                        break;
+                    case SPAZ:
+                        if (!en_aire && (this->estado != INTOXICADO) &&
+                            (this->estado != IMPACTADO)) {
+                            this->vel_x = 10;
+                            this->ataque_especial = true;
+                            if (de_espaldas) {
+                                this->vel_x *= -1;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             case TRUCO1:
                 // aca agrego balas de arma a todas las armas del personaje
                 inventario_balas[ARMA1] += 20;
                 inventario_balas[ARMA2] += 20;
                 inventario_balas[ARMA3] += 20;
                 break;
-            case TRUCO2:  // vida infinita
+            case TRUCO2:  // matar todos los enemigos
             case TRUCO3:  // termina la partida, es irrelevante que el jugador lo procese
             default:      // si no es ningun caso que conozco lo ignoro
                 break;
         }
+    }
+    if (mover_der) {
+        this->vel_x = 5;
+        if (dash) {
+            this->vel_x *= 2;
+        }
+        this->de_espaldas = false;
+    } else if (mover_izq) {
+        this->vel_x = -5;
+        if (dash) {
+            this->vel_x *= 2;
+        }
+        this->de_espaldas = true;
     }
     return disparo;
 }
@@ -111,7 +153,10 @@ void personaje::efectuar_gravedad() {
     }
 }
 
-void personaje::dejar_de_caer() { this->en_aire = false; }
+void personaje::dejar_de_caer() {
+    this->en_aire = false;
+    this->vel_y = 0;  // hago reset a la velocidad para reducir riesgos de bugs
+}
 
 
 void personaje::cambiar_posicion(const int32_t x, const int32_t y) {
@@ -143,8 +188,15 @@ int32_t personaje::get_ancho() const { return ancho; }
 
 void personaje::cambiar_estado(const bool cae) {
     this->en_aire = cae;
-    if (estado == MUERTE || estado == IMPACTADO || estado == ATAQUE_ESPECIAL) {
+    if (estado == MUERTE || estado == IMPACTADO) {
         this->vel_x = 0;  // reseteo la velocidad
+        return;
+    }
+    if (ataque_especial) {
+        this->estado = ATAQUE_ESPECIAL;
+        if (this->tipo_de_personaje == LORI) {
+            this->dejar_de_caer();
+        }
         return;
     }
     if (estado == INTOXICADO || estado == INTOXICADO_MOVIMIENTO) {
@@ -153,7 +205,7 @@ void personaje::cambiar_estado(const bool cae) {
         } else {
             this->estado = INTOXICADO;
         }
-    } else if (tiempo_recarga > 0) {
+    } else if (tiempo_recarga > 0 && vel_x == 0) {
         this->estado = DISPARAR_QUIETO;
     } else if (cae) {
         if (this->vel_x != 0) {
@@ -222,8 +274,11 @@ void personaje::pasar_tick() {
             }
             break;
         case ATAQUE_ESPECIAL:
-            return;
-            // aca tengo que procesar cada caso individual
+            if (tiempo_estado >= FRAMES_POR_SEGUNDO) {
+                this->estado = IDLE;
+                ataque_especial = false;
+            }
+            break;
         default:
             this->estado = IDLE;
             this->tiempo_estado = 0;
@@ -271,7 +326,7 @@ void personaje::disparar(const int32_t frames_recarga) {
 }
 
 void personaje::efectuar_dano(int32_t const dano) {
-    if (this->estado != IMPACTADO && this->estado != MUERTE) {
+    if (this->estado != IMPACTADO && this->estado != MUERTE && !ataque_especial) {
         this->vida -= dano;
         if (vida <= 0) {
             this->vida = 0;
@@ -290,3 +345,5 @@ ClienteDTO personaje::crear_dto() const {
                              arma_actual, balas_restantes);
     return jugador;
 }
+
+bool personaje::en_ataque_especial() const { return ataque_especial; }
