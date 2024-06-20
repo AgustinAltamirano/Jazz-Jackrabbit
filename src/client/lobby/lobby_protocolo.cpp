@@ -101,17 +101,13 @@ void LobbyProtocolo::enviar_comando(ComandoDTO* comando, bool* cerrado) {
         buffer = serializar_crear_partida(crear_dto->obtener_nombre_escenario(),
                                           crear_dto->obtener_personaje(),
                                           crear_dto->obtener_capacidad_partida());
-        std::cout << "Crear partida serializada " << crear_dto->obtener_nombre_escenario() << "\n";
     } else if (comando->obtener_comando() == UNIR) {
         ComandoUnirDTO* unir_dto = dynamic_cast<ComandoUnirDTO*>(comando);
         buffer = serializar_unir_partida(unir_dto->obtener_codigo_partida(),
                                          unir_dto->obtener_personaje());
-        std::cout << "Unir partida serializada " << unir_dto->obtener_codigo_partida() << "\n";
     } else if (comando->obtener_comando() == VALIDAR_ESCENARIO) {
         ComandoValidarDTO* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando);
         buffer = serializar_validar_escenario(validar_dto->obtener_nombre_escenario());
-        std::cout << "Validar escenario serializado " << validar_dto->obtener_nombre_escenario()
-                  << "\n";
     }
     socket->sendall(buffer.data(), buffer.size(), cerrado);
 }
