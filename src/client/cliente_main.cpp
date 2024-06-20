@@ -19,7 +19,6 @@ int main(int argc, char* argv[]) {
         Lobby lobby(hostname, servname);
         int32_t id_cliente = lobby.obtener_id_cliente();
         MenuJuego menu(argc, argv, lobby);
-        std::cout << "Cliente ID: " << id_cliente << "\n";
         Socket socket = lobby.move_socket();
         lobby.salir_lobby();
         Cliente cliente(std::move(socket));

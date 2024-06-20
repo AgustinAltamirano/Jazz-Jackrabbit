@@ -15,7 +15,7 @@ class LobbyEnviador: public Thread {
 private:
     Socket* socket;
 
-    Queue<std::vector<char>>* cola_enviador;
+    Queue<ComandoDTO*>* cola_enviador;
 
     std::atomic<bool>& sigo_hablando;
 
@@ -23,7 +23,7 @@ private:
 
 public:
     LobbyEnviador(Socket* socket, std::atomic<bool>& sigo_hablando,
-                  Queue<std::vector<char>>* cola_enviador);
+                  Queue<ComandoDTO*>* cola_enviador);
 
     void run() override;
 
