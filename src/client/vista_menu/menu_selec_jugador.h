@@ -20,6 +20,8 @@
 #define M_BOTTOM 0
 #define MSJ_BOX_CREACION_PARTIDA "Código de partida: "
 #define MSJ_BOX_FALLO_PARTIDA "La partida está llena o no existe"
+#define MSJ_BOX_FALLO_CREACION "Ocurrió un error al crear la partida"
+#define TITULO_FALLO_CREACION "No se pudo crear a la partida"
 #define TITULO_CREACION_PARTIDA "Partida creada"
 #define TITULO_FALLO_PARTIDA "No se pudo unir a la partida"
 
@@ -41,6 +43,8 @@ private:
     BotonAnimadoJugador spaz_player;
 
     BotonAnimadoJugador lori_player;
+
+    void mostrar_ventana_dialogo(const std::string& mensaje, const std::string& titulo);
 
 protected:
     void realizar_accion_menu(QPushButton* boton_seleccionado) override;

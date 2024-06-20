@@ -36,22 +36,31 @@ void MenuSeleccionJugador::realizar_accion_menu(QPushButton* boton_seleccionado)
 
     if (es_de_creacion) {
         auto codigo_partida = juego.crear_partida();
+
+        if (codigo_partida == COD_PARTIDA_INCORRECTA) {
+            mostrar_ventana_dialogo(MSJ_BOX_FALLO_CREACION, TITULO_FALLO_CREACION);
+            return;
+        }
+
         std::string codigo_partida_str = std::to_string(codigo_partida);
-        QMessageBox msgBox(this);
-        msgBox.setText(QString::fromStdString(MSJ_BOX_CREACION_PARTIDA + codigo_partida_str));
-        msgBox.setWindowTitle(TITULO_CREACION_PARTIDA);
-        msgBox.exec();
+        mostrar_ventana_dialogo(MSJ_BOX_CREACION_PARTIDA + codigo_partida_str, TITULO_CREACION_PARTIDA);
     } else {
         auto se_unio_correctamente = juego.unir_partida();
         if (!se_unio_correctamente) {
-            QMessageBox msgBox(this);
-            msgBox.setText(MSJ_BOX_FALLO_PARTIDA);
-            msgBox.setWindowTitle(TITULO_FALLO_PARTIDA);
-            msgBox.exec();
+            mostrar_ventana_dialogo(MSJ_BOX_FALLO_PARTIDA, TITULO_FALLO_PARTIDA);
             volver_menu_previo();
             return;
         }
     }
 
     close();
+}
+
+
+void MenuSeleccionJugador::mostrar_ventana_dialogo(const std::string& mensaje,
+                                                   const std::string& titulo) {
+    QMessageBox msgBox(this);
+    msgBox.setText(mensaje.c_str());
+    msgBox.setWindowTitle(titulo.c_str());
+    msgBox.exec();
 }

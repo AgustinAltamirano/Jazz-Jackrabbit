@@ -28,8 +28,11 @@ void MenuJuego::definir_cant_jugadores(int cant_jug) { cant_jugadores = cant_jug
 
 
 int32_t MenuJuego::crear_partida() {
-    ultima_accion_correcta = true;
-    return lobby.crear_partida(mapa_elegido, personaje_elegido, cant_jugadores);
+    auto cod_partida = lobby.crear_partida(mapa_elegido, personaje_elegido, cant_jugadores);
+    if (cod_partida != COD_PARTIDA_INCORRECTA) {
+        ultima_accion_correcta = true;
+    }
+    return cod_partida;
 }
 
 
