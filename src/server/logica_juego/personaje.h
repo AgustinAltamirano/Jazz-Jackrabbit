@@ -15,6 +15,9 @@
 
 class personaje {
 private:
+    const int32_t spawn_x;
+    const int32_t spawn_y;
+
     int32_t id;
     TipoPersonaje tipo_de_personaje;
     int32_t alto;
@@ -78,6 +81,5 @@ public:
     // funcion para la construccion del dto
     [[nodiscard]] ClienteDTO crear_dto() const;
 };
-
 
 #endif  // PERSONAJE_H

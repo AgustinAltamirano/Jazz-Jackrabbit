@@ -5,6 +5,8 @@
 
 personaje::personaje(const int32_t id, const TipoPersonaje tipo, const int32_t pos_x_inicial,
                      const int32_t pos_y_inicial):
+        spawn_x(pos_x_inicial),
+        spawn_y(pos_y_inicial),
         id(id),
         tipo_de_personaje(tipo),
         alto(ALTO_INICIAL),
@@ -266,6 +268,8 @@ void personaje::pasar_tick() {
                 const ConfigAdmin& configurador = ConfigAdmin::getInstance();
                 this->estado = IDLE;
                 this->vida = configurador.get(VIDA_INICIAL);
+                this->pos_x = spawn_x;
+                this->pos_y = spawn_y;
             }
             break;
         case IMPACTADO:
