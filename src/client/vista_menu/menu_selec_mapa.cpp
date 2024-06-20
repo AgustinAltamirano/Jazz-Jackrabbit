@@ -64,6 +64,7 @@ void MenuSeleccionMapa::validar_seleccion_mapa() {
         definir_mapa_custom();
     } else {
         QMessageBox::critical(this, "Mapa erróneo", "El mapa indicado no existe");
+        popup_nombre_mapa.limpiar_seleccion();
     }
 }
 

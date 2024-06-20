@@ -29,6 +29,8 @@ public:
 
     std::string obtener_seleccion_mapa();
 
+    void limpiar_seleccion();
+
 private:
     QDialogButtonBox button_box;
 

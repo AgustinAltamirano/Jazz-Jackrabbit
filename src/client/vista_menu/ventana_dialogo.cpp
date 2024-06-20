@@ -79,10 +79,13 @@ int VentanaDialogo::obtener_seleccion() {
 
 std::string VentanaDialogo::obtener_seleccion_mapa() {
     auto mapa = input_mapa.text().toStdString();
-    input_mapa.clear();
     return mapa;
 }
 
+
+void VentanaDialogo::limpiar_seleccion() {
+    input_mapa.clear();
+}
 
 int VentanaDialogo::obtener_max_rango(const std::string& clave) {
     const std::string ruta_yaml = std::string(PROJECT_DIR) + RUTA_CONFIG_YAML;
