@@ -94,6 +94,20 @@ int32_t LobbyProtocolo::obtener_id_cliente() {
     return id_cliente;
 }
 
-void LobbyProtocolo::enviar_comando(std::vector<char> bytes, bool* cerrado) {
-    socket->sendall(bytes.data(), bytes.size(), cerrado);
+void LobbyProtocolo::enviar_comando(ComandoDTO* comando, bool* cerrado) {
+    std::vector<char> buffer;
+    if (comando->obtener_comando() == CREAR) {
+        ComandoCrearDTO* crear_dto = dynamic_cast<ComandoCrearDTO*>(comando);
+        buffer = serializar_crear_partida(crear_dto->obtener_nombre_escenario(),
+                                          crear_dto->obtener_personaje(),
+                                          crear_dto->obtener_capacidad_partida());
+    } else if (comando->obtener_comando() == UNIR) {
+        ComandoUnirDTO* unir_dto = dynamic_cast<ComandoUnirDTO*>(comando);
+        buffer = serializar_unir_partida(unir_dto->obtener_codigo_partida(),
+                                         unir_dto->obtener_personaje());
+    } else if (comando->obtener_comando() == VALIDAR_ESCENARIO) {
+        ComandoValidarDTO* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando);
+        buffer = serializar_validar_escenario(validar_dto->obtener_nombre_escenario());
+    }
+    socket->sendall(buffer.data(), buffer.size(), cerrado);
 }

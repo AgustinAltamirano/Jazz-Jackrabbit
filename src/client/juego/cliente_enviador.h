@@ -15,15 +15,14 @@ class ClienteEnviador: public Thread {
 private:
     Socket* socket;
 
-    Queue<std::vector<char>>* cola_enviador;
+    Queue<TipoComando>* cola_enviador;
 
     ClienteProtocolo cliente_protocolo;
 
     std::atomic<bool>& hablando;
 
 public:
-    ClienteEnviador(Socket* socket, std::atomic<bool>& hablando,
-                    Queue<std::vector<char>>* cola_enviador);
+    ClienteEnviador(Socket* socket, std::atomic<bool>& hablando, Queue<TipoComando>* cola_enviador);
 
     void run() override;
 

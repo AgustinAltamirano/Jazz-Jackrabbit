@@ -20,6 +20,8 @@ public:
 
     explicit ComandoUnirDTO(bool unio);
 
+    explicit ComandoUnirDTO(int32_t codigo_partida, TipoPersonaje personaje);
+
     int32_t obtener_codigo_partida();
 
     TipoPersonaje obtener_personaje();

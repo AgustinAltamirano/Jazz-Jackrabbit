@@ -15,7 +15,7 @@ Lobby::Lobby(const std::string& hostname, const std::string& servname):
         sigo_hablando(true),
         lobby_enviador(&socket, std::ref(sigo_hablando), &cola_enviador),
         lobby_recibidor(&socket, std::ref(sigo_hablando), &cola_recibidor),
-        lobby_protocolo(&socket){
+        lobby_protocolo(&socket) {
     id_cliente = lobby_protocolo.obtener_id_cliente();
     lobby_enviador.start();
     lobby_recibidor.start();

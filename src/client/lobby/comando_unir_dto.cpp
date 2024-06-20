@@ -5,6 +5,9 @@ ComandoUnirDTO::ComandoUnirDTO(int32_t id_cliente, int32_t codigo_partida, TipoP
 
 ComandoUnirDTO::ComandoUnirDTO(bool unio): ComandoDTO(UNIR), unio(unio), codigo_partida() {}
 
+ComandoUnirDTO::ComandoUnirDTO(int32_t codigo_partida, TipoPersonaje personaje):
+        ComandoDTO(UNIR), codigo_partida(codigo_partida), personaje(personaje) {}
+
 TipoPersonaje ComandoUnirDTO::obtener_personaje() { return personaje; }
 
 int32_t ComandoUnirDTO::obtener_codigo_partida() { return codigo_partida; }

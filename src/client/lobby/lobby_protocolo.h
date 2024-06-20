@@ -39,7 +39,7 @@ public:
 
     ComandoValidarDTO* deserializar_validar_escenario(bool* cerrado);
 
-    void enviar_comando(std::vector<char> bytes, bool* cerrado);
+    void enviar_comando(ComandoDTO* comando, bool* cerrado);
 };
 
 #endif

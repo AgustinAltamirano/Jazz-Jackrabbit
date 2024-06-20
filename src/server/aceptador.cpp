@@ -13,7 +13,6 @@ void Aceptador::run() {
     try {
         while (sigo_jugando) {
             Socket skt_aceptado = skt_servidor->accept();
-            std::cout << "Nuevo jugador" << std::endl;
             clientes.emplace_back(std::move(skt_aceptado), &gestor_partidas, int32_t(clientes.size()));
             limpiar_clientes();
             gestor_partidas.borrar_partidas_finalizadas();
