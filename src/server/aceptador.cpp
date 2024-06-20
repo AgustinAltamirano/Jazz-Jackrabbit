@@ -1,8 +1,9 @@
 #include "aceptador.h"
 
 #include <algorithm>
-#include <string>
 #include <utility>
+
+#include <sys/socket.h>
 
 #include "comunicador_cliente.h"
 
@@ -46,8 +47,9 @@ void Aceptador::eliminar_todos_clientes() {
 
 void Aceptador::stop() {
     sigo_jugando = false;
-    skt_servidor->shutdown(2);
+    skt_servidor->shutdown(SHUT_RDWR);
     skt_servidor->close();
+    eliminar_todos_clientes();
 }
 
-Aceptador::~Aceptador() {}
+Aceptador::~Aceptador() = default;
