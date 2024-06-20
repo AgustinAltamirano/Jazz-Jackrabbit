@@ -39,9 +39,9 @@ probabilidad_municion_2: 1
 probabilidad_municion_3: 1
 
 #estadisticas de los enemigos
-vida_lagarto: 4
-vida_murcielago: 2
-vida_esqueleto: 6
+vida_lagarto: 6
+vida_murcielago: 3
+vida_esqueleto: 9
 
 dano_lagarto: 1
 dano_murcielago: 2

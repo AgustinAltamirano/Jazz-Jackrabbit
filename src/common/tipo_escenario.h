@@ -3,5 +3,5 @@
 
 #include <cstdint>
 
-enum TipoEscenario : uint8_t { ESCENARIO1, ESCENARIO2, ESCENARIO_INDEFINIDO };
+enum TipoEscenario : uint8_t { ESCENARIO_CASTLE, ESCENARIO_CARROTUS, ESCENARIO_INDEFINIDO };
 #endif

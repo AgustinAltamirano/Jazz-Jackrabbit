@@ -11,8 +11,8 @@
 #include "../../common/tipo_bloque_escenario.h"
 
 const std::unordered_map<TipoEscenario, std::string> AdministradorVistaJuego::MAPA_TIPO_ESCENARIO{
-        {ESCENARIO1, "castle"},
-        {ESCENARIO2, "carrotus"},
+        {ESCENARIO_CASTLE, "castle"},
+        {ESCENARIO_CARROTUS, "carrotus"},
 };
 
 const std::unordered_map<TipoBloqueEscenario, std::string>
@@ -59,7 +59,7 @@ void AdministradorVistaJuego::actualizar_vista_fondo_escenario(const TipoEscenar
 }
 
 void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
-        const std::vector<ClienteDTO>& clientes_recibidos) {
+        const std::vector<ClienteDTO>& clientes_recibidos, const int tiempo_restante) {
     if (const auto jugador = std::find_if(
                 clientes_recibidos.begin(), clientes_recibidos.end(),
                 [this](const auto& cliente) { return cliente.id_cliente == this->id_jugador; });
@@ -75,7 +75,7 @@ void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
 
         // Actualizar HUD en base a los datos del jugador
         hud.actualizar(jugador->tipo_personaje, jugador->puntos, jugador->vida,
-                       jugador->arma_actual, jugador->balas_restantes);
+                       jugador->arma_actual, jugador->balas_restantes, tiempo_restante);
     }
 
     std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> datos_jugadores(
@@ -158,6 +158,9 @@ void AdministradorVistaJuego::actualizar_vista_balas(const std::vector<BalaDTO>&
     balas.eliminar_balas();
     for (const auto& bala: balas_recibidas) {
         balas.agregar_bala(bala.tipo, bala.pos_x, bala.pos_y);
+        if (bala.choco) {
+            balas.preparar_sonido_impacto_bala(iteraciones_actuales);
+        }
     }
 }
 
@@ -200,7 +203,7 @@ void AdministradorVistaJuego::actualizar_vista() {
     const std::vector<ClienteDTO> clientes_recibidos = snapshot->obtener_clientes();
 
     actualizar_vista_fondo_escenario(snapshot->obtener_tipo_escenario());
-    actualizar_vista_camara_y_hud(clientes_recibidos);
+    actualizar_vista_camara_y_hud(clientes_recibidos, snapshot->obtener_tiempo_restante());
     actualizar_vista_personajes(clientes_recibidos);
     actualizar_vista_bloques_escenario(snapshot->obtener_bloques_escenario());
     actualizar_vista_personajes(clientes_recibidos);
@@ -231,11 +234,11 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
                                                  Cliente& cliente):
         id_jugador(static_cast<uint32_t>(id_cliente)),
         proximo_id(0),
-        sdl(SDL_INIT_VIDEO),
+        sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO),
         ventana(titulo_ventana, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA,
                 ALTO_VENTANA, 0),
         renderer(ventana, -1, SDL_RENDERER_ACCELERATED),
-        pantalla_carga(renderer),
+        mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096),
         lector_texturas(renderer),
         entrada_juego(cliente),
         hud(id_cliente, renderer, lector_texturas),
@@ -243,22 +246,42 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         iteraciones_actuales(0),
         tipo_escenario(ESCENARIO_INDEFINIDO),
         enemigos(renderer, lector_texturas, camara),
-        balas(renderer, lector_texturas, camara),
+        balas(renderer, lector_texturas, camara, mixer),
         recogibles(renderer, lector_texturas, camara),
         primera_snapshot_recibida(false),
-        fin_juego(false) {
+        fin_juego(false),
+        reproductor_musica(mixer) {
     lector_texturas.cargar_texturas_y_coordenadas();
+    mixer.SetVolume(-1, VOLUMEN_SONIDOS);
 }
 
 void AdministradorVistaJuego::run() {
     int64_t ticks_anteriores = 0;
-    while (!fin_juego) {
-        if (!entrada_juego.procesar_entrada()) {
-            fin_juego = true;
+    bool cerrar_juego = false;
+
+    while (!cerrar_juego) {
+        cerrar_juego = !entrada_juego.procesar_entrada();
+        if (cerrar_juego) {
+            continue;
         }
 
         actualizar_vista();
         renderer.Clear();
+
+        if (fin_juego) {
+            hud.dibujar_pantalla_fin_juego();
+            renderer.Present();
+
+            if (reproductor_musica.esta_reproduciendo_musica_ambiente()) {
+                reproductor_musica.detener_musica_ambiente();
+                reproductor_musica.reproducir_musica_fin_juego();
+            }
+
+            const int64_t ticks_actuales = SDL_GetTicks();
+            ticks_anteriores += sincronizar_vista(ticks_actuales - ticks_anteriores);
+            continue;
+        }
+
         if (fondo_escenario) {
             fondo_escenario->dibujar();
         }
@@ -272,10 +295,19 @@ void AdministradorVistaJuego::run() {
         for (auto& [fst, snd]: personajes) {
             snd.dibujar();
         }
+
+        balas.reproducir_sonido_pendiente();
+
         if (primera_snapshot_recibida) {
-            hud.dibujar(entrada_juego.mostrar_top());
+            hud.dibujar();
+            if (entrada_juego.mostrar_top()) {
+                hud.dibujar_top_jugadores(false);
+            }
+            if (!reproductor_musica.esta_reproduciendo_musica_ambiente()) {
+                reproductor_musica.reproducir_musica_ambiente(tipo_escenario);
+            }
         } else {
-            pantalla_carga.dibujar();
+            hud.dibujar_pantalla_carga();
         }
 
         renderer.Present();
