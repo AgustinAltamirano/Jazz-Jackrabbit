@@ -194,4 +194,9 @@ letras:
     y: 81
     ancho: 18
     alto: 20
+  - nombre: ':'
+    x: 56
+    y: 46
+    ancho: 16
+    alto: 20
 

@@ -18,15 +18,31 @@
 #define RENDER_CAMARA_X (ANCHO_VENTANA / 2)
 #define RENDER_CAMARA_Y (ALTO_VENTANA * 3 / 4)
 
+/**
+ * Rutas usadas para cargar los efectos de sonido.
+ */
+#define VOLUMEN_MUSICA 16
+#define VOLUMEN_MUSICA_FIN_JUEGO 32
+#define VOLUMEN_SONIDOS 64
 
-#define COLOR_PANTALLA_CARGA_RED 122
-#define COLOR_PANTALLA_CARGA_GREEN 69
-#define COLOR_PANTALLA_CARGA_BLUE 255
+// Cantidad mínima de iteraciones que deben transcurrir entre sonidos del mismo tipo.
+#define ITERACIONES_ENTRE_SONIDOS 10
+
+#define RUTA_MUSICA "/musica"
+#define MUSICA_CARROTUS "/carrotus.mp3"
+#define MUSICA_CASTLE "/castle.mp3"
+#define MUSICA_FIN_JUEGO "/fin_juego.mp3"
+
+#define RUTA_SONIDOS "/sonidos"
+#define SONIDO_IMPACTO_BALA "/impacto_bala.mp3"
 
 /**
  * Rutas usadas para cargar los sprites y las coordenadas de cada uno en sus respectivas imágenes.
  */
 #define RUTA_SPRITES "/sprites"
+#define DIR_PANTALLA_CARGA "/pantalla/"
+#define IMG_PANTALLA_CARGA "/pantalla_carga.png"
+
 #define DIR_PERSONAJES "/personajes/"
 #define PERSONAJES_CONFIG "/personajes.yaml"
 
@@ -76,13 +92,28 @@
 #define POS_TITULO_TOP_JUGADORES_Y 60
 
 #define POS_TOP_JUGADORES_X 80
-#define POS_TOP_JUGADORES_Y 100
+#define POS_TOP_JUGADORES_Y 80
 
 #define POS_ID_TOP_JUGADORES_X 120
 #define POS_PUNTAJES_JUGADORES_X 190
 
 #define SEPARACION_HORIZONTAL_TOP 30
 #define SEPARACION_VERTICAL_TOP 10
+
+#define POS_TIEMPO_RESTANTE_X (ANCHO_VENTANA * 3 / 4)
+#define POS_TIEMPO_RESTANTE_Y (ALTO_VENTANA - 30)
+
+// Constantes de la pantalla de carga
+
+#define POS_TEXTO_CARGA_X 38
+#define POS_TEXTO_CARGA_Y 220
+
+// Constantes de la pantalla de fin de juego
+
+#define POS_TITULO_FIN_JUEGO_X (ANCHO_VENTANA / 2)
+#define POS_TITULO_FIN_JUEGO_Y 40
+
+#define POS_TOP_JUGADORES_FIN_JUEGO_Y 130
 
 
 #endif  // VISTA_JUEGO_DEFS_H

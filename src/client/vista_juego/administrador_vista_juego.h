@@ -32,8 +32,8 @@
 #include "hud.h"
 #include "lector_texturas.h"
 #include "objeto_animado.h"
-#include "pantalla_carga.h"
 #include "personaje.h"
+#include "reproductor_musica.h"
 #include "vista_juego_defs.h"
 
 /**
@@ -56,7 +56,7 @@ private:
 
     SDL2pp::Window ventana;
     SDL2pp::Renderer renderer;
-    PantallaCarga pantalla_carga;
+    SDL2pp::Mixer mixer;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
     HUD hud;
@@ -81,12 +81,15 @@ private:
     /** Clase que administra la vista de todos los objetos recogibles */
     AdminRecogibles recogibles;
 
+    ReproductorMusica reproductor_musica;
+
     bool primera_snapshot_recibida;
     bool fin_juego;
 
     void actualizar_vista_fondo_escenario(TipoEscenario tipo_escenario);
 
-    void actualizar_vista_camara_y_hud(const std::vector<ClienteDTO>& clientes_recibidos);
+    void actualizar_vista_camara_y_hud(const std::vector<ClienteDTO>& clientes_recibidos,
+                                       int tiempo_restante);
 
     void actualizar_vista_bloques_escenario(
             const std::vector<BloqueEscenarioDTO>& bloques_recibidos);

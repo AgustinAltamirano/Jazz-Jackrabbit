@@ -18,8 +18,6 @@ add_library(vista_juego
         camara.cpp
         camara.h
         vista_juego_defs.h
-        pantalla_carga.cpp
-        pantalla_carga.h
         hud.cpp
         hud.h
         ../../common/tipo_enemigo.h
@@ -31,7 +29,11 @@ add_library(vista_juego
         admin_recogibles.cpp
         admin_recogibles.h
         top_jugadores.cpp
-        top_jugadores.h)
+        top_jugadores.h
+        reproductor_musica.cpp
+        reproductor_musica.h
+        reproductor_sonido.cpp
+        reproductor_sonido.h)
 
 set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
 set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
