@@ -6,6 +6,9 @@ ComandoValidarDTO::ComandoValidarDTO(int32_t& id_cliente, std::string nombre_esc
 ComandoValidarDTO::ComandoValidarDTO(bool es_valida):
         ComandoDTO(VALIDAR_ESCENARIO), es_valida(es_valida) {}
 
+ComandoValidarDTO::ComandoValidarDTO(std::string nombre_escenario):
+        ComandoDTO(VALIDAR_ESCENARIO), nombre_escenario(nombre_escenario) {}
+
 std::string ComandoValidarDTO::obtener_nombre_escenario() { return nombre_escenario; }
 
 bool ComandoValidarDTO::obtener_es_valida() { return es_valida; }

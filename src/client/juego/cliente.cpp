@@ -16,7 +16,7 @@ Cliente::Cliente(Socket&& socket):
 }
 
 bool Cliente::realizar_accion(const TipoComando& comando) {
-    return cola_enviador.try_push(cliente_protocolo.serializar_comando(comando));
+    return cola_enviador.try_push(comando);
 }
 
 bool Cliente::obtener_snapshot(std::shared_ptr<SnapshotDTO>& snapshot) {

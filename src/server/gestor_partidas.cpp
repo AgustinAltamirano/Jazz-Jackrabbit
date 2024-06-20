@@ -14,7 +14,6 @@ Queue<ComandoServer*>* GestorPartidas::crear_partida(
     Partida* nueva_partida = new Partida(cola_enviador, codigo_partida, nombre_escenario,
                                          id_cliente, personaje, capacidad_partidas);
     partidas[codigo_partida] = nueva_partida;
-    std::cout << codigo_partida << std::endl;
     contador_partidas++;
     Queue<ComandoServer*>* aux = nueva_partida->obtener_comandos();
     return (aux);
@@ -42,9 +41,7 @@ Queue<ComandoServer*>* GestorPartidas::unir_partida(Queue<std::shared_ptr<Snapsh
 
     Partida* partida = obtener_partida_por_codigo(codigo);
 
-    std::cout << "pedido para agregar" << std::endl;
     if (partida && partida->puedo_unir()) {
-        std::cout << "agregue cliente a la partida" << std::endl;
         partida->agregar_cliente(cola_enviador, id_cliente, personaje);
         if (!partida->puedo_unir()) {
             partida->start();
