@@ -48,7 +48,7 @@ public:
     TipoEscenario get_escenario();
 
     // chequeo colision con bloques
-    void colisiones_bloques(std::map<int, personaje>& jugadores) const;
+    void colisiones_bloques_y_enemigos(std::map<int, personaje>& jugadores);
     void chequear_caida_y_objetos(std::map<int, personaje>& jugadores);
 
     // personaje disparo bala
@@ -58,6 +58,7 @@ public:
     // manejo enemigos
     void hacer_tick_enemigos();
     void generar_objeto_aleatorio(int32_t pos_x, int32_t pos_y);
+    void matar_enemigos() const;
 
     // crear snapshots
     std::shared_ptr<SnapshotDTO> crear_snapshot();

@@ -56,6 +56,7 @@ public:
     void cambiar_estado(bool cae);
     void pasar_tick();
     void recoger_objeto(int32_t valor, TipoRecogible tipo);
+    [[nodiscard]] bool en_ataque_especial() const;
 
     // los siguientes dos métodos sirven para el chqueo de colisiones
     // Ayuda a decidir con que pared choca el personaje.

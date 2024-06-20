@@ -9,7 +9,8 @@ void hacer_tick(int tiempo) { std::this_thread::sleep_for(std::chrono::milliseco
 void Gameloop::stop() { this->keep_talking = false; }
 
 Gameloop::Gameloop(const std::string& archivo_escenario,
-                   const std::map<int32_t, TipoPersonaje>& mapa, Queue<ComandoServer*>& cola_entrada,
+                   const std::map<int32_t, TipoPersonaje>& mapa,
+                   Queue<ComandoServer*>& cola_entrada,
                    std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida,
                    std::atomic<bool>& sigo_jugando):
         keep_talking(sigo_jugando),
@@ -39,6 +40,7 @@ void Gameloop::run() {
         cola_salida.second->try_push(snapshot_escenario);
     }
     auto tiempo_inicio_partida = std::chrono::high_resolution_clock::now();
+    bool terminar_partida = false;
     while (this->keep_talking) {
         // comienzo el cronómetro
         auto tiempo_inicio = std::chrono::high_resolution_clock::now();
@@ -50,6 +52,11 @@ void Gameloop::run() {
         while (cola_entrada.try_pop(comando)) {
             // asumo que el dto ya puede implementar conseguir el id y la accion que trae
             acciones[comando->obtener_id_cliente()].push_back(comando->obtener_comando());
+            if (comando->obtener_comando() == TRUCO3) {
+                terminar_partida = true;
+            } else if (comando->obtener_comando() == TRUCO2) {
+                escenario.matar_enemigos();
+            }
         }
         for (auto& entidad: personajes) {
             entidad.second.pasar_tick();
@@ -62,7 +69,7 @@ void Gameloop::run() {
         }
 
         // seccion2 chequea colisiones con el entorno y los cambios de estado de los personajes
-        escenario.colisiones_bloques(personajes);
+        escenario.colisiones_bloques_y_enemigos(personajes);
         escenario.chequear_caida_y_objetos(personajes);
 
         // seccion3 chequea colisiones con los puntos, municiones y enemigos
@@ -79,9 +86,9 @@ void Gameloop::run() {
         int tiempo_restante_juego = segundos_partida - tiempo_jue_segundos;  // para DTO
         if (tiempo_jue_segundos > segundos_partida) {
             this->keep_talking = false;
-            snapshot_juego->establecer_fin_juego(true);
         }
         snapshot_juego->agregar_tiempo_restante(tiempo_restante_juego);
+        snapshot_juego->establecer_fin_juego(terminar_partida);
 
         // seccion5 enviar dto vuelta
         for (const auto& entidad: personajes) {

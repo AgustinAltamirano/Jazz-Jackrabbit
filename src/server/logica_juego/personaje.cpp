@@ -90,17 +90,42 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                     this->arma_actual = static_cast<TipoArma>(arma_actual + 1);
                 }
                 break;
-            /*
-            case ATAQUE_ESPECIAL:
-                por haacer
-            */
+            case ACTIVAR_ATAQUE_ESPECIAL:
+                switch (tipo_de_personaje) {
+                    case JAZZ:
+                        if (!en_aire && (this->estado != INTOXICADO) &&
+                            (this->estado != IMPACTADO)) {
+                            this->vel_y = -24;
+                            this->en_aire = true;
+                            this->ataque_especial = true;
+                        }
+                        break;
+                    case LORI:
+                        if (en_aire && (this->estado != INTOXICADO) &&
+                            (this->estado != IMPACTADO)) {
+                            this->ataque_especial = true;
+                        }
+                        break;
+                    case SPAZ:
+                        if (!en_aire && (this->estado != INTOXICADO) &&
+                            (this->estado != IMPACTADO)) {
+                            this->vel_x = 10;
+                            this->ataque_especial = true;
+                            if (de_espaldas) {
+                                this->vel_x *= -1;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             case TRUCO1:
                 // aca agrego balas de arma a todas las armas del personaje
                 inventario_balas[ARMA1] += 20;
                 inventario_balas[ARMA2] += 20;
                 inventario_balas[ARMA3] += 20;
                 break;
-            case TRUCO2:  // vida infinita
+            case TRUCO2:  // matar todos los enemigos
             case TRUCO3:  // termina la partida, es irrelevante que el jugador lo procese
             default:      // si no es ningun caso que conozco lo ignoro
                 break;
@@ -163,8 +188,15 @@ int32_t personaje::get_ancho() const { return ancho; }
 
 void personaje::cambiar_estado(const bool cae) {
     this->en_aire = cae;
-    if (estado == MUERTE || estado == IMPACTADO || estado == ATAQUE_ESPECIAL) {
+    if (estado == MUERTE || estado == IMPACTADO) {
         this->vel_x = 0;  // reseteo la velocidad
+        return;
+    }
+    if (ataque_especial) {
+        this->estado = ATAQUE_ESPECIAL;
+        if (this->tipo_de_personaje == LORI) {
+            this->dejar_de_caer();
+        }
         return;
     }
     if (estado == INTOXICADO || estado == INTOXICADO_MOVIMIENTO) {
@@ -173,7 +205,7 @@ void personaje::cambiar_estado(const bool cae) {
         } else {
             this->estado = INTOXICADO;
         }
-    } else if (tiempo_recarga > 0) {
+    } else if (tiempo_recarga > 0 && vel_x == 0) {
         this->estado = DISPARAR_QUIETO;
     } else if (cae) {
         if (this->vel_x != 0) {
@@ -242,8 +274,11 @@ void personaje::pasar_tick() {
             }
             break;
         case ATAQUE_ESPECIAL:
-            return;
-            // aca tengo que procesar cada caso individual
+            if (tiempo_estado >= FRAMES_POR_SEGUNDO) {
+                this->estado = IDLE;
+                ataque_especial = false;
+            }
+            break;
         default:
             this->estado = IDLE;
             this->tiempo_estado = 0;
@@ -291,7 +326,7 @@ void personaje::disparar(const int32_t frames_recarga) {
 }
 
 void personaje::efectuar_dano(int32_t const dano) {
-    if (this->estado != IMPACTADO && this->estado != MUERTE) {
+    if (this->estado != IMPACTADO && this->estado != MUERTE && !ataque_especial) {
         this->vida -= dano;
         if (vida <= 0) {
             this->vida = 0;
@@ -310,3 +345,5 @@ ClienteDTO personaje::crear_dto() const {
                              arma_actual, balas_restantes);
     return jugador;
 }
+
+bool personaje::en_ataque_especial() const { return ataque_especial; }

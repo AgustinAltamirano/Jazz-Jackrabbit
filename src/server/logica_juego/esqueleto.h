@@ -34,6 +34,7 @@ public:
     [[nodiscard]] int32_t atacar() const override;
     bool hacer_dano(int32_t puntos_dano) override;
     void revivir() override;
+    void matar() override;
 
     int32_t get_pos_x() override;
     int32_t get_pos_y() override;

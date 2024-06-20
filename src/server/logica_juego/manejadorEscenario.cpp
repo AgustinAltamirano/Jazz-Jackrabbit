@@ -149,7 +149,7 @@ int32_t definir_punto_medio(const int32_t pos_org_jug, const int32_t jug_largo,
     return (pos_bloque + bloque_largo + 1);
 }
 
-void manejadorEscenario::colisiones_bloques(std::map<int, personaje>& jugadores) const {
+void manejadorEscenario::colisiones_bloques_y_enemigos(std::map<int, personaje>& jugadores) {
     for (auto& entidad: jugadores) {
         personaje& jugador = entidad.second;
         std::vector<bloqueEscenario> colisiones = chequeo_recto_individual(jugador, bloques_rectos);
@@ -194,8 +194,14 @@ void manejadorEscenario::colisiones_bloques(std::map<int, personaje>& jugadores)
             if ((*en)->get_estado() == ACTIVO &&
                 hay_colision_enemigo(nueva_pos_x, nueva_pos_y, jugador.get_alto(),
                                      jugador.get_ancho(), (*en))) {
-                const int32_t dano = (*en)->atacar();
-                jugador.efectuar_dano(dano);
+                if (jugador.en_ataque_especial()) {
+                    (*en)->matar();
+                    jugador.dar_puntos((*en)->get_puntos());
+                    this->generar_objeto_aleatorio((*en)->get_pos_x(), (*en)->get_pos_y());
+                } else {
+                    const int32_t dano = (*en)->atacar();
+                    jugador.efectuar_dano(dano);
+                }
             }
             ++en;
         }
@@ -374,7 +380,7 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
             const std::vector<int32_t> posicion = jug.get_pos_actual();
             const int32_t jug_x = posicion[0];
             const int32_t jug_y = posicion[1];
-            if (((*it)->get_id() != jugador.first) &&
+            if (((*it)->get_id() != jugador.first) && !jug.en_ataque_especial() &&
                 hay_colision_bala(bala_x, bala_y, jug_x, jug_y, jug.get_ancho(), jug.get_alto())) {
                 int32_t dano = (*it)->impactar();
                 jug.efectuar_dano(dano);
@@ -404,5 +410,11 @@ void manejadorEscenario::manejar_balas(std::map<int, personaje>& jugadores) {
             }
         }
         ++it;
+    }
+}
+
+void manejadorEscenario::matar_enemigos() const {
+    for (const auto& enemigo: enemigos) {
+        enemigo->matar();
     }
 }

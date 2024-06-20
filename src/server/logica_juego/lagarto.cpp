@@ -11,7 +11,7 @@ Lagarto::Lagarto(const int32_t id, const int32_t pos_x_in, const int32_t pos_y_i
         alto(ALTURA_ENEMIGO),
         tipo(LAGARTO),
         estado(ACTIVO),
-        de_espaldas(true) {
+        de_espaldas(false) {
     const ConfigAdmin& configurador = ConfigAdmin::getInstance();
     this->vel_x = configurador.get(VELOCIDAD_LAGARTO);
     this->dano = configurador.get(DANO_LAGARTO);
@@ -83,14 +83,12 @@ void Lagarto::chequear_colisiones(std::vector<bloqueEscenario>& bloques,
         if (pos_x < bloque.pos_x + bloque.ancho && pos_x + ancho > bloque.pos_x &&
             pos_y < bloque.pos_y + bloque.alto && pos_y + alto > bloque.pos_y) {
             this->chocar_pared();
-            this->mover();
         }
     }
     for (const auto& bloque: angulos) {
         if (pos_x < bloque.pos_x + bloque.ancho && pos_x + ancho > bloque.pos_x &&
             pos_y < bloque.pos_y + bloque.alto && pos_y + alto > bloque.pos_y) {
             this->chocar_pared();
-            this->mover();
         }
     }
     const bool cae =
@@ -100,6 +98,10 @@ void Lagarto::chequear_colisiones(std::vector<bloqueEscenario>& bloques,
             });
     if (cae) {
         this->chocar_pared();
-        this->mover();
     }
+}
+
+void Lagarto::matar() {
+    this->vida = 0;
+    this->estado = MUERTO;
 }
