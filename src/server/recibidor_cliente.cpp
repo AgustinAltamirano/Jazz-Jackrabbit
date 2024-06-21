@@ -40,11 +40,11 @@ bool RecibidorCliente::inicio_recibidor_cliente() {
         }
     }
     establecer_cola_recibidor(cola_recibidor);
-    this->start();
     return true;
 }
 
 void RecibidorCliente::run() {
+    inicio_recibidor_cliente();
     bool cliente_cerrado = false;
     while (sigo_en_partida && !cliente_cerrado) {
         try {

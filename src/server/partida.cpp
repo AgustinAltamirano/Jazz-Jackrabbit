@@ -82,6 +82,12 @@ bool Partida::esta_vacia() {
 void Partida::detener_partida() {
     sigo_jugando = false;
     cola_comandos.close();
+    // Si el cliente se desconecta o se desea cerrar el server, se envía un snapshot de fin de juego
+    const auto snapshot_fin_juego = std::make_shared<SnapshotDTO>();
+    snapshot_fin_juego->establecer_fin_juego(true);
+    for (auto& [codigo, cola_salida]: cola_snapshots) {
+        cola_salida->push(snapshot_fin_juego);
+    }
 }
 
 int32_t Partida::obtener_codigo_partida() { return codigo_partida; }
