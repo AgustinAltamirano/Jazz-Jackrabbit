@@ -6,7 +6,7 @@
 
 #include "../../common/tipo_escenario.h"
 #include "../../common/tipo_personaje.h"
-#include "common/socket_abstracto.h"
+#include "../../common/socket_abstracto.h"
 
 #include "comando_crear_dto.h"
 #include "comando_dto.h"

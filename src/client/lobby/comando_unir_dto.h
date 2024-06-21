@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "common/tipo_personaje.h"
+#include "../../common/tipo_personaje.h"
 
 #include "comando_dto.h"
 

@@ -2,7 +2,7 @@
 
 #include <arpa/inet.h>
 
-#include "common/tipo_comando.h"
+#include "../common/tipo_comando.h"
 
 ServidorProtocoloSerializador::ServidorProtocoloSerializador() {}
 
