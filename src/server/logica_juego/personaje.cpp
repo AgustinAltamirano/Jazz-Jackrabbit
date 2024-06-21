@@ -329,17 +329,18 @@ void personaje::disparar(const int32_t frames_recarga) {
     }
 }
 
-bool personaje::efectuar_dano(int32_t const dano) {
+int personaje::efectuar_dano(int32_t const dano) {
     if (this->estado != IMPACTADO && this->estado != MUERTE && !ataque_especial) {
         this->vida -= dano;
         if (vida <= 0) {
             this->vida = 0;
             this->estado = MUERTE;
-            return true;
+            return 2;
         }
         this->estado = IMPACTADO;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
 void personaje::dar_puntos(int32_t const puntos) { this->puntos += puntos; }
