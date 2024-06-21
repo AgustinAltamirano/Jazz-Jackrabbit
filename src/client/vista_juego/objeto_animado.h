@@ -65,6 +65,8 @@ public:
 
     void resetear_animacion();
 
+    [[nodiscard]] bool termino_animacion() const;
+
     void actualizar_iteracion(uint32_t iteraciones_actuales);
 
     /**

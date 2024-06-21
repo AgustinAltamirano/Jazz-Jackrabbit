@@ -53,6 +53,13 @@ void ObjetoAnimado::resetear_animacion() {
     sprite_actual = 0;
 }
 
+bool ObjetoAnimado::termino_animacion() const {
+    if (repetir) {
+        return false;
+    }
+    return sprite_actual == sprite_coords.size() - 1;
+}
+
 void ObjetoAnimado::actualizar_iteracion(const uint32_t iteraciones_actuales) {
     if (reseteado) {
         iteraciones_inicio_animacion = iteraciones_actuales;

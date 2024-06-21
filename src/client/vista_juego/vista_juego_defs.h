@@ -23,7 +23,7 @@
  */
 #define VOLUMEN_MUSICA 16
 #define VOLUMEN_MUSICA_FIN_JUEGO 32
-#define VOLUMEN_SONIDOS 64
+#define VOLUMEN_SONIDOS 32
 
 // Cantidad mínima de iteraciones que deben transcurrir entre sonidos del mismo tipo.
 #define ITERACIONES_ENTRE_SONIDOS 10
@@ -61,6 +61,9 @@
 
 #define DIR_ITEMS "/items/"
 #define ITEMS_CONFIG "/items.yaml"
+
+#define DIR_EXPLOSION "/efectos/"
+#define EXPLOSION_CONFIG "/explosion.yaml"
 
 #define COLOR_KEY_PERSONAJES_RED 44
 #define COLOR_KEY_PERSONAJES_GREEN 102
