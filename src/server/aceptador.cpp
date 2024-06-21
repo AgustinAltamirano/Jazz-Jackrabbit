@@ -12,8 +12,9 @@ Aceptador::Aceptador(Socket* skt_servidor): skt_servidor(skt_servidor) {}
 void Aceptador::run() {
     try {
         while (sigo_jugando) {
-            Socket skt_aceptado = skt_servidor->accept();
-            clientes.emplace_back(std::move(skt_aceptado), &gestor_partidas, int32_t(clientes.size()));
+            Socket* skt_aceptado = (Socket*)skt_servidor->accept();
+            clientes.emplace_back(std::move(*skt_aceptado), &gestor_partidas,
+                                  int32_t(clientes.size()));
             limpiar_clientes();
             gestor_partidas.borrar_partidas_finalizadas();
         }
