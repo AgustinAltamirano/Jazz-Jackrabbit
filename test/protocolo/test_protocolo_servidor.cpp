@@ -1,6 +1,8 @@
 #include <string>
 #include <vector>
 
+#include <netinet/in.h>
+
 #include "../acutest.h"
 #include "common/snapshot_dto.h"
 #include "common/socket_dummy.h"
@@ -25,5 +27,22 @@ void test_obtener_comando(void) {
     TEST_CHECK(comando->obtener_comando() == comando_enviado);
 }
 
+void test_enviar_id_cliente(void) {
+    SocketDummy socket;
+    ServidorProtocolo protocolo(&socket);
+    bool cerrado = false;
+    int32_t id_cliente_enviado = 1;
 
-TEST_LIST = {{"Test protocolo enviar comando", test_obtener_comando}, {NULL, NULL}};
+    protocolo.enviar_id_cliente(id_cliente_enviado, &cerrado);
+
+    int32_t id_cliente_recibido;
+    socket.recvall(&id_cliente_recibido, sizeof(int), &cerrado);
+    id_cliente_recibido = ntohl(id_cliente_recibido);
+
+    TEST_CHECK(id_cliente_recibido == id_cliente_enviado);
+}
+
+
+TEST_LIST = {{"Test protocolo obtener comando", test_obtener_comando},
+             {"Test protocolo enviar id cliente", test_enviar_id_cliente},
+             {NULL, NULL}};
