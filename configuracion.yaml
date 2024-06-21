@@ -58,3 +58,5 @@ puntos_esqueleto: 1000
 frames_hasta_revivir_lagarto: 200
 frames_hasta_revivir_murcielago: 300
 frames_hasta_revivir_esqueleto: 600
+
+dano_ataque_especial: 3
