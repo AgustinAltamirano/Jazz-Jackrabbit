@@ -2,6 +2,7 @@
 #define ENTRADA_JUEGO_H
 
 #include <unordered_map>
+#include <unordered_set>
 
 #include <SDL2pp/SDL2pp.hh>
 
@@ -15,7 +16,12 @@ class EntradaJuego {
 private:
     static const std::unordered_map<SDL_Keycode, const TipoComando> MAPA_ACCIONES_PRESIONAR_TECLA;
 
+    static const std::unordered_map<SDL_Keycode, const TipoComando>
+            MAPA_ACCIONES_MANTENER_PRESIONADA_TECLA;
+
     static const std::unordered_map<SDL_Keycode, const TipoComando> MAPA_ACCIONES_SOLTAR_TECLA;
+
+    std::unordered_set<TipoComando> acciones_continuas_a_enviar;
 
     Cliente& cliente;
     bool top_activo;

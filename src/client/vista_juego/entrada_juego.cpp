@@ -2,9 +2,6 @@
 
 const std::unordered_map<SDL_Keycode, const TipoComando>
         EntradaJuego::MAPA_ACCIONES_PRESIONAR_TECLA{{SDLK_w, SALTAR},
-                                                    {SDLK_a, MOVER_IZQ},
-                                                    {SDLK_d, MOVER_DER},
-                                                    {SDLK_x, ACTIVAR_DASH},
                                                     {SDLK_SPACE, DISPARAR_ACCION},
                                                     {SDLK_q, ARMA_ANTERIOR},
                                                     {SDLK_e, ARMA_SIGUIENTE},
@@ -12,6 +9,10 @@ const std::unordered_map<SDL_Keycode, const TipoComando>
                                                     {SDLK_i, TRUCO1},
                                                     {SDLK_o, TRUCO2},
                                                     {SDLK_p, TRUCO3}};
+
+const std::unordered_map<SDL_Keycode, const TipoComando>
+        EntradaJuego::MAPA_ACCIONES_MANTENER_PRESIONADA_TECLA{
+                {SDLK_a, MOVER_IZQ}, {SDLK_d, MOVER_DER}, {SDLK_x, ACTIVAR_DASH}};
 
 const std::unordered_map<SDL_Keycode, const TipoComando> EntradaJuego::MAPA_ACCIONES_SOLTAR_TECLA{
         {SDLK_a, PARAR_MOVER_IZQ}, {SDLK_d, PARAR_MOVER_DER}, {SDLK_x, DESACTIVAR_DASH}};
@@ -34,18 +35,32 @@ bool EntradaJuego::procesar_entrada() {
             top_activo = false;
         }
 
-        if (event.type == SDL_KEYUP && MAPA_ACCIONES_SOLTAR_TECLA.count(event.key.keysym.sym)) {
+        if (event.type == SDL_KEYDOWN &&
+            MAPA_ACCIONES_MANTENER_PRESIONADA_TECLA.count(event.key.keysym.sym)) {
+            acciones_continuas_a_enviar.insert(
+                    MAPA_ACCIONES_MANTENER_PRESIONADA_TECLA.at(event.key.keysym.sym));
+        }
+
+        if (event.type == SDL_KEYUP &&
+            MAPA_ACCIONES_MANTENER_PRESIONADA_TECLA.count(event.key.keysym.sym)) {
+            if (acciones_continuas_a_enviar.count(
+                        MAPA_ACCIONES_MANTENER_PRESIONADA_TECLA.at(event.key.keysym.sym))) {
+                acciones_continuas_a_enviar.erase(
+                        MAPA_ACCIONES_MANTENER_PRESIONADA_TECLA.at(event.key.keysym.sym));
+            }
             cliente.realizar_accion(MAPA_ACCIONES_SOLTAR_TECLA.at(event.key.keysym.sym));
-            continue;
         }
 
-        if (event.type != SDL_KEYDOWN ||
-            !MAPA_ACCIONES_PRESIONAR_TECLA.count(event.key.keysym.sym)) {
-            continue;
+        if (event.type == SDL_KEYDOWN &&
+            MAPA_ACCIONES_PRESIONAR_TECLA.count(event.key.keysym.sym)) {
+            cliente.realizar_accion(MAPA_ACCIONES_PRESIONAR_TECLA.at(event.key.keysym.sym));
         }
-
-        cliente.realizar_accion(MAPA_ACCIONES_PRESIONAR_TECLA.at(event.key.keysym.sym));
     }
+
+    for (const auto& accion: acciones_continuas_a_enviar) {
+        cliente.realizar_accion(accion);
+    }
+
     return true;
 }
 
