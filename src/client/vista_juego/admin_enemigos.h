@@ -13,6 +13,9 @@
 #include "lector_texturas.h"
 #include "objeto_animado.h"
 
+// Si no se actualiza un enemigo en esta cantidad de iteraciones, se elimina de la vista.
+#define ITERACIONES_HASTA_ELIMINAR 3
+
 class AdminEnemigos {
 private:
     static const std::unordered_map<TipoEnemigo, const std::string> MAPA_TIPO_ENEMIGO;
@@ -22,10 +25,11 @@ private:
     Camara& camara;
     std::unordered_map<uint32_t, ObjetoAnimado> enemigos;
 
-    /** Set que indica los enemigos que ya no se encuentran presentes en el juego y
-     * deben ser eliminados.
+    /** Mapa que indica los enemigos que ya no se encuentran presentes en el juego y
+     * deben ser eliminados en futuras iteraciones. Cada id tiene asociado el número de iteraciones
+     * que deben transcurrir hasta ser eliminado. Cuando este número llega a cero, se elimina.
      */
-    std::unordered_set<uint32_t> ids_enemigos_a_eliminar;
+    std::unordered_map<uint32_t, int> contador_enemigos;
 
     SDL2pp::Rect corregir_desfase_sprite(uint32_t id_enemigo, const SDL2pp::Rect& dimensiones,
                                          bool invertido) const;

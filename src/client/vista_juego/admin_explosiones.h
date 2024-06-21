@@ -3,7 +3,6 @@
 
 #include <cstdint>
 #include <unordered_map>
-#include <unordered_set>
 
 #include <SDL2pp/SDL2pp.hh>
 
