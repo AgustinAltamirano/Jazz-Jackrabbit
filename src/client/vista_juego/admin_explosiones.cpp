@@ -1,5 +1,6 @@
 #include "admin_explosiones.h"
 
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
