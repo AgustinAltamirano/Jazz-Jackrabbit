@@ -42,7 +42,45 @@ void test_enviar_id_cliente(void) {
     TEST_CHECK(id_cliente_recibido == id_cliente_enviado);
 }
 
+void test_enviar_validar_escenario(void) {
+    SocketDummy socket;
+    ServidorProtocolo protocolo(&socket);
+    bool cerrado = false;
+    bool es_valido_enviado = true;
+
+    protocolo.enviar_validar_escenario(es_valido_enviado, &cerrado);
+
+    char tipo_comando_recibido;
+    socket.recvall(&tipo_comando_recibido, 1, &cerrado);
+
+    bool es_valido_recibido;
+    socket.recvall(&es_valido_recibido, sizeof(bool), &cerrado);
+
+    TEST_CHECK(VALIDAR_ESCENARIO == tipo_comando_recibido);
+    TEST_CHECK(es_valido_recibido == es_valido_enviado);
+}
+
+void test_enviar_unir_partida(void) {
+    SocketDummy socket;
+    ServidorProtocolo protocolo(&socket);
+    bool cerrado = false;
+    bool unio_partida_enviado = false;
+
+    protocolo.enviar_unir_partida(unio_partida_enviado, &cerrado);
+
+    char tipo_comando_recibido;
+    socket.recvall(&tipo_comando_recibido, 1, &cerrado);
+
+    bool unio_partida_recibido;
+    socket.recvall(&unio_partida_recibido, sizeof(bool), &cerrado);
+
+    TEST_CHECK(UNIR == tipo_comando_recibido);
+    TEST_CHECK(unio_partida_recibido == unio_partida_enviado);
+}
+
 
 TEST_LIST = {{"Test protocolo obtener comando", test_obtener_comando},
              {"Test protocolo enviar id cliente", test_enviar_id_cliente},
+             {"Test protocolo enviar validar escenario", test_enviar_validar_escenario},
+             {"Test protocolo enviar unir partida", test_enviar_unir_partida},
              {NULL, NULL}};
