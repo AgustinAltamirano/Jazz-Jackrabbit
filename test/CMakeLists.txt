@@ -14,6 +14,7 @@ add_executable(test_protocolo_lobby
         ../src/common/socket_abstracto.h
         ../src/common/socket_dummy.cpp
         ../src/common/tipo_personaje.h
+        ../src/server/servidor_protocolo_serializador.cpp
 )
 target_link_libraries(test_protocolo_lobby -lyaml-cpp)
 
@@ -25,12 +26,14 @@ add_executable(test_protocolo_cliente
         ../src/common/socket_abstracto.h
         ../src/common/socket_dummy.cpp
         ../src/common/snapshot_dto.cpp
+        ../src/server/servidor_protocolo_serializador.cpp
 )
 target_link_libraries(test_protocolo_cliente -lyaml-cpp)
 
 add_executable(test_protocolo_servidor
         protocolo/test_protocolo_servidor.cpp
         ../src/server/servidor_protocolo.cpp
+        ../src/server/servidor_protocolo_serializador.cpp
         ../src/common/snapshot_dto.cpp
         ../src/server/comando_server.cpp
         ../src/server/comando_server_generico.cpp

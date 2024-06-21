@@ -1,5 +1,5 @@
-#ifndef SERVIDOR_PROTOCOLOO_H
-#define SERVIDOR_PROTOCOLOO_H
+#ifndef SERVIDOR_PROTOCOLO_H
+#define SERVIDOR_PROTOCOLO_H
 
 #include <string>
 #include <vector>
@@ -8,6 +8,7 @@
 #include "../common/socket.h"
 
 #include "partida.h"
+#include "servidor_protocolo_serializador.h"
 
 #define TAM_TIPO_COMANDO 1
 class ComandoServerCrear;
@@ -19,15 +20,7 @@ class ServidorProtocolo {
 private:
     SocketAbstracto* socket;
 
-    std::vector<char> serializar_crear_partida(const int32_t& codigo_partida);
-
-    std::vector<char> serializar_error_crear_partida();
-
-    std::vector<char> serializar_unir_partida(const bool& unir);
-
-    std::vector<char> serializar_validar_escenario(const bool& es_valido);
-
-    std::vector<char> serializar_id_cliente(const int32_t& id_cliente);
+    ServidorProtocoloSerializador serializador;
 
     std::unique_ptr<ComandoServerCrear> deserializar_crear(bool* cerrado, int32_t& id_cliente);
 
