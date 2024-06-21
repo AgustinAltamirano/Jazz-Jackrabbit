@@ -35,6 +35,7 @@ add_executable(test_protocolo_servidor
         ../src/server/servidor_protocolo.cpp
         ../src/server/servidor_protocolo_serializador.cpp
         ../src/common/snapshot_dto.cpp
+        ../src/server/comando_server.h
         ../src/server/comando_server.cpp
         ../src/server/comando_server_generico.cpp
         ../src/server/comando_server_crear.cpp
@@ -45,6 +46,20 @@ add_executable(test_protocolo_servidor
         ../src/server/partida.cpp
         ../src/server/logica_juego/gameloop.cpp
         ../src/server/logica_juego/manejadorEscenario.cpp
+        ../src/server/logica_juego/personaje.cpp
+        ../src/server/logica_juego/murcielago.cpp
+        ../src/server/logica_juego/lagarto.cpp
+        ../src/server/logica_juego/esqueleto.cpp
+        ../src/server/logica_juego/enemigo.h
+        ../src/server/logica_juego/assets/bala.h
+        ../src/server/logica_juego/assets/bala_arma_1.cpp
+        ../src/server/logica_juego/assets/bala_arma_2.cpp
+        ../src/server/logica_juego/assets/bala_arma_3.cpp
+        ../src/server/logica_juego/assets/balaInfinita.cpp
+        ../src/server/logica_juego/assets/bloqueEscenario.cpp
+        ../src/server/logica_juego/assets/recogible.cpp
+        ../src/server/logica_juego/assets/spawnpoint.h
+        ../src/common/config.cpp
         ../src/common/socket_abstracto.h
         ../src/common/socket_dummy.cpp
         ../src/common/resolver.cpp

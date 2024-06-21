@@ -9,9 +9,6 @@
 #include "comando_server_unir.h"
 #include "comando_server_validar.h"
 
-
-ServidorProtocolo::ServidorProtocolo() {}
-
 ServidorProtocolo::ServidorProtocolo(SocketAbstracto* socket): socket(socket) {}
 
 void ServidorProtocolo::enviar_crear_partida(const int32_t& codigo_partida, bool* cerrado) {

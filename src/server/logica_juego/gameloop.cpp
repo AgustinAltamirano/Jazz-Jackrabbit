@@ -2,7 +2,7 @@
 
 #include "../../common/constantes.h"
 #include "../../common/snapshot_dto.h"
-#include "src/client/lobby/comando_dto.h"
+#include "../../client/lobby/comando_dto.h"
 
 void hacer_tick(int tiempo) { std::this_thread::sleep_for(std::chrono::milliseconds(tiempo)); }
 

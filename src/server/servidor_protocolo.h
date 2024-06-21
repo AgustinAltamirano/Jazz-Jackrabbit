@@ -31,8 +31,6 @@ private:
 public:
     explicit ServidorProtocolo(SocketAbstracto* socket);
 
-    ServidorProtocolo();
-
     void enviar_crear_partida(const int32_t& codigo_partida, bool* cerrado);
 
     void enviar_error_crear_partida(bool* cerrado);
