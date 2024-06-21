@@ -17,9 +17,6 @@ class LobbyProtocolo {
 private:
     SocketAbstracto* socket;
 
-public:
-    explicit LobbyProtocolo(SocketAbstracto* socket);
-
     std::vector<char> serializar_crear_partida(const std::string& nombre_escenario,
                                                const TipoPersonaje& personaje,
                                                const int8_t& capacidad_partida);
@@ -29,15 +26,18 @@ public:
 
     std::vector<char> serializar_validar_escenario(const std::string& nombre_escenario);
 
-    ComandoDTO* obtener_comando(bool* cerrado);
-
-    int32_t obtener_id_cliente();
-
     ComandoCrearDTO* deserializar_crear_partida(bool* cerrado);
 
     ComandoUnirDTO* deserializar_unir_partida(bool* cerrado);
 
     ComandoValidarDTO* deserializar_validar_escenario(bool* cerrado);
+
+public:
+    explicit LobbyProtocolo(SocketAbstracto* socket);
+
+    ComandoDTO* obtener_comando(bool* cerrado);
+
+    int32_t obtener_id_cliente();
 
     void enviar_comando(ComandoDTO* comando, bool* cerrado);
 };

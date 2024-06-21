@@ -8,8 +8,9 @@ std::vector<char> ClienteProtocolo::serializar_comando(const TipoComando& comand
     return buffer;
 }
 
-void ClienteProtocolo::enviar_comando(std::vector<char> bytes, bool* cerrado) {
-    socket->sendall(bytes.data(), bytes.size(), cerrado);
+void ClienteProtocolo::enviar_comando(TipoComando comando, bool* cerrado) {
+    std::vector<char> comando_serializado = serializar_comando(comando);
+    socket->sendall(comando_serializado.data(), comando_serializado.size(), cerrado);
 }
 
 std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrado) {

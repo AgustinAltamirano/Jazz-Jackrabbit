@@ -12,7 +12,7 @@
 
 ServidorProtocolo::ServidorProtocolo() {}
 
-ServidorProtocolo::ServidorProtocolo(Socket* socket): socket(socket) {}
+ServidorProtocolo::ServidorProtocolo(SocketAbstracto* socket): socket(socket) {}
 
 void ServidorProtocolo::enviar_crear_partida(const int32_t& codigo_partida, bool* cerrado) {
     std::vector<char> buffer = serializar_crear_partida(codigo_partida);

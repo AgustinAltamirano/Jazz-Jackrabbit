@@ -6,20 +6,20 @@
 #include <string>
 #include <vector>
 
-#include "../../common/tipo_comando.h"
 #include "../../common/snapshot_dto.h"
 #include "../../common/socket.h"
+#include "../../common/tipo_comando.h"
 
 class ClienteProtocolo {
 private:
-    Socket* socket;
+    SocketAbstracto* socket;
+
+    std::vector<char> serializar_comando(const TipoComando& comando);
 
 public:
     explicit ClienteProtocolo(SocketAbstracto* socket);
 
-    std::vector<char> serializar_comando(const TipoComando& comando);
-
-    void enviar_comando(std::vector<char> bytes, bool* cerrado);
+    void enviar_comando(TipoComando comando, bool* cerrado);
 
     std::shared_ptr<SnapshotDTO> recibir_snapshot_dto(bool* cerrado);
 };

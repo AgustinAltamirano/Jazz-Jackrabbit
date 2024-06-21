@@ -6,6 +6,14 @@
 #include "client/lobby/lobby_protocolo.h"
 #include "common/socket_dummy.h"
 
+std::vector<char> serializar_id_cliente(const int32_t& id_cliente) {
+    std::vector<char> buffer;
+    int32_t id_cliente_transformado = htonl(id_cliente);
+    unsigned char const* p = reinterpret_cast<unsigned char const*>(&id_cliente_transformado);
+    buffer.insert(buffer.end(), p, p + sizeof(int32_t));
+    return buffer;
+}
+
 void test_enviar_comando_crear_partida(void) {
     SocketDummy socket;
     LobbyProtocolo protocolo(&socket);
@@ -84,7 +92,23 @@ void test_enviar_comando_validar_escenario(void) {
     TEST_CHECK(buffer_recibido.data() == nombre_escenario_enviado);
 }
 
+void test_obtener_id_cliente(void) {
+    SocketDummy socket;
+    LobbyProtocolo lobby_protocolo(&socket);
+    bool cerrado = false;
+
+    int32_t id_cliente_enviado = 2;
+    std::vector<char> id_cliente_serializado = serializar_id_cliente(id_cliente_enviado);
+
+    socket.sendall(id_cliente_serializado.data(), id_cliente_serializado.size(), &cerrado);
+
+    int32_t id_cliente_recibido = lobby_protocolo.obtener_id_cliente();
+
+    TEST_CHECK(id_cliente_recibido == id_cliente_enviado);
+}
+
 TEST_LIST = {{"Test protocolo crear partida", test_enviar_comando_crear_partida},
              {"Test protocolo unir partida", test_enviar_comando_unir_partida},
              {"Test protocolo validar escenario", test_enviar_comando_validar_escenario},
+             {"Test protocolo obtener id cliente", test_obtener_id_cliente},
              {NULL, NULL}};

@@ -19,11 +19,12 @@ target_link_libraries(test_protocolo_lobby -lyaml-cpp)
 
 add_executable(test_protocolo_cliente
         protocolo/test_protocolo_cliente.cpp
-        ../src/client/juego/cliente_protocolo.h
         ../src/client/juego/cliente_protocolo.cpp
+        ../src/common/snapshot_dto.cpp
+        ../src/common/tipo_comando.h
         ../src/common/socket_abstracto.h
-        ../src/common/socket_dummy.h
         ../src/common/socket_dummy.cpp
+        ../src/common/snapshot_dto.cpp
 )
 target_link_libraries(test_protocolo_cliente -lyaml-cpp)
 
@@ -31,6 +32,17 @@ add_executable(test_protocolo_servidor
         protocolo/test_protocolo_servidor.cpp
         ../src/server/servidor_protocolo.cpp
         ../src/common/snapshot_dto.cpp
+        ../src/server/comando_server.cpp
+        ../src/server/comando_server_generico.cpp
+        ../src/server/comando_server_crear.cpp
+        ../src/server/comando_server_unir.cpp
+        ../src/server/comando_server_validar.cpp
+        ../src/common/validador_de_mapas.cpp
+        ../src/server/gestor_partidas.cpp
+        ../src/server/partida.cpp
+        ../src/server/logica_juego/gameloop.cpp
+        ../src/server/logica_juego/manejadorEscenario.cpp
+        ../src/common/socket_abstracto.h
         ../src/common/socket_dummy.cpp
         ../src/common/resolver.cpp
         ../src/common/liberror.cpp
