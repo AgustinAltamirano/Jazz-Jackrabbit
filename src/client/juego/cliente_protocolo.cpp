@@ -1,6 +1,6 @@
 #include "cliente_protocolo.h"
 
-ClienteProtocolo::ClienteProtocolo(Socket* socket): socket(socket) {}
+ClienteProtocolo::ClienteProtocolo(SocketAbstracto* socket): socket(socket) {}
 
 std::vector<char> ClienteProtocolo::serializar_comando(const TipoComando& comando) {
     std::vector<char> buffer;

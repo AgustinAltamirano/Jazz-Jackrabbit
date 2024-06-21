@@ -6,12 +6,24 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 add_executable(test_protocolo_lobby
         protocolo/test_protocolo_lobby.cpp
         ../src/client/lobby/lobby_protocolo.cpp
+        ../src/client/lobby/comando_dto.cpp
+        ../src/client/lobby/comando_crear_dto.cpp
+        ../src/client/lobby/comando_unir_dto.cpp
+        ../src/client/lobby/comando_validar_dto.cpp
+        ../src/common/tipo_comando.h
+        ../src/common/socket_abstracto.h
+        ../src/common/socket_dummy.cpp
+        ../src/common/tipo_personaje.h
 )
 target_link_libraries(test_protocolo_lobby -lyaml-cpp)
 
 add_executable(test_protocolo_cliente
         protocolo/test_protocolo_cliente.cpp
+        ../src/client/juego/cliente_protocolo.h
         ../src/client/juego/cliente_protocolo.cpp
+        ../src/common/socket_abstracto.h
+        ../src/common/socket_dummy.h
+        ../src/common/socket_dummy.cpp
 )
 target_link_libraries(test_protocolo_cliente -lyaml-cpp)
 
@@ -19,7 +31,7 @@ add_executable(test_protocolo_servidor
         protocolo/test_protocolo_servidor.cpp
         ../src/server/servidor_protocolo.cpp
         ../src/common/snapshot_dto.cpp
-        ../src/common/socket.cpp
+        ../src/common/socket_dummy.cpp
         ../src/common/resolver.cpp
         ../src/common/liberror.cpp
         ../src/common/resolvererror.cpp

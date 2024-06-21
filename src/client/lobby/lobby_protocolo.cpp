@@ -6,7 +6,7 @@
 
 #include "../../common/tipo_comando.h"
 
-LobbyProtocolo::LobbyProtocolo(Socket* socket): socket(socket) {}
+LobbyProtocolo::LobbyProtocolo(SocketAbstracto* socket): socket(socket) {}
 
 std::vector<char> LobbyProtocolo::serializar_crear_partida(const std::string& nombre_escenario,
                                                            const TipoPersonaje& personaje,

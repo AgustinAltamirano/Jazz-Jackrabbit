@@ -6,7 +6,7 @@
 
 #include "../../common/tipo_escenario.h"
 #include "../../common/tipo_personaje.h"
-#include "src/common/socket.h"
+#include "common/socket_abstracto.h"
 
 #include "comando_crear_dto.h"
 #include "comando_dto.h"
@@ -15,10 +15,10 @@
 
 class LobbyProtocolo {
 private:
-    Socket* socket;
+    SocketAbstracto* socket;
 
 public:
-    explicit LobbyProtocolo(Socket* socket);
+    explicit LobbyProtocolo(SocketAbstracto* socket);
 
     std::vector<char> serializar_crear_partida(const std::string& nombre_escenario,
                                                const TipoPersonaje& personaje,

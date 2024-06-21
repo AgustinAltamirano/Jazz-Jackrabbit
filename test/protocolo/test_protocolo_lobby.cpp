@@ -1,44 +1,90 @@
 #include <vector>
 
+#include <netinet/in.h>
+
 #include "../acutest.h"
-#include "client/lobby/lobby_serializador.h"
-#include "common/tipo_comando.h"
+#include "client/lobby/lobby_protocolo.h"
+#include "common/socket_dummy.h"
 
-void test_serializar_crear_partida(void) {
-    LobbySerializador lobby_serializador;
-    std::string nombre_escenario = "Escenario1";
-    std::vector<char> buffer =
-            lobby_serializador.serializar_crear_partida(nombre_escenario, JAZZ, 2);
-    TEST_CHECK(buffer.size() == 14);
-    TEST_CHECK(buffer.at(0) == CREAR);
-    TEST_CHECK(buffer.at(1) == 0x10);
-    TEST_CHECK(buffer.at(2) == 'E');
-    TEST_CHECK(buffer.at(3) == 's');
-    TEST_CHECK(buffer.at(4) == 'c');
-    TEST_CHECK(buffer.at(5) == 'e');
-    TEST_CHECK(buffer.at(6) == 'n');
-    TEST_CHECK(buffer.at(7) == 'a');
-    TEST_CHECK(buffer.at(8) == 'r');
-    TEST_CHECK(buffer.at(9) == 'i');
-    TEST_CHECK(buffer.at(10) == 'o');
-    TEST_CHECK(buffer.at(11) == '1');
-    TEST_CHECK(buffer.at(12) == JAZZ);
-    TEST_CHECK(buffer.at(13) == 2);
+void test_enviar_comando_crear_partida(void) {
+    SocketDummy socket;
+    LobbyProtocolo protocolo(&socket);
+    bool cerrado = false;
+
+    std::string nombre_escenario_enviado = "Escenario1";
+    TipoPersonaje tipo_personaje_enviado = JAZZ;
+    int8_t capacidad_partida_enviado = 2;
+
+    ComandoCrearDTO* comando = new ComandoCrearDTO(nombre_escenario_enviado, tipo_personaje_enviado,
+                                                   capacidad_partida_enviado);
+
+    protocolo.enviar_comando(comando, &cerrado);
+
+    char tipo_comando_recibido;
+    socket.recvall(&tipo_comando_recibido, 1, &cerrado);
+    uint8_t len_nombre_escenario_recibido;
+    socket.recvall(&len_nombre_escenario_recibido, 1, &cerrado);
+    std::vector<char> buffer_recibido(len_nombre_escenario_recibido);
+    socket.recvall(buffer_recibido.data(), len_nombre_escenario_recibido, &cerrado);
+    TipoPersonaje personaje_recibido;
+    socket.recvall(&personaje_recibido, 1, &cerrado);
+    int8_t capacidad_partida_recibido;
+    socket.recvall(&capacidad_partida_recibido, 1, &cerrado);
+
+    TEST_CHECK(tipo_comando_recibido == CREAR);
+    TEST_CHECK(buffer_recibido.data() == nombre_escenario_enviado);
+    TEST_CHECK(personaje_recibido == tipo_personaje_enviado);
+    TEST_CHECK(capacidad_partida_recibido == capacidad_partida_enviado);
 }
 
-void test_serializar_unir_partida(void) {
-    LobbySerializador lobby_serializador;
-    int32_t codigo_partida = 5;
-    std::vector<char> buffer = lobby_serializador.serializar_unir_partida(codigo_partida, LORI);
-    TEST_CHECK(buffer.size() == 6);
-    TEST_CHECK(buffer.at(0) == UNIR);
-    TEST_CHECK(buffer.at(0) == LORI);
-    TEST_CHECK(buffer.at(1) == 0);
-    TEST_CHECK(buffer.at(2) == 0);
-    TEST_CHECK(buffer.at(3) == 0);
-    TEST_CHECK(buffer.at(4) == 5);
+void test_enviar_comando_unir_partida(void) {
+    SocketDummy socket;
+    LobbyProtocolo protocolo(&socket);
+    bool cerrado = false;
+
+    int32_t codigo_partida_enviado = 1;
+    TipoPersonaje tipo_personaje_enviado = JAZZ;
+
+    ComandoUnirDTO* comando = new ComandoUnirDTO(codigo_partida_enviado, tipo_personaje_enviado);
+
+    protocolo.enviar_comando(comando, &cerrado);
+
+    char tipo_comando_recibido;
+    socket.recvall(&tipo_comando_recibido, 1, &cerrado);
+    TipoPersonaje personaje_recibido;
+    socket.recvall(&personaje_recibido, 1, &cerrado);
+    int32_t codigo_partida_recibido;
+    socket.recvall(&codigo_partida_recibido, sizeof(int32_t), &cerrado);
+    codigo_partida_recibido = ntohl(codigo_partida_recibido);
+
+    TEST_CHECK(tipo_comando_recibido == UNIR);
+    TEST_CHECK(personaje_recibido == tipo_personaje_enviado);
+    TEST_CHECK(codigo_partida_recibido == codigo_partida_enviado);
 }
 
-TEST_LIST = {{"Test serializar crear partida", test_serializar_crear_partida},
-             {"Test serializar unir partida", test_serializar_unir_partida},
+void test_enviar_comando_validar_escenario(void) {
+    SocketDummy socket;
+    LobbyProtocolo protocolo(&socket);
+    bool cerrado = false;
+
+    std::string nombre_escenario_enviado = "Escenario1";
+
+    ComandoValidarDTO* comando = new ComandoValidarDTO(nombre_escenario_enviado);
+
+    protocolo.enviar_comando(comando, &cerrado);
+
+    char tipo_comando_recibido;
+    socket.recvall(&tipo_comando_recibido, 1, &cerrado);
+    uint8_t len_nombre_escenario_recibido;
+    socket.recvall(&len_nombre_escenario_recibido, 1, &cerrado);
+    std::vector<char> buffer_recibido(len_nombre_escenario_recibido);
+    socket.recvall(buffer_recibido.data(), len_nombre_escenario_recibido, &cerrado);
+
+    TEST_CHECK(tipo_comando_recibido == VALIDAR_ESCENARIO);
+    TEST_CHECK(buffer_recibido.data() == nombre_escenario_enviado);
+}
+
+TEST_LIST = {{"Test protocolo crear partida", test_enviar_comando_crear_partida},
+             {"Test protocolo unir partida", test_enviar_comando_unir_partida},
+             {"Test protocolo validar escenario", test_enviar_comando_validar_escenario},
              {NULL, NULL}};

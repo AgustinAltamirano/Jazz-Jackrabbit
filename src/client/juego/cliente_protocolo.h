@@ -15,7 +15,7 @@ private:
     Socket* socket;
 
 public:
-    explicit ClienteProtocolo(Socket* socket);
+    explicit ClienteProtocolo(SocketAbstracto* socket);
 
     std::vector<char> serializar_comando(const TipoComando& comando);
 

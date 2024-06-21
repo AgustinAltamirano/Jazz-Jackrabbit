@@ -333,7 +333,7 @@ Socket::Socket(int skt) {
     this->closed = false;
 }
 
-Socket Socket::accept() {
+SocketAbstracto * Socket::accept() {
     /*
      * `accept` nos bloqueara hasta que algún cliente se conecte a nosotros
      * y la conexión se establezca.
@@ -357,7 +357,7 @@ Socket Socket::accept() {
      *
      * Por eso creamos un `Socket` y lo pasamos por movimiento
      * */
-    return Socket(peer_skt);
+    return new Socket(peer_skt);
 }
 
 void Socket::shutdown(int how) {
