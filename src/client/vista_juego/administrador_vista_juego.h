@@ -19,6 +19,7 @@
 
 #include "admin_balas.h"
 #include "admin_enemigos.h"
+#include "admin_explosiones.h"
 #include "admin_recogibles.h"
 #include "admin_sonidos.h"
 #include "bloque_escenario.h"
@@ -76,6 +77,9 @@ private:
     /** Clase que administra la vista de todos los objetos recogibles */
     AdminRecogibles recogibles;
 
+    /** Clase que administra la vista de todas las explosiones */
+    AdminExplosiones explosiones;
+
     ReproductorMusica reproductor_musica;
     AdminSonidos admin_sonidos;
 
@@ -94,7 +98,7 @@ private:
 
     void actualizar_vista_enemigos(const std::vector<EnemigoDTO>& enemigos_recibidos);
 
-    void actualizar_vista_balas(const std::vector<BalaDTO>& balas_recibidas);
+    void actualizar_vista_balas_y_explosiones(const std::vector<BalaDTO>& balas_recibidas);
 
     void actualizar_vista_recogibles(const std::vector<RecogibleDTO>& recogibles_recibidos);
 

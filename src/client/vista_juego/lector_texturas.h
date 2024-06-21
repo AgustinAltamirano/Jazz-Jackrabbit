@@ -53,6 +53,10 @@ private:
 
     std::unordered_map<std::string, std::vector<SDL2pp::Rect>> coords_recogibles;
 
+    std::unique_ptr<SDL2pp::Texture> textura_explosion;
+
+    std::vector<SDL2pp::Rect> coords_explosion;
+
 public:
     explicit LectorTexturas(SDL2pp::Renderer& renderer);
 
@@ -116,6 +120,10 @@ public:
 
     const std::vector<SDL2pp::Rect>& obtener_coords_recogible(
             const std::string& nombre_recogible) const;
+
+    SDL2pp::Texture& obtener_textura_explosion() const;
+
+    std::vector<SDL2pp::Rect>& obtener_coords_explosion();
 
     ~LectorTexturas();
 };

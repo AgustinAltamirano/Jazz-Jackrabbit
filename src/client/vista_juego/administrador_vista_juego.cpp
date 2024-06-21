@@ -159,14 +159,21 @@ void AdministradorVistaJuego::actualizar_vista_enemigos(
     }
 }
 
-void AdministradorVistaJuego::actualizar_vista_balas(const std::vector<BalaDTO>& balas_recibidas) {
+void AdministradorVistaJuego::actualizar_vista_balas_y_explosiones(
+        const std::vector<BalaDTO>& balas_recibidas) {
     balas.eliminar_balas();
     for (const auto& bala: balas_recibidas) {
         balas.agregar_bala(bala.tipo, bala.pos_x, bala.pos_y);
         if (bala.choco) {
+            if (bala.tipo == ARMA2) {
+                admin_sonidos.preparar_sonido(SONIDO_EXPLOSION, iteraciones_actuales);
+                explosiones.agregar_explosion(bala.pos_x, bala.pos_y);
+                continue;
+            }
             admin_sonidos.preparar_sonido(SONIDO_IMPACTO_BALA, iteraciones_actuales);
         }
     }
+    explosiones.actualizar_animacion(iteraciones_actuales);
 }
 
 void AdministradorVistaJuego::actualizar_vista_recogibles(
@@ -227,7 +234,7 @@ void AdministradorVistaJuego::actualizar_vista() {
     actualizar_vista_bloques_escenario(snapshot->obtener_bloques_escenario());
     actualizar_vista_personajes(clientes_recibidos);
     actualizar_vista_enemigos(snapshot->obtener_enemigos());
-    actualizar_vista_balas(snapshot->obtener_balas());
+    actualizar_vista_balas_y_explosiones(snapshot->obtener_balas());
     actualizar_vista_recogibles(snapshot->obtener_recogibles());
     actualizar_sonidos(snapshot);
 }
@@ -268,6 +275,7 @@ AdministradorVistaJuego::AdministradorVistaJuego(const int32_t id_cliente,
         enemigos(renderer, lector_texturas, camara),
         balas(renderer, lector_texturas, camara),
         recogibles(renderer, lector_texturas, camara),
+        explosiones(renderer, lector_texturas, camara),
         reproductor_musica(mixer),
         admin_sonidos(mixer),
         primera_snapshot_recibida(false),
@@ -312,6 +320,7 @@ void AdministradorVistaJuego::run() {
         recogibles.dibujar_recogibles();
         balas.dibujar_balas();
         enemigos.dibujar_enemigos();
+        explosiones.dibujar();
 
         for (auto& [fst, snd]: personajes) {
             snd.dibujar();

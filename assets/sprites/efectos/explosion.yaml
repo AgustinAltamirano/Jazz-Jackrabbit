@@ -1,0 +1,50 @@
+imagen: explosion.png
+sprites:
+  - x: 11
+    y: 32
+    ancho: 11
+    alto: 11
+  - x: 29
+    y: 33
+    ancho: 9
+    alto: 9
+  - x: 47
+    y: 29
+    ancho: 19
+    alto: 19
+  - x: 75
+    y: 23
+    ancho: 30
+    alto: 29
+  - x: 114
+    y: 18
+    ancho: 44
+    alto: 42
+  - x: 166
+    y: 13
+    ancho: 51
+    alto: 53
+  - x: 226
+    y: 5
+    ancho: 60
+    alto: 60
+  - x: 293
+    y: 5
+    ancho: 61
+    alto: 61
+  - x: 365
+    y: 5
+    ancho: 65
+    alto: 63
+  - x: 444
+    y: 21
+    ancho: 26
+    alto: 28
+  - x: 484
+    y: 23
+    ancho: 27
+    alto: 27
+  - x: 523
+    y: 26
+    ancho: 25
+    alto: 25

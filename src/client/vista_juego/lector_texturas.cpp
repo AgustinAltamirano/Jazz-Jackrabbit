@@ -180,6 +180,26 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
                             recogible_coords["alto"].as<int>());
         coords_recogibles.at(recogible_coords["nombre"].as<std::string>()).emplace_back(sprite);
     }
+
+    // Lectura de explosión
+    YAML::Node explosion_config =
+            YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_EXPLOSION EXPLOSION_CONFIG);
+    auto imagen_explosion = std::string(ASSETS_PATH RUTA_SPRITES DIR_EXPLOSION) +
+                            explosion_config["imagen"].as<std::string>();
+    SDL2pp::Surface surface_explosion(imagen_explosion);
+    uint32_t color_key_explosion =
+            SDL_MapRGB(surface_explosion.Get()->format, COLOR_KEY_ENEMIGOS_RED,
+                       COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    surface_explosion.SetColorKey(true, color_key_explosion);
+    textura_explosion = std::make_unique<SDL2pp::Texture>(renderer, surface_explosion);
+    textura_explosion->SetBlendMode(SDL_BLENDMODE_BLEND);
+
+    for (const auto& explosion_coords: explosion_config["sprites"]) {
+        SDL2pp::Rect sprite(explosion_coords["x"].as<int>(), explosion_coords["y"].as<int>(),
+                            explosion_coords["ancho"].as<int>(),
+                            explosion_coords["alto"].as<int>());
+        coords_explosion.emplace_back(sprite);
+    }
 }
 
 SDL2pp::Texture& LectorTexturas::obtener_textura_pantalla_carga() const {
@@ -254,5 +274,9 @@ const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_recogible(
         const std::string& nombre_recogible) const {
     return coords_recogibles.at(nombre_recogible);
 }
+
+SDL2pp::Texture& LectorTexturas::obtener_textura_explosion() const { return *textura_explosion; }
+
+std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_explosion() { return coords_explosion; }
 
 LectorTexturas::~LectorTexturas() = default;

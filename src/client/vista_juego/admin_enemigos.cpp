@@ -1,6 +1,7 @@
 #include "admin_enemigos.h"
 
 #include <string>
+#include <unordered_set>
 #include <utility>
 
 #include "vista_juego_defs.h"
@@ -44,10 +45,7 @@ void AdminEnemigos::agregar_enemigo(const int32_t id_enemigo, const TipoEnemigo 
                                 {dimensiones_iniciales.GetX(), dimensiones_iniciales.GetY(), 1, 1},
                                 0, ITERACIONES_POR_SPRITE);
     enemigos.emplace(id_enemigo, std::move(nuevo_enemigo));
-
-    if (ids_enemigos_a_eliminar.count(id_enemigo) > 0) {
-        ids_enemigos_a_eliminar.erase(id_enemigo);
-    }
+    contador_enemigos[id_enemigo] = ITERACIONES_HASTA_ELIMINAR;
 }
 
 void AdminEnemigos::actualizar_animacion(const uint32_t id_enemigo,
@@ -66,20 +64,25 @@ void AdminEnemigos::actualizar_animacion(const uint32_t id_enemigo,
             .actualizar_animacion(
                     {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), 1, 1}, 0,
                     invertido);
-
-    if (ids_enemigos_a_eliminar.count(id_enemigo) > 0) {
-        ids_enemigos_a_eliminar.erase(id_enemigo);
-    }
+    contador_enemigos[id_enemigo] = ITERACIONES_HASTA_ELIMINAR;
 }
 
 void AdminEnemigos::dibujar_enemigos() {
-    for (const auto& enem_eliminar: ids_enemigos_a_eliminar) {
-        enemigos.erase(enem_eliminar);
+    std::unordered_set<uint32_t> ids_enemigos_a_eliminar;
+    for (auto& [id, contador]: contador_enemigos) {
+        if (contador <= 0) {
+            enemigos.erase(id);
+            ids_enemigos_a_eliminar.insert(id);
+        }
+    }
+
+    for (auto& id: ids_enemigos_a_eliminar) {
+        contador_enemigos.erase(id);
     }
 
     for (const auto& [id, enemigo]: enemigos) {
         enemigo.dibujar();
-        ids_enemigos_a_eliminar.insert(id);
+        contador_enemigos.at(id)--;
     }
 }
 
