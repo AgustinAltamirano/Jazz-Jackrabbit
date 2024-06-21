@@ -57,6 +57,8 @@
 
 #define TIEMP_PART "segundos_duracion_partida"
 
+#define DANO_ATA_ESP "dano_ataque_especial"
+
 // CONFIGURACION PERSONAJE
 #define ANCHO_INICIAL 40
 #define ALTO_INICIAL 50

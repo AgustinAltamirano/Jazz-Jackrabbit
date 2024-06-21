@@ -149,6 +149,17 @@ int32_t definir_punto_medio(const int32_t pos_org_jug, const int32_t jug_largo,
     return (pos_bloque + bloque_largo + 1);
 }
 
+bool hay_colision_jugadores(const personaje& jugador, const personaje& jugador_2) {
+    const std::vector<int> posicion_act = jugador.get_pos_actual();
+    const std::vector<int> posicion_act_2 = jugador_2.get_pos_actual();
+    const int32_t pos_x = posicion_act[0];
+    const int32_t pos_y = posicion_act[1];
+    const int32_t pos_x_2 = posicion_act_2[0];
+    const int32_t pos_y_2 = posicion_act_2[1];
+    return (pos_x < pos_x_2 + jugador_2.get_ancho() && pos_x + jugador.get_ancho() > pos_x_2 &&
+            pos_y < pos_y_2 + jugador_2.get_alto() && pos_y + jugador.get_alto() > pos_y_2);
+}
+
 std::vector<bool> manejadorEscenario::colisiones_bloques_y_enemigos(
         std::map<int, personaje>& jugadores) {
     bool jugador_herido = false;
@@ -213,6 +224,21 @@ std::vector<bool> manejadorEscenario::colisiones_bloques_y_enemigos(
                 }
             }
             ++en;
+        }
+        if (jugador.en_ataque_especial()) {
+            for (auto& otro_jugador: jugadores) {
+                if (entidad.first != otro_jugador.first &&
+                    hay_colision_jugadores(jugador, otro_jugador.second)) {
+                    const ConfigAdmin& configurador = ConfigAdmin::getInstance();
+                    const int estado =
+                            otro_jugador.second.efectuar_dano(configurador.get(DANO_ATA_ESP));
+                    if (estado == 1) {
+                        jugador_herido = true;
+                    } else if (estado == 2) {
+                        jugador_murio = true;
+                    }
+                }
+            }
         }
         if (nueva_pos_x > limite_mapa_x || nueva_pos_y > limite_mapa_y) {
             spawnpoint spawn = spawnpoints[0];
