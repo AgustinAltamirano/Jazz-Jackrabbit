@@ -24,7 +24,6 @@ bool RecibidorCliente::inicio_recibidor_cliente() {
     bool sigo_en_el_lobby = true;
     while (sigo_en_el_lobby) {
         try {
-            int32_t codigo_partida;
             auto comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
 
             cola_recibidor =
@@ -48,10 +47,9 @@ void RecibidorCliente::run() {
     bool cerrado = false;
     while (sigo_en_partida && !cerrado) {
         try {
-            auto nuevo_comando =
-                    servidor_protocolo.obtener_comando(&cerrado, id_cliente);
+            auto nuevo_comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
             try {
-                    cola_recibidor->push(nuevo_comando.release());
+                cola_recibidor->push(nuevo_comando.release());
             } catch (const ClosedQueue& e) {
                 std::cout << "Juego finalizado" << std::endl;
                 break;
