@@ -61,9 +61,11 @@ public:
 
     bool esta_vacia();
 
-    bool puedo_unir();
+    bool no_esta_comenzada();
 
     bool esta_jugando();
+
+    ~Partida() override;
 };
 
 #endif

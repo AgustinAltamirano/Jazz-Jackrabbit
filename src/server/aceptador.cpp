@@ -5,6 +5,8 @@
 
 #include <sys/socket.h>
 
+#include "src/common/liberror.h"
+
 #include "comunicador_cliente.h"
 
 Aceptador::Aceptador(Socket* skt_servidor): skt_servidor(skt_servidor) {}

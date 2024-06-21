@@ -95,8 +95,10 @@ void Partida::detener_partida() {
 
 int32_t Partida::obtener_codigo_partida() { return codigo_partida; }
 
-bool Partida::puedo_unir() { return !comenzada; }
+bool Partida::no_esta_comenzada() { return !comenzada; }
 
 bool Partida::esta_jugando() { return sigo_jugando; }
+
+Partida::~Partida() = default;
 
 void Partida::stop() { sigo_jugando = false; }

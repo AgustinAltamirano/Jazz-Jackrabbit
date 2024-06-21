@@ -16,11 +16,11 @@ class GestorPartidas {
 private:
     std::mutex m;
 
-    std::map<int32_t, Partida*> partidas;
+    std::map<int32_t, Partida> partidas;
 
     int32_t contador_partidas;  // Corresponde con el codigo de partida.
 
-    Partida* obtener_partida_por_codigo(int codigo);
+    Partida& obtener_partida_por_codigo(int codigo);
 
     bool existe_partida_por_codigo(int codigo);
 
