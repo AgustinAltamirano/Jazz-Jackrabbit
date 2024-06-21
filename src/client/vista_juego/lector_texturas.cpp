@@ -5,19 +5,18 @@
 #include <SDL2/SDL_blendmode.h>
 #include <yaml-cpp/yaml.h>
 
+#include "vista_juego_defs.h"
 #include "vista_juego_exception.h"
 
-LectorTexturas::LectorTexturas(SDL2pp::Renderer& renderer): renderer(renderer) {}
-
-void LectorTexturas::cargar_texturas_y_coordenadas() {
-    // Lectura de la imagen de la pantalla de carga
+void LectorTexturas::cargar_texturas_y_coordenadas_pantalla_carga() {
     const std::string ruta_pantalla_carga(
             ASSETS_PATH RUTA_SPRITES DIR_PANTALLA_CARGA IMG_PANTALLA_CARGA);
     SDL2pp::Surface surface_pantalla_carga(ruta_pantalla_carga);
     textura_pantalla_carga = std::make_unique<SDL2pp::Texture>(renderer, ruta_pantalla_carga);
     textura_pantalla_carga->SetBlendMode(SDL_BLENDMODE_BLEND);
+}
 
-    // Lectura de fondos de escenario y bloques
+void LectorTexturas::cargar_texturas_y_coordenadas_escenarios() {
     const std::string ruta_escenarios(ASSETS_PATH RUTA_SPRITES DIR_ESCENARIOS);
     YAML::Node escenarios = YAML::LoadFile(ruta_escenarios + std::string(ESCENARIOS_CONFIG));
 
@@ -26,8 +25,9 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         auto imagen_escenario = ruta_escenarios + escenario["imagen"].as<std::string>();
 
         SDL2pp::Surface surface(imagen_escenario);
-        uint32_t color_key = SDL_MapRGB(surface.Get()->format, COLOR_KEY_ESCENARIOS_RED,
-                                        COLOR_KEY_ESCENARIOS_GREEN, COLOR_KEY_ESCENARIOS_BLUE);
+        const uint32_t color_key =
+                SDL_MapRGB(surface.Get()->format, COLOR_KEY_ESCENARIOS_RED,
+                           COLOR_KEY_ESCENARIOS_GREEN, COLOR_KEY_ESCENARIOS_BLUE);
         surface.SetColorKey(true, color_key);
         SDL2pp::Texture textura(renderer, surface);
         textura.SetBlendMode(SDL_BLENDMODE_BLEND);
@@ -47,8 +47,9 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
             coords_bloques_escenarios.at(nombre_escenario).emplace(nombre_bloque, coords_bloque);
         }
     }
+}
 
-    // Lectura de personajes
+void LectorTexturas::cargar_texturas_y_coordenadas_personajes() {
     const std::string ruta_personajes(ASSETS_PATH RUTA_SPRITES DIR_PERSONAJES);
     YAML::Node personajes = YAML::LoadFile(ruta_personajes + std::string(PERSONAJES_CONFIG));
 
@@ -57,8 +58,9 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
         auto imagen_personaje = ruta_personajes + personaje["imagen"].as<std::string>();
 
         SDL2pp::Surface surface(imagen_personaje);
-        uint32_t color_key = SDL_MapRGB(surface.Get()->format, COLOR_KEY_PERSONAJES_RED,
-                                        COLOR_KEY_PERSONAJES_GREEN, COLOR_KEY_PERSONAJES_BLUE);
+        const uint32_t color_key =
+                SDL_MapRGB(surface.Get()->format, COLOR_KEY_PERSONAJES_RED,
+                           COLOR_KEY_PERSONAJES_GREEN, COLOR_KEY_PERSONAJES_BLUE);
         surface.SetColorKey(true, color_key);
         SDL2pp::Texture textura(renderer, surface);
         textura.SetBlendMode(SDL_BLENDMODE_BLEND);
@@ -86,15 +88,17 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
             }
         }
     }
+}
 
-    // Lectura de enemigos
+void LectorTexturas::cargar_texturas_y_coordenadas_enemigos() {
     YAML::Node enemigos_config =
             YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS ENEMIGOS_CONFIG);
-    auto imagen_enemigos = std::string(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS) +
-                           enemigos_config["imagen"].as<std::string>();
+    const auto imagen_enemigos = std::string(ASSETS_PATH RUTA_SPRITES DIR_ENEMIGOS) +
+                                 enemigos_config["imagen"].as<std::string>();
     SDL2pp::Surface surface_enemigos(imagen_enemigos);
-    uint32_t color_key_enemigos = SDL_MapRGB(surface_enemigos.Get()->format, COLOR_KEY_ENEMIGOS_RED,
-                                             COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    const uint32_t color_key_enemigos =
+            SDL_MapRGB(surface_enemigos.Get()->format, COLOR_KEY_ENEMIGOS_RED,
+                       COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
     surface_enemigos.SetColorKey(true, color_key_enemigos);
     textura_enemigos = std::make_unique<SDL2pp::Texture>(renderer, surface_enemigos);
     textura_enemigos->SetBlendMode(SDL_BLENDMODE_BLEND);
@@ -110,14 +114,16 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
             coords_enemigos.at(nombre_enemigo).emplace_back(sprite);
         }
     }
+}
 
-    // Lectura de fuente (números, símbolos, etc.)
+void LectorTexturas::cargar_texturas_y_coordenadas_fuente() {
     YAML::Node fuente_config = YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_FUENTE FUENTE_CONFIG);
-    auto imagen_fuente = std::string(ASSETS_PATH RUTA_SPRITES DIR_FUENTE) +
-                         fuente_config["imagen"].as<std::string>();
+    const auto imagen_fuente = std::string(ASSETS_PATH RUTA_SPRITES DIR_FUENTE) +
+                               fuente_config["imagen"].as<std::string>();
     SDL2pp::Surface surface_fuente(imagen_fuente);
-    uint32_t color_key_fuente = SDL_MapRGB(surface_fuente.Get()->format, COLOR_KEY_ENEMIGOS_RED,
-                                           COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    const uint32_t color_key_fuente =
+            SDL_MapRGB(surface_fuente.Get()->format, COLOR_KEY_ENEMIGOS_RED,
+                       COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
     surface_fuente.SetColorKey(true, color_key_fuente);
     textura_fuente = std::make_unique<SDL2pp::Texture>(renderer, surface_fuente);
     textura_fuente->SetBlendMode(SDL_BLENDMODE_BLEND);
@@ -139,14 +145,15 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
                             letra_coords["ancho"].as<int>(), letra_coords["alto"].as<int>());
         coords_letras.emplace(letra_coords["nombre"].as<char>(), sprite);
     }
+}
 
-    // Lectura de íconos/ítems
+void LectorTexturas::cargar_texturas_y_coordenadas_items() {
     YAML::Node items_config = YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_ITEMS ITEMS_CONFIG);
-    auto imagen_items = std::string(ASSETS_PATH RUTA_SPRITES DIR_ITEMS) +
-                        items_config["imagen"].as<std::string>();
+    const auto imagen_items = std::string(ASSETS_PATH RUTA_SPRITES DIR_ITEMS) +
+                              items_config["imagen"].as<std::string>();
     SDL2pp::Surface surface_items(imagen_items);
-    uint32_t color_key_items = SDL_MapRGB(surface_items.Get()->format, COLOR_KEY_ENEMIGOS_RED,
-                                          COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
+    const uint32_t color_key_items = SDL_MapRGB(surface_items.Get()->format, COLOR_KEY_ENEMIGOS_RED,
+                                                COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
     surface_items.SetColorKey(true, color_key_items);
     textura_items = std::make_unique<SDL2pp::Texture>(renderer, surface_items);
     textura_items->SetBlendMode(SDL_BLENDMODE_BLEND);
@@ -180,14 +187,15 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
                             recogible_coords["alto"].as<int>());
         coords_recogibles.at(recogible_coords["nombre"].as<std::string>()).emplace_back(sprite);
     }
+}
 
-    // Lectura de explosión
+void LectorTexturas::cargar_texturas_y_coordenadas_explosion() {
     YAML::Node explosion_config =
             YAML::LoadFile(ASSETS_PATH RUTA_SPRITES DIR_EXPLOSION EXPLOSION_CONFIG);
-    auto imagen_explosion = std::string(ASSETS_PATH RUTA_SPRITES DIR_EXPLOSION) +
-                            explosion_config["imagen"].as<std::string>();
+    const auto imagen_explosion = std::string(ASSETS_PATH RUTA_SPRITES DIR_EXPLOSION) +
+                                  explosion_config["imagen"].as<std::string>();
     SDL2pp::Surface surface_explosion(imagen_explosion);
-    uint32_t color_key_explosion =
+    const uint32_t color_key_explosion =
             SDL_MapRGB(surface_explosion.Get()->format, COLOR_KEY_ENEMIGOS_RED,
                        COLOR_KEY_ENEMIGOS_GREEN, COLOR_KEY_ENEMIGOS_BLUE);
     surface_explosion.SetColorKey(true, color_key_explosion);
@@ -200,6 +208,18 @@ void LectorTexturas::cargar_texturas_y_coordenadas() {
                             explosion_coords["alto"].as<int>());
         coords_explosion.emplace_back(sprite);
     }
+}
+
+LectorTexturas::LectorTexturas(SDL2pp::Renderer& renderer): renderer(renderer) {}
+
+void LectorTexturas::cargar_texturas_y_coordenadas() {
+    cargar_texturas_y_coordenadas_pantalla_carga();
+    cargar_texturas_y_coordenadas_escenarios();
+    cargar_texturas_y_coordenadas_personajes();
+    cargar_texturas_y_coordenadas_enemigos();
+    cargar_texturas_y_coordenadas_fuente();
+    cargar_texturas_y_coordenadas_items();
+    cargar_texturas_y_coordenadas_explosion();
 }
 
 SDL2pp::Texture& LectorTexturas::obtener_textura_pantalla_carga() const {
