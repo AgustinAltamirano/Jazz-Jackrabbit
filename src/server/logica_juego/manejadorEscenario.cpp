@@ -204,9 +204,10 @@ std::vector<bool> manejadorEscenario::colisiones_bloques_y_enemigos(
                     this->generar_objeto_aleatorio((*en)->get_pos_x(), (*en)->get_pos_y());
                 } else {
                     const int32_t dano = (*en)->atacar();
-                    const bool murio = jugador.efectuar_dano(dano);
-                    jugador_herido = true;
-                    if (murio) {
+                    const int estado = jugador.efectuar_dano(dano);
+                    if (estado == 1) {
+                        jugador_herido = true;
+                    } else if (estado == 2) {
                         jugador_murio = true;
                     }
                 }
@@ -394,9 +395,10 @@ std::vector<bool> manejadorEscenario::manejar_balas(std::map<int, personaje>& ju
             if (((*it)->get_id() != jugador.first) && !jug.en_ataque_especial() &&
                 hay_colision_bala(bala_x, bala_y, jug_x, jug_y, jug.get_ancho(), jug.get_alto())) {
                 const int32_t dano = (*it)->impactar();
-                const bool murio = jug.efectuar_dano(dano);
-                cambios[0] = true;
-                if (murio) {
+                const int estado = jug.efectuar_dano(dano);
+                if (estado == 1) {
+                    cambios[0] = true;
+                } else if (estado == 2) {
                     cambios[1] = true;
                 }
             }
