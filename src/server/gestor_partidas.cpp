@@ -1,14 +1,15 @@
 #include "gestor_partidas.h"
 
 #include <iostream>
+#include <memory>
 #include <numeric>
 
 GestorPartidas::GestorPartidas() { contador_partidas = 1; }
 
 Queue<ComandoServer*>* GestorPartidas::crear_partida(
         Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, std::string& nombre_escenario,
-        int32_t& id_cliente, int32_t& codigo_partida, TipoPersonaje& personaje,
-        int8_t& capacidad_partidas) {
+        const int32_t& id_cliente, int32_t& codigo_partida, TipoPersonaje& personaje,
+        const int8_t& capacidad_partidas) {
     std::lock_guard<std::mutex> lock(m);
     codigo_partida = contador_partidas;
     Partida* nueva_partida = new Partida(cola_enviador, codigo_partida, nombre_escenario,
@@ -29,9 +30,9 @@ Partida* GestorPartidas::obtener_partida_por_codigo(int codigo) {
     return partida_encontrada->second;
 }
 
-Queue<ComandoServer*>* GestorPartidas::unir_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
-                                                 int32_t& codigo, const int32_t& id_cliente,
-                                                 const TipoPersonaje& personaje) {
+Queue<ComandoServer*>* GestorPartidas::unir_partida(
+        Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, const int32_t& codigo,
+        const int32_t& id_cliente, const TipoPersonaje& personaje) {
     std::lock_guard<std::mutex> lock(m);
 
     if (not existe_partida_por_codigo(codigo)) {
@@ -56,7 +57,9 @@ void GestorPartidas::join_partidas() {
     for (const auto& par: partidas) {
         auto partida = par.second;
         partida->detener_partida();
-        partida->join();
+        if (partida->is_alive()) {
+            partida->join();
+        }
         delete partida;
     }
     partidas.clear();

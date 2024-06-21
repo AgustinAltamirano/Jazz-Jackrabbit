@@ -33,7 +33,7 @@ bool RecibidorCliente::inicio_recibidor_cliente() {
             if (cola_recibidor != nullptr) {
                 sigo_en_el_lobby = false;
             }
-        } catch (const std::runtime_error& e) {
+        } catch (const LibError& e) {
             std::cout << e.what() << std::endl;
             sigo_en_partida = false;
             return false;
@@ -59,6 +59,7 @@ void RecibidorCliente::run() {
         } catch (const LibError& e) {
             sigo_en_partida = false;
             std::cout << "Se desconecto el cliente" << std::endl;
+            gestor_partidas->borrar_cliente(id_cliente);
             return;
         }
     }

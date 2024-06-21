@@ -80,6 +80,9 @@ bool Partida::esta_vacia() {
 }
 
 void Partida::detener_partida() {
+    if (!sigo_jugando) {
+        return;
+    }
     sigo_jugando = false;
     cola_comandos.close();
     // Si el cliente se desconecta o se desea cerrar el server, se envía un snapshot de fin de juego

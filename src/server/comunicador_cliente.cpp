@@ -38,7 +38,6 @@ void ComunicadorCliente::limpiar_cliente() {
     enviador_cliente.join();
     skt_cliente.close();
     recibidor_cliente.join();
-    gestor_partidas->borrar_cliente(id_cliente);
 }
 
 void ComunicadorCliente::matar_cliente() {
