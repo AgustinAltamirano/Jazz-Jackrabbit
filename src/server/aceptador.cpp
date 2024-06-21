@@ -13,7 +13,8 @@ void Aceptador::run() {
     try {
         while (sigo_jugando) {
             Socket skt_aceptado = skt_servidor->accept();
-            clientes.emplace_back(std::move(skt_aceptado), &gestor_partidas, int32_t(clientes.size()));
+            clientes.emplace_back(std::move(skt_aceptado), &gestor_partidas,
+                                  int32_t(clientes.size()));
             limpiar_clientes();
             gestor_partidas.borrar_partidas_finalizadas();
         }
@@ -48,7 +49,6 @@ void Aceptador::stop() {
     sigo_jugando = false;
     skt_servidor->shutdown(SHUT_RDWR);
     skt_servidor->close();
-    eliminar_todos_clientes();
 }
 
 Aceptador::~Aceptador() = default;

@@ -1,6 +1,7 @@
 #include "recibidor_cliente.h"
 
 #include <iostream>
+#include <memory>
 
 #include "src/common/liberror.h"
 #include "src/common/validador_de_mapas.h"
@@ -24,7 +25,6 @@ bool RecibidorCliente::inicio_recibidor_cliente() {
     bool sigo_en_el_lobby = true;
     while (sigo_en_el_lobby) {
         try {
-            int32_t codigo_partida;
             auto comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
 
             cola_recibidor =
@@ -45,25 +45,24 @@ bool RecibidorCliente::inicio_recibidor_cliente() {
 }
 
 void RecibidorCliente::run() {
-    bool cerrado = false;
-    while (sigo_en_partida && !cerrado) {
+    bool cliente_cerrado = false;
+    while (sigo_en_partida && !cliente_cerrado) {
         try {
-            auto nuevo_comando =
-                    servidor_protocolo.obtener_comando(&cerrado, id_cliente);
+            auto nuevo_comando = servidor_protocolo.obtener_comando(&cliente_cerrado, id_cliente);
             try {
-                    cola_recibidor->push(nuevo_comando.release());
+                cola_recibidor->push(nuevo_comando.release());
             } catch (const ClosedQueue& e) {
                 std::cout << "Juego finalizado" << std::endl;
-                break;
+                sigo_en_partida = false;
+                return;
             }
-        } catch (const std::runtime_error& e) {
+        } catch (const LibError& e) {
             sigo_en_partida = false;
             std::cout << "Se desconecto el cliente" << std::endl;
-            break;
+            return;
         }
     }
     sigo_en_partida = false;
-    cola_recibidor->close();
 }
 
 void RecibidorCliente::establecer_cola_recibidor(Queue<ComandoServer*>* cola_recibidor) {

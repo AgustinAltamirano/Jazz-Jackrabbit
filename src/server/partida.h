@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <map>
+#include <memory>
 #include <string>
 
 #include "../common/queue.h"
@@ -39,7 +40,7 @@ private:
 public:
     Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t codigo_partida,
             std::string& nombre_escenario, const int32_t& id_cliente, TipoPersonaje& personaje,
-            int8_t& capacidad_partida);
+            const int8_t& capacidad_partida);
 
     void run() override;
 

@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <memory>
 #include <string>
 
 #include <unistd.h>
@@ -12,18 +13,18 @@ double frecuencia = 0.05;
 
 Partida::Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t codigo_partida,
                  std::string& nombre_escenario, const int32_t& id_cliente, TipoPersonaje& personaje,
-                 int8_t& capacidad_partida):
-        cola_comandos(10000),
-        nombre_escenario(nombre_escenario),
-        codigo_partida(codigo_partida),
-        sigo_jugando(true),
-        capacidad_partida(capacidad_partida),
+                 const int8_t& capacidad_partida):
         mapa_clientes_juego(),
-        cola_snapshots() {
+        cola_snapshots(),
+        codigo_partida(codigo_partida),
+        nombre_escenario(nombre_escenario),
+        cola_comandos(10000),
+        sigo_jugando(true),
+        cantidad_jugadores(1),
+        comenzada(false),
+        capacidad_partida(capacidad_partida) {
     mapa_clientes_juego[id_cliente] = personaje;
     cola_snapshots[id_cliente] = cola_enviador;
-    cantidad_jugadores = 1;
-    comenzada = false;
 }
 
 void Partida::run() {
@@ -78,7 +79,10 @@ bool Partida::esta_vacia() {
     return false;
 }
 
-void Partida::detener_partida() { sigo_jugando = false; }
+void Partida::detener_partida() {
+    sigo_jugando = false;
+    cola_comandos.close();
+}
 
 int32_t Partida::obtener_codigo_partida() { return codigo_partida; }
 
