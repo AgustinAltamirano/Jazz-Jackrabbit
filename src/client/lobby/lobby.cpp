@@ -85,3 +85,5 @@ bool Lobby::obtener_validar_escenario() {
 }
 
 int Lobby::obtener_id_cliente() const { return id_cliente; }
+
+bool Lobby::esta_conectado() const { return sigo_hablando; }

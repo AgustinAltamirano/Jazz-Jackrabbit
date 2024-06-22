@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <memory>
 #include <string>
 
 #include <unistd.h>
@@ -12,18 +13,18 @@ double frecuencia = 0.05;
 
 Partida::Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t codigo_partida,
                  std::string& nombre_escenario, const int32_t& id_cliente, TipoPersonaje& personaje,
-                 int8_t& capacidad_partida):
-        cola_comandos(10000),
-        nombre_escenario(nombre_escenario),
-        codigo_partida(codigo_partida),
-        sigo_jugando(true),
-        capacidad_partida(capacidad_partida),
+                 const int8_t& capacidad_partida):
         mapa_clientes_juego(),
-        cola_snapshots() {
+        cola_snapshots(),
+        codigo_partida(codigo_partida),
+        nombre_escenario(nombre_escenario),
+        cola_comandos(10000),
+        sigo_jugando(true),
+        cantidad_jugadores(1),
+        comenzada(false),
+        capacidad_partida(capacidad_partida) {
     mapa_clientes_juego[id_cliente] = personaje;
     cola_snapshots[id_cliente] = cola_enviador;
-    cantidad_jugadores = 1;
-    comenzada = false;
 }
 
 void Partida::run() {
@@ -32,7 +33,7 @@ void Partida::run() {
     gameloop.run();
 }
 
-Queue<ComandoServer*>* Partida::obtener_comandos() { return &cola_comandos; }
+Queue<std::shared_ptr<ComandoServer>>* Partida::obtener_comandos() { return &cola_comandos; }
 
 void Partida::agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
                               const int32_t& id_cliente, const TipoPersonaje& personaje) {
@@ -44,7 +45,7 @@ void Partida::agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador
     }
 }
 
-bool Partida::comparar_codigo_partida(const int32_t& codigo_a_comparar) {
+bool Partida::comparar_codigo_partida(const int32_t& codigo_a_comparar) const {
     return (codigo_partida == codigo_a_comparar);
 }
 
@@ -71,19 +72,33 @@ bool Partida::borrar_cliente(int32_t& id_cliente) {
 }
 
 bool Partida::esta_vacia() {
-    if (cola_snapshots.size() == 0) {
+    if (cola_snapshots.empty()) {
         detener_partida();
         return true;
     }
     return false;
 }
 
-void Partida::detener_partida() { sigo_jugando = false; }
+void Partida::detener_partida() {
+    if (!sigo_jugando) {
+        return;
+    }
+    sigo_jugando = false;
+    cola_comandos.close();
+    // Si el cliente se desconecta o se desea cerrar el server, se envía un snapshot de fin de juego
+    const auto snapshot_fin_juego = std::make_shared<SnapshotDTO>();
+    snapshot_fin_juego->establecer_fin_juego(true);
+    for (auto& [codigo, cola_salida]: cola_snapshots) {
+        cola_salida->push(snapshot_fin_juego);
+    }
+}
 
-int32_t Partida::obtener_codigo_partida() { return codigo_partida; }
+int32_t Partida::obtener_codigo_partida() const { return codigo_partida; }
 
-bool Partida::puedo_unir() { return !comenzada; }
+bool Partida::no_esta_comenzada() { return !comenzada; }
 
 bool Partida::esta_jugando() { return sigo_jugando; }
+
+Partida::~Partida() = default;
 
 void Partida::stop() { sigo_jugando = false; }

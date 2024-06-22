@@ -26,7 +26,7 @@ private:
     std::atomic<bool>& keep_talking;
     std::atomic<bool> is_alive;
 
-    Queue<ComandoServer*>& cola_entrada;
+    Queue<std::shared_ptr<ComandoServer>>& cola_entrada;
     // como los jugadores no pueden conectarse en medio de una partida,
     // no hay rc si gameloop tiene acceso a las colas de salida
     std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*> colas_salida;
@@ -47,7 +47,7 @@ public:
      */
     explicit Gameloop(const std::string& archivo_escenario,
                       const std::map<int32_t, TipoPersonaje>& mapa,
-                      Queue<ComandoServer*>& cola_entrada,
+                      Queue<std::shared_ptr<ComandoServer>>& cola_entrada,
                       std::map<int, Queue<std::shared_ptr<SnapshotDTO>>*>& colas_salida,
                       std::atomic<bool>& sigo_jugando);
     void stop() override;

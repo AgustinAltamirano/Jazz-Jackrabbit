@@ -53,6 +53,8 @@ public:
 
     [[nodiscard]] int obtener_id_cliente() const;
 
+    [[nodiscard]] bool esta_conectado() const;
+
     void cerrar();
 };
 

@@ -53,3 +53,6 @@ bool MenuJuego::validar_mapa_elegido(const std::string& mapa) {
 
 
 bool MenuJuego::finalizo_correctamente() const { return ultima_accion_correcta; }
+
+
+bool MenuJuego::esta_conectado() { return lobby.esta_conectado(); }
