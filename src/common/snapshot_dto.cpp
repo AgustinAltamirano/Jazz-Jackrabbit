@@ -2,6 +2,7 @@
 
 #include <utility>
 
+
 SnapshotDTO::SnapshotDTO():
         tipo_escenario(),
         bloques_escenario(),
