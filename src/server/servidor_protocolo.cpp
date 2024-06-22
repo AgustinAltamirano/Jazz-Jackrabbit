@@ -46,30 +46,30 @@ void ServidorProtocolo::enviar_snapshot(std::shared_ptr<SnapshotDTO>& snapshot_d
     std::vector<EnemigoDTO>& enemigos_dto = snapshot_dto->obtener_enemigos();
     std::vector<RecogibleDTO>& recogibles_dto = snapshot_dto->obtener_recogibles();
 
-    uint8_t num_clientes = clientes_dto.size();
-    uint8_t num_bloques = bloques_dto.size();
-    uint8_t num_balas = balas_dto.size();
-    uint8_t num_enemigos = enemigos_dto.size();
-    uint8_t num_recogibles = recogibles_dto.size();
+    const uint32_t num_clientes = htonl(clientes_dto.size());
+    const uint32_t num_bloques = htonl(bloques_dto.size());
+    const uint32_t num_balas = htonl(balas_dto.size());
+    const uint32_t num_enemigos = htonl(enemigos_dto.size());
+    const uint32_t num_recogibles = htonl(recogibles_dto.size());
 
-    auto tipo_escenario = static_cast<uint8_t>(snapshot_dto->obtener_tipo_escenario());
-    auto tiempo_restante = static_cast<uint8_t>(snapshot_dto->obtener_tiempo_restante());
-    auto fin_juego = snapshot_dto->es_fin_juego();
-    auto hubo_disparo = snapshot_dto->obtener_hubo_disparo();
-    auto alguien_fue_herido = snapshot_dto->obtener_hubo_herido();
-    auto alguien_murio = snapshot_dto->obtener_hubo_muerte();
+    const auto tipo_escenario = static_cast<uint8_t>(snapshot_dto->obtener_tipo_escenario());
+    const int32_t tiempo_restante = htonl(snapshot_dto->obtener_tiempo_restante());
+    const auto fin_juego = snapshot_dto->es_fin_juego();
+    const auto hubo_disparo = snapshot_dto->obtener_hubo_disparo();
+    const auto alguien_fue_herido = snapshot_dto->obtener_hubo_herido();
+    const auto alguien_murio = snapshot_dto->obtener_hubo_muerte();
 
-    socket->sendall(&num_clientes, sizeof(uint8_t), cerrado);
-    socket->sendall(&num_bloques, sizeof(uint8_t), cerrado);
-    socket->sendall(&num_balas, sizeof(uint8_t), cerrado);
-    socket->sendall(&num_enemigos, sizeof(uint8_t), cerrado);
-    socket->sendall(&num_recogibles, sizeof(uint8_t), cerrado);
-    socket->sendall(&tipo_escenario, sizeof(uint8_t), cerrado);
-    socket->sendall(&tiempo_restante, sizeof(uint8_t), cerrado);
-    socket->sendall(&fin_juego, sizeof(bool), cerrado);
-    socket->sendall(&hubo_disparo, sizeof(bool), cerrado);
-    socket->sendall(&alguien_fue_herido, sizeof(bool), cerrado);
-    socket->sendall(&alguien_murio, sizeof(bool), cerrado);
+    socket->sendall(&num_clientes, sizeof(num_clientes), cerrado);
+    socket->sendall(&num_bloques, sizeof(num_bloques), cerrado);
+    socket->sendall(&num_balas, sizeof(num_balas), cerrado);
+    socket->sendall(&num_enemigos, sizeof(num_enemigos), cerrado);
+    socket->sendall(&num_recogibles, sizeof(num_recogibles), cerrado);
+    socket->sendall(&tipo_escenario, sizeof(tipo_escenario), cerrado);
+    socket->sendall(&tiempo_restante, sizeof(tiempo_restante), cerrado);
+    socket->sendall(&fin_juego, sizeof(fin_juego), cerrado);
+    socket->sendall(&hubo_disparo, sizeof(hubo_disparo), cerrado);
+    socket->sendall(&alguien_fue_herido, sizeof(alguien_fue_herido), cerrado);
+    socket->sendall(&alguien_murio, sizeof(alguien_murio), cerrado);
 
     for (const auto& cliente_dto: clientes_dto) {
         socket->sendall(&cliente_dto, sizeof(cliente_dto), cerrado);

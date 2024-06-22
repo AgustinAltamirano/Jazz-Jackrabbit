@@ -1,5 +1,7 @@
 #include "cliente_protocolo.h"
 
+#include <arpa/inet.h>
+
 ClienteProtocolo::ClienteProtocolo(Socket* socket): socket(socket) {}
 
 std::vector<char> ClienteProtocolo::serializar_comando(const TipoComando& comando) {
@@ -14,13 +16,13 @@ void ClienteProtocolo::enviar_comando(std::vector<char> bytes, bool* cerrado) {
 
 std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrado) {
     std::shared_ptr<SnapshotDTO> snapshot_dto = std::make_shared<SnapshotDTO>();
-    uint8_t cantidad_clientes;
-    uint8_t cantidad_bloques;
-    uint8_t cantidad_balas;
-    uint8_t cantidad_enemigos;
-    uint8_t cantidad_recogibles;
+    uint32_t cantidad_clientes;
+    uint32_t cantidad_bloques;
+    uint32_t cantidad_balas;
+    uint32_t cantidad_enemigos;
+    uint32_t cantidad_recogibles;
     uint8_t tipo_escenario;
-    uint8_t tiempo_restante;
+    int32_t tiempo_restante;
     bool fin_juego;
     bool hubo_disparo;
     bool alguien_fue_herido;
@@ -38,6 +40,13 @@ std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrad
     socket->recvall(&alguien_fue_herido, sizeof(alguien_fue_herido), cerrado);
     socket->recvall(&alguien_murio, sizeof(alguien_murio), cerrado);
 
+    cantidad_clientes = ntohl(cantidad_clientes);
+    cantidad_bloques = ntohl(cantidad_bloques);
+    cantidad_balas = ntohl(cantidad_balas);
+    cantidad_enemigos = ntohl(cantidad_enemigos);
+    cantidad_recogibles = ntohl(cantidad_recogibles);
+    tiempo_restante = ntohl(tiempo_restante);
+
     snapshot_dto->establecer_tipo_escenario(static_cast<TipoEscenario>(tipo_escenario));
     snapshot_dto->agregar_tiempo_restante(tiempo_restante);
     snapshot_dto->establecer_fin_juego((fin_juego));
@@ -45,31 +54,31 @@ std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrad
     snapshot_dto->establecer_hubo_herido(alguien_fue_herido);
     snapshot_dto->establecer_hubo_muerte(alguien_murio);
 
-    for (int i = 0; i < cantidad_clientes; i++) {
+    for (uint32_t i = 0; i < cantidad_clientes; i++) {
         ClienteDTO cliente;
         socket->recvall(&cliente, sizeof(ClienteDTO), cerrado);
         snapshot_dto->agregar_cliente(cliente);
     }
 
-    for (int i = 0; i < cantidad_bloques; i++) {
+    for (uint32_t i = 0; i < cantidad_bloques; i++) {
         BloqueEscenarioDTO bloque;
         socket->recvall(&bloque, sizeof(BloqueEscenarioDTO), cerrado);
         snapshot_dto->agregar_bloque_escenario(bloque);
     }
 
-    for (int i = 0; i < cantidad_balas; i++) {
+    for (uint32_t i = 0; i < cantidad_balas; i++) {
         BalaDTO bala;
         socket->recvall(&bala, sizeof(BalaDTO), cerrado);
         snapshot_dto->agregar_bala(bala);
     }
 
-    for (int i = 0; i < cantidad_enemigos; i++) {
+    for (uint32_t i = 0; i < cantidad_enemigos; i++) {
         EnemigoDTO enemigo;
         socket->recvall(&enemigo, sizeof(EnemigoDTO), cerrado);
         snapshot_dto->agregar_enemigo(enemigo);
     }
 
-    for (int i = 0; i < cantidad_recogibles; i++) {
+    for (uint32_t i = 0; i < cantidad_recogibles; i++) {
         RecogibleDTO recogible;
         socket->recvall(&recogible, sizeof(RecogibleDTO), cerrado);
         snapshot_dto->agregar_recogible(recogible);
