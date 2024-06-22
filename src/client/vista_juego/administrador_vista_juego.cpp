@@ -65,29 +65,39 @@ void AdministradorVistaJuego::actualizar_vista_fondo_escenario(const TipoEscenar
 
 void AdministradorVistaJuego::actualizar_vista_camara_y_hud(
         const std::vector<ClienteDTO>& clientes_recibidos, const int tiempo_restante) {
-    if (const auto jugador = std::find_if(
-                clientes_recibidos.begin(), clientes_recibidos.end(),
-                [this](const auto& cliente) { return cliente.id_cliente == this->id_jugador; });
+    if (const auto jugador = std::find_if(clientes_recibidos.begin(), clientes_recibidos.end(),
+                                          [this](const auto& cliente) {
+                                              return cliente.obtener_id_cliente() ==
+                                                     this->id_jugador;
+                                          });
         jugador != clientes_recibidos.end()) {
-        if (personajes.count(jugador->id_cliente) == 0) {
-            Personaje nuevo_personaje(jugador->id_cliente,
-                                      MAPA_TIPO_PERSONAJE.at(jugador->tipo_personaje), renderer,
-                                      lector_texturas, camara, jugador->pos_x, jugador->pos_y, 0,
+        const int32_t id_recibido = jugador->obtener_id_cliente();
+        const TipoPersonaje tipo_personaje_recibido = jugador->obtener_tipo_personaje();
+        const int32_t pos_x = jugador->obtener_pos_x();
+        const int32_t pos_y = jugador->obtener_pos_y();
+        if (personajes.count(id_recibido) == 0) {
+            Personaje nuevo_personaje(id_recibido, MAPA_TIPO_PERSONAJE.at(tipo_personaje_recibido),
+                                      renderer, lector_texturas, camara, pos_x, pos_y, 0,
                                       ITERACIONES_POR_SPRITE);
-            personajes.emplace(jugador->id_cliente, std::move(nuevo_personaje));
+            personajes.emplace(id_recibido, std::move(nuevo_personaje));
         }
-        personajes.at(jugador->id_cliente).actualizar_camara();
+        personajes.at(id_recibido).actualizar_camara();
 
         // Actualizar HUD en base a los datos del jugador
-        hud.actualizar(jugador->tipo_personaje, jugador->puntos, jugador->vida,
-                       jugador->arma_actual, jugador->balas_restantes, tiempo_restante);
+        const uint32_t puntos_recibidos = jugador->obtener_puntos();
+        const uint32_t vida = jugador->obtener_vida();
+        const TipoArma arma_actual = jugador->obtener_arma_actual();
+        const int32_t balas_restantes = jugador->obtener_balas_restantes();
+        hud.actualizar(tipo_personaje_recibido, puntos_recibidos, vida, arma_actual,
+                       balas_restantes, tiempo_restante);
     }
 
     std::vector<std::tuple<int32_t, uint32_t, TipoPersonaje>> datos_jugadores(
             clientes_recibidos.size());
     std::transform(clientes_recibidos.begin(), clientes_recibidos.end(), datos_jugadores.begin(),
                    [](const ClienteDTO& p) {
-                       return std::make_tuple(p.id_cliente, p.puntos, p.tipo_personaje);
+                       return std::make_tuple(p.obtener_id_cliente(), p.obtener_puntos(),
+                                              p.obtener_tipo_personaje());
                    });
     hud.actualizar_top_jugadores(std::move(datos_jugadores));
 }
@@ -99,20 +109,25 @@ void AdministradorVistaJuego::actualizar_vista_bloques_escenario(
             SDL2pp::Texture& textura_bloque =
                     lector_texturas.obtener_textura_bloque(MAPA_TIPO_ESCENARIO.at(tipo_escenario));
             const SDL2pp::Rect& coords_textura = lector_texturas.obtener_coords_bloque(
-                    MAPA_TIPO_ESCENARIO.at(tipo_escenario), MAPA_TIPO_BLOQUE.at(bloque.tipo));
+                    MAPA_TIPO_ESCENARIO.at(tipo_escenario),
+                    MAPA_TIPO_BLOQUE.at(bloque.obtener_tipo()));
 
-            bloques_escenario.emplace(
-                    proximo_id,
-                    std::make_unique<BloqueEscenario>(
-                            SDL2pp::Rect(bloque.pos_x, bloque.pos_y, static_cast<int>(bloque.ancho),
-                                         static_cast<int>(bloque.alto)),
-                            renderer, textura_bloque, coords_textura, camara));
+            const int32_t pos_x = bloque.obtener_pos_x();
+            const int32_t pos_y = bloque.obtener_pos_y();
+            const uint32_t ancho = bloque.obtener_ancho();
+            const uint32_t alto = bloque.obtener_alto();
+
+            bloques_escenario.emplace(proximo_id,
+                                      std::make_unique<BloqueEscenario>(
+                                              SDL2pp::Rect(pos_x, pos_y, static_cast<int>(ancho),
+                                                           static_cast<int>(alto)),
+                                              renderer, textura_bloque, coords_textura, camara));
             proximo_id++;
         }
     }
 
-    for (auto& [fst, snd]: bloques_escenario) {
-        snd->actualizar_vista();
+    for (auto& [id, bloque]: bloques_escenario) {
+        bloque->actualizar_vista();
     }
 }
 
@@ -120,18 +135,24 @@ void AdministradorVistaJuego::actualizar_vista_personajes(
         const std::vector<ClienteDTO>& clientes_recibidos) {
     std::unordered_set<uint32_t> ids_clientes_recibidos;
     for (auto c: clientes_recibidos) {
-        ids_clientes_recibidos.insert(c.id_cliente);
-        auto id = c.id_cliente;
-        if (personajes.count(c.id_cliente) == 0) {
-            Personaje nuevo_personaje(c.id_cliente, MAPA_TIPO_PERSONAJE.at(c.tipo_personaje),
-                                      renderer, lector_texturas, camara, c.pos_x, c.pos_y, 0,
+        const int32_t id = c.obtener_id_cliente();
+        const TipoPersonaje tipo_recibido = c.obtener_tipo_personaje();
+        const int32_t pos_x = c.obtener_pos_x();
+        const int32_t pos_y = c.obtener_pos_y();
+        const EstadoPersonaje estado = c.obtener_estado();
+        const bool de_espaldas = c.obtener_de_espaldas();
+
+        ids_clientes_recibidos.insert(id);
+        if (personajes.count(id) == 0) {
+            Personaje nuevo_personaje(id, MAPA_TIPO_PERSONAJE.at(tipo_recibido), renderer,
+                                      lector_texturas, camara, pos_x, pos_y, 0,
                                       ITERACIONES_POR_SPRITE);
             personajes.emplace(id, std::move(nuevo_personaje));
         }
 
-        personajes.at(id).actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(c.estado),
-                                               iteraciones_actuales, {c.pos_x, c.pos_y, 1, 1}, 0,
-                                               c.de_espaldas);
+        personajes.at(id).actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(estado),
+                                               iteraciones_actuales, {pos_x, pos_y, 1, 1}, 0,
+                                               de_espaldas);
     }
 
     std::unordered_set<uint32_t> ids_clientes_borrar;
@@ -149,13 +170,19 @@ void AdministradorVistaJuego::actualizar_vista_personajes(
 void AdministradorVistaJuego::actualizar_vista_enemigos(
         const std::vector<EnemigoDTO>& enemigos_recibidos) {
     for (const auto& enemigo: enemigos_recibidos) {
-        if (!enemigos.existe_enemigo(enemigo.id)) {
-            enemigos.agregar_enemigo(enemigo.id, enemigo.tipo, {enemigo.pos_x, enemigo.pos_y, 1, 1},
-                                     enemigo.invertido);
+        const int32_t id = enemigo.obtener_id();
+        const TipoEnemigo tipo = enemigo.obtener_tipo();
+        const int32_t pos_x = enemigo.obtener_pos_x();
+        const int32_t pos_y = enemigo.obtener_pos_y();
+        const int32_t ancho = enemigo.obtener_ancho();
+        const int32_t alto = enemigo.obtener_alto();
+        const bool invertido = enemigo.obtener_invertido();
+
+        if (!enemigos.existe_enemigo(id)) {
+            enemigos.agregar_enemigo(id, tipo, {pos_x, pos_y, 1, 1}, invertido);
         }
-        enemigos.actualizar_animacion(enemigo.id, iteraciones_actuales,
-                                      {enemigo.pos_x, enemigo.pos_y, enemigo.ancho, enemigo.alto},
-                                      enemigo.invertido);
+        enemigos.actualizar_animacion(id, iteraciones_actuales, {pos_x, pos_y, ancho, alto},
+                                      invertido);
     }
 }
 
@@ -163,11 +190,16 @@ void AdministradorVistaJuego::actualizar_vista_balas_y_explosiones(
         const std::vector<BalaDTO>& balas_recibidas) {
     balas.eliminar_balas();
     for (const auto& bala: balas_recibidas) {
-        balas.agregar_bala(bala.tipo, bala.pos_x, bala.pos_y);
-        if (bala.choco) {
-            if (bala.tipo == ARMA2) {
+        const TipoArma tipo = bala.obtener_tipo();
+        const int32_t pos_x = bala.obtener_pos_x();
+        const int32_t pos_y = bala.obtener_pos_y();
+        const bool choco = bala.obtener_choco();
+
+        balas.agregar_bala(tipo, pos_x, pos_y);
+        if (choco) {
+            if (tipo == ARMA2) {
                 admin_sonidos.preparar_sonido(SONIDO_EXPLOSION, iteraciones_actuales);
-                explosiones.agregar_explosion(bala.pos_x, bala.pos_y);
+                explosiones.agregar_explosion(pos_x, pos_y);
                 continue;
             }
             admin_sonidos.preparar_sonido(SONIDO_IMPACTO_BALA, iteraciones_actuales);
@@ -180,8 +212,13 @@ void AdministradorVistaJuego::actualizar_vista_recogibles(
         const std::vector<RecogibleDTO>& recogibles_recibidos) {
     recogibles.eliminar_recogibles();
     for (const auto& recogible: recogibles_recibidos) {
-        recogibles.agregar_recogible(recogible.tipo, {recogible.pos_x, recogible.pos_y,
-                                                      recogible.ancho, recogible.alto});
+        const TipoRecogible tipo = recogible.obtener_tipo();
+        const int32_t pos_x = recogible.obtener_pos_x();
+        const int32_t pos_y = recogible.obtener_pos_y();
+        const int32_t ancho = recogible.obtener_ancho();
+        const int32_t alto = recogible.obtener_alto();
+
+        recogibles.agregar_recogible(tipo, {pos_x, pos_y, ancho, alto});
     }
 }
 
