@@ -23,21 +23,21 @@ Lobby::Lobby(const std::string& hostname, const std::string& servname):
 
 int32_t Lobby::crear_partida(const std::string& nombre_escenario, const TipoPersonaje& personaje,
                              const int8_t& capacidad_partida) {
-    auto* comando_crear = new ComandoCrearDTO(nombre_escenario, personaje, capacidad_partida);
+    auto comando_crear = std::make_shared<ComandoCrearDTO>(nombre_escenario, personaje, capacidad_partida);
     cola_enviador.try_push(comando_crear);
-    return obtener_crear();
+    return obtener_respuesta();
 }
 
 bool Lobby::unir_partida(const int32_t& codigo_partida, const TipoPersonaje& personaje) {
-    auto* comando_unir = new ComandoUnirDTO(codigo_partida, personaje);
+    auto comando_unir = std::make_shared<ComandoUnirDTO>(codigo_partida, personaje);
     cola_enviador.try_push(comando_unir);
-    return obtener_unir();
+    return obtener_respuesta();
 }
 
 bool Lobby::validar_escenario(const std::string& nombre_escenario) {
-    auto* comando_validar = new ComandoValidarDTO(nombre_escenario);
+    auto comando_validar = std::make_shared<ComandoValidarDTO>(nombre_escenario);
     cola_enviador.try_push(comando_validar);
-    return obtener_validar_escenario();
+    return obtener_respuesta();
 }
 
 void Lobby::cerrar() {
@@ -60,28 +60,11 @@ void Lobby::salir_lobby() {
 
 Socket Lobby::move_socket() { return std::move(socket); }
 
-int32_t Lobby::obtener_crear() {
-    ComandoDTO* comando_dto = cola_recibidor.pop();
-    auto* crear_dto = dynamic_cast<ComandoCrearDTO*>(comando_dto);
-    int32_t codigo_partida = crear_dto->obtener_codigo_partida();
-    delete comando_dto;
-    return codigo_partida;
-}
-
-bool Lobby::obtener_unir() {
-    ComandoDTO* comando_dto = cola_recibidor.pop();
-    auto* unir_dto = dynamic_cast<ComandoUnirDTO*>(comando_dto);
-    bool unio = unir_dto->obtener_unio();
-    delete comando_dto;
-    return unio;
-}
-
-bool Lobby::obtener_validar_escenario() {
-    ComandoDTO* comando_dto = cola_recibidor.pop();
-    auto* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando_dto);
-    bool es_valida = validar_dto->obtener_es_valida();
-    delete comando_dto;
-    return es_valida;
+int32_t Lobby::obtener_respuesta() {
+    std::shared_ptr<ComandoDTO> comando_dto = cola_recibidor.pop();
+    return comando_dto->obtener_info();
 }
 
 int Lobby::obtener_id_cliente() const { return id_cliente; }
+
+bool Lobby::esta_conectado() const { return sigo_hablando; }

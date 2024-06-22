@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+
 #include "juego/cliente.h"
 #include "lobby/lobby.h"
 #include "vista_juego/administrador_vista_juego.h"
@@ -28,7 +29,7 @@ int main(int argc, char* argv[]) {
         Socket socket = lobby.move_socket();
         lobby.salir_lobby();
         Cliente cliente(std::move(socket));
-        AdministradorVistaJuego admin(id_cliente, "Jazz Jackrabbit", cliente);
+        AdministradorVistaJuego admin(id_cliente, "Jazz Jackrabbit 2", cliente);
         admin.run();
         cliente.join();
         return 0;

@@ -1,7 +1,10 @@
 #include "cliente.h"
 
+#include <memory>
 #include <sstream>
 #include <utility>
+
+#include <sys/socket.h>
 
 Cliente::Cliente(Socket&& socket):
         skt_cliente(std::move(socket)),
@@ -24,7 +27,7 @@ bool Cliente::obtener_snapshot(std::shared_ptr<SnapshotDTO>& snapshot) {
 }
 
 void Cliente::join() {
-    skt_cliente.shutdown(2);
+    skt_cliente.shutdown(SHUT_RDWR);
     skt_cliente.close();
     cola_enviador.close();
     cliente_enviador.join();

@@ -16,7 +16,7 @@ TipoComando ComandoServer::obtener_comando() { return comando; }
 
 int32_t ComandoServer::obtener_id_cliente() const { return id_cliente; }
 
-Queue<ComandoServer*>* ComandoServer::ejecutar(GestorPartidas* gestor_partidas,
+Queue<std::shared_ptr<ComandoServer>>* ComandoServer::ejecutar(GestorPartidas* gestor_partidas,
                                                Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
                                                bool& cerrado,
                                                ServidorProtocolo& servidor_serializador) {

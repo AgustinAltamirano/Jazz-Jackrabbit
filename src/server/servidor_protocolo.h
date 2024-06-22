@@ -22,11 +22,11 @@ private:
 
     ServidorProtocoloSerializador serializador;
 
-    std::unique_ptr<ComandoServerCrear> deserializar_crear(bool* cerrado, int32_t& id_cliente);
+    std::shared_ptr<ComandoServerCrear> deserializar_crear(bool* cerrado, int32_t& id_cliente);
 
-    std::unique_ptr<ComandoServerUnir> deserializar_unir(bool* cerrado, const int32_t& id_cliente);
+    std::shared_ptr<ComandoServerUnir> deserializar_unir(bool* cerrado, const int32_t& id_cliente);
 
-    std::unique_ptr<ComandoServerValidar> deserializar_validar(bool* cerrado, int32_t& id_cliente);
+    std::shared_ptr<ComandoServerValidar> deserializar_validar(bool* cerrado, int32_t& id_cliente);
 
 public:
     explicit ServidorProtocolo(SocketAbstracto* socket);
@@ -43,7 +43,7 @@ public:
 
     void enviar_validar_escenario(const bool& es_valido, bool* cerrado);
 
-    std::unique_ptr<ComandoServer> obtener_comando(bool* cerrado, int32_t& id_cliente);
+    std::shared_ptr<ComandoServer> obtener_comando(bool* cerrado, int32_t& id_cliente);
 };
 
 #endif

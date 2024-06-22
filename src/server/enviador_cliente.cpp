@@ -1,10 +1,12 @@
 #include "enviador_cliente.h"
 
 #include <memory>
+
 #include "../common/validador_de_mapas.h"
 
 EnviadorCliente::EnviadorCliente(Socket* skt_cliente, std::atomic<bool>& sigo_en_partida,
-                                 int32_t& id_cliente, Queue<std::shared_ptr<SnapshotDTO>>& cola_cliente):
+                                 const int32_t& id_cliente,
+                                 Queue<std::shared_ptr<SnapshotDTO>>& cola_cliente):
         sigo_en_partida(sigo_en_partida),
         cola_enviador(cola_cliente),
         servidor_protocolo(skt_cliente),
@@ -19,6 +21,10 @@ void EnviadorCliente::run() {
             while (!cerrado) {
                 std::shared_ptr<SnapshotDTO> snapshot_dto = cola_enviador.pop();
                 servidor_protocolo.enviar_snapshot(snapshot_dto, &cerrado);
+                if (snapshot_dto->es_fin_juego()) {
+                    sigo_en_partida = false;
+                    return;
+                }
             }
         } catch (const ClosedQueue& e) {
             std::cout << "Se cerro la cola correctamente" << std::endl;

@@ -24,7 +24,7 @@ public:
     ComandoServerCrear(int32_t id_cliente, std::string nombre_escenario, TipoPersonaje personaje,
                     int8_t capacidad_partida);
 
-    Queue<ComandoServer*>* ejecutar(GestorPartidas* gestor_partidas,
+    Queue<std::shared_ptr<ComandoServer>>* ejecutar(GestorPartidas* gestor_partidas,
                                     Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
                                     bool& cerrado,
                                     ServidorProtocolo& servidor_serializador) override;

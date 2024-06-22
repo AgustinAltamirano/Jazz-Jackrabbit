@@ -26,15 +26,11 @@ public:
     explicit ComandoCrearDTO(std::string nombre_escenario, TipoPersonaje personaje,
                              int8_t capacidad_partida);
 
-    std::string obtener_nombre_escenario();
+    ~ComandoCrearDTO() override = default;
 
-    int8_t obtener_capacidad_partida();
+    int32_t obtener_info() override;
 
-    TipoPersonaje obtener_personaje();
-
-    int32_t obtener_codigo_partida();
-
-    virtual ~ComandoCrearDTO() {}
+    std::vector<char> serializar() override;
 };
 
 #endif

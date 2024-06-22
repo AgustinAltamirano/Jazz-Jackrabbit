@@ -1,6 +1,7 @@
 #include "lobby_protocolo.h"
 
 #include <iostream>
+#include <memory>
 
 #include <arpa/inet.h>
 
@@ -8,41 +9,7 @@
 
 LobbyProtocolo::LobbyProtocolo(SocketAbstracto* socket): socket(socket) {}
 
-std::vector<char> LobbyProtocolo::serializar_crear_partida(const std::string& nombre_escenario,
-                                                           const TipoPersonaje& personaje,
-                                                           const int8_t& capacidad_partida) {
-    std::vector<char> buffer;
-    uint8_t len_nombre = nombre_escenario.length();
-    buffer.push_back(CREAR);
-    buffer.push_back(len_nombre);
-    buffer.insert(buffer.end(), nombre_escenario.begin(), nombre_escenario.end());
-    buffer.push_back(personaje);
-    buffer.push_back(capacidad_partida);
-    return buffer;
-}
-
-std::vector<char> LobbyProtocolo::serializar_unir_partida(const int32_t& codigo_partida,
-                                                          const TipoPersonaje& personaje) {
-    std::vector<char> buffer;
-    buffer.push_back(UNIR);
-    buffer.push_back(personaje);
-    int32_t codigo_partida_transformado = htonl(codigo_partida);
-    unsigned char const* p = reinterpret_cast<unsigned char const*>(&codigo_partida_transformado);
-    buffer.insert(buffer.end(), p, p + sizeof(int32_t));
-    return buffer;
-}
-
-std::vector<char> LobbyProtocolo::serializar_validar_escenario(
-        const std::string& nombre_escenario) {
-    std::vector<char> buffer;
-    uint8_t len_nombre = nombre_escenario.length();
-    buffer.push_back(VALIDAR_ESCENARIO);
-    buffer.push_back(len_nombre);
-    buffer.insert(buffer.end(), nombre_escenario.begin(), nombre_escenario.end());
-    return buffer;
-}
-
-ComandoDTO* LobbyProtocolo::obtener_comando(bool* cerrado) {
+std::shared_ptr<ComandoDTO> LobbyProtocolo::obtener_comando(bool* cerrado) {
     char codigo_comando = 0;
     socket->recvall(&codigo_comando, 1, cerrado);
     if (*cerrado) {
@@ -51,39 +18,36 @@ ComandoDTO* LobbyProtocolo::obtener_comando(bool* cerrado) {
     TipoComando tipo_comando = static_cast<TipoComando>(codigo_comando);
     switch (tipo_comando) {
         case CREAR:
-            return (deserializar_crear_partida(cerrado));
+            return deserializar_crear_partida(cerrado);
         case UNIR:
-            return (deserializar_unir_partida(cerrado));
+            return deserializar_unir_partida(cerrado);
         case VALIDAR_ESCENARIO:
-            return (deserializar_validar_escenario(cerrado));
+            return deserializar_validar_escenario(cerrado);
         default:
             std::cout << "ERROR de comando";
             throw std::invalid_argument("no se encontro el caso en el deserializador del servidor");
     }
 }
 
-ComandoCrearDTO* LobbyProtocolo::deserializar_crear_partida(bool* cerrado) {
+std::shared_ptr<ComandoCrearDTO> LobbyProtocolo::deserializar_crear_partida(bool* cerrado) {
     int32_t codigo_partida;
     socket->recvall(&codigo_partida, 4, cerrado);
     codigo_partida = ntohl(codigo_partida);
-    ComandoCrearDTO* crear_dto = new ComandoCrearDTO(codigo_partida);
     *cerrado = true;
-    return crear_dto;
+    return std::make_shared<ComandoCrearDTO>(codigo_partida);
 }
 
-ComandoUnirDTO* LobbyProtocolo::deserializar_unir_partida(bool* cerrado) {
+std::shared_ptr<ComandoUnirDTO> LobbyProtocolo::deserializar_unir_partida(bool* cerrado) {
     bool unio;
     socket->recvall(&unio, 1, cerrado);
-    ComandoUnirDTO* unir_dto = new ComandoUnirDTO(unio);
     *cerrado = unio;
-    return unir_dto;
+    return std::make_shared<ComandoUnirDTO>(unio);
 }
 
-ComandoValidarDTO* LobbyProtocolo::deserializar_validar_escenario(bool* cerrado) {
+std::shared_ptr<ComandoValidarDTO> LobbyProtocolo::deserializar_validar_escenario(bool* cerrado) {
     bool es_valida;
     socket->recvall(&es_valida, 1, cerrado);
-    ComandoValidarDTO* validar_dto = new ComandoValidarDTO(es_valida);
-    return validar_dto;
+    return std::make_shared<ComandoValidarDTO>(es_valida);
 }
 
 int32_t LobbyProtocolo::obtener_id_cliente() {
@@ -94,20 +58,8 @@ int32_t LobbyProtocolo::obtener_id_cliente() {
     return id_cliente;
 }
 
-void LobbyProtocolo::enviar_comando(ComandoDTO* comando, bool* cerrado) {
+void LobbyProtocolo::enviar_comando(const std::shared_ptr<ComandoDTO>& comando, bool* cerrado) {
     std::vector<char> buffer;
-    if (comando->obtener_comando() == CREAR) {
-        ComandoCrearDTO* crear_dto = dynamic_cast<ComandoCrearDTO*>(comando);
-        buffer = serializar_crear_partida(crear_dto->obtener_nombre_escenario(),
-                                          crear_dto->obtener_personaje(),
-                                          crear_dto->obtener_capacidad_partida());
-    } else if (comando->obtener_comando() == UNIR) {
-        ComandoUnirDTO* unir_dto = dynamic_cast<ComandoUnirDTO*>(comando);
-        buffer = serializar_unir_partida(unir_dto->obtener_codigo_partida(),
-                                         unir_dto->obtener_personaje());
-    } else if (comando->obtener_comando() == VALIDAR_ESCENARIO) {
-        ComandoValidarDTO* validar_dto = dynamic_cast<ComandoValidarDTO*>(comando);
-        buffer = serializar_validar_escenario(validar_dto->obtener_nombre_escenario());
-    }
+    buffer = comando->serializar();
     socket->sendall(buffer.data(), buffer.size(), cerrado);
 }

@@ -19,10 +19,15 @@ ComandoCrearDTO::ComandoCrearDTO(std::string nombre_escenario, TipoPersonaje per
         capacidad_partida(capacidad_partida),
         codigo_partida() {}
 
-std::string ComandoCrearDTO::obtener_nombre_escenario() { return nombre_escenario; }
+int32_t ComandoCrearDTO::obtener_info() { return codigo_partida; }
 
-TipoPersonaje ComandoCrearDTO::obtener_personaje() { return personaje; }
-
-int32_t ComandoCrearDTO::obtener_codigo_partida() { return codigo_partida; }
-
-int8_t ComandoCrearDTO::obtener_capacidad_partida() { return capacidad_partida; }
+std::vector<char> ComandoCrearDTO::serializar() {
+    std::vector<char> buffer;
+    uint8_t len_nombre = nombre_escenario.length();
+    buffer.push_back(CREAR);
+    buffer.push_back(len_nombre);
+    buffer.insert(buffer.end(), nombre_escenario.begin(), nombre_escenario.end());
+    buffer.push_back(personaje);
+    buffer.push_back(capacidad_partida);
+    return buffer;
+}

@@ -26,7 +26,7 @@ public:
 
     TipoComando obtener_comando();
 
-    virtual Queue<ComandoServer*>* ejecutar(GestorPartidas* gestor_partidas,
+    virtual Queue<std::shared_ptr<ComandoServer>>* ejecutar(GestorPartidas* gestor_partidas,
                                             Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
                                             bool& cerrado,
                                             ServidorProtocolo& servidor_serializador) = 0;

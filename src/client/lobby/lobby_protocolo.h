@@ -1,6 +1,7 @@
 #ifndef LOBBY_PROTOCOLO_H
 #define LOBBY_PROTOCOLO_H
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -26,11 +27,15 @@ private:
 
     std::vector<char> serializar_validar_escenario(const std::string& nombre_escenario);
 
-    ComandoCrearDTO* deserializar_crear_partida(bool* cerrado);
+    std::shared_ptr<ComandoDTO> obtener_comando(bool* cerrado);
 
-    ComandoUnirDTO* deserializar_unir_partida(bool* cerrado);
+    int32_t obtener_id_cliente();
 
-    ComandoValidarDTO* deserializar_validar_escenario(bool* cerrado);
+    std::shared_ptr<ComandoCrearDTO> deserializar_crear_partida(bool* cerrado);
+
+    std::shared_ptr<ComandoUnirDTO> deserializar_unir_partida(bool* cerrado);
+
+    std::shared_ptr<ComandoValidarDTO> deserializar_validar_escenario(bool* cerrado);
 
 public:
     explicit LobbyProtocolo(SocketAbstracto* socket);
@@ -39,7 +44,7 @@ public:
 
     int32_t obtener_id_cliente();
 
-    void enviar_comando(ComandoDTO* comando, bool* cerrado);
+    void enviar_comando(const std::shared_ptr<ComandoDTO>& comando, bool* cerrado);
 };
 
 #endif
