@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <map>
+#include <memory>
 #include <string>
 
 #include "../common/socket.h"
