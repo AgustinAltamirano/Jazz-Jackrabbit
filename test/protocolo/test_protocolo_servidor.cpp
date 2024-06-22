@@ -24,7 +24,7 @@ void test_obtener_comando(void) {
 
     socket.sendall(comando_serializado_enviado.data(), comando_serializado_enviado.size(),
                    &cerrado);
-    std::unique_ptr<ComandoServer> comando = protocolo.obtener_comando(&cerrado, id_cliente);
+    std::shared_ptr<ComandoServer> comando = protocolo.obtener_comando(&cerrado, id_cliente);
 
     TEST_CHECK(comando->obtener_comando() == comando_enviado);
 }

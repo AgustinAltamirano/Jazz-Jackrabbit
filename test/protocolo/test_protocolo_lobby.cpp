@@ -16,8 +16,8 @@ void test_enviar_comando_crear_partida(void) {
     TipoPersonaje tipo_personaje_enviado = JAZZ;
     int8_t capacidad_partida_enviado = 2;
 
-    ComandoCrearDTO* comando = new ComandoCrearDTO(nombre_escenario_enviado, tipo_personaje_enviado,
-                                                   capacidad_partida_enviado);
+    auto comando = std::make_shared<ComandoCrearDTO>(
+            nombre_escenario_enviado, tipo_personaje_enviado, capacidad_partida_enviado);
 
     protocolo.enviar_comando(comando, &cerrado);
 
@@ -46,7 +46,7 @@ void test_enviar_comando_unir_partida(void) {
     int32_t codigo_partida_enviado = 1;
     TipoPersonaje tipo_personaje_enviado = JAZZ;
 
-    ComandoUnirDTO* comando = new ComandoUnirDTO(codigo_partida_enviado, tipo_personaje_enviado);
+    auto comando = std::make_shared<ComandoUnirDTO>(codigo_partida_enviado, tipo_personaje_enviado);
 
     protocolo.enviar_comando(comando, &cerrado);
 
@@ -70,7 +70,7 @@ void test_enviar_comando_validar_escenario(void) {
 
     std::string nombre_escenario_enviado = "Escenario1";
 
-    ComandoValidarDTO* comando = new ComandoValidarDTO(nombre_escenario_enviado);
+    auto comando = std::make_shared<ComandoValidarDTO>(nombre_escenario_enviado);
 
     protocolo.enviar_comando(comando, &cerrado);
 
@@ -113,10 +113,9 @@ void test_obtener_comando_crear_partida(void) {
             serializador.serializar_crear_partida(codigo_partida_enviado);
     socket.sendall(buffer_enviado.data(), buffer_enviado.size(), &cerrado);
 
-    ComandoDTO* comando_recibido = lobby_protocolo.obtener_comando(&cerrado);
-    ComandoCrearDTO* comando_crear_recibido = dynamic_cast<ComandoCrearDTO*>(comando_recibido);
+    auto comando_recibido = lobby_protocolo.obtener_comando(&cerrado);
 
-    TEST_CHECK(comando_crear_recibido->obtener_codigo_partida() == codigo_partida_enviado);
+    TEST_CHECK(comando_recibido->obtener_info() == codigo_partida_enviado);
 }
 
 void test_obtener_comando_unir_partida(void) {
@@ -129,10 +128,9 @@ void test_obtener_comando_unir_partida(void) {
     std::vector<char> buffer_enviado = serializador.serializar_unir_partida(unio_partida_enviado);
     socket.sendall(buffer_enviado.data(), buffer_enviado.size(), &cerrado);
 
-    ComandoDTO* comando_recibido = lobby_protocolo.obtener_comando(&cerrado);
-    ComandoUnirDTO* comando_unir_recibido = dynamic_cast<ComandoUnirDTO*>(comando_recibido);
+    auto comando_recibido = lobby_protocolo.obtener_comando(&cerrado);
 
-    TEST_CHECK(comando_unir_recibido->obtener_unio() == unio_partida_enviado);
+    TEST_CHECK(comando_recibido->obtener_info() == unio_partida_enviado);
 }
 
 void test_obtener_comando_validar_escenario(void) {
@@ -146,11 +144,9 @@ void test_obtener_comando_validar_escenario(void) {
             serializador.serializar_validar_escenario(escenario_valido_enviado);
     socket.sendall(buffer_enviado.data(), buffer_enviado.size(), &cerrado);
 
-    ComandoDTO* comando_recibido = lobby_protocolo.obtener_comando(&cerrado);
-    ComandoValidarDTO* comando_validar_recibido =
-            dynamic_cast<ComandoValidarDTO*>(comando_recibido);
+    auto comando_recibido = lobby_protocolo.obtener_comando(&cerrado);
 
-    TEST_CHECK(comando_validar_recibido->obtener_es_valida() == escenario_valido_enviado);
+    TEST_CHECK(comando_recibido->obtener_info() == escenario_valido_enviado);
 }
 
 TEST_LIST = {{"Test protocolo crear partida", test_enviar_comando_crear_partida},

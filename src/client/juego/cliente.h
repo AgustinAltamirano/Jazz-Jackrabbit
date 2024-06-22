@@ -21,8 +21,6 @@ private:
 
     ClienteRecibidor cliente_recibidor;
 
-    ClienteProtocolo cliente_protocolo;
-
     Queue<TipoComando> cola_enviador;
 
     Queue<std::shared_ptr<SnapshotDTO>> cola_recibidor;
