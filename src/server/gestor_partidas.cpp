@@ -6,7 +6,7 @@
 
 GestorPartidas::GestorPartidas() { contador_partidas = 1; }
 
-Queue<ComandoServer*>* GestorPartidas::crear_partida(
+Queue<std::shared_ptr<ComandoServer>>* GestorPartidas::crear_partida(
         Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, std::string& nombre_escenario,
         const int32_t& id_cliente, int32_t& codigo_partida, TipoPersonaje& personaje,
         const int8_t& capacidad_partidas) {
@@ -31,7 +31,7 @@ Partida& GestorPartidas::obtener_partida_por_codigo(const int codigo) {
     return partida_encontrada->second;
 }
 
-Queue<ComandoServer*>* GestorPartidas::unir_partida(
+Queue<std::shared_ptr<ComandoServer>>* GestorPartidas::unir_partida(
         Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, const int32_t& codigo,
         const int32_t& id_cliente, const TipoPersonaje& personaje) {
     std::lock_guard<std::mutex> lock(m);
@@ -68,7 +68,6 @@ void GestorPartidas::borrar_cliente(int32_t& id_cliente) {
     // Si al elimintar me quede sin clientes elimino la partida
     std::lock_guard<std::mutex> lock(m);
     for (auto& par: partidas) {
-        auto codigo_partida = par.first;
         auto& partida = par.second;
         if (partida.borrar_cliente(id_cliente)) {
             partida.detener_partida();

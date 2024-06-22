@@ -41,7 +41,9 @@ void ComunicadorCliente::limpiar_cliente() {
 }
 
 void ComunicadorCliente::matar_cliente() {
-    skt_cliente.shutdown(SHUT_RD);
+    if (!recibidor_cliente.esta_desconectado()) {
+        skt_cliente.shutdown(SHUT_RD);
+    }
     limpiar_cliente();
 }
 

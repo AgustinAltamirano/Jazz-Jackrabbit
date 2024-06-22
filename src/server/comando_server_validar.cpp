@@ -8,7 +8,7 @@ ComandoServerValidar::ComandoServerValidar(int32_t id_cliente, std::string nombr
         ComandoServer(id_cliente, VALIDAR_ESCENARIO),
         nombre_escenario(std::move(nombre_escenario)) {}
 
-Queue<ComandoServer*>* ComandoServerValidar::ejecutar(
+Queue<std::shared_ptr<ComandoServer>>* ComandoServerValidar::ejecutar(
         GestorPartidas* gestor_partidas, Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
         bool& cerrado, ServidorProtocolo& servidor_serializador) {
     bool es_valido = validador_de_mapas::validar_mapa_custom(nombre_escenario);

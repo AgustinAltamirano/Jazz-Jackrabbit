@@ -23,7 +23,7 @@ private:
 
     std::string nombre_escenario;
 
-    Queue<ComandoServer*> cola_comandos;
+    Queue<std::shared_ptr<ComandoServer>> cola_comandos;
 
     std::atomic<bool> sigo_jugando;
 
@@ -46,14 +46,14 @@ public:
 
     void stop() override;
 
-    Queue<ComandoServer*>* obtener_comandos();
+    Queue<std::shared_ptr<ComandoServer>>* obtener_comandos();
 
     void agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
                          const int32_t& id_cliente, const TipoPersonaje& personaje);
 
-    bool comparar_codigo_partida(const int32_t& codigo_a_comparar);
+    bool comparar_codigo_partida(const int32_t& codigo_a_comparar) const;
 
-    int32_t obtener_codigo_partida();
+    int32_t obtener_codigo_partida() const;
 
     bool borrar_cliente(int32_t& id_cliente);
 

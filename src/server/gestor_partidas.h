@@ -27,13 +27,13 @@ private:
 public:
     GestorPartidas();
 
-    Queue<ComandoServer*>* crear_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
+    Queue<std::shared_ptr<ComandoServer>>* crear_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
                                          std::string& nombre_escenario, const int32_t& id_cliente,
                                          int32_t& codigo_partida, TipoPersonaje& personaje,
                                          const int8_t& capacidad_partidas);
 
-    Queue<ComandoServer*>* unir_partida(Queue<std::shared_ptr<SnapshotDTO>>* queue_sender,
-                                        const int32_t& codigo_partida, const int32_t& id_cliente,
+    Queue<std::shared_ptr<ComandoServer>>* unir_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
+                                        const int32_t& codigo, const int32_t& id_cliente,
                                         const TipoPersonaje& personaje);
 
     void join_partidas();

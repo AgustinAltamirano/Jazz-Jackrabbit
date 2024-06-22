@@ -25,6 +25,8 @@ public:
 
     [[nodiscard]] bool finalizo_correctamente() const;
 
+    bool esta_conectado();
+
 private:
     Lobby& lobby;
 

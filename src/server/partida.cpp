@@ -33,7 +33,7 @@ void Partida::run() {
     gameloop.run();
 }
 
-Queue<ComandoServer*>* Partida::obtener_comandos() { return &cola_comandos; }
+Queue<std::shared_ptr<ComandoServer>>* Partida::obtener_comandos() { return &cola_comandos; }
 
 void Partida::agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
                               const int32_t& id_cliente, const TipoPersonaje& personaje) {
@@ -45,7 +45,7 @@ void Partida::agregar_cliente(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador
     }
 }
 
-bool Partida::comparar_codigo_partida(const int32_t& codigo_a_comparar) {
+bool Partida::comparar_codigo_partida(const int32_t& codigo_a_comparar) const {
     return (codigo_partida == codigo_a_comparar);
 }
 
@@ -72,7 +72,7 @@ bool Partida::borrar_cliente(int32_t& id_cliente) {
 }
 
 bool Partida::esta_vacia() {
-    if (cola_snapshots.size() == 0) {
+    if (cola_snapshots.empty()) {
         detener_partida();
         return true;
     }
@@ -93,7 +93,7 @@ void Partida::detener_partida() {
     }
 }
 
-int32_t Partida::obtener_codigo_partida() { return codigo_partida; }
+int32_t Partida::obtener_codigo_partida() const { return codigo_partida; }
 
 bool Partida::no_esta_comenzada() { return !comenzada; }
 

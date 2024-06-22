@@ -7,7 +7,7 @@ ComandoServerUnir::ComandoServerUnir(int32_t id_cliente, int32_t codigo_partida,
         codigo_partida(codigo_partida),
         personaje(personaje) {}
 
-Queue<ComandoServer*>* ComandoServerUnir::ejecutar(
+Queue<std::shared_ptr<ComandoServer>>* ComandoServerUnir::ejecutar(
         GestorPartidas* gestor_partidas, Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
         bool& cerrado, ServidorProtocolo& servidor_serializador) {
     auto cola_recibidor = gestor_partidas->unir_partida(&cola_enviador, codigo_partida,

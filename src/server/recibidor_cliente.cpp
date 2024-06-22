@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "src/common/liberror.h"
-#include "src/common/validador_de_mapas.h"
 
 #include "comando_server_crear.h"
 #include "comando_server_unir.h"
@@ -15,6 +14,7 @@ RecibidorCliente::RecibidorCliente(Socket* socket, std::atomic<bool>& sigo_en_pa
                                    Queue<std::shared_ptr<SnapshotDTO>>& cola_cliente):
         id_cliente(id_cliente),
         sigo_en_partida(sigo_en_partida),
+        cliente_desconectado(false),
         servidor_protocolo(socket),
         gestor_partidas(gestor_partidas),
         cola_enviador(cola_cliente) {
@@ -50,7 +50,7 @@ void RecibidorCliente::run() {
         try {
             auto nuevo_comando = servidor_protocolo.obtener_comando(&cliente_cerrado, id_cliente);
             try {
-                cola_recibidor->push(nuevo_comando.release());
+                cola_recibidor->push(nuevo_comando);
             } catch (const ClosedQueue& e) {
                 std::cout << "Juego finalizado" << std::endl;
                 sigo_en_partida = false;
@@ -58,6 +58,7 @@ void RecibidorCliente::run() {
             }
         } catch (const LibError& e) {
             sigo_en_partida = false;
+            cliente_desconectado = true;
             std::cout << "Se desconecto el cliente" << std::endl;
             gestor_partidas->borrar_cliente(id_cliente);
             return;
@@ -66,6 +67,11 @@ void RecibidorCliente::run() {
     sigo_en_partida = false;
 }
 
-void RecibidorCliente::establecer_cola_recibidor(Queue<ComandoServer*>* cola_recibidor) {
-    this->cola_recibidor = cola_recibidor;
+void RecibidorCliente::establecer_cola_recibidor(
+        Queue<std::shared_ptr<ComandoServer>>* queue_recibidor) {
+    this->cola_recibidor = queue_recibidor;
+}
+
+bool RecibidorCliente::esta_desconectado() const {
+    return cliente_desconectado;
 }
