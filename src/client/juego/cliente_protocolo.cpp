@@ -1,5 +1,7 @@
 #include "cliente_protocolo.h"
 
+#include <arpa/inet.h>
+
 ClienteProtocolo::ClienteProtocolo(Socket* socket): socket(socket) {}
 
 std::vector<char> ClienteProtocolo::serializar_comando(const TipoComando& comando) {
@@ -37,6 +39,13 @@ std::shared_ptr<SnapshotDTO> ClienteProtocolo::recibir_snapshot_dto(bool* cerrad
     socket->recvall(&hubo_disparo, sizeof(hubo_disparo), cerrado);
     socket->recvall(&alguien_fue_herido, sizeof(alguien_fue_herido), cerrado);
     socket->recvall(&alguien_murio, sizeof(alguien_murio), cerrado);
+
+    cantidad_clientes = ntohl(cantidad_clientes);
+    cantidad_bloques = ntohl(cantidad_bloques);
+    cantidad_balas = ntohl(cantidad_balas);
+    cantidad_enemigos = ntohl(cantidad_enemigos);
+    cantidad_recogibles = ntohl(cantidad_recogibles);
+    tiempo_restante = ntohl(tiempo_restante);
 
     snapshot_dto->establecer_tipo_escenario(static_cast<TipoEscenario>(tipo_escenario));
     snapshot_dto->agregar_tiempo_restante(tiempo_restante);

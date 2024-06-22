@@ -46,14 +46,14 @@ void ServidorProtocolo::enviar_snapshot(std::shared_ptr<SnapshotDTO>& snapshot_d
     std::vector<EnemigoDTO>& enemigos_dto = snapshot_dto->obtener_enemigos();
     std::vector<RecogibleDTO>& recogibles_dto = snapshot_dto->obtener_recogibles();
 
-    const uint32_t num_clientes = clientes_dto.size();
-    const uint32_t num_bloques = bloques_dto.size();
-    const uint32_t num_balas = balas_dto.size();
-    const uint32_t num_enemigos = enemigos_dto.size();
-    const uint32_t num_recogibles = recogibles_dto.size();
+    const uint32_t num_clientes = htonl(clientes_dto.size());
+    const uint32_t num_bloques = htonl(bloques_dto.size());
+    const uint32_t num_balas = htonl(balas_dto.size());
+    const uint32_t num_enemigos = htonl(enemigos_dto.size());
+    const uint32_t num_recogibles = htonl(recogibles_dto.size());
 
     const auto tipo_escenario = static_cast<uint8_t>(snapshot_dto->obtener_tipo_escenario());
-    const int32_t tiempo_restante = snapshot_dto->obtener_tiempo_restante();
+    const int32_t tiempo_restante = htonl(snapshot_dto->obtener_tiempo_restante());
     const auto fin_juego = snapshot_dto->es_fin_juego();
     const auto hubo_disparo = snapshot_dto->obtener_hubo_disparo();
     const auto alguien_fue_herido = snapshot_dto->obtener_hubo_herido();
