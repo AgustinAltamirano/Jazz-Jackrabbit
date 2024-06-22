@@ -20,11 +20,11 @@ public:
 
     explicit ComandoValidarDTO(std::string nombre_escenario);
 
-    std::string obtener_nombre_escenario();
+    ~ComandoValidarDTO() override = default;
 
-    bool obtener_es_valida();
+    int32_t obtener_info() override;
 
-    virtual ~ComandoValidarDTO() {}
+    std::vector<char> serializar() override;
 };
 
 #endif

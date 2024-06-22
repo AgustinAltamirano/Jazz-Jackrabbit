@@ -27,13 +27,11 @@ private:
 
     LobbyProtocolo lobby_protocolo;
 
-    Queue<ComandoDTO*> cola_enviador;
+    Queue<std::shared_ptr<ComandoDTO>> cola_enviador;
 
-    Queue<ComandoDTO*> cola_recibidor;
+    Queue<std::shared_ptr<ComandoDTO>> cola_recibidor;
 
-    bool obtener_unir();
-
-    bool obtener_validar_escenario();
+    int32_t obtener_respuesta();
 
 public:
     Lobby(const std::string& hostname, const std::string& servname);
@@ -48,8 +46,6 @@ public:
     void salir_lobby();
 
     Socket move_socket();
-
-    int32_t obtener_crear();
 
     [[nodiscard]] int obtener_id_cliente() const;
 

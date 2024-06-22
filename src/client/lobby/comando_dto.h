@@ -20,9 +20,13 @@ public:
 
     TipoComando obtener_comando();
 
-    int32_t obtener_id_cliente();
+    [[nodiscard]] int32_t obtener_id_cliente() const;
 
-    virtual ~ComandoDTO() {}
+    virtual int32_t obtener_info() = 0;
+
+    virtual std::vector<char> serializar() = 0;
+
+    virtual ~ComandoDTO() = default;
 };
 
 #endif

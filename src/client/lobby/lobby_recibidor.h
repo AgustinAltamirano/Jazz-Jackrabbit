@@ -14,7 +14,7 @@
 
 class LobbyRecibidor: public Thread {
 private:
-    Queue<ComandoDTO*>* cola_recibidor;
+    Queue<std::shared_ptr<ComandoDTO>>* cola_recibidor;
 
     std::atomic<bool>& sigo_hablando;
 
@@ -22,7 +22,7 @@ private:
 
 public:
     LobbyRecibidor(Socket* socket, std::atomic<bool>& sigo_hablando,
-                   Queue<ComandoDTO*>* cola_recibidor);
+                   Queue<std::shared_ptr<ComandoDTO>>* cola_recibidor);
 
     void run() override;
 
