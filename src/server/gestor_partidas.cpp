@@ -12,9 +12,7 @@ Queue<ComandoServer*>* GestorPartidas::crear_partida(
         const int8_t& capacidad_partidas) {
     std::lock_guard<std::mutex> lock(m);
     codigo_partida = contador_partidas;
-    /*Partida* nueva_partida = new Partida(cola_enviador, codigo_partida, nombre_escenario,
-                                         id_cliente, personaje, capacidad_partidas);*/
-    // partidas[codigo_partida] = nueva_partida;
+
     partidas.emplace(std::piecewise_construct, std::forward_as_tuple(codigo_partida),
                      std::forward_as_tuple(cola_enviador, codigo_partida, nombre_escenario,
                                            id_cliente, personaje, capacidad_partidas));
