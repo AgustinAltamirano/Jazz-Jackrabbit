@@ -15,10 +15,10 @@ const std::unordered_map<SDL_Keycode, const TipoComando>
 
 const std::unordered_map<SDL_Keycode, const TipoComando>
         EntradaJuego::MAPA_ACCIONES_MANTENER_PRESIONADA_TECLA{
-                {SDLK_a, MOVER_IZQ}, {SDLK_d, MOVER_DER}, {SDLK_x, ACTIVAR_DASH}};
+                {SDLK_a, MOVER_IZQ}, {SDLK_d, MOVER_DER}, {SDLK_g, ACTIVAR_DASH}};
 
 const std::unordered_map<SDL_Keycode, const TipoComando> EntradaJuego::MAPA_ACCIONES_SOLTAR_TECLA{
-        {SDLK_a, PARAR_MOVER_IZQ}, {SDLK_d, PARAR_MOVER_DER}, {SDLK_x, DESACTIVAR_DASH}};
+        {SDLK_a, PARAR_MOVER_IZQ}, {SDLK_d, PARAR_MOVER_DER}, {SDLK_g, DESACTIVAR_DASH}};
 
 EntradaJuego::EntradaJuego(Cliente& cliente): cliente(cliente), top_activo(false) {}
 

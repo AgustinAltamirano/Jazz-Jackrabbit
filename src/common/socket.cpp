@@ -147,7 +147,7 @@ Socket::Socket(const char* servname) {
                    (servname ? servname : ""));
 }
 
-Socket::Socket(Socket&& other) {
+Socket::Socket(Socket&& other) noexcept {
     /* Nos copiamos del otro socket... */
     this->skt = other.skt;
     this->closed = other.closed;
@@ -172,7 +172,7 @@ Socket::Socket() {
     this->skt = -1;
 }
 
-Socket& Socket::operator=(Socket&& other) {
+Socket& Socket::operator=(Socket&& other) noexcept {
     /* Si el usuario hace algo como tratar de moverse
      * a si mismo (`skt = skt;`) simplemente no hacemos
      * nada.
@@ -333,7 +333,7 @@ Socket::Socket(int skt) {
     this->closed = false;
 }
 
-SocketAbstracto * Socket::accept() {
+SocketAbstracto* Socket::accept() {
     /*
      * `accept` nos bloqueara hasta que algún cliente se conecte a nosotros
      * y la conexión se establezca.

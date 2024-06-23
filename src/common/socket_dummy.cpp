@@ -1,8 +1,10 @@
 #include "socket_dummy.h"
 
+#include <algorithm>
+
 SocketDummy::SocketDummy(): buffer_size(0), closed(false) {}
 
-SocketDummy::~SocketDummy() {}
+SocketDummy::~SocketDummy() = default;
 
 SocketAbstracto* SocketDummy::accept() { return new SocketDummy(); }
 void SocketDummy::shutdown(int how) {}

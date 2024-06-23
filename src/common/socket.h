@@ -7,7 +7,7 @@
  * Por simplificación este TDA se enfocará solamente
  * en sockets IPv4 para TCP.
  * */
-class Socket: public SocketAbstracto {
+class Socket final: public SocketAbstracto {
 private:
     int skt;
     bool closed;
@@ -73,8 +73,8 @@ public:
     /*
      * Hacemos que el `Socket` sea movible.
      * */
-    Socket(Socket&&);
-    Socket& operator=(Socket&&);
+    Socket(Socket&&) noexcept;
+    Socket& operator=(Socket&&) noexcept;
 
     /* `Socket::sendsome` lee hasta `sz` bytes del buffer y los envía. La función
      * puede enviar menos bytes sin embargo.
@@ -93,8 +93,8 @@ public:
      *
      * Lease manpage de `send` y `recv`
      * */
-    int sendsome(const void* data, unsigned int sz, bool* was_closed);
-    int recvsome(void* data, unsigned int sz, bool* was_closed);
+    int sendsome(const void* data, unsigned int sz, bool* was_closed) override;
+    int recvsome(void* data, unsigned int sz, bool* was_closed) override;
 
     /*
      * `Socket::sendall` envía exactamente `sz` bytes leídos del buffer, ni más,
@@ -114,8 +114,8 @@ public:
      * para envio/recibo, lease `sz`.
      *
      * */
-    int sendall(const void* data, unsigned int sz, bool* was_closed);
-    int recvall(void* data, unsigned int sz, bool* was_closed);
+    int sendall(const void* data, unsigned int sz, bool* was_closed) override;
+    int recvall(void* data, unsigned int sz, bool* was_closed) override;
 
     /*
      * Acepta una conexión entrante y retorna un nuevo socket
@@ -123,25 +123,25 @@ public:
      *
      * En caso de error, se lanza una excepción.
      * */
-    SocketAbstracto* accept();
+    SocketAbstracto* accept() override;
 
     /*
      * Cierra la conexión ya sea parcial o completamente.
      * Lease manpage de `shutdown`
      * */
-    void shutdown(int how);
+    void shutdown(int how) override;
 
     /*
      * Cierra el socket. El cierre no implica un `shutdown`
      * que debe ser llamado explícitamente.
      * */
-    int close();
+    int close() override;
 
     /*
      * Destruye el socket. Si aun esta conectado,
      * se llamara a `Socket::shutdown` y `Socket::close`
      * automáticamente.
      * */
-    ~Socket();
+    ~Socket() override;
 };
-#endif  //  SOCKET_H_SOCKET_H_
+#endif  //  SOCKET_H_

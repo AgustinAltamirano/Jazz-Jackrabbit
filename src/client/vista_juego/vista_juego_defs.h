@@ -18,9 +18,6 @@
 #define RENDER_CAMARA_X (ANCHO_VENTANA / 2)
 #define RENDER_CAMARA_Y (ALTO_VENTANA * 3 / 4)
 
-/**
- * Rutas usadas para cargar los efectos de sonido.
- */
 #define VOLUMEN_MUSICA 16
 #define VOLUMEN_MUSICA_FIN_JUEGO 32
 #define VOLUMEN_SONIDOS 32
@@ -28,6 +25,9 @@
 // Cantidad mínima de iteraciones que deben transcurrir entre sonidos del mismo tipo.
 #define ITERACIONES_ENTRE_SONIDOS 10
 
+/**
+ * Rutas usadas para cargar los efectos de sonido.
+ */
 #define RUTA_MUSICA "/musica"
 #define MUSICA_CARROTUS "/carrotus.mp3"
 #define MUSICA_CASTLE "/castle.mp3"

@@ -10,7 +10,7 @@
 #include "socket.h"
 #include "socket_abstracto.h"
 
-class SocketDummy: public SocketAbstracto {
+class SocketDummy final: public SocketAbstracto {
 private:
     std::vector<char> socket_buffer;
     unsigned int buffer_size;
@@ -23,8 +23,8 @@ public:
     int recvall(void* data, unsigned int sz, bool* was_closed) override;
     int sendall(const void* data, unsigned int sz, bool* was_closed) override;
 
-    int sendsome(const void* data, unsigned int sz, bool* was_closed);
-    int recvsome(void* data, unsigned int sz, bool* was_closed);
+    int sendsome(const void* data, unsigned int sz, bool* was_closed) override;
+    int recvsome(void* data, unsigned int sz, bool* was_closed) override;
 
     SocketAbstracto* accept() override;
     void shutdown(int how) override;
