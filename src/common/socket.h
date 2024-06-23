@@ -1,12 +1,13 @@
 #ifndef SOCKET_H_
 #define SOCKET_H_
 
+#include "socket_abstracto.h"
 /*
  * TDA Socket.
  * Por simplificación este TDA se enfocará solamente
  * en sockets IPv4 para TCP.
  * */
-class Socket {
+class Socket: public SocketAbstracto {
 private:
     int skt;
     bool closed;
@@ -122,7 +123,7 @@ public:
      *
      * En caso de error, se lanza una excepción.
      * */
-    Socket accept();
+    SocketAbstracto* accept();
 
     /*
      * Cierra la conexión ya sea parcial o completamente.

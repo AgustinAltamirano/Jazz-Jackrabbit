@@ -14,8 +14,7 @@ void ClienteEnviador::run() {
     bool cerrado = false;
     try {
         while (!cerrado && hablando) {
-            cliente_protocolo.enviar_comando(
-                    cliente_protocolo.serializar_comando(cola_enviador->pop()), &cerrado);
+            cliente_protocolo.enviar_comando(cola_enviador->pop(), &cerrado);
         }
     } catch (const ClosedQueue& e) {
         std::cout << "Se cerro la cola correctamente" << std::endl;

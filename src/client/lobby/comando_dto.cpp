@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include "src/common/estado_personaje.h"
-
 ComandoDTO::ComandoDTO() {
     id_cliente = -1;
     comando = NINGUNA;

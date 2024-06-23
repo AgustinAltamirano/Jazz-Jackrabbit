@@ -7,7 +7,7 @@
 
 #include "../../common/tipo_comando.h"
 
-LobbyProtocolo::LobbyProtocolo(Socket* socket): socket(socket) {}
+LobbyProtocolo::LobbyProtocolo(SocketAbstracto* socket): socket(socket) {}
 
 std::shared_ptr<ComandoDTO> LobbyProtocolo::obtener_comando(bool* cerrado) {
     char codigo_comando = 0;

@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "src/common/tipo_personaje.h"
-
 #include "comando_dto.h"
 
 class ComandoValidarDTO: public ComandoDTO {

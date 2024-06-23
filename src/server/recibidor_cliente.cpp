@@ -48,7 +48,7 @@ void RecibidorCliente::run() {
     bool cliente_cerrado = false;
     while (sigo_en_partida && !cliente_cerrado) {
         try {
-            auto nuevo_comando = servidor_protocolo.obtener_comando(&cliente_cerrado, id_cliente);
+            auto nuevo_comando = servidor_protocolo.obtener_comando(&cerrado, id_cliente);
             try {
                 cola_recibidor->push(nuevo_comando);
             } catch (const ClosedQueue& e) {
