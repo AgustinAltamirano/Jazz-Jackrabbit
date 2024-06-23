@@ -5,6 +5,7 @@
 #include <unordered_set>
 
 #include <SDL2pp/SDL2pp.hh>
+#include <SDL_keycode.h>
 
 #include "../juego/cliente.h"
 

@@ -24,6 +24,8 @@
 #define TITULO_FALLO_CREACION "No se pudo crear a la partida"
 #define TITULO_CREACION_PARTIDA "Partida creada"
 #define TITULO_FALLO_PARTIDA "No se pudo unir a la partida"
+#define MSJ_BOX_LOBBY_CAIDO "Se perdió la conexión con el servidor"
+#define TITULO_LOBBY_CAIDO "Error de conexión"
 
 
 class MenuSeleccionJugador: public MenuSeleccion {

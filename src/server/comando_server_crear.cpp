@@ -11,7 +11,7 @@ ComandoServerCrear::ComandoServerCrear(int32_t id_cliente, std::string nombre_es
         capacidad_partida(capacidad_partida),
         codigo_partida() {}
 
-Queue<ComandoServer*>* ComandoServerCrear::ejecutar(
+Queue<std::shared_ptr<ComandoServer>>* ComandoServerCrear::ejecutar(
         GestorPartidas* gestor_partidas, Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
         bool& cerrado, ServidorProtocolo& servidor_serializador) {
     auto cola_recibidor =

@@ -72,8 +72,9 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                 this->dash = false;
                 break;
             case DISPARAR_ACCION:
-                if (this->estado != INTOXICADO && this->tiempo_recarga == 0 &&
-                    inventario_balas[arma_actual] != 0 && this->estado != IMPACTADO) {
+                if (this->estado != INTOXICADO && this->estado != INTOXICADO_MOVIMIENTO &&
+                    this->tiempo_recarga == 0 && inventario_balas[arma_actual] != 0 &&
+                    this->estado != IMPACTADO) {
                     this->estado = DISPARAR_QUIETO;
                     disparo = true;
                 }
@@ -259,7 +260,7 @@ void personaje::pasar_tick() {
     switch (estado) {
         case INTOXICADO:
         case INTOXICADO_MOVIMIENTO:
-            if (tiempo_estado >= FRAMES_POR_SEGUNDO * 3) {
+            if (tiempo_estado >= FRAMES_POR_SEGUNDO * 9) {
                 this->estado = IDLE;
             }
             break;
@@ -273,7 +274,7 @@ void personaje::pasar_tick() {
             }
             break;
         case IMPACTADO:
-            if (tiempo_estado >= FRAMES_POR_SEGUNDO * 2) {
+            if (tiempo_estado >= FRAMES_POR_SEGUNDO * 3 / 2) {
                 this->estado = IDLE;
             }
             break;

@@ -4,6 +4,7 @@
 #include <atomic>
 #include <list>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -15,24 +16,25 @@ class GestorPartidas {
 private:
     std::mutex m;
 
-    std::map<int32_t, Partida*> partidas;
+    std::map<int32_t, Partida> partidas;
 
     int32_t contador_partidas;  // Corresponde con el codigo de partida.
 
-    Partida* obtener_partida_por_codigo(int codigo);
+    Partida& obtener_partida_por_codigo(int codigo);
 
     bool existe_partida_por_codigo(int codigo);
 
 public:
     GestorPartidas();
 
-    Queue<ComandoServer*>* crear_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
-                                      std::string& nombre_escenario, int32_t& id_cliente,
-                                      int32_t& codigo_partida, TipoPersonaje& personaje,
-                                      int8_t& capacidad_partidas);
+    Queue<std::shared_ptr<ComandoServer>>* crear_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
+                                         std::string& nombre_escenario, const int32_t& id_cliente,
+                                         int32_t& codigo_partida, TipoPersonaje& personaje,
+                                         const int8_t& capacidad_partidas);
 
-    Queue<ComandoServer*>* unir_partida(Queue<std::shared_ptr<SnapshotDTO>>* queue_sender, int32_t& codigo_partida,
-                                     const int32_t& id_cliente, const TipoPersonaje& personaje);
+    Queue<std::shared_ptr<ComandoServer>>* unir_partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador,
+                                        const int32_t& codigo, const int32_t& id_cliente,
+                                        const TipoPersonaje& personaje);
 
     void join_partidas();
 

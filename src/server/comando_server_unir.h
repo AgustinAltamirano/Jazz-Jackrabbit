@@ -18,7 +18,7 @@ private:
 public:
     ComandoServerUnir(int32_t id_cliente, int32_t codigo_partida, TipoPersonaje personaje);
 
-    Queue<ComandoServer*>* ejecutar(GestorPartidas* gestor_partidas,
+    Queue<std::shared_ptr<ComandoServer>>* ejecutar(GestorPartidas* gestor_partidas,
                                     Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador,
                                     bool& cerrado,
                                     ServidorProtocolo& servidor_serializador) override;

@@ -2,19 +2,21 @@
 
 #include <iostream>
 
+#include "../../common/liberror.h"
+
 LobbyRecibidor::LobbyRecibidor(Socket* socket, std::atomic<bool>& sigo_hablando,
-                               Queue<ComandoDTO*>* cola_recibidor):
+                               Queue<std::shared_ptr<ComandoDTO>>* cola_recibidor):
         sigo_hablando(sigo_hablando), cola_recibidor(cola_recibidor), lobby_protocolo(socket) {}
 
 void LobbyRecibidor::run() {
     bool cerrado = false;
     while (sigo_hablando && !cerrado) {
         try {
-            ComandoDTO* comando = lobby_protocolo.obtener_comando(&cerrado);
+            std::shared_ptr<ComandoDTO> comando = lobby_protocolo.obtener_comando(&cerrado);
             cola_recibidor->push(comando);
-        } catch (const std::runtime_error& e) {
+        } catch (const LibError& e) {
             sigo_hablando = false;
-            std::cout << "Se desconecto el cliente" << std::endl;
+            std::cout << "Se perdió la conexión" << std::endl;
             break;
         }
     }

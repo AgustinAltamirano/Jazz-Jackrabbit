@@ -16,4 +16,4 @@ ComandoDTO::ComandoDTO(int32_t& id_cliente, TipoComando comando):
 
 TipoComando ComandoDTO::obtener_comando() { return comando; }
 
-int32_t ComandoDTO::obtener_id_cliente() { return id_cliente; }
+int32_t ComandoDTO::obtener_id_cliente() const { return id_cliente; }

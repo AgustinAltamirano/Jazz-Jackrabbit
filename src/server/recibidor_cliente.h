@@ -21,11 +21,13 @@ private:
 
     std::atomic<bool>& sigo_en_partida;
 
+    std::atomic<bool> cliente_desconectado;
+
     ServidorProtocolo servidor_protocolo;
 
     GestorPartidas* gestor_partidas;
 
-    Queue<ComandoServer*>* cola_recibidor;
+    Queue<std::shared_ptr<ComandoServer>>* cola_recibidor;
 
     Queue<std::shared_ptr<SnapshotDTO>>& cola_enviador;
 
@@ -38,9 +40,11 @@ public:
 
     void run() override;
 
-    void establecer_cola_recibidor(Queue<ComandoServer*>* cola_recibidor);
+    void establecer_cola_recibidor(Queue<std::shared_ptr<ComandoServer>>* queue_recibidor);
 
     bool inicio_recibidor_cliente();
+
+    [[nodiscard]] bool esta_desconectado() const;
 };
 
 

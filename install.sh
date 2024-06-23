@@ -2,15 +2,18 @@
 echo "Instalador de dependencias del proyecto\n"
 
 # Librerías principales del proyecto
-sudo apt install cmake \
+sudo apt install unzip \
+  cmake \
   make \
   clang \
   build-essential \
   libyaml-cpp-dev \
   qtbase5-dev \
   qtmultimedia5-dev \
+  libqt5multimedia5 \
   libqt5multimedia5-plugins \
-  libsdl2-dev -y
+  libsdl2-dev \
+  libsdl2-2.0-0 -y
 
 # Librerías necesarias para SDL
 sudo apt install libopusfile-dev \
@@ -32,7 +35,6 @@ wget "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL
 unzip "SDL2_image-2.8.2.zip" -d "."
 unzip "SDL2_mixer-2.8.0.zip" -d "."
 unzip "SDL2_ttf-2.22.0.zip" -d "."
-
 
 cd "SDL2_image-2.8.2" || exit
 mkdir -p build
@@ -62,6 +64,16 @@ cd "libSDL2pp" || exit
 mkdir -p build
 cd build || exit
 cmake ..
+
+# Existe un error al compilar SDL2pp que se soluciona borrando el directorio build y volviendo a compilar
+if [ $? -ne 0 ]; then
+  cd .. || exit
+  rm -rf build
+  mkdir -p build
+  cd build || exit
+  cmake ..
+fi
+
 make -j4
 sudo make install
 

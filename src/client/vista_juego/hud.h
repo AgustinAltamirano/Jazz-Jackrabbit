@@ -15,6 +15,7 @@
 
 #include "lector_texturas.h"
 #include "top_jugadores.h"
+#include "vista_juego_defs.h"
 
 class HUD {
 private:

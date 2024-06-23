@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "../server/logica_juego/assets/bloqueEscenario.h"
+#include <arpa/inet.h>
 
 #include "estado_personaje.h"
 #include "tipo_arma.h"
@@ -15,82 +15,177 @@
 #include "tipo_recogible.h"
 
 struct ClienteDTO {
-    int32_t id_cliente;
+private:
+    int32_t id_cliente, pos_x, pos_y;
+    uint32_t vida, puntos;
+    int32_t balas_restantes;
     TipoPersonaje tipo_personaje;
-    int32_t pos_x, pos_y;
     bool de_espaldas;
     EstadoPersonaje estado;
-    uint32_t vida;
-    uint32_t puntos;
     TipoArma arma_actual;
-    int32_t balas_restantes;
-    ClienteDTO(int32_t id_cliente, TipoPersonaje tipo_personaje, int32_t pos_x, int32_t pos_y,
-               bool de_espaldas, EstadoPersonaje estado, uint32_t vida, uint32_t puntos,
-               TipoArma arma_actual, int32_t balas_restantes):
-            id_cliente(id_cliente),
+
+public:
+    ClienteDTO(const int32_t id_cliente, const TipoPersonaje tipo_personaje, const int32_t pos_x,
+               const int32_t pos_y, const bool de_espaldas, const EstadoPersonaje estado,
+               const uint32_t vida, const uint32_t puntos, const TipoArma arma_actual,
+               const int32_t balas_restantes):
+            id_cliente(htonl(id_cliente)),
+            pos_x(htonl(pos_x)),
+            pos_y(htonl(pos_y)),
+            vida(htonl(vida)),
+            puntos(htonl(puntos)),
+            balas_restantes(htonl(balas_restantes)),
             tipo_personaje(tipo_personaje),
-            pos_x(pos_x),
-            pos_y(pos_y),
             de_espaldas(de_espaldas),
             estado(estado),
-            vida(vida),
-            puntos(puntos),
-            arma_actual(arma_actual),
-            balas_restantes(balas_restantes) {}
+            arma_actual(arma_actual) {}
     ClienteDTO():
             id_cliente(),
-            tipo_personaje(),
             pos_x(),
             pos_y(),
-            de_espaldas(),
-            estado(),
             vida(),
             puntos(),
-            arma_actual(),
-            balas_restantes() {}
+            balas_restantes(),
+            tipo_personaje(),
+            de_espaldas(),
+            estado(),
+            arma_actual() {}
+
+    [[nodiscard]] int32_t obtener_id_cliente() const { return ntohl(id_cliente); }
+
+    [[nodiscard]] TipoPersonaje obtener_tipo_personaje() const { return tipo_personaje; }
+
+    [[nodiscard]] int32_t obtener_pos_x() const { return ntohl(pos_x); }
+
+    [[nodiscard]] int32_t obtener_pos_y() const { return ntohl(pos_y); }
+
+    [[nodiscard]] bool obtener_de_espaldas() const { return de_espaldas; }
+
+    [[nodiscard]] EstadoPersonaje obtener_estado() const { return estado; }
+
+    [[nodiscard]] uint32_t obtener_vida() const { return ntohl(vida); }
+
+    [[nodiscard]] uint32_t obtener_puntos() const { return ntohl(puntos); }
+
+    [[nodiscard]] TipoArma obtener_arma_actual() const { return arma_actual; }
+
+    [[nodiscard]] int32_t obtener_balas_restantes() const { return ntohl(balas_restantes); }
+
 } __attribute__((packed));
 
 struct BloqueEscenarioDTO {
+private:
     int32_t pos_x, pos_y, angulo;
     uint32_t ancho, alto;
     TipoBloqueEscenario tipo;
-    BloqueEscenarioDTO(int32_t pos_x, int32_t pos_y, uint32_t ancho, uint32_t alto, int32_t angulo,
-                       TipoBloqueEscenario tipo):
-            pos_x(pos_x), pos_y(pos_y), ancho(ancho), alto(alto), angulo(angulo), tipo(tipo) {}
-    BloqueEscenarioDTO(): pos_x(), pos_y(), ancho(), alto(), angulo(), tipo() {}
+
+public:
+    BloqueEscenarioDTO(const int32_t pos_x, const int32_t pos_y, const uint32_t ancho,
+                       const uint32_t alto, const int32_t angulo, const TipoBloqueEscenario tipo):
+            pos_x(htonl(pos_x)),
+            pos_y(htonl(pos_y)),
+            angulo(htonl(angulo)),
+            ancho(htonl(ancho)),
+            alto(htonl(alto)),
+            tipo(tipo) {}
+
+    BloqueEscenarioDTO(): pos_x(), pos_y(), angulo(), ancho(), alto(), tipo() {}
+
+    [[nodiscard]] int32_t obtener_pos_x() const { return ntohl(pos_x); }
+
+    [[nodiscard]] int32_t obtener_pos_y() const { return ntohl(pos_y); }
+
+    [[nodiscard]] uint32_t obtener_ancho() const { return ntohl(ancho); }
+
+    [[nodiscard]] uint32_t obtener_alto() const { return ntohl(alto); }
+
+    [[nodiscard]] int32_t obtener_angulo() const { return ntohl(angulo); }
+
+    [[nodiscard]] TipoBloqueEscenario obtener_tipo() const { return tipo; }
+
 } __attribute__((packed));
 
 struct BalaDTO {
+private:
     int32_t pos_x, pos_y;
     TipoArma tipo;
     bool choco;
-    BalaDTO(int32_t pos_x, int32_t pos_y, TipoArma tipo, bool choco):
-            pos_x(pos_x), pos_y(pos_y), tipo(tipo), choco(choco) {}
+
+public:
+    BalaDTO(const int32_t pos_x, const int32_t pos_y, const TipoArma tipo, const bool choco):
+            pos_x(htonl(pos_x)), pos_y(htonl(pos_y)), tipo(tipo), choco(choco) {}
+
     BalaDTO(): pos_x(), pos_y(), tipo(), choco(false) {}
+
+    [[nodiscard]] int32_t obtener_pos_x() const { return ntohl(pos_x); }
+
+    [[nodiscard]] int32_t obtener_pos_y() const { return ntohl(pos_y); }
+
+    [[nodiscard]] TipoArma obtener_tipo() const { return tipo; }
+
+    [[nodiscard]] bool obtener_choco() const { return choco; }
 } __attribute__((packed));
 
 struct EnemigoDTO {
+private:
     int32_t id, pos_x, pos_y, alto, ancho;
     TipoEnemigo tipo;
     bool invertido;
-    EnemigoDTO(int32_t id, int32_t pos_x, int32_t pos_y, int32_t alto, int32_t ancho,
-               TipoEnemigo tipo, bool invertido):
-            id(id),
-            pos_x(pos_x),
-            pos_y(pos_y),
-            alto(alto),
-            ancho(ancho),
+
+public:
+    EnemigoDTO(const int32_t id, const int32_t pos_x, const int32_t pos_y, const int32_t alto,
+               const int32_t ancho, const TipoEnemigo tipo, const bool invertido):
+            id(htonl(id)),
+            pos_x(htonl(pos_x)),
+            pos_y(htonl(pos_y)),
+            alto(htonl(alto)),
+            ancho(htonl(ancho)),
             tipo(tipo),
             invertido(invertido) {}
+
     EnemigoDTO(): id(), pos_x(), pos_y(), alto(), ancho(), tipo(), invertido() {}
+
+    [[nodiscard]] int32_t obtener_id() const { return ntohl(id); }
+
+    [[nodiscard]] int32_t obtener_pos_x() const { return ntohl(pos_x); }
+
+    [[nodiscard]] int32_t obtener_pos_y() const { return ntohl(pos_y); }
+
+    [[nodiscard]] int32_t obtener_alto() const { return ntohl(alto); }
+
+    [[nodiscard]] int32_t obtener_ancho() const { return ntohl(ancho); }
+
+    [[nodiscard]] TipoEnemigo obtener_tipo() const { return tipo; }
+
+    [[nodiscard]] bool obtener_invertido() const { return invertido; }
+
 } __attribute__((packed));
 
 struct RecogibleDTO {
+private:
     int32_t pos_x, pos_y, alto, ancho;
     TipoRecogible tipo;
-    RecogibleDTO(int32_t pos_x, int32_t pos_y, int32_t alto, int32_t ancho, TipoRecogible tipo):
-            pos_x(pos_x), pos_y(pos_y), alto(alto), ancho(ancho), tipo(tipo) {}
+
+public:
+    RecogibleDTO(const int32_t pos_x, const int32_t pos_y, const int32_t alto, const int32_t ancho,
+                 const TipoRecogible tipo):
+            pos_x(htonl(pos_x)),
+            pos_y(htonl(pos_y)),
+            alto(htonl(alto)),
+            ancho(htonl(ancho)),
+            tipo(tipo) {}
+
     RecogibleDTO(): pos_x(), pos_y(), alto(), ancho(), tipo() {}
+
+    [[nodiscard]] int32_t obtener_pos_x() const { return ntohl(pos_x); }
+
+    [[nodiscard]] int32_t obtener_pos_y() const { return ntohl(pos_y); }
+
+    [[nodiscard]] int32_t obtener_alto() const { return ntohl(alto); }
+
+    [[nodiscard]] int32_t obtener_ancho() const { return ntohl(ancho); }
+
+    [[nodiscard]] TipoRecogible obtener_tipo() const { return tipo; }
 } __attribute__((packed));
 
 class SnapshotDTO {

@@ -34,6 +34,12 @@ void MenuSeleccionJugador::realizar_accion_menu(QPushButton* boton_seleccionado)
     auto opcion_seleccionada = boton_seleccionado->property(KEY_TIPO_BOTON).value<TipoPersonaje>();
     juego.definir_personaje_elegido(opcion_seleccionada);
 
+    if (!juego.esta_conectado()) {
+        mostrar_ventana_dialogo(MSJ_BOX_LOBBY_CAIDO, TITULO_LOBBY_CAIDO);
+        close();
+        return;
+    }
+
     if (es_de_creacion) {
         auto codigo_partida = juego.crear_partida();
 

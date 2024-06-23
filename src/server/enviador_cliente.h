@@ -2,6 +2,7 @@
 #define ENVIADOR_CLIENTE_H
 
 #include <atomic>
+#include <memory>
 #include <vector>
 
 #include "../client/juego/cliente_recibidor.h"
@@ -28,8 +29,8 @@ private:
     int32_t id_cliente;
 
 public:
-    EnviadorCliente(Socket* skt_cliente, std::atomic<bool>& sigo_en_partida, int32_t& id_cliente,
-                    Queue<std::shared_ptr<SnapshotDTO>>& cola_cliente);
+    EnviadorCliente(Socket* skt_cliente, std::atomic<bool>& sigo_en_partida,
+                    const int32_t& id_cliente, Queue<std::shared_ptr<SnapshotDTO>>& cola_cliente);
 
     void run() override;
 

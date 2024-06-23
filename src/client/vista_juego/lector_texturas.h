@@ -8,8 +8,6 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "vista_juego_defs.h"
-
 /**
  * La clase LectorTexturas se encarga de cargar las texturas y las coordenadas de los sprites.
  */
@@ -56,6 +54,27 @@ private:
     std::unique_ptr<SDL2pp::Texture> textura_explosion;
 
     std::vector<SDL2pp::Rect> coords_explosion;
+
+    /** Carga todas las texturas y coordenadas de la pantalla de carga */
+    void cargar_texturas_y_coordenadas_pantalla_carga();
+
+    /** Carga todas las texturas y coordenadas de los escenarios y bloques */
+    void cargar_texturas_y_coordenadas_escenarios();
+
+    /** Carga todas las texturas y coordenadas de los personajes */
+    void cargar_texturas_y_coordenadas_personajes();
+
+    /** Carga todas las texturas y coordenadas de los enemigos */
+    void cargar_texturas_y_coordenadas_enemigos();
+
+    /** Carga todas las texturas y coordenadas de la fuente (números, símbolos y letras) */
+    void cargar_texturas_y_coordenadas_fuente();
+
+    /** Carga todas las texturas y coordenadas de los items e íconos */
+    void cargar_texturas_y_coordenadas_items();
+
+    /** Carga todas las texturas y coordenadas del efecto de explosión  */
+    void cargar_texturas_y_coordenadas_explosion();
 
 public:
     explicit LectorTexturas(SDL2pp::Renderer& renderer);

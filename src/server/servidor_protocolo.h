@@ -18,11 +18,11 @@ class ServidorProtocolo {
 private:
     Socket* socket;
 
-    std::unique_ptr<ComandoServerCrear> deserializar_crear(bool* cerrado, int32_t& id_cliente);
+    std::shared_ptr<ComandoServerCrear> deserializar_crear(bool* cerrado, int32_t& id_cliente);
 
-    std::unique_ptr<ComandoServerUnir> deserializar_unir(bool* cerrado, const int32_t& id_cliente);
+    std::shared_ptr<ComandoServerUnir> deserializar_unir(bool* cerrado, const int32_t& id_cliente);
 
-    std::unique_ptr<ComandoServerValidar> deserializar_validar(bool* cerrado, int32_t& id_cliente);
+    std::shared_ptr<ComandoServerValidar> deserializar_validar(bool* cerrado, int32_t& id_cliente);
 
 public:
     ServidorProtocolo();  // Solo para testing
@@ -53,7 +53,7 @@ public:
 
     std::vector<char> serializar_id_cliente(const int32_t& id_cliente);
 
-    std::unique_ptr<ComandoServer> obtener_comando(bool* cerrado, int32_t& id_cliente);
+    std::shared_ptr<ComandoServer> obtener_comando(bool* cerrado, int32_t& id_cliente);
 };
 
 #endif

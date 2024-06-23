@@ -1,7 +1,7 @@
 #ifndef COMANDO_UNIR_DTO_H
 #define COMANDO_UNIR_DTO_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "src/common/tipo_personaje.h"
 
@@ -22,11 +22,9 @@ public:
 
     explicit ComandoUnirDTO(int32_t codigo_partida, TipoPersonaje personaje);
 
-    int32_t obtener_codigo_partida();
+    int32_t obtener_info() override;
 
-    TipoPersonaje obtener_personaje();
-
-    bool obtener_unio();
+    std::vector<char> serializar() override;
 };
 
 #endif
