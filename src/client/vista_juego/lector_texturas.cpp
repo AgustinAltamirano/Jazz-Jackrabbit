@@ -227,30 +227,61 @@ SDL2pp::Texture& LectorTexturas::obtener_textura_pantalla_carga() const {
 }
 
 SDL2pp::Texture& LectorTexturas::obtener_textura_personaje(const std::string& personaje) {
+    if (!texturas_personajes.count(personaje)) {
+        throw VistaJuegoException("No se encontró la textura del personaje " + personaje);
+    }
+
     return texturas_personajes.at(personaje);
 }
 
 const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_personaje(
         const std::string& personaje, const std::string& animacion) const {
+    if (!coords_personajes.count(personaje)) {
+        throw VistaJuegoException("No se encontraron las coordenadas del personaje " + personaje);
+    }
+    if (!coords_personajes.at(personaje).count(animacion)) {
+        throw VistaJuegoException("No se encontraron las coordenadas de la animación " + animacion +
+                                  " del personaje " + personaje);
+    }
     return coords_personajes.at(personaje).at(animacion);
 }
 
 SDL2pp::Texture& LectorTexturas::obtener_textura_fondo_escenario(
         const std::string& tipo_escenario) {
+    if (!texturas_escenarios.count(tipo_escenario)) {
+        throw VistaJuegoException("No se encontró la textura del escenario " + tipo_escenario);
+    }
     return texturas_escenarios.at(tipo_escenario);
 }
 
 const SDL2pp::Rect& LectorTexturas::obtener_coords_fondo_escenario(
         const std::string& tipo_escenario) const {
+    if (!coords_fondos_escenarios.count(tipo_escenario)) {
+        throw VistaJuegoException("No se encontraron las coordenadas del fondo del escenario " +
+                                  tipo_escenario);
+    }
     return coords_fondos_escenarios.at(tipo_escenario);
 }
 
 SDL2pp::Texture& LectorTexturas::obtener_textura_bloque(const std::string& tipo_escenario) {
+    if (!texturas_escenarios.count(tipo_escenario)) {
+        throw VistaJuegoException("No se encontró la textura de bloques del escenario " +
+                                  tipo_escenario);
+    }
     return texturas_escenarios.at(tipo_escenario);
 }
 
 const SDL2pp::Rect& LectorTexturas::obtener_coords_bloque(const std::string& tipo_escenario,
                                                           const std::string& tipo_bloque) const {
+    if (!coords_bloques_escenarios.count(tipo_escenario)) {
+        throw VistaJuegoException("No se encontraron las coordenadas de bloques del escenario " +
+                                  tipo_escenario);
+    }
+    if (!coords_bloques_escenarios.at(tipo_escenario).count(tipo_bloque)) {
+        throw VistaJuegoException("No se encontraron las coordenadas del bloque " + tipo_bloque +
+                                  " del escenario " + tipo_escenario);
+    }
+
     return coords_bloques_escenarios.at(tipo_escenario).at(tipo_bloque);
 }
 
@@ -258,6 +289,9 @@ SDL2pp::Texture& LectorTexturas::obtener_textura_enemigos() const { return *text
 
 const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_enemigo(
         const std::string& enemigo) const {
+    if (!coords_enemigos.count(enemigo)) {
+        throw VistaJuegoException("No se encontraron las coordenadas del enemigo " + enemigo);
+    }
     return coords_enemigos.at(enemigo);
 }
 SDL2pp::Texture& LectorTexturas::obtener_textura_fuente() const { return *textura_fuente; }
@@ -268,16 +302,27 @@ const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_numeros() const 
 
 const SDL2pp::Rect& LectorTexturas::obtener_coords_simbolo(
         const std::string& nombre_simbolo) const {
+    if (!coords_simbolos.count(nombre_simbolo)) {
+        throw VistaJuegoException("No se encontraron las coordenadas del símbolo " +
+                                  nombre_simbolo);
+    }
     return coords_simbolos.at(nombre_simbolo);
 }
 
 const SDL2pp::Rect& LectorTexturas::obtener_coords_letra(const char letra) const {
+    if (!coords_letras.count(letra)) {
+        throw VistaJuegoException("No se encontraron las coordenadas de la letra " +
+                                  std::string(1, letra));
+    }
     return coords_letras.at(letra);
 }
 
 SDL2pp::Texture& LectorTexturas::obtener_textura_items() const { return *textura_items; }
 
 const SDL2pp::Rect& LectorTexturas::obtener_coords_icono(const std::string& nombre_icono) const {
+    if (!coords_iconos.count(nombre_icono)) {
+        throw VistaJuegoException("No se encontraron las coordenadas del icono " + nombre_icono);
+    }
     return coords_iconos.at(nombre_icono);
 }
 
@@ -287,11 +332,19 @@ const std::unordered_map<std::string, SDL2pp::Rect>& LectorTexturas::obtener_coo
 
 const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_bala(
         const std::string& nombre_arma) const {
+    if (!coords_balas.count(nombre_arma)) {
+        throw VistaJuegoException("No se encontraron las coordenadas de la bala del arma " +
+                                  nombre_arma);
+    }
     return coords_balas.at(nombre_arma);
 }
 
 const std::vector<SDL2pp::Rect>& LectorTexturas::obtener_coords_recogible(
         const std::string& nombre_recogible) const {
+    if (!coords_recogibles.count(nombre_recogible)) {
+        throw VistaJuegoException("No se encontraron las coordenadas del recogible " +
+                                  nombre_recogible);
+    }
     return coords_recogibles.at(nombre_recogible);
 }
 
