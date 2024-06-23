@@ -167,7 +167,7 @@ void test_enviar_snapshot(void) {
                snapshot_enviado->obtener_balas().data()->obtener_pos_x());
     TEST_CHECK(snapshot_recibido->obtener_balas().data()->obtener_pos_y() ==
                snapshot_enviado->obtener_balas().data()->obtener_pos_y());
-    TEST_CHECK(snapshot_recibido->obtener_balas().data()->obtener_pos_y() ==
+    TEST_CHECK(snapshot_recibido->obtener_balas().data()->obtener_tipo() ==
                snapshot_enviado->obtener_balas().data()->obtener_tipo());
     TEST_CHECK(snapshot_recibido->obtener_balas().data()->obtener_choco() ==
                snapshot_enviado->obtener_balas().data()->obtener_choco());
