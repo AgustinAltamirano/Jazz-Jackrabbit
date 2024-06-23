@@ -69,6 +69,8 @@ ConfigAdmin::ConfigAdmin() {
     configuracion[TIEMP_PART] = config[TIEMP_PART].as<int>();
 
     configuracion[DANO_ATA_ESP] = config[DANO_ATA_ESP].as<int>();
+
+    configuracion[PUNTOS_JUG] = config[PUNTOS_JUG].as<int>();
 }
 
 int ConfigAdmin::get(const std::string& clave_config) const {

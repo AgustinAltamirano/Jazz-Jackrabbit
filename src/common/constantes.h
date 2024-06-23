@@ -59,6 +59,8 @@
 
 #define DANO_ATA_ESP "dano_ataque_especial"
 
+#define PUNTOS_JUG "puntos_matar_jugador"
+
 // CONFIGURACION PERSONAJE
 #define ANCHO_INICIAL 40
 #define ALTO_INICIAL 50
