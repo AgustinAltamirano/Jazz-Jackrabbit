@@ -1,5 +1,6 @@
 #include "hud.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "vista_juego_defs.h"
@@ -173,6 +174,7 @@ void HUD::dibujar_pantalla_carga() const {
 
 void HUD::dibujar_top_jugadores(const bool dibujar_todos, int pos_y) {
     int pos_x = POS_TITULO_TOP_JUGADORES_X;
+    int pos_y_original = pos_y;
 
     dibujar_texto(TITULO_TOP, pos_x, pos_y);
 
@@ -181,7 +183,10 @@ void HUD::dibujar_top_jugadores(const bool dibujar_todos, int pos_y) {
 
     const auto jugadores = top_jugadores.obtener_top_jugadores(dibujar_todos);
 
-    for (const auto& [id, puntaje, tipo]: jugadores) {
+    for (size_t i = 0; i < std::min(jugadores.size(),
+                                    static_cast<size_t>(CANTIDAD_MAX_JUGADORES_POR_COLUMNA_TOP));
+         i++) {
+        const auto& [id, puntaje, tipo] = jugadores[i];
         SDL2pp::Texture& textura_jugadores =
                 lector_texturas.obtener_textura_personaje(MAPA_TIPO_PERSONAJE.at(tipo));
         const SDL2pp::Rect& coords_icono =
@@ -193,6 +198,34 @@ void HUD::dibujar_top_jugadores(const bool dibujar_todos, int pos_y) {
         pos_x = POS_PUNTAJES_JUGADORES_X;
         dibujar_numero(puntaje, pos_x, pos_y);
         pos_x = POS_TOP_JUGADORES_X;
+        pos_y += coords_icono.GetH() + SEPARACION_VERTICAL_TOP;
+    }
+
+    if (jugadores.size() <= static_cast<size_t>(CANTIDAD_MAX_JUGADORES_POR_COLUMNA_TOP)) {
+        return;
+    }
+
+    pos_x = POS_TOP_JUGADORES_FIN_JUEGO_SEGUNDA_COLUMNA_X;
+    pos_y = pos_y_original + SEPARACION_VERTICAL_TOP * 4;
+
+    for (size_t i = CANTIDAD_MAX_JUGADORES_POR_COLUMNA_TOP;
+         i < std::min(jugadores.size(),
+                      static_cast<size_t>(CANTIDAD_MAX_JUGADORES_POR_COLUMNA_TOP) * 2);
+         i++) {
+        const auto& [id, puntaje, tipo] = jugadores[i];
+        SDL2pp::Texture& textura_jugadores =
+                lector_texturas.obtener_textura_personaje(MAPA_TIPO_PERSONAJE.at(tipo));
+        const SDL2pp::Rect& coords_icono =
+                lector_texturas.obtener_coords_icono(MAPA_TIPO_PERSONAJE.at(tipo));
+        renderer.Copy(textura_jugadores, coords_icono,
+                      SDL2pp::Rect(pos_x, pos_y, coords_icono.GetW(), coords_icono.GetH()));
+        pos_x = POS_TOP_JUGADORES_FIN_JUEGO_SEGUNDA_COLUMNA_X + POS_ID_TOP_JUGADORES_X -
+                POS_TOP_JUGADORES_X;
+        dibujar_numero(id + 1, pos_x, pos_y);
+        pos_x = POS_TOP_JUGADORES_FIN_JUEGO_SEGUNDA_COLUMNA_X + POS_PUNTAJES_JUGADORES_X -
+                POS_TOP_JUGADORES_X;
+        dibujar_numero(puntaje, pos_x, pos_y);
+        pos_x = POS_TOP_JUGADORES_FIN_JUEGO_SEGUNDA_COLUMNA_X;
         pos_y += coords_icono.GetH() + SEPARACION_VERTICAL_TOP;
     }
 }
