@@ -6,6 +6,7 @@
 #include "juego/cliente.h"
 #include "lobby/lobby.h"
 #include "vista_juego/administrador_vista_juego.h"
+#include "vista_juego/vista_juego_exception.h"
 #include "vista_menu/menu_juego.h"
 
 int main(int argc, char* argv[]) {
@@ -33,12 +34,18 @@ int main(int argc, char* argv[]) {
         admin.run();
         cliente.join();
         return 0;
-
-    } catch (const std::exception& err) {
-        std::cerr << "Excepcion capturada: " << err.what() << "\n";
+    } catch (VistaJuegoException& e) {
+        std::cerr << "Error de la vista del juego: " << e.what() << std::endl;
+        return 1;
+    } catch (SDL2pp::Exception& e) {
+        std::cerr << "Error de SDL: " << e.GetSDLFunction() << std::endl;
+        std::cerr << "Motivo: " << e.GetSDLError() << std::endl;
+        return 1;
+    } catch (std::exception& err) {
+        std::cerr << "Excepcion capturada: " << err.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cerr << "Excepcion desconocida capturada.\n";
+        std::cerr << "Excepcion desconocida capturada." << std::endl;
         return 1;
     }
 }

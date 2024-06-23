@@ -1,5 +1,8 @@
 #include "entrada_juego.h"
 
+#include <SDL_events.h>
+#include <SDL_keycode.h>
+
 const std::unordered_map<SDL_Keycode, const TipoComando>
         EntradaJuego::MAPA_ACCIONES_PRESIONAR_TECLA{{SDLK_w, SALTAR},
                                                     {SDLK_SPACE, DISPARAR_ACCION},
