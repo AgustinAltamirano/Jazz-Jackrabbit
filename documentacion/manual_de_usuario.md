@@ -61,7 +61,7 @@ ejecutar el editor, se debe ejecutar el siguiente comando desde una terminal en 
 ./editor
 ```
 
-El editor se puede cerrar desde la interfaz gráfica. Más adelante se explica a detalle su uso.
+El editor se puede cerrar desde la interfaz gráfica (léase sección [Editor de mapas](#editor-de-mapas)).
 
 ## Comenzar a jugar
 
@@ -83,7 +83,8 @@ la cantidad de jugadores que se desean en la partida:
 ![Crear partida](img/crear_partida.png)
 
 La cantidad mínima de jugadores en una partida es 2, mientras que la máxima por defecto es 4 _(este número puede
-modificarse si se desea, desde el archivo de configuración `configuracion.yaml`. Más adelante se explica cómo hacerlo)_.
+modificarse si se desea, desde el archivo de configuración `configuracion.yaml
+(léase sección [Configuración](#configuración)).
 
 Una vez seleccionada la cantidad, se mostrará la ventana de selección de mapa:
 
@@ -93,7 +94,8 @@ donde los posibles mapas a elegir son:
 
 * **Flashback**: mapa ambientado en un castillo medieval.
 * **Jazz in Time**: mapa ambientado en un lugar abierto en la naturaleza
-* **Modo editor**: permite seleccionar un mapa personalizado creado con el editor de mapas _(explicado más adelante)_.
+* **Modo editor**: permite seleccionar un mapa personalizado creado con el editor de mapas
+(léase sección [Editor de mapas](#editor-de-mapas)).
 
 Al seleccionar un mapa, se mostrará la ventana de selección de personaje:
 
@@ -179,7 +181,7 @@ realiza mucho daño.
 las armas, pero es el arma que produce más daño.
 
 Si se desea personalizar las características de cada arma, se puede realizar cambiando los valores en el archivo de
-configuración `configuracion.yaml`.
+configuración `configuracion.yaml` (léase sección [Configuración](#configuración)).
 
 ### Objetos
 
@@ -222,3 +224,19 @@ A la izquierda se encuentran todos los tipos de elementos que se pueden agregar 
 * Punto de aparición de enemigos
 * Punto de aparición de jugadores
 * Bloques de escenario (piso, paredes, diagonales, etc.)
+
+Para colocar uno de estos elementos, basta con hacer click en su ícono y luego en la posición deseada en el mapa. Para
+quitar un elemento colocado, se debe hacer click derecho sobre él.
+
+Si se coloca un punto de aparición de enemigos sobre el piso, este generará Lagartos y Esqueletos, mientras que si se
+coloca en el aire, generará Murciélagos.
+
+Se puede desplazar por el mapa mientras se edita utilizando la rueda del mouse (desplazamiento vertical) o presionando
+`ALT` + Rueda del mouse (desplazamiento horizontal).
+
+Finalizado el proceso de edición, se puede guardar el mapa mediante la opción _Guardar como_ del menú superior. Para
+poder ser utilizado en el juego, el mapa debe guardarse en el directorio `src/mapas` en la computadora que ejecute el
+servidor.
+
+Una vez hecho esto, se puede jugar en el mapa creado seleccionando la opción _Modo editor_ al crear una partida e
+ingresando el nombre del mapa creado.
