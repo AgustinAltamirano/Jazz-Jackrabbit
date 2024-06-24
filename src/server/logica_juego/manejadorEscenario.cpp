@@ -236,6 +236,7 @@ std::vector<bool> manejadorEscenario::colisiones_bloques_y_enemigos(
                         jugador_herido = true;
                     } else if (estado == 2) {
                         jugador_murio = true;
+                        jugador.dar_puntos(configurador.get(PUNTOS_JUG));
                     }
                 }
             }
@@ -426,6 +427,8 @@ std::vector<bool> manejadorEscenario::manejar_balas(std::map<int, personaje>& ju
                     cambios[0] = true;
                 } else if (estado == 2) {
                     cambios[1] = true;
+                    const ConfigAdmin& configurador = ConfigAdmin::getInstance();
+                    jugadores.at((*it)->get_id()).dar_puntos(configurador.get(PUNTOS_JUG));
                 }
             }
         }

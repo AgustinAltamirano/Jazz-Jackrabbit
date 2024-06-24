@@ -60,3 +60,5 @@ frames_hasta_revivir_murcielago: 300
 frames_hasta_revivir_esqueleto: 600
 
 dano_ataque_especial: 3
+
+puntos_matar_jugador: 1000
