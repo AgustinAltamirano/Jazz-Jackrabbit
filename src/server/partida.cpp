@@ -9,8 +9,6 @@
 
 #include "logica_juego/gameloop.h"
 
-double frecuencia = 0.05;
-
 Partida::Partida(Queue<std::shared_ptr<SnapshotDTO>>* cola_enviador, int32_t codigo_partida,
                  std::string& nombre_escenario, const int32_t& id_cliente, TipoPersonaje& personaje,
                  const int8_t& capacidad_partida):
