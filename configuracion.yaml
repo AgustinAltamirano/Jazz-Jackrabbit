@@ -13,7 +13,7 @@ velocidad_arma_infinita: 6
 dano_arma_infinita: 1
 frames_recarga_arma_infinita: 16
 
-velocidad_arma1: 4
+velocidad_arma1: 5
 dano_arma1: 1
 frames_recarga_arma1: 33
 
@@ -22,7 +22,7 @@ caida_arma2: 1
 dano_arma2: 2
 frames_recarga_arma2: 66
 
-velocidad_arma3: 10
+velocidad_arma3: 15
 dano_arma3: 3
 frames_recarga_arma3: 132
 
@@ -61,4 +61,4 @@ frames_hasta_revivir_esqueleto: 600
 
 dano_ataque_especial: 3
 
-puntos_matar_jugador: 1000
+puntos_matar_jugador: 3000
