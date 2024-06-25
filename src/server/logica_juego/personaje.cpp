@@ -122,6 +122,7 @@ bool personaje::ejecutar_accion(const std::vector<TipoComando>& teclas) {
                     default:
                         break;
                 }
+                break;
             case TRUCO1:
                 // aca agrego balas de arma a todas las armas del personaje
                 inventario_balas[ARMA1] += 20;
