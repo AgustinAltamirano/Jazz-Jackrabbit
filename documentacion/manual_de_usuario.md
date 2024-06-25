@@ -35,7 +35,7 @@ sh install.sh
 Es posible jugar al juego desde otras plataformas mediante una Vagrant Box. Para ello, es necesario tener instalado
 [Vagrant](https://developer.hashicorp.com/vagrant/install) y [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
 Además, es necesario tener instalado [xorg](https://www.x.org/releases/current/doc/man/man1/Xorg.1.xhtml) o algún otro
-servidor de ventanas (X-Forwarding).
+servidor de ventanas (X-Forwarding). El primer paso es clonar el repositorio, con los primeros dos comandos de arriba.
 
 En caso de tener `xorg`, se debe correr el siguiente comando:
 
