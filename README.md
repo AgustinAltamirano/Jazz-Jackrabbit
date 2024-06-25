@@ -63,3 +63,11 @@ Para ejecutar los tests de protocolo, se debe ejecutar el siguiente comando:
 ```bash
 sh run_protocol_tests.sh
 ```
+
+## Acerca del código de Socket, Thread y Queue
+
+El código de la implementación de Socket, Thread y Queue (así como el de sus dependencias) es obra del profesor
+Martín Di Paola ([eldipa](https://github.com/eldipa)), y se encuentra en los repositorios de la cátedra:
+https://github.com/eldipa/sockets-en-cpp (Socket) y https://github.com/eldipa/hands-on-threads (Thread y Queue).
+
+En ambos repositorios, el código se distribuye bajo la licencia GPL v2.
