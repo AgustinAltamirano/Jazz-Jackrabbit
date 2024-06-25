@@ -283,15 +283,20 @@ Los principales mensajes que se podrán enviar son los siguientes:
 * Validar el nombre del escenario
 
 El protocolo de estos mensajes será el siguiente:
-* Crear una partida: <0x01> <longitud nombre escenario> <longitud nombre escenario> <Tipo personaje> <Capacidad partida>.
-Tipo personaje puede ser JAZZ (<0x00>), SPAZ (<0x01>) o LORI (<0x02>). Por otro lado la cantidad de jugadores dentro de
-una partida corresponde a un número mayor a 2.
-* Unirse a una partida: <0x02> <Tipo personaje> <Codigo partida>. El código de partida corresponde a un entero de 4 bytes.
-El tipo de personaje puede tener los mismos valores de la creación de la partida.
+
+* Crear una partida: <
+  0x01> <longitud nombre escenario> <longitud nombre escenario> <Tipo personaje> <Capacidad partida>.
+  Tipo personaje puede ser JAZZ (<0x00>), SPAZ (<0x01>) o LORI (<0x02>). Por otro lado la cantidad de jugadores dentro
+  de
+  una partida corresponde a un número mayor a 2.
+* Unirse a una partida: <0x02> <Tipo personaje> <Codigo partida>. El código de partida corresponde a un entero de 4
+  bytes.
+  El tipo de personaje puede tener los mismos valores de la creación de la partida.
 * Validar el nombre del escenario: <0x10> <longitud nombre escenario> <longitud nombre escenario>
 
 El protocolo de la respuesta de de dichos comandos estará conformado por el identificador del tipo de comando seguido
 por el dato como pueden ver a continuación:
+
 * Respuesta crear partida:  <0x01> <Codigo partida>. El código de partida corresponde a un entero de 4 bytes.
 * Respuesta unirse a una partida: <0x02> <booleano>. El booleano indica si se pudo unir a la partida.
 * Respuesta validar el nombre del escenario: <0x17> <booleano>. El booleano indica si el nombre del escenario es valido.
@@ -301,6 +306,7 @@ por el dato como pueden ver a continuación:
 Este tipo de DTOs se utilizaran para encolar los comandos que se enviaran del Lobby al servidor y viceversa. Los mismos
 tienen la habilidad de serializar los diferentes tipos de mensajes para poder enviarlos al servidor y luego obtener el
 mensaje de respuesta del servidor. Los diferentes comandos que maneja el Lobby son:
+
 * Comando crear DTO
 * Comando unir DTO
 * Comando validar DTO
@@ -335,6 +341,7 @@ Esta clase es el canal de comunicación de la vista del juego con el servidor. L
 serializar/deserializar los mensajes y enviarlos/recibirlos a través del socket.
 
 Los mensajes que se podrán enviar son los siguientes:
+
 * Saltar.
 * Mover a la izquierda.
 * Detener movimiento a la izquierda.
@@ -346,9 +353,9 @@ Los mensajes que se podrán enviar son los siguientes:
 * Activar ataque especial.
 * Arma anterior.
 * Arma siguiente.
-* Truco 1
-* Truco 2
-* Truco 3
+* Truco 1.
+* Truco 2.
+* Truco 3.
 
 A cada uno de estos comandos le corresponde un elemento de un enum así que el protocolo de estos mensajes es enviar el
 número correspondiente a la posición en el enum. Por ejemplo saltar es <0x03>.
@@ -360,6 +367,82 @@ atributos propios del snapshot como el tipo de escenario, tiempo restante, fin d
 herido y alguien murió. Luego se procede a iterar por la cantidad de cada una de las listas de elementos del snapshot y
 se reciben cada uno de los elementos. No se envía cada atributo del elemento por separado sino la estructura en su
 conjunto.
+
+### SERVIDOR
+
+Ahora pasamos a analizar cómo funciona el servidor. En primer lugar tendremos nuestro hilo main principal, este se
+encargará solamente de iniciar y finalizar la ejecución del servidor. La ejecución del servidor comienza dentro del
+aceptador.
+
+#### ACEPTADOR
+
+Este hilo se encarga de aceptar las conexiones de los clientes. Una vez que se acepta a un nuevo cliente, se crea una
+instancia de comunicador cliente, que es la clase encargada de lanzar los hilos de que recibiran y enviaran mensajes a
+la vista del juego.
+A su vez el aceptador es el encargado de asignar el id del cliente y borrar a los clientes en caso de que la conexion
+haya finalizado.
+
+A su vez, dentro del aceptador contamos con el gestor de partidas que se encarga de manejar las partidas del servidor.
+Basicamente su función es crear nuevas partidas o unir jugadores a partidas ya existentes.
+Estas partidas las guarda en un mapa protegido con un mutex evitando de esta forma tener una race condition.
+
+#### COMUNICADOR CLIENTE
+
+Esta clase es la encargada de lanzar los hilos recibidor y enviador los cuales serán los encargados de interactuar con
+el cliente y por ende con la interfaz grafica. A su vez se encargará de finalizar los hilos y cerrar la conexion del
+socket del cliente una vez desconectado.
+
+#### GESTOR PARTIDAS
+
+El gestor de partidas es el encargado de administrar las instancias del juego y a los jugadores que participan de ellas.
+
+En el caso de que se quiera crear una partida, se creará una instancia de un objeto Partida, asignandole un codigo de
+partida.
+
+En el caso de que se quiera unir a una partida, como cada partida esta asociada a un codigo, se recorrerá la lista de
+partidas en busca de una partida con ese codigo. De encontrarse, se agregará al jugador a esa partida.
+
+Una vez que se completa la capacidad de la pratida, el gestor de partidas es el encargado de iniciar la misma.
+
+#### PARTIDA
+
+La partida es la encargada de llevar registro de los jugadores que participan de ella y a su vez crear las colas de
+los mensajes que se enviaran y recibiran en la misma. Una vez que se inicia la partida, la misma lanza al gameloop.
+
+#### RECIBIDOR CLIENTE
+
+El recbidor cliente es el encargado de recibir los mensajes del cliente del juego. En un comienzo se recibiran los
+mensajes del Lobby, los cuales se procesaran y se responderan de forma sincronica. Una vez ya creada o unido a la
+partida, se procederá a encolar los mensajes en la cola recibidor para ser procesados por el gameloop.
+
+#### ENVIADOR CLIENTE
+
+El enviador del cliente es el encargado de enviar los snapshots que arma el gameloop hacia el cliente.
+
+#### SERVIDOR PROTOCOLO
+
+El protocolo del servidor opera de la misma forma que el del cliente pero realiza la operación inversa. El mismo es
+utilizado para enviar y recibir mensajes tanto al Lobby como a la vista del juego.
+
+#### COMANDO SERVER GENERICO
+
+Los comandos del servidor son analogos a los comando que vimos anteriormente en el cliente. En este caso los mismos nos
+facilitan la ejecuion de determinadas acciones de acuerdo al comando que recibimos.
+
+#### COMANDO SERVER CREAR
+
+En el caso del comando crear debemos invocar al gestor de partidas para crear la partida, en caso de exito devolvemos el
+codigo de partida. En caso de error se devueleve -1.'
+
+#### COMANDO SERVER UNIR
+
+En el caso de unirse a una partida, al ejecutar este comando invocamos al gestor de partidas para unirse a una partida
+con el codigo y devolvemos un booleano indicando si pudimos unirnos a la partida.
+
+#### COMANDO SERVER VALIDAR
+
+En el caso de validar el nombre de un escenario, al ejecutar este comando invocamos al validador de mapas con el nombre
+del escenario y devolvemos un booleano indicando si el mapa es valido.
 
 ## LÓGICA DE JUEGO
 
