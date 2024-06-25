@@ -122,9 +122,9 @@ sus tareas se encontraron:
 El alumno responsable en llevar a cabo la arquitectura cliente-servidor fue Netanel Jamilis. En particular se encargó
 de:
 
-* Implementar de protocolo de comunicación cliente - servidor
+* Implementar protocolo de comunicación cliente - servidor
 * Implementar interfaces de comunicación de la vista (SDL + QT) con el cliente del sistema
-* Implementar gestión de partidas
+* Implementar manejo de partidas
 * Crear units tests del protocolo
 
 El alumno responsable en llevar a cabo la lógica de juego y físicas de las entidades fue Santiago Fassio. En particular
