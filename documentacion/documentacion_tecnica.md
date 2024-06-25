@@ -449,6 +449,8 @@ del escenario y devolvemos un booleano indicando si el mapa es valido.
 El directorio `/src/server/logica_juego` contiene las clases y objetos que ejercen el juego en sí, es decir, las clases
 y objetos que procesan el mapa, los jugadores, enemigos, etc dentro del juego.
 
+![Diagrama de las clases de la logica de juego](diagramas/logica_juego.png)
+
 ### GAMELOOP
 
 La clase `gameloop` se encarga de gestionar las acciones de los jugadores, el uso del manejador de escenario y de crear
