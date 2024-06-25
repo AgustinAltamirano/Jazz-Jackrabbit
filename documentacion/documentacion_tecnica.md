@@ -242,6 +242,8 @@ lo cual podría resultar molesto. Finalmente, se reproducen los efectos de sonid
 Esta parte es la que conecta la interfaz de usuario con la lógica del servidor. Comenzaremos analizando el
 funcionamiento del mismo del lado del cliente y luego pasaremos al lado del servidor.
 
+![Diagrama general protocolo](diagramas/diagrama_general_protocolo.png)
+
 ### CLIENTE
 
 Algo a entender previo a adentrarnos en cada una de las clases es que el cliente está dividido en dos partes, el lobby y
