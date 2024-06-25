@@ -3,65 +3,251 @@ items:
   - bloques:
       - tipo: 1
         x: 0
+        y: 0
+      - tipo: 1
+        x: 928
+        y: 0
+      - tipo: 1
+        x: 0
+        y: 32
+      - tipo: 1
+        x: 928
+        y: 32
+      - tipo: 1
+        x: 0
+        y: 64
+      - tipo: 1
+        x: 928
+        y: 64
+      - tipo: 1
+        x: 0
+        y: 96
+      - tipo: 6
+        x: 64
+        y: 96
+      - tipo: 8
+        x: 448
+        y: 96
+      - tipo: 8
+        x: 480
+        y: 96
+      - tipo: 6
+        x: 864
+        y: 96
+      - tipo: 1
+        x: 928
+        y: 96
+      - tipo: 1
+        x: 0
+        y: 128
+      - tipo: 0
+        x: 32
+        y: 128
+      - tipo: 0
+        x: 64
+        y: 128
+      - tipo: 0
+        x: 96
+        y: 128
+      - tipo: 0
+        x: 128
+        y: 128
+      - tipo: 0
+        x: 160
+        y: 128
+      - tipo: 0
+        x: 192
+        y: 128
+      - tipo: 0
+        x: 224
+        y: 128
+      - tipo: 3
+        x: 256
+        y: 128
+      - tipo: 0
+        x: 448
+        y: 128
+      - tipo: 0
+        x: 480
+        y: 128
+      - tipo: 2
+        x: 672
+        y: 128
+      - tipo: 0
+        x: 704
+        y: 128
+      - tipo: 0
+        x: 736
+        y: 128
+      - tipo: 0
+        x: 768
+        y: 128
+      - tipo: 0
+        x: 800
+        y: 128
+      - tipo: 0
+        x: 832
+        y: 128
+      - tipo: 0
+        x: 864
+        y: 128
+      - tipo: 0
+        x: 896
+        y: 128
+      - tipo: 1
+        x: 928
+        y: 128
+      - tipo: 1
+        x: 0
         y: 160
-      - tipo: 7
+      - tipo: 1
+        x: 32
+        y: 160
+      - tipo: 1
+        x: 64
+        y: 160
+      - tipo: 1
         x: 96
         y: 160
       - tipo: 1
-        x: 608
+        x: 128
         y: 160
       - tipo: 1
+        x: 160
+        y: 160
+      - tipo: 1
+        x: 192
+        y: 160
+      - tipo: 1
+        x: 224
+        y: 160
+      - tipo: 5
+        x: 256
+        y: 160
+      - tipo: 3
+        x: 288
+        y: 160
+      - tipo: 2
         x: 640
+        y: 160
+      - tipo: 4
+        x: 672
+        y: 160
+      - tipo: 1
+        x: 704
+        y: 160
+      - tipo: 1
+        x: 736
+        y: 160
+      - tipo: 1
+        x: 768
+        y: 160
+      - tipo: 1
+        x: 800
+        y: 160
+      - tipo: 1
+        x: 832
+        y: 160
+      - tipo: 1
+        x: 864
+        y: 160
+      - tipo: 1
+        x: 896
+        y: 160
+      - tipo: 1
+        x: 928
         y: 160
       - tipo: 1
         x: 0
         y: 192
-      - tipo: 7
-        x: 512
+      - tipo: 1
+        x: 224
         y: 192
       - tipo: 1
+        x: 256
+        y: 192
+      - tipo: 5
+        x: 288
+        y: 192
+      - tipo: 3
+        x: 320
+        y: 192
+      - tipo: 2
         x: 608
+        y: 192
+      - tipo: 4
+        x: 640
+        y: 192
+      - tipo: 1
+        x: 672
+        y: 192
+      - tipo: 1
+        x: 704
+        y: 192
+      - tipo: 1
+        x: 928
         y: 192
       - tipo: 1
         x: 0
         y: 224
       - tipo: 9
-        x: 192
+        x: 32
         y: 224
-      - tipo: 0
-        x: 224
+      - tipo: 9
+        x: 64
         y: 224
-      - tipo: 0
+      - tipo: 1
         x: 256
         y: 224
-      - tipo: 0
+      - tipo: 1
         x: 288
         y: 224
-      - tipo: 0
+      - tipo: 5
         x: 320
         y: 224
       - tipo: 0
         x: 352
         y: 224
-      - tipo: 9
-        x: 384
+      - tipo: 0
+        x: 576
+        y: 224
+      - tipo: 4
+        x: 608
         y: 224
       - tipo: 1
-        x: 608
+        x: 640
+        y: 224
+      - tipo: 1
+        x: 672
+        y: 224
+      - tipo: 9
+        x: 864
+        y: 224
+      - tipo: 9
+        x: 896
+        y: 224
+      - tipo: 1
+        x: 928
         y: 224
       - tipo: 1
         x: 0
         y: 256
-      - tipo: 7
+      - tipo: 9
+        x: 32
+        y: 256
+      - tipo: 9
         x: 64
         y: 256
-      - tipo: 7
-        x: 512
+      - tipo: 9
+        x: 864
+        y: 256
+      - tipo: 9
+        x: 896
         y: 256
       - tipo: 1
-        x: 608
+        x: 928
         y: 256
-      - tipo: 0
+      - tipo: 1
         x: 0
         y: 288
       - tipo: 0
@@ -70,93 +256,336 @@ items:
       - tipo: 0
         x: 64
         y: 288
-      - tipo: 0
-        x: 96
-        y: 288
-      - tipo: 0
-        x: 128
-        y: 288
-      - tipo: 8
-        x: 288
-        y: 288
-      - tipo: 0
+      - tipo: 7
         x: 448
         y: 288
-      - tipo: 0
+      - tipo: 7
         x: 480
         y: 288
       - tipo: 0
-        x: 512
+        x: 864
         y: 288
       - tipo: 0
-        x: 544
-        y: 288
-      - tipo: 0
-        x: 576
+        x: 896
         y: 288
       - tipo: 1
-        x: 608
+        x: 928
         y: 288
       - tipo: 1
-        x: 96
+        x: 0
         y: 320
-      - tipo: 1
-        x: 288
-        y: 320
-      - tipo: 1
-        x: 480
-        y: 320
-      - tipo: 1
-        x: 96
-        y: 352
-      - tipo: 6
-        x: 192
-        y: 352
-      - tipo: 1
-        x: 288
-        y: 352
-      - tipo: 6
-        x: 384
-        y: 352
-      - tipo: 1
-        x: 480
-        y: 352
-      - tipo: 1
-        x: 96
-        y: 384
-      - tipo: 0
-        x: 128
-        y: 384
-      - tipo: 0
-        x: 160
-        y: 384
-      - tipo: 0
-        x: 192
-        y: 384
-      - tipo: 0
-        x: 224
-        y: 384
-      - tipo: 0
-        x: 256
-        y: 384
-      - tipo: 0
-        x: 288
-        y: 384
-      - tipo: 0
-        x: 320
-        y: 384
-      - tipo: 0
+      - tipo: 2
         x: 352
-        y: 384
+        y: 320
       - tipo: 0
         x: 384
-        y: 384
+        y: 320
       - tipo: 0
         x: 416
-        y: 384
+        y: 320
       - tipo: 0
+        x: 448
+        y: 320
+      - tipo: 0
+        x: 480
+        y: 320
+      - tipo: 0
+        x: 512
+        y: 320
+      - tipo: 0
+        x: 544
+        y: 320
+      - tipo: 3
+        x: 576
+        y: 320
+      - tipo: 1
+        x: 928
+        y: 320
+      - tipo: 1
+        x: 0
+        y: 352
+      - tipo: 7
+        x: 160
+        y: 352
+      - tipo: 2
+        x: 320
+        y: 352
+      - tipo: 4
+        x: 352
+        y: 352
+      - tipo: 1
+        x: 384
+        y: 352
+      - tipo: 1
+        x: 416
+        y: 352
+      - tipo: 1
+        x: 448
+        y: 352
+      - tipo: 1
+        x: 480
+        y: 352
+      - tipo: 1
+        x: 512
+        y: 352
+      - tipo: 1
+        x: 544
+        y: 352
+      - tipo: 5
+        x: 576
+        y: 352
+      - tipo: 3
+        x: 608
+        y: 352
+      - tipo: 7
+        x: 768
+        y: 352
+      - tipo: 1
+        x: 928
+        y: 352
+      - tipo: 1
+        x: 0
+        y: 384
+      - tipo: 2
+        x: 288
+        y: 384
+      - tipo: 4
+        x: 320
+        y: 384
+      - tipo: 1
+        x: 352
+        y: 384
+      - tipo: 1
+        x: 384
+        y: 384
+      - tipo: 1
+        x: 416
+        y: 384
+      - tipo: 1
         x: 448
         y: 384
       - tipo: 1
         x: 480
         y: 384
+      - tipo: 1
+        x: 512
+        y: 384
+      - tipo: 1
+        x: 544
+        y: 384
+      - tipo: 1
+        x: 576
+        y: 384
+      - tipo: 5
+        x: 608
+        y: 384
+      - tipo: 3
+        x: 640
+        y: 384
+      - tipo: 1
+        x: 928
+        y: 384
+      - tipo: 1
+        x: 0
+        y: 416
+      - tipo: 0
+        x: 32
+        y: 416
+      - tipo: 0
+        x: 64
+        y: 416
+      - tipo: 0
+        x: 96
+        y: 416
+      - tipo: 0
+        x: 224
+        y: 416
+      - tipo: 0
+        x: 256
+        y: 416
+      - tipo: 4
+        x: 288
+        y: 416
+      - tipo: 1
+        x: 320
+        y: 416
+      - tipo: 1
+        x: 608
+        y: 416
+      - tipo: 5
+        x: 640
+        y: 416
+      - tipo: 0
+        x: 672
+        y: 416
+      - tipo: 0
+        x: 704
+        y: 416
+      - tipo: 0
+        x: 832
+        y: 416
+      - tipo: 0
+        x: 864
+        y: 416
+      - tipo: 0
+        x: 896
+        y: 416
+      - tipo: 1
+        x: 928
+        y: 416
+      - tipo: 1
+        x: 0
+        y: 448
+      - tipo: 1
+        x: 928
+        y: 448
+      - tipo: 1
+        x: 0
+        y: 480
+      - tipo: 8
+        x: 448
+        y: 480
+      - tipo: 8
+        x: 480
+        y: 480
+      - tipo: 1
+        x: 928
+        y: 480
+      - tipo: 1
+        x: 0
+        y: 512
+      - tipo: 6
+        x: 64
+        y: 512
+      - tipo: 0
+        x: 416
+        y: 512
+      - tipo: 0
+        x: 448
+        y: 512
+      - tipo: 0
+        x: 480
+        y: 512
+      - tipo: 0
+        x: 512
+        y: 512
+      - tipo: 6
+        x: 864
+        y: 512
+      - tipo: 1
+        x: 928
+        y: 512
+      - tipo: 1
+        x: 0
+        y: 544
+      - tipo: 0
+        x: 32
+        y: 544
+      - tipo: 0
+        x: 64
+        y: 544
+      - tipo: 0
+        x: 96
+        y: 544
+      - tipo: 0
+        x: 128
+        y: 544
+      - tipo: 0
+        x: 160
+        y: 544
+      - tipo: 3
+        x: 192
+        y: 544
+      - tipo: 2
+        x: 736
+        y: 544
+      - tipo: 0
+        x: 768
+        y: 544
+      - tipo: 0
+        x: 800
+        y: 544
+      - tipo: 0
+        x: 832
+        y: 544
+      - tipo: 0
+        x: 864
+        y: 544
+      - tipo: 0
+        x: 896
+        y: 544
+      - tipo: 1
+        x: 928
+        y: 544
+      - tipo: 5
+        x: 192
+        y: 576
+      - tipo: 3
+        x: 224
+        y: 576
+      - tipo: 2
+        x: 704
+        y: 576
+      - tipo: 4
+        x: 736
+        y: 576
+      - tipo: 5
+        x: 224
+        y: 608
+      - tipo: 3
+        x: 256
+        y: 608
+      - tipo: 7
+        x: 384
+        y: 608
+      - tipo: 7
+        x: 544
+        y: 608
+      - tipo: 2
+        x: 672
+        y: 608
+      - tipo: 4
+        x: 704
+        y: 608
+      - tipo: 5
+        x: 256
+        y: 640
+      - tipo: 0
+        x: 288
+        y: 640
+      - tipo: 0
+        x: 320
+        y: 640
+      - tipo: 0
+        x: 352
+        y: 640
+      - tipo: 0
+        x: 384
+        y: 640
+      - tipo: 0
+        x: 416
+        y: 640
+      - tipo: 0
+        x: 448
+        y: 640
+      - tipo: 0
+        x: 480
+        y: 640
+      - tipo: 0
+        x: 512
+        y: 640
+      - tipo: 0
+        x: 544
+        y: 640
+      - tipo: 0
+        x: 576
+        y: 640
+      - tipo: 0
+        x: 608
+        y: 640
+      - tipo: 0
+        x: 640
+        y: 640
+      - tipo: 4
+        x: 672
+        y: 640
