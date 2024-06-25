@@ -34,7 +34,9 @@ void AdminRecogibles::agregar_recogible(const TipoRecogible tipo_recogible,
                                   coords_sprite, camara, dimensiones_corregidas, 0,
                                   ITERACIONES_POR_SPRITE);
     nuevo_recogible.actualizar_animacion(
-            {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), 1, 1}, 0, false);
+            {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), FACTOR_ESCALA_SPRITES,
+             FACTOR_ESCALA_SPRITES},
+            0, false);
     recogibles.push_back(std::move(nuevo_recogible));
 }
 

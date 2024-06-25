@@ -5,6 +5,10 @@
 
 #include "camara.h"
 
+/**
+ * @class BloqueEscenario
+ * @brief Clase que representa un bloque del escenario en la vista del juego.
+ */
 class BloqueEscenario {
 private:
     SDL2pp::Rect coords;
@@ -22,8 +26,14 @@ public:
 
     BloqueEscenario& operator=(const BloqueEscenario&) = delete;
 
+    /**
+     * @brief Actualiza la vista del bloque
+     */
     void actualizar_vista();
 
+    /**
+     * @brief Dibuja el bloque
+     */
     void dibujar() const;
 
     ~BloqueEscenario();

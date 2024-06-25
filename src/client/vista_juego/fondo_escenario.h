@@ -3,7 +3,10 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-/** Clase que representa el fondo visual del escenario dentro del juego. */
+/**
+ * @class FondoEscenario
+ * @brief Clase que representa el fondo visual del escenario dentro del juego.
+ */
 class FondoEscenario {
 private:
     const int ancho_ventana, alto_ventana;
@@ -19,6 +22,9 @@ public:
 
     FondoEscenario& operator=(const FondoEscenario&) = delete;
 
+    /**
+     * @brief Dibuja el fondo del escenario en la ventana.
+     */
     void dibujar() const;
 
     ~FondoEscenario();

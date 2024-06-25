@@ -33,9 +33,9 @@
 
 
 /**
- * La clase @code AdministradorVistaJuego@endcode se encarga de asignar las texturas y animaciones
- * cargadas por una instancia de @code LectorTexturas@endcode a todos los objetos visuales dentro
- * del juego, además de decidir cuáles de ellos se deben renderizar en cada momento y cuáles no.
+ * La clase @code AdministradorVistaJuego@endcode se encarga de crear y gestionar todos los objetos
+ * visuales dentro del juego, asignándoles sus texturas y decidiendo cuándo se deben renderizar.
+ * Además se encarga de sincronizar la vista, de forma de mantener una tasa de frames constante.
  */
 class AdministradorVistaJuego {
 private:
@@ -52,16 +52,20 @@ private:
 
     SDL2pp::Window ventana;
     SDL2pp::Renderer renderer;
+
+    /** Mixer de sonidos de SDL */
     SDL2pp::Mixer mixer;
     LectorTexturas lector_texturas;
     EntradaJuego entrada_juego;
     HUD hud;
     Cliente& cliente;
 
+    /** Cantidad de iteraciones actuales del bucle principal de la vista. */
     uint32_t iteraciones_actuales;
     Camara camara;
     TipoEscenario tipo_escenario;
     std::optional<FondoEscenario> fondo_escenario;
+
     /** Mapa con todos los objetos asociados a personajes jugables. */
     std::unordered_map<uint32_t, Personaje> personajes;
 
@@ -104,8 +108,16 @@ private:
 
     void actualizar_sonidos(const std::shared_ptr<SnapshotDTO>& snapshot);
 
+    /** @brief Lee las snapshots de juego pendientes y actualiza la vista del juego en base a ellas.
+     */
     void actualizar_vista();
 
+    /**
+     * @brief Sincroniza la vista del juego, de forma de mantener una tasa de frames constante.
+     * @param ticks_transcurridos Milisegundos transcurridos desde la iteración anterior del bucle
+     * principal
+     * @returns Corrección de tiempo a aplicar en la próxima iteración del bucle principal
+     */
     int64_t sincronizar_vista(int64_t ticks_transcurridos);
 
 public:

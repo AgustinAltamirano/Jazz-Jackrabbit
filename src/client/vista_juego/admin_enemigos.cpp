@@ -42,7 +42,8 @@ void AdminEnemigos::agregar_enemigo(const int32_t id_enemigo, const TipoEnemigo 
     ObjetoAnimado nuevo_enemigo(id_enemigo, renderer, lector_texturas.obtener_textura_enemigos(),
                                 lector_texturas.obtener_coords_enemigo(MAPA_TIPO_ENEMIGO.at(tipo)),
                                 camara,
-                                {dimensiones_iniciales.GetX(), dimensiones_iniciales.GetY(), 1, 1},
+                                {dimensiones_iniciales.GetX(), dimensiones_iniciales.GetY(),
+                                 FACTOR_ESCALA_SPRITES, FACTOR_ESCALA_SPRITES},
                                 0, ITERACIONES_POR_SPRITE);
     enemigos.emplace(id_enemigo, std::move(nuevo_enemigo));
     contador_enemigos[id_enemigo] = ITERACIONES_HASTA_ELIMINAR;
@@ -61,9 +62,9 @@ void AdminEnemigos::actualizar_animacion(const uint32_t id_enemigo,
             corregir_desfase_sprite(id_enemigo, dimensiones, invertido);
 
     enemigos.at(id_enemigo)
-            .actualizar_animacion(
-                    {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), 1, 1}, 0,
-                    invertido);
+            .actualizar_animacion({dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(),
+                                   FACTOR_ESCALA_SPRITES, FACTOR_ESCALA_SPRITES},
+                                  0, invertido);
     contador_enemigos[id_enemigo] = ITERACIONES_HASTA_ELIMINAR;
 }
 
