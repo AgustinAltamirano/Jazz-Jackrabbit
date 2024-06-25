@@ -309,8 +309,8 @@ void personaje::recoger_objeto(const int32_t valor, const TipoRecogible tipo) {
             this->vida += valor;
             break;
         case FRUTA_PODRIDA:
-            if (this->vida > valor) {
-                this->vida -= valor;
+            if (this->vida > valor / 2) {
+                this->vida -= valor / 2;
             }
             this->estado = INTOXICADO;
             break;

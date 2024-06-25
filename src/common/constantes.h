@@ -77,7 +77,7 @@
 #define MUNICIONES_ARMA1 25
 #define MUNICIONES_ARMA2 10
 #define MUNICIONES_ARMA3 5
-#define VIDA_COMIDA 1
+#define VIDA_COMIDA 2
 
 // para la lectura de mapas
 #define TAMANO_BLOQUE 32
