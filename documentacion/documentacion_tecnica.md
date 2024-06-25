@@ -586,4 +586,184 @@ Cuando un enemigo muere. En ese caso el `manejadorEscenario` realiza un método 
 * `Balas` de `Arma1`, `2` y `3`, que dan una particular cantidad de balas de su arma correspondiente al jugador que
   recoge las balas.
 
+## Vista del menú
+La vista menú o del lobby la realizamos utilizando QT, donde implementamos varias clases para utilizar la implementación
+por defecto de los elementos representados en QT (como los `QPushButton`, `QMainWindow`, etc) con el agregado de
+comportamiento personalizado, para poder lograr la funcionalidades deseadas.
 
+### MenuJuego
+Esta es la clase principal del menú, responsable de la comunicación con el servidor mediante la clase `Lobby`,
+para realizar las comprobaciones a la hora de crear una nueva partida, de unirse a una partida creada y de seleccionar
+un mapa personalizado. También es el encargado de iniciar la aplicación a partir de la `VentanaInicial`.
+
+Además, es el encargado de guardar (mientras el menú esté abierto) las opciones seleccionadas por el usuario, tanto en
+el selector del mapa como en el selector del jugador. Y, en el caso de unirse a una partida, guarda el código de la 
+partida a la cual quiere unirse.
+
+Todas las demás clases dentro del menú utilizan los métodos de esta clase para ir definiendo y persistiendo temporalmente
+las opciones que selecciona el usuario en el menú. Una vez que termine de seleccionar todas las opciones 
+(mapa y personaje en el caso de crear una partida, código de partida y personaje en el caso de unirse a una partida),
+el `MenuJuego` se encarga de enviar al servidor (`Lobby` mediante) las opciones seleccionadas por el jugador
+(las cuales fueron todas previamente validadas).
+
+### VentanaInicial
+Esta es la clase que representa la ventana inicial en el menú, es decir, la primera ventana que se muestra al abrirlo.
+Hereda de la clase `QMainWindow` de QT. Es el encargado de iniciar la reproducción de la música del menú 
+(la cual se mantiene a lo largo de toda la ejecución) y de mostrar el MenuPrincipal luego de que se presione alguna tecla.
+Para eso, se utiliza la función `connect()` de QT para poder enlazar un evento (en este caso, el clic sobre el botón) 
+con la ejecución de un método. En este caso, ese método es el encargado de mostrar el `MenuPrincipal`.
+
+### MenuPrincipal
+Es básicamente la ventana principal del menú. Se nos muestran las dos acciones que podemos realizar en el menú: 
+crear o unirse a una partida. Se encarga de:
+
+* Instancia los botones correspondientes para crear y unirse a una partida a partir de la clase `BotonMenu`. 
+Conecta a dichos botones con los métodos `crear_partida()` y `desplegar_popup()` a partir de la función `connect()`
+y del evento del clic sobre los botones correspondientes.
+* Al querer unirse a una partida, muestra un popup (usando la clase `VentanaDialogo`) pidiendo el código de la partida 
+en cuestión, Si el código es correcto (la partida existe y todavía no está llena), se muestra la ventana de `MenuSeleccionJugador`.
+* Al querer crear la partida, muestra la ventana `MenuSeleccionMapa` a partir de la conexión del botón con el método del `MenuPrincipal`.
+
+### VentanaDialogo
+Es la clase encargada de modelizar las ventanas de diálogo en el menú. Hereda de la clase `QDialog` de QT, para aprovechar
+la implementación base. Cuenta internamente con los elementos visuales para mostrar en cada caso (una caja de texto 
+numérica para el caso del código de partida y del número de jugadores, y una caja de texto para el nombre del mapa 
+personalizado).
+
+Para separar el comportamiento en cada uno de los tres casos (código de partida, número de jugadores o selección del mapa
+personalizado), creamos tres constructores distintos, donde cada uno recibe un "padre" de clase distinta para la ventana
+de diálogo.
+
+De esta forma, todo el comportamiento compartido entre las ventanas de diálogo (inicialización de cajas de texto, 
+de títulos, botones, interfaz y demás) queda igual para todos los casos, y se diferencia la conexión de los botones. 
+Así, podemos reutilizar la misma clase en varios lugares del menú diferenciando únicamente el constructor.
+
+### BotonMenu
+Es la clase encargada de modelizar la clase base de todos los botones que utilizamos en el menú. Hereda de la clase
+`QPushButton`. Se encarga de definir y reproducir los efectos de sonido de los botones a la hora de enfocarlos. 
+Además, se encarga de:
+
+* Redefinir el comportamiento del botón a la hora de presionar la tecla Enter, para poder utilizarlo en la selección 
+de las opciones.
+* Redefinir el comportamiento al pasar el mouse por encima del botón, para hacer que se enfoque el botón
+(cosa que no sucede por defecto).
+* Redefinir el comportamiento al enfocar el botón, para hacer que se reproduzca el sonido correspondiente a la selección
+de la opción.
+
+### BotonAnimadoJugador y BotonAnimadoMapa
+Son las clases que se encargan de definir las animaciones de los botones al ser enfocados. Ambos heredan de la clase
+`BotonMenu` explicada anteriormente. Ambas clases se encargan de redefinir el comportamiento de los eventos:
+
+* `focusIn`, haciendo que se llame al método `animacion_hacia_adelante()` del manejador de sprites concreto.
+* `focusOut`, haciendo que se llame al método `animacion_en_reversa()` del manejador de sprites concreto.
+* `paintEvent`, haciendo que se llame al método `pintar_frame_actual()` del manejador de sprites concreto.
+
+En definitiva, termina delegando todo el comportamiento de dichas acciones a las clases concretas del `ManejadorSprites`
+explicadas posteriormente.
+
+### ManejadorSprites
+Es una clase abstracta encargada de definir todo el comportamiento compartido entre el manejador de sprites de los botones
+de los jugadores y de los botones de los escenarios. Ese comportamiento compartido es:
+
+* Inicializar las texturas de las imágenes de los botones, cargándolas a partir de un YAML con los datos necesarios
+para tomar los sprites.
+* Definir el comportamiento de la animación hacia adelante y hacia atrás de los botones, donde básicamente se define un
+timer para que, cada cierto tiempo, se envíe una señal, la cual está conectada con los métodos abstractos 
+`siguiente_frame()` y `anterior_frame()` respectivamente. Estos métodos son los que se definen en las clases concretas
+que heredan de la clase en cuestión. 
+* Definir el comportamiento de pintar el frame actual del botón. Dado que tanto el caso del selector del mapa como del
+selector del jugador contamos con un botón (con el nombre del mapa o del personaje), se define este comportamiento 
+en la abstracta y se deja el método `pintar_frame_actual()` como abstracto, para que sea definido en las clases concretas
+(desde el cual se va a llamar al método `pintar_frame_boton()` para mostrar el botón en cuestión).
+
+### ManejadorSpritesJugador y ManejadorSpritesMapa
+Son las clases concretas que heredan de la clase `ManejadorSprites` y definen el comportamiento específico de los botones
+de los jugadores y de los escenarios respectivamente. Se encargan de definir los métodos abstractos `siguiente_frame()`,
+`anterior_frame()` y `pintar_frame_boton()`. En cada caso, indican cómo debe comportarse el `ManejadorSprites` al avanzar
+o retroceder en la animación del botón:
+
+* En el caso del `ManejadorSpritesJugador`, se encarga de avanzar o retroceder en la animación tanto de los sprites del
+personaje como del botón con el nombre de dicho personaje.
+* En el caso del `ManejadorSpritesMapa`, se encarga de realizar la animación (de agrandar o achicar) la iamgen del cover 
+del escenario, y de avanzar o retroceder en la animación del botón.
+
+El comportamiento de avanzar o retroceder en la animación del botón es el que se extrae en la clase `ManejadorSprites`,
+para simplemente hacer uso de ello en las clases concretas y que ambos botones se comporten de la misma manera (este es
+el comportamiento deseado en este caso, por eso lo hicimos así).
+
+En el `ManejadorSpritesMapa` también se definen las animaciones para las imágenes de los covers de los escenarios. 
+
+### MenuSeleccionMapa
+Es la clase encargada de modelizar la ventana de selección de mapa en el menú. Hereda de la clase `QMainWindow` de QT.
+Se encarga de instanciar los botones de la clase `BotonAnimadoMapa` y de mostrar el `MenuSeleccionJugador` cuando se
+selecciona alguna de las opciones de los escenarios disponibles. 
+
+Además, define el comportamiento del botón del escenario personalizado, haciendo que, al seleccionarlo, en lugar de pasar
+directamente a la siguiente ventana (como sucede con los otros dos escenarios), se muestra el popup (usando la clase
+`VentanaDialogo`) para solicitar el nombre del mapa y luego hacer la validación (mediante la clase `MenuJuego`). En el
+caso de ser válido, se procede de igual manera que con los otros dos escenarios.
+
+### MenuSeleccionJugador
+Es la clase encargada de modelizar la ventana de selección de jugador en el menú. Hereda de la clase `QMainWindow` de QT.
+Se encarga de instanciar los botones de la clase `BotonAnimadoJugador`. Es la clase que finalmente termina enviándole
+a la clase `MenuJuego` el mensaje para crear o para unirse a una partida.
+
+Una vez que se selecciona una de las tres opciones de personajes, lo primero que se chequea (mediante la clase `MenuJuego`)
+es si todavía sigue activa la conexión con el servidor. De no ser así, se muestra un popup informando de la desconexión
+y se cierra el menú normalmente. 
+
+Luego, si partimos del caso en el que queremos crear una nueva partida, se le pide a la clase `MenuJuego` el código de
+la partida creada. En caso de ser correcto, se muestra con un popup dicho código y se procede a cerrar el menú. En caso
+de no serlo, se informa del error con otro popup y se vuelve a la ventana de selección del jugador. 
+
+Si partimos del caso en el que queremos unirnos a una partida, se verifica que el jugador haya podido unirse correctamente
+(también mediante la clase `MenuJuego`). De ser así, simplemente se cierra el menú y se abre el juego. En caso contrario,
+se informa con un popup del error al unirse y se vuelve a la ventana inicial (la del `MenuPrincipal`).
+
+## Editor de mapas
+El editor de mapas es una herramienta que permite a los usuarios crear sus propios mapas personalizados para jugar en el
+juego, también implementado con QT. Para ello, se crearon las siguientes clases:
+
+### MainWindow
+Esta es la clase principal del editor, Hereda de la clase `QMainWindow`. Se encarga básicamente de la lectura de los YAML iniciales (con los 
+datos de los ítems y texturas a cargar) y, con dichos datos, crea un `ItemEscena`, el cual es un struct con los
+atributos necesarios para la creación de un ítem de la escena. 
+
+Para cada instancia de `ItemEscena`, llama a los métodos `inicializar_boton_item()` e `inicializar_boton_textura()`
+de la clase `ListaBotones` para cargar los botones de los ítems y las texturas respectivamente.
+
+### ListaBotones
+Es la clase encargada de modelizar la lista de botones de ítems y texturas en el editor. Hereda de la clase `QVBoxLayout`.
+Se encarga de inicializar los botones de los ítems y las texturas, y de conectar los botones con los métodos 
+`seleccionar_item()` y `seleccionar_texturas()` respectivamente. 
+
+Esto hace que, al seleccionar un botón correspondiente a un ítem en la lista del editor, se defina como el nuevo ítem
+seleccionado, y nos permita pintar nuevos bloques de ese tipo en particular. Por otro lado, si se selecciona un botón
+de una textura, el comportamiento definido hace que se cambie el fondo del escenario por el seleccionado, pero además,
+que se actualicen las texturas de todos los bloques ya colocados para coincidir con las del nuevo escenario elegido
+(esto último se realiza llamando al método `actualizar_texturas()` de la clase `EscenaEditor`.
+
+### EscenaEditor
+Es la clase encargada de modelizar la escena del editor. Hereda de la clase `QGraphicsScene`. Se encarga de definir
+el comportamiento al interactuar con la parte gráfica del editor, es decir, el lugar destinado a dibujar los bloques 
+del escenario.
+
+Para lograr ese comportamiento, se redefinen los eventos `mousePressEvent` y `mouseMoveEvent` de la `QGraphicsScene`,
+haciendo que, cada vez que se hace clic izquierdo en la escena, se coloque un bloque del ítem seleccionado en la
+misma, y que, al mover el mouse con el botón izquierdo presionado, se coloque un bloque en cada posición por la que
+pase el mouse. Análogamente, al hacer clic derecho, se elimina el bloque en la posición correspondiente, y al moverse
+con el clic derecho presionado, se eliminan los bloques en cada posición por la que pase el mouse.
+
+Además, redefiniendo el evento `wheelEvent` de la `QGraphicsScene`, se logra que, al hacer scroll con la rueda del mouse,
+se pueda ampliar verticalmente la escena, permitiendo visualizar más bloques en la misma. De la misma forma pero 
+manteniendo la tecla `ALT` mientras se hace el scroll, se produce la ampliación de la escena pero horizontalmente.
+
+### BarraMenu
+Es la clase encargada de modelizar la barra de menú del editor. Hereda de la clase `QMenuBar`. Se encarga de definir
+el comportamiento de los botones de la barra de menú, es decir, de los botones de "Guardar", "Guardar como", "Cargar"
+y "Limpiar mapa". 
+
+Para ello, se conectan los botones (usando `addAction`) con los métodos `guardar_mapa()`, `guardar_como_mapa()`, 
+`cargar_mapa()` y `limpiar_mapa()` respectivamente. Los métodos de guardar y cargar se encargan de manipular un archivo
+YAML para escribir o leer los datos del mapa (tipo del bloque, coordenadas `(x,y)` de la posición del bloque), mientras que
+el método de limpiar simplemente borra todos los bloques llamando al método `limpiar_escena()` de la clase `EscenaEditor`.
