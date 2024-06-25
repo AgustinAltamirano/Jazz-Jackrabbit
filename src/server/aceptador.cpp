@@ -15,10 +15,10 @@ Aceptador::Aceptador(Socket* skt_servidor): skt_servidor(skt_servidor), proximo_
 void Aceptador::run() {
     try {
         while (sigo_jugando) {
-            Socket* skt_aceptado = (Socket*)skt_servidor->accept();
-            clientes.emplace(std::piecewise_construct, std::forward_as_tuple(proximo_id_cliente),
-                             std::forward_as_tuple(std::move(*skt_aceptado), &gestor_partidas,
-                                                   proximo_id_cliente));
+            auto skt_aceptado = dynamic_cast<Socket*>(skt_servidor->accept());
+            clientes.emplace(
+                    std::piecewise_construct, std::forward_as_tuple(proximo_id_cliente),
+                    std::forward_as_tuple(skt_aceptado, &gestor_partidas, proximo_id_cliente));
             proximo_id_cliente++;
             limpiar_clientes();
             gestor_partidas.borrar_partidas_finalizadas();

@@ -18,7 +18,7 @@ class ComunicadorCliente {
 private:
     int32_t id_cliente;
 
-    Socket skt_cliente;
+    Socket* skt_cliente;
 
     Queue<std::shared_ptr<SnapshotDTO>> cola_cliente;
 
@@ -31,13 +31,13 @@ private:
     std::atomic<bool> sigo_en_partida;
 
 public:
-    ComunicadorCliente(Socket socket, GestorPartidas* gestor_partidas, int32_t id_cliente);
+    ComunicadorCliente(Socket* socket, GestorPartidas* gestor_partidas, int32_t id_cliente);
 
     void limpiar_cliente();
 
     void matar_cliente();
 
-    bool sigue_en_partida() const;
+    [[nodiscard]] bool sigue_en_partida() const;
 
     void iniciar_cliente();
 };

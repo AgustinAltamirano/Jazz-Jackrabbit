@@ -9,14 +9,14 @@
 #include "../common/snapshot_dto.h"
 #include "src/common/liberror.h"
 
-ComunicadorCliente::ComunicadorCliente(Socket socket, GestorPartidas* gestor_partidas,
+ComunicadorCliente::ComunicadorCliente(Socket* socket, GestorPartidas* gestor_partidas,
                                        int32_t id_cliente):
         id_cliente(id_cliente),
-        skt_cliente(std::move(socket)),
+        skt_cliente(socket),
         cola_cliente(10000),
         gestor_partidas(gestor_partidas),
-        enviador_cliente(&skt_cliente, std::ref(sigo_en_partida), id_cliente, cola_cliente),
-        recibidor_cliente(&skt_cliente, std::ref(sigo_en_partida), id_cliente, gestor_partidas,
+        enviador_cliente(skt_cliente, std::ref(sigo_en_partida), id_cliente, cola_cliente),
+        recibidor_cliente(skt_cliente, std::ref(sigo_en_partida), id_cliente, gestor_partidas,
                           cola_cliente),
         sigo_en_partida(true) {
     iniciar_cliente();
@@ -36,13 +36,14 @@ void ComunicadorCliente::limpiar_cliente() {
     sigo_en_partida = false;
     enviador_cliente.cerrar_cola();
     enviador_cliente.join();
-    skt_cliente.close();
+    skt_cliente->close();
     recibidor_cliente.join();
+    delete skt_cliente;
 }
 
 void ComunicadorCliente::matar_cliente() {
     if (!recibidor_cliente.esta_desconectado()) {
-        skt_cliente.shutdown(SHUT_RD);
+        skt_cliente->shutdown(SHUT_RD);
     }
     limpiar_cliente();
 }
