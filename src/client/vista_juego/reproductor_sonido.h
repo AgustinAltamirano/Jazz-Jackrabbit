@@ -5,6 +5,10 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+/**
+ * @class ReproductorSonido
+ * @brief Representa un efecto de sonido del juego.
+ */
 class ReproductorSonido {
 private:
     SDL2pp::Mixer& mixer;
@@ -19,6 +23,9 @@ public:
 
     ReproductorSonido(ReproductorSonido&&) noexcept = default;
 
+    /**
+     * @brief Reproduce el efecto de sonido.
+     */
     void reproducir_sonido() const;
 
     ~ReproductorSonido();

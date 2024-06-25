@@ -46,6 +46,14 @@ private:
 
     std::unordered_map<EstadoVisualPersonaje, ObjetoAnimado> animaciones;
 
+    /**
+     * Corrige el desfase entre las dimensiones del personaje en la lógica del juego y las
+     * dimensiones del sprite, teniendo en cuenta su estado actual y si el sprite debe centrarse
+     * o no.
+     * @param estado Estado actual del personaje
+     * @param dimensiones Dimensiones y coordenadas del personaje en la lógica del juego
+     * @return Nuevas dimensiones y posición del sprite
+     */
     SDL2pp::Rect corregir_desfase_sprite(EstadoVisualPersonaje estado,
                                          const SDL2pp::Rect& dimensiones) const;
 
@@ -66,13 +74,18 @@ public:
      * Actualiza la animación del personaje, así como su posición y dimensiones.
      * @param estado estado actual del personaje
      * @param iteraciones_actuales Iteraciones actuales del renderizado del juego
-     * @param dimensiones Nuevas dimensiones y posición del personaje
+     * @param dimensiones Nuevas dimensiones y posición del personaje. Los campos ancho y alto
+     * corresponden al factor de escala con el que se deesea renderizar al personaje respecto a las
+     * dimensiones originales del sprite.
      * @param angulo Nuevo ángulo del personaje
      * @param invertido Determina si la textura debe dibujarse invertida o no
      */
     void actualizar_animacion(EstadoVisualPersonaje estado, uint32_t iteraciones_actuales,
                               const SDL2pp::Rect& dimensiones, int angulo, bool invertido);
 
+    /**
+     * Actualiza la cámara del juego para que siga a este personaje.
+     */
     void actualizar_camara() const;
 
     /**

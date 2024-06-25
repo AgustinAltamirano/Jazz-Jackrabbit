@@ -150,9 +150,9 @@ void AdministradorVistaJuego::actualizar_vista_personajes(
             personajes.emplace(id, std::move(nuevo_personaje));
         }
 
-        personajes.at(id).actualizar_animacion(MAPA_ESTADOS_PERSONAJE.at(estado),
-                                               iteraciones_actuales, {pos_x, pos_y, 1, 1}, 0,
-                                               de_espaldas);
+        personajes.at(id).actualizar_animacion(
+                MAPA_ESTADOS_PERSONAJE.at(estado), iteraciones_actuales,
+                {pos_x, pos_y, FACTOR_ESCALA_SPRITES, FACTOR_ESCALA_SPRITES}, 0, de_espaldas);
     }
 
     std::unordered_set<uint32_t> ids_clientes_borrar;
@@ -179,7 +179,9 @@ void AdministradorVistaJuego::actualizar_vista_enemigos(
         const bool invertido = enemigo.obtener_invertido();
 
         if (!enemigos.existe_enemigo(id)) {
-            enemigos.agregar_enemigo(id, tipo, {pos_x, pos_y, 1, 1}, invertido);
+            enemigos.agregar_enemigo(id, tipo,
+                                     {pos_x, pos_y, FACTOR_ESCALA_SPRITES, FACTOR_ESCALA_SPRITES},
+                                     invertido);
         }
         enemigos.actualizar_animacion(id, iteraciones_actuales, {pos_x, pos_y, ancho, alto},
                                       invertido);

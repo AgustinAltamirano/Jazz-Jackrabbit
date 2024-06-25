@@ -27,7 +27,9 @@ void AdminExplosiones::agregar_explosion(const int pos_x, const int pos_y) {
                                   lector_texturas.obtener_textura_explosion(), coords_sprite,
                                   camara, dimensiones_corregidas, 0, ITERACIONES_POR_SPRITE, false);
     nueva_explosion.actualizar_animacion(
-            {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), 1, 1}, 0, false);
+            {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), FACTOR_ESCALA_SPRITES,
+             FACTOR_ESCALA_SPRITES},
+            0, false);
     explosiones.emplace(siguiente_id_explosion, std::move(nueva_explosion));
     posicion_explosiones.emplace(
             siguiente_id_explosion,
@@ -43,7 +45,9 @@ void AdminExplosiones::actualizar_animacion(const uint32_t iteraciones_actuales)
                 corregir_desfase_sprite(sprite_actual, posicion_explosiones.at(id).GetX(),
                                         posicion_explosiones.at(id).GetY());
         explosion.actualizar_animacion(
-                {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(), 1, 1}, 0, false);
+                {dimensiones_corregidas.GetX(), dimensiones_corregidas.GetY(),
+                 FACTOR_ESCALA_SPRITES, FACTOR_ESCALA_SPRITES},
+                0, false);
     }
 }
 

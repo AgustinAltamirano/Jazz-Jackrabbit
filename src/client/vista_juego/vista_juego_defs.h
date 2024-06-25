@@ -14,6 +14,9 @@
  */
 #define MARGEN_RENDERIZADO 50
 
+/** Factor de escala de los sprites respecto a su tamaño original */
+#define FACTOR_ESCALA_SPRITES 1
+
 /** Posición en pantalla donde se muestra la cámara */
 #define RENDER_CAMARA_X (ANCHO_VENTANA / 2)
 #define RENDER_CAMARA_Y (ALTO_VENTANA * 3 / 4)
