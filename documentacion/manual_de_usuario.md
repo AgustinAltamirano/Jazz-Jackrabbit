@@ -30,6 +30,41 @@ sus dependencias:
 sh install.sh
 ```
 
+### Instalación con Vagrant
+
+Es posible jugar al juego desde otras plataformas mediante una Vagrant Box. Para ello, es necesario tener instalado
+[Vagrant](https://developer.hashicorp.com/vagrant/install) y [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+Además, es necesario tener instalado [xorg](https://www.x.org/releases/current/doc/man/man1/Xorg.1.xhtml) o algún otro
+servidor de ventanas (X-Forwarding).
+
+En caso de tener `xorg`, se debe correr el siguiente comando:
+
+```bash
+xhost +localhost
+```
+
+Luego, se debe ejecutar el siguiente comando desde una terminal en la carpeta raíz del proyecto para levantar la Vagrant
+Box:
+
+```bash
+vagrant up
+```
+
+Una vez finalizada la instalación, se puede acceder a la Vagrant Box mediante el siguiente comando:
+
+```bash
+vagrant ssh -- -Y
+```
+
+Dentro de la Vagrant Box, ya se encontrará el juego instalado y compilado, en el directorio
+`/home/vagrant/Jazz_Jackrabbit/build` (véase sección [Ejecución](#ejecución)).
+
+Cuando se desee cerrar la Vagrant Box, se debe ejecutar el siguiente comando:
+
+```bash
+vagrant halt
+```
+
 ## Ejecución
 
 Para poder jugar, se necesita primero iniciar el servidor. Esto se logra ejecutando el siguiente comando desde una

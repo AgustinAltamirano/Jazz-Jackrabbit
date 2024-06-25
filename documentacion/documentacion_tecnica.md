@@ -514,6 +514,10 @@ Pasos que realiza `gameloop` durante cada loop del juego:
 
 10. Se para el temporizador del loop, se define cuanto tiempo se tardó en hacer el loop y cuánto tiempo lleva la
     partida. Se crea el snapshot de la partida (ver sección de `Snapshot`) y se lo añade a cada cola de salida.
+    Con el fin de optimizar la cantidad de información enviada en cada snapshot, únicamente la primera snapshot del
+    juego contiene la información de todos los bloques del escenario. Esa primera snapshot solo tiene esa información,
+    y luego el resto de snapshots contienen todos los datos de los jugadores, enemigos, balas y objetos recogibles, pero
+    sin los bloques del escenario.
 
 11. Si el tiempo en realizar el loop es menor a los 33 milisegundos (30 frames por segundo) se realiza un sleep por la
     diferencia (por ejemplo, si el loop duró 20 milisegundos, se hace sleep por 13 milisegundos).

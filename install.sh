@@ -13,7 +13,11 @@ sudo apt install unzip \
   libqt5multimedia5 \
   libqt5multimedia5-plugins \
   libsdl2-dev \
-  libsdl2-2.0-0 -y
+  libsdl2-2.0-0 \
+  alsa-base \
+  alsa-utils \
+  alsa-oss \
+  alsa-firmware-loaders -y
 
 # Librerías necesarias para SDL
 sudo apt install libopusfile-dev \
