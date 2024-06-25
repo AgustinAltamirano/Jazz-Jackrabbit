@@ -5,8 +5,18 @@ Trabajo Práctico Grupal de la materia Taller de Programación (TA045).
 * Agustín Altamirano - Padrón 110237
 * Santiago Fassio - Padrón 109463
 * Federico Genaro - Padrón 109447
-* Netanel Jamilis - Padrón 99093 
+* Netanel Jamilis - Padrón 99093
 
+## Información del proyecto
+
+El proyecto es un remake multijugador del Jazz Jackrabbit 2, un shooter de plataformas de los años 90 producido
+por Epic MegaGames.
+
+El juego consiste en partidas de corta duración de dos o más jugadores. El objetivo es obtener la mayor cantidad de
+puntos posible, ya sea recolectando gemas, monedas, eliminando enemigos u otros jugadores.
+
+Para información más detallada, se puede consultar el [manual de usuario](documentacion/manual_de_usuario.md), así como
+la [documentación técnica](documentacion/documentacion_tecnica.md) y el [manual de proyecto](documentacion/manual_de_proyecto.md).
 
 ## Instalación de dependencias
 La instalación de dependencias se puede realizar ejecutando los siguientes comandos:

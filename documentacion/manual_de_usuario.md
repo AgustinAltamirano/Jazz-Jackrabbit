@@ -83,8 +83,7 @@ la cantidad de jugadores que se desean en la partida:
 ![Crear partida](img/crear_partida.png)
 
 La cantidad mínima de jugadores en una partida es 2, mientras que la máxima por defecto es 4 _(este número puede
-modificarse si se desea, desde el archivo de configuración `configuracion.yaml
-(léase sección [Configuración](#configuración)).
+modificarse si se desea, desde el archivo de configuración `configuracion.yaml`, léase sección [Configuración](#configuración))_.
 
 Una vez seleccionada la cantidad, se mostrará la ventana de selección de mapa:
 
@@ -95,7 +94,8 @@ donde los posibles mapas a elegir son:
 * **Flashback**: mapa ambientado en un castillo medieval.
 * **Jazz in Time**: mapa ambientado en un lugar abierto en la naturaleza
 * **Modo editor**: permite seleccionar un mapa personalizado creado con el editor de mapas
-(léase sección [Editor de mapas](#editor-de-mapas)).
+(léase sección [Editor de mapas](#editor-de-mapas)). A modo de ejemplo, se incluyen los mapas personalizados 
+`pruebas` y `laberinto`.
 
 Al seleccionar un mapa, se mostrará la ventana de selección de personaje:
 
