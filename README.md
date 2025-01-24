@@ -17,6 +17,7 @@ puntos posible, ya sea recolectando gemas, monedas, eliminando enemigos u otros 
 
 Para información más detallada, se puede consultar el [manual de usuario](documentacion/manual_de_usuario.md), así como
 la [documentación técnica](documentacion/documentacion_tecnica.md) y el [manual de proyecto](documentacion/manual_de_proyecto.md).
+En el siguiente [video de ejemplo](https://youtu.be/9NwZ04XHftU) se muestra el juego en acción.
 
 ## Instalación de dependencias
 La instalación de dependencias se puede realizar ejecutando los siguientes comandos:
